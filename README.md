@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TicketsApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
@@ -25,3 +26,16 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+=======
+# tickets-app
+Aplicación que sirve para gestionar los tickets solicitados a una empresa
+
+<h3>Primera etapa</h3>
+<ul>
+<li>Creo el repositorio base</li>
+<li>Creo el repositorio local en la notebook</li>
+<li>Creo el archivo nuevo en <i>Angular</i> para empezar</li>
+<li>Empiezo generando los archivos base para tener una estructura básica desde donde empezar(módulos en material, header con su nav, botones del nav, etc).</li>
+<li>Instalo Bootstrap y Angular material para manejar los estilos.</li>
+</ul>
+>>>>>>> 5189d5c3807f11f856ae61e8c2d289ec2624a918
