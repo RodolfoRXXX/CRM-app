@@ -5,6 +5,7 @@ import { FrameComponent } from './layouts/frame/frame.component';
 const routes: Routes = [
   { path: '', component: FrameComponent,
       children: [
+        { path: '', redirectTo: 'login', pathMatch: 'full' },
         { path: 'login', loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule) },
         { path: 'register', loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterModule) },
         { path: 'recharge', loadChildren: () => import('./auth/recharge/recharge.module').then(m => m.RechargeModule) },
