@@ -1,19 +1,18 @@
 
-//@import 'variable';
+@import 'variable';
 
-//@import 'mixins/spacing';
-//@import 'mixins/color';
-//@import 'mixins/font';
+@import 'mixins/spacing';
+@import 'mixins/color';
+@import 'mixins/font';
 
-//@import 'component/global';
-//@import 'component/heading';
+@import 'component/global';
+@import 'component/heading';
 
-//@import 'component/header';
-//@import 'component/sidebar';
+@import 'component/header';
+@import 'component/sidebar';
 @import 'component/spinner';
-//@import 'component/card';
-//@import 'component/dashboard';
+@import 'component/card';
+@import 'component/dashboard';
+@import 'responsive';
 
-//@import 'responsive';
-
-//@import "../styles/icons/material-design-iconic-font/css/materialdesignicons.min.css";
+@import "../styles/icons/material-design-iconic-font/css/materialdesignicons.min.css";
