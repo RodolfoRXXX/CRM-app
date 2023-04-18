@@ -5,8 +5,13 @@ mat-toolbar {
     box-shadow: 1px 0px 10px rgba(0, 0, 0, 0.5);
     &.topbar {
       padding: 0px 15px;
+      display: flex;
+      justify-content: space-between;
     }
-    .navbar-header {
+    .sidenav-header {
+      min-width: 48px;
+    }
+    .logo-header {
       text-align: center;
       .navbar-brand {
         display: flex;
@@ -20,11 +25,20 @@ mat-toolbar {
         }
       }
     }
+    .btn-header-login {
+      padding: 4px!important;
+    }
   
-    .profile-pic {
+    .profile-pic-icon {
       width: 40px;
       height: 40px;
       border-radius: 100%;
+    }
+    .profile-pic-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 100%;
+      margin-left: 8px;
     }
   }
   /*******************

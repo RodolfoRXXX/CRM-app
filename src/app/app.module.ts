@@ -7,12 +7,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FrameComponent } from './layouts/frame/frame.component';
 import { SpinnerComponent } from './shared/spinner.component';
 import { MaterialModule } from './material/material/material.module';
+import { HeaderLoginComponent } from './layouts/frame/header-login/header-login.component';
+import { HeaderRechargeComponent } from './layouts/frame/header-recharge/header-recharge.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FrameComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    HeaderLoginComponent,
+    HeaderRechargeComponent
   ],
   imports: [
     BrowserModule,
