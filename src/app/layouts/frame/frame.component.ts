@@ -27,13 +27,7 @@ export class FrameComponent implements OnInit {
   }
 
   isUserLogin() {
-    if (this._auth.getUserDetails() != null) {
-      this.isLoggin = true;
-      this._router.navigate(['recharge']);
-    } else {
-      this.isLoggin = false;
-      this._router.navigate(['login']);
-    }
+    this.isLoggin = this._auth.isAuthenticated$.getValue();
   }
 
   setScreen(): void {

@@ -1,0 +1,36 @@
+{
+  "user": [
+    {
+      "id": 1,
+      "name": "Diego",
+      "email": "diego@gmail.com",
+      "password": "1234",
+      "role": ["manager", "operator", "depo", "buyer", "administrator"],
+      "state": "active"
+    },
+    {
+      "id": 2,
+      "name": "Armando",
+      "email": "armando@gmail.com",
+      "password": "1234",
+      "role": ["operator"],
+      "state": "active"
+    },
+    {
+      "id": 3,
+      "name": "Franco",
+      "email": "franco@gmail.com",
+      "password": "1234",
+      "role": ["depo", "buyer"],
+      "state": "inactive"
+    },
+    {
+      "id": 4,
+      "name": "Javier",
+      "email": "javier@gmail.com",
+      "password": "1234",
+      "role": ["administrator"],
+      "state": "active"
+    }
+  ]
+}
