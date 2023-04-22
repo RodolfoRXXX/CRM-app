@@ -2,6 +2,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component,Inject,Input,OnDestroy,ViewEncapsulation } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-spinner',
@@ -23,10 +24,12 @@ export class SpinnerComponent implements OnDestroy {
 
   constructor(
     private router: Router,
+    private _auth: AuthService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.router.events.subscribe(
       event => {
+        this._auth.isLogged();
         if(event instanceof NavigationStart) {
           this.isSpinnerVisible = true;
         } else if(

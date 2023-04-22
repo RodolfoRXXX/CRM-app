@@ -1,26 +1,36 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, isEmpty, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  public isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  //Observable para usuario ya logueado pero no verificado
+  private _isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly isLogged$ : Observable<boolean> = this._isLogged.asObservable();
 
-  constructor() { }
+  //Observable para usuario ya logueado y verificado
+  private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly isAuthenticated$ : Observable<boolean> = this._isAuthenticated.asObservable();
 
-  //Verifica si el usuario está logueado
-  isLoggin() {
-    if(localStorage.getItem("userData") !== null) this.isAuthenticated$.next(true);
+  //Cambia el estado del observable isLogged$ si hay data en el localStorage
+  isLogged() {
+    if(localStorage.getItem("userData") !== null) this._isLogged.next(true);
   }
 
-  //Guarda las credenciales de acceso en el localstorage y actualiza el observable
+  //Cambia el estado del observable isAuthenticated$ si las credenciales se verificaron
+  isAuthenticated() {
+    this._isAuthenticated.next(true);
+  }
+
+  //Guarda las credenciales de acceso en el localstorage y actualiza los observables de logged y authenticated
   setDataInLocalStorage(id: number, token: any, data:any): void {
     localStorage.setItem("userData", data);
     this.setIdUserToLocalStorage(id);
     this.setToken(token);
-    this.isAuthenticated$.next(true);
+    this._isLogged.next(true);
+    this._isAuthenticated.next(true);
   }
 
   //Devuelvo las credenciales de acceso
@@ -55,7 +65,8 @@ export class AuthService {
   //Limpio toda la información del usuario logueado
   clearStorage(){
     localStorage.clear();
-    this.isAuthenticated$.next(false);
+    this._isLogged.next(false);
+    this._isAuthenticated.next(false);
   }
 
 }

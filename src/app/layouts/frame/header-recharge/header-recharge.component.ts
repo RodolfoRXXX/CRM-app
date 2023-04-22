@@ -6,6 +6,12 @@ import { Component, Input } from '@angular/core';
 })
 export class HeaderRechargeComponent {
 
-  @Input() screenLarge: boolean = true;
+  @Input() screenLarge!: boolean;
+  @Input() isAuthenticated!: boolean;
+
+  constructor() {
+    this.isAuthenticated = false;
+    this.screenLarge = false;
+  }
 
 }

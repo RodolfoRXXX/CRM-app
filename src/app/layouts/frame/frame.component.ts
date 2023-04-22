@@ -11,7 +11,7 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 export class FrameComponent implements OnInit {
 
   isLoggin: boolean = false;
-  isInit: boolean = false;
+  isAuthenticated: boolean = false;
   screenLarge: boolean = true;
 
   constructor(
@@ -27,7 +27,11 @@ export class FrameComponent implements OnInit {
   }
 
   isUserLogin() {
-    this.isLoggin = this._auth.isAuthenticated$.getValue();
+    this._auth.isLogged$.subscribe( state => this.isLoggin = state )
+  }
+
+  isUserAuthenticated() {
+    this._auth.isAuthenticated$.subscribe( state => this.isAuthenticated = state )
   }
 
   setScreen(): void {

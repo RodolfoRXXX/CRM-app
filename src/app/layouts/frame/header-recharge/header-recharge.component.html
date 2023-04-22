@@ -14,12 +14,10 @@
 </button>
 
 <mat-menu #profile="matMenu" class="">
+    <button mat-menu-item *ngIf="isAuthenticated">
+        <mat-icon>settings</mat-icon> Configuración </button>
+    <button mat-menu-item *ngIf="isAuthenticated">
+        <mat-icon>account_box</mat-icon> Perfíl </button>
     <button mat-menu-item>
-        <mat-icon>settings</mat-icon> Settings </button>
-    <button mat-menu-item>
-        <mat-icon>account_box</mat-icon> Profile </button>
-    <button mat-menu-item>
-        <mat-icon>notifications_off</mat-icon> Disable notifications </button>
-    <button mat-menu-item>
-        <mat-icon>exit_to_app</mat-icon> Sign Out </button>
+        <mat-icon>exit_to_app</mat-icon> Cerrar sesión </button>
 </mat-menu>

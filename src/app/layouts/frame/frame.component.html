@@ -8,7 +8,7 @@
         <!-- sidebar toggle -->
         <!-- ============================================================== -->  
         <div class="sidenav-header">
-            <button mat-icon-button value="sidebarclosed" *ngIf="isInit">
+            <button mat-icon-button value="sidebarclosed" *ngIf="isAuthenticated">
                 <mat-icon>menu</mat-icon>
             </button>
         </div>
@@ -40,7 +40,7 @@
         <!-- ============================================================== -->
         <div class="log-header">
             <app-header-login *ngIf="!isLoggin" [screenLarge]="screenLarge"></app-header-login>
-            <app-header-recharge *ngIf="isLoggin" [screenLarge]="screenLarge"></app-header-recharge>
+            <app-header-recharge *ngIf="isLoggin" [screenLarge]="screenLarge" [isAuthenticated]="isAuthenticated"></app-header-recharge>
         </div>
     </mat-toolbar>
     <div>
