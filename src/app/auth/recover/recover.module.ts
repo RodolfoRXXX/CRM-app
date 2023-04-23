@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { RegisterRoutingModule } from './register-routing.module';
-import { RegisterComponent } from './register.component';
+import { RecoverRoutingModule } from './recover-routing.module';
+import { RecoverComponent } from './recover.component';
 import { MaterialModule } from 'src/app/material/material/material.module';
 
 
 @NgModule({
   declarations: [
-    RegisterComponent
+    RecoverComponent
   ],
   imports: [
     CommonModule,
-    RegisterRoutingModule,
+    RecoverRoutingModule,
     MaterialModule
   ]
 })
-export class RegisterModule { }
+export class RecoverModule { }

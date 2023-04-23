@@ -5,11 +5,10 @@
     display: flex;
     background-size: cover;
     align-items: center;
-    //background-image: url(assets/images/background/login-register.jpg);
 }
 
 .login-register-box {
-    max-width: 400px;
+    max-width: 420px;
     min-width: 280px;
     margin: 0 auto;
     vertical-align: middle;
@@ -22,8 +21,20 @@
     mat-form-field {
         width: 100%;
     }
+    .forget-psw-align {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+        top: 1.45px;
+    }
     button {
         width: 100%;
+    }
+    .new-register-link {
+        padding: 1.125rem 1rem 0;
+        display: flex;
+        justify-content: center;
     }
 }
 

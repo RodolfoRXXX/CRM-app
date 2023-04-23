@@ -5,7 +5,7 @@
                 <form >
                     <div class="text-center">
                         <img src="assets/images/logo-icon.png" alt="homepage">
-                        <h4 class="m-t-0 mb-4">Iniciar sesión</h4>
+                        <h4 class="m-t-0 mb-4">Recuperá tu cuenta</h4>
                     </div>
                     <div class="form-auth">
                         <div class="form-input-100">
@@ -18,26 +18,31 @@
                         </div>
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
-                                <mat-label>Ingresá tu contraseña</mat-label>
+                                <mat-label>Ingresá una contraseña</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" required>
                                 <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                                   <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
                             </mat-form-field>
                         </div>
-                        <div class="form-input-50 pt-2 pb-2">
-                            <mat-checkbox class="example-margin">Recordarme</mat-checkbox>
-                        </div>
-                        <div class="form-input-50 fs-09 forget-psw-align pt-2 pb-2">
-                            <a href="#" class="link">Olvidé mi contraseña!</a>
+                        <div class="form-input-100">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Confirmá tu contraseña</mat-label>
+                                <input matInput [type]="hide ? 'password' : 'text'" required>
+                                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                            </mat-form-field>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="false">Entrar</button>
+                            <mat-form-field hintLabel="Max 10 caracteres" appearance="fill">
+                                <mat-label>Ingresá el código alfanumérico</mat-label>
+                                <input matInput #input maxlength="10" required>
+                                <mat-hint align="end">{{input.value.length}}/10</mat-hint>
+                            </mat-form-field>
                         </div>
-                        <div class="form-input-100 new-register-link">
-                            <span> No tenés una cuenta?
-                                <a href="#" class="text-success link">Registrate!</a>
-                            </span>
+                        <div class="form-input-100 mt-3">
+                            <button mat-raised-button color="primary" [disabled]="false">Recuperar mi cuenta</button>
                         </div>
                     </div>
                 </form>

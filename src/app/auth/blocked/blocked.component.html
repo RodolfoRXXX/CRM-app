@@ -1,1 +1,29 @@
-<p>blocked works!</p>
+<div class="login-register">
+    <div class="login-register-box">
+        <mat-card class="mat-card">
+            <mat-card-content class="mat-card-content">
+                <form >
+                    <div class="text-center">
+                        <img src="assets/images/logo-icon.png" alt="homepage">
+                        <h4 class="m-t-0 mb-4">Activá tu cuenta</h4>
+                    </div>
+                    <p class="text-center font-14">
+                        Ingresá el código alfanumérico para activar tu cuenta
+                    </p>
+                    <div class="form-auth">
+                        <div class="form-input-100">
+                            <mat-form-field hintLabel="Max 10 caracteres" appearance="fill">
+                                <mat-label>Ingresá el código alfanumérico</mat-label>
+                                <input matInput #input maxlength="10" required>
+                                <mat-hint align="end">{{input.value.length}}/10</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-input-100 mt-3">
+                            <button mat-raised-button color="primary" [disabled]="false">Activar mi cuenta</button>
+                        </div>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>          
+    </div>
+</div>

@@ -1,1 +1,35 @@
-<p>forget works!</p>
+<div class="login-register">
+    <div class="login-register-box">
+        <mat-card class="mat-card">
+            <mat-card-content class="mat-card-content">
+                <form >
+                    <div class="text-center">
+                        <img src="assets/images/logo-icon.png" alt="homepage">
+                        <h4 class="m-t-0 mb-4">Reestablecer contraseña</h4>
+                    </div>
+                    <p class="text-center font-14">
+                        Ingresá tu correo y enviaremos un código para reestablecer tu contraseña
+                    </p>
+                    <div class="form-auth">
+                        <div class="form-input-100">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Ingresá tu correo</mat-label>
+                                <input matInput placeholder="algo@ejemplo.com" required>
+                                <!-- <input matInput placeholder="pat@example.com" [formControl]="email" required> -->
+                                <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>  -->
+                              </mat-form-field>
+                        </div>
+                        <div class="form-input-100">
+                            <button mat-raised-button color="primary" [disabled]="false">Enviar</button>
+                        </div>
+                        <div class="form-input-100 new-register-link">
+                            <span> Recordás tus credenciales?
+                                <a href="#" class="text-success link">Ingresá!</a>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>          
+    </div>
+</div>

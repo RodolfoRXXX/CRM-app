@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { BlockedRoutingModule } from './blocked-routing.module';
 import { BlockedComponent } from './blocked.component';
+import { MaterialModule } from 'src/app/material/material/material.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { BlockedComponent } from './blocked.component';
   ],
   imports: [
     CommonModule,
-    BlockedRoutingModule
+    BlockedRoutingModule,
+    MaterialModule
   ]
 })
 export class BlockedModule { }

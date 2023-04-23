@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
 })
 export class RechargeComponent {
 
+  hide = true;
+
 }

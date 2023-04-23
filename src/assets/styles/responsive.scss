@@ -81,4 +81,8 @@
   .no-block {
     display: flex;
   }
+
+  mat-toolbar .sidenav-header {
+    min-width: 48px;
+  }
 }

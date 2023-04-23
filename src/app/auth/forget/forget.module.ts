@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ForgetRoutingModule } from './forget-routing.module';
 import { ForgetComponent } from './forget.component';
+import { MaterialModule } from 'src/app/material/material/material.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { ForgetComponent } from './forget.component';
   ],
   imports: [
     CommonModule,
-    ForgetRoutingModule
+    ForgetRoutingModule,
+    MaterialModule
   ]
 })
 export class ForgetModule { }
