@@ -10,6 +10,8 @@ export class ApiService {
 
   baseUrl = environment.URL;
 
+  headers = { 'Content-Type': 'application/json'}
+
   constructor( private _http: HttpClient ) { }
 
   getTypeRequest(url:any){

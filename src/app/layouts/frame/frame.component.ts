@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -8,9 +8,9 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
   selector: 'app-frame',
   templateUrl: './frame.component.html'
 })
-export class FrameComponent implements OnInit {
+export class FrameComponent implements OnInit, OnDestroy {
 
-  isLoggin: boolean = false;
+  isLogged: boolean = false;
   isAuthenticated: boolean = false;
   screenLarge: boolean = true;
 
@@ -18,16 +18,21 @@ export class FrameComponent implements OnInit {
     private _auth: AuthService,
     private _router: Router,
     public breakpointObserver: BreakpointObserver
-  ) {
+  ) { }
 
+
+  ngOnDestroy(): void {
+    this._auth.isNotAuthenticated();
   }
   ngOnInit(): void {
-    this.isUserLogin();
+    this.isUserLogged();
+    this.isUserAuthenticated()
     this.setScreen();
+    this._auth.isActive()
   }
 
-  isUserLogin() {
-    this._auth.isLogged$.subscribe( state => this.isLoggin = state )
+  isUserLogged() {
+    this._auth.isLogged$.subscribe( state => this.isLogged = state )
   }
 
   isUserAuthenticated() {

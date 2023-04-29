@@ -30,6 +30,8 @@ export class SpinnerComponent implements OnDestroy {
     this.router.events.subscribe(
       event => {
         this._auth.isLogged();
+        this._auth.isAuthenticated();
+        this._auth.isActive();
         if(event instanceof NavigationStart) {
           this.isSpinnerVisible = true;
         } else if(

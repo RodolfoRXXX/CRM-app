@@ -1,7 +1,14 @@
 <!-- Button que se muestra cuando la pantalla no es móvil -->
 <button mat-flat-button color="primary" [matMenuTriggerFor]="profile" *ngIf="screenLarge">
-    <span>Heraldo</span>
-    <img src="assets/images/users/1.jpg" alt="user" class="profile-pic-btn">
+    <div class="d-flex align-items-center">
+        <div class="d-flex flex-column">
+            <span class="name-header">{{ name }}</span>
+            <span class="role-header">{{ role }}</span>
+        </div>
+        <div class="d-block">
+            <img class="profile-pic-btn" [src]="pic" alt="{{ name }}">
+        </div>
+    </div>
 </button>
 
 <!-- Button que se muestra para el móvil -->
@@ -10,14 +17,16 @@
     mat-icon-button 
     class="btn-header-login"
     *ngIf="!screenLarge"
-> <img src="assets/images/users/1.jpg" alt="user" class="profile-pic-icon">
+> <img [src]="pic" alt="{{ name }}" class="profile-pic-icon">
 </button>
 
 <mat-menu #profile="matMenu" class="">
     <button mat-menu-item *ngIf="isAuthenticated">
-        <mat-icon>settings</mat-icon> Configuración </button>
+        <mat-icon>dashboard</mat-icon> Tablero </button>
     <button mat-menu-item *ngIf="isAuthenticated">
-        <mat-icon>account_box</mat-icon> Perfíl </button>
-    <button mat-menu-item>
+        <mat-icon>settings</mat-icon> Configuración </button>
+    <button mat-menu-item *ngIf="isLogged && isAuthenticated" (click)="logOut()">
         <mat-icon>exit_to_app</mat-icon> Cerrar sesión </button>
+    <button mat-menu-item *ngIf="isLogged && !isAuthenticated" (click)="logAllOut()">
+        <mat-icon>exit_to_app</mat-icon> Olvidar sesión </button>
 </mat-menu>

@@ -28,17 +28,29 @@ mat-toolbar {
     .btn-header-login {
       padding: 4px!important;
     }
-  
-    .profile-pic-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 100%;
+    .name-header {
+      font-size: 14px;
+      line-height: 14px;
+      font-weight: 500;
+      text-align: left;
+      text-transform: capitalize;
+    }
+    .role-header {
+      font-size: 8.5px;
+      line-height: 9px;
+      text-align: left;
     }
     .profile-pic-btn {
       width: 24px;
       height: 24px;
       border-radius: 100%;
       margin-left: 8px;
+    }
+  
+    .profile-pic-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
     }
   }
   /*******************

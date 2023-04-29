@@ -5,32 +5,92 @@
       "name": "Diego",
       "email": "diego@gmail.com",
       "password": "1234",
-      "role": ["manager", "operator", "depo", "buyer", "administrator"],
-      "state": "active"
+      "role": {
+        "main": "administrador",
+        "second":"operador",
+        "third": "pañolero",
+        "fourth": "comprador",
+        "fifth": "administrativo"
+      },
+      "state": "active",
+      "thumbnail": "assets/images/users/diego.jpg",
+      "id_enterprise": 1
     },
     {
       "id": 2,
       "name": "Armando",
       "email": "armando@gmail.com",
       "password": "1234",
-      "role": ["operator"],
-      "state": "active"
+      "role": {
+        "main": "operador",
+        "second":"",
+        "third": "",
+        "fourth": "",
+        "fifth": ""
+      },
+      "state": "active",
+      "thumbnail": "assets/images/users/armando.jpg",
+      "id_enterprise": 1
     },
     {
       "id": 3,
-      "name": "Franco",
-      "email": "franco@gmail.com",
+      "name": "",
+      "email": "francisca@gmail.com",
       "password": "1234",
-      "role": ["depo", "buyer"],
-      "state": "inactive"
+      "role": {
+        "main": "comprador",
+        "second":"",
+        "third": "",
+        "fourth": "",
+        "fifth": ""
+      },
+      "state": "inactive",
+      "thumbnail": "assets/images/users/francisca.jpg",
+      "id_enterprise": 1
     },
     {
-      "id": 4,
+      "id": 5,
       "name": "Javier",
       "email": "javier@gmail.com",
       "password": "1234",
-      "role": ["administrator"],
-      "state": "active"
+      "role": {
+        "main": "operador",
+        "second":"pañolero",
+        "third": "",
+        "fourth": "",
+        "fifth": ""
+      },
+      "state": "inactive",
+      "thumbnail": "assets/images/users/javier.jpg",
+      "id_enterprise": 1
+    },
+    {
+      "id": 7,
+      "name": "Diana",
+      "email": "diana@gmail.com",
+      "password": "1234",
+      "role": {
+        "main": "administrativo",
+        "second":"",
+        "third": "",
+        "fourth": "",
+        "fifth": ""
+      },
+      "state": "active",
+      "thumbnail": "assets/images/users/diana.jpg",
+      "id_enterprise": 1
+    }
+  ],
+  "enterprise": [
+    {
+      "id": 1,
+      "name": "Acindar",
+      "direccion": "Pcias. Unidas 1540"
+    },
+    {
+      "id": 2,
+      "name": "Ubisat",
+      "direccion": "Jorge Navarro 2540"
     }
   ]
 }

@@ -9,6 +9,7 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { MaterialModule } from './material/material/material.module';
 import { HeaderLoginComponent } from './layouts/frame/header-login/header-login.component';
 import { HeaderRechargeComponent } from './layouts/frame/header-recharge/header-recharge.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HeaderRechargeComponent } from './layouts/frame/header-recharge/header-
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

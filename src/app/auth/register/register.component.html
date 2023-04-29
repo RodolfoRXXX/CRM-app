@@ -34,7 +34,17 @@
                                 </button>
                             </mat-form-field>
                         </div>
-                        <div class="form-input-50 pt-2 pb-2">
+                        <div class="form-input-100">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Busca tu empresa</mat-label>
+                                <mat-select required>
+                                    <mat-option *ngFor="let enterprise of enterprises" [value]="enterprise.id">
+                                      {{enterprise.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-input-50 pb-2">
                             <mat-checkbox class="example-margin">Recordarme</mat-checkbox>
                         </div>
                         <div class="form-input-100">

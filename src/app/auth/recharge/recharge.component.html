@@ -2,39 +2,21 @@
     <div class="login-register-box">
         <mat-card class="mat-card">
             <mat-card-content class="mat-card-content">
-                <form >
+                <form [formGroup]="rechargeForm" (ngSubmit)="onSubmit()">
                     <div class="text-center">
-                        <img src="assets/images/logo-icon.png" alt="homepage">
-                        <h4 class="m-t-0 mb-4">Iniciar sesión</h4>
+                        <img class="profile-pic-recharge" [src]="pic" alt="profile-pic">
                     </div>
                     <div class="form-auth">
                         <div class="form-input-100">
-                            <mat-form-field appearance="fill">
-                                <mat-label>Ingresá tu correo</mat-label>
-                                <input matInput placeholder="algo@ejemplo.com" required>
-                                <!-- <input matInput placeholder="pat@example.com" [formControl]="email" required> -->
-                                <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>  -->
-                              </mat-form-field>
+                            <h3 class="email-recharge">{{ email }}</h3>
+                            <input type="hidden" formControlName="email" required>
+                            <input type="hidden" formControlName="password" required>
                         </div>
                         <div class="form-input-100">
-                            <mat-form-field appearance="fill">
-                                <mat-label>Ingresá tu contraseña</mat-label>
-                                <input matInput [type]="hide ? 'password' : 'text'" required>
-                                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                </button>
-                            </mat-form-field>
+                            <button mat-raised-button color="primary" type="submit">Entrar</button>
                         </div>
-                        <div class="form-input-50 fs-09 forget-psw-align pt-2 pb-2">
-                            <a href="#" class="link">Olvidé mi contraseña!</a>
-                        </div>
-                        <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="false">Entrar</button>
-                        </div>
-                        <div class="form-input-100 new-register-link">
-                            <span> Querés cambiar de cuenta?
-                                <a href="#" class="text-success link">Ingresá!</a>
-                            </span>
+                        <div class="form-input-100 mt-2">
+                            <button mat-flat-button class="btn-forget-session" type="button" (click)="logAllOut()"><mat-icon>exit_to_app</mat-icon> Cambiar de cuenta </button>
                         </div>
                     </div>
                 </form>

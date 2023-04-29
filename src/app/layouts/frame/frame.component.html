@@ -39,8 +39,8 @@
         <!-- Login or recharge component - style you can find in header.scss -->
         <!-- ============================================================== -->
         <div class="log-header">
-            <app-header-login *ngIf="!isLoggin" [screenLarge]="screenLarge"></app-header-login>
-            <app-header-recharge *ngIf="isLoggin" [screenLarge]="screenLarge" [isAuthenticated]="isAuthenticated"></app-header-recharge>
+            <app-header-login *ngIf="!isLogged" [screenLarge]="screenLarge"></app-header-login>
+            <app-header-recharge *ngIf="isLogged" [screenLarge]="screenLarge" [isLogged]="isLogged" [isAuthenticated]="isAuthenticated"></app-header-recharge>
         </div>
     </mat-toolbar>
     <div>
