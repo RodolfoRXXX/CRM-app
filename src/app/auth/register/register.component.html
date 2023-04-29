@@ -2,7 +2,7 @@
     <div class="login-register-box">
         <mat-card class="mat-card">
             <mat-card-content class="mat-card-content">
-                <form >
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                     <div class="text-center">
                         <img src="assets/images/logo-icon.png" alt="homepage">
                         <h4 class="m-t-0 mb-4">Registrate</h4>
@@ -11,27 +11,35 @@
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
                                 <mat-label>Ingresá tu correo</mat-label>
-                                <input matInput placeholder="algo@ejemplo.com" required>
-                                <!-- <input matInput placeholder="pat@example.com" [formControl]="email" required> -->
-                                <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>  -->
+                                <input matInput placeholder="algo@ejemplo.com"
+                                       formControlName="email" 
+                                       required>
+                                <mat-error *ngIf="this.registerForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
                               </mat-form-field>
                         </div>
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
                                 <mat-label>Ingresá una contraseña</mat-label>
-                                <input matInput [type]="hide ? 'password' : 'text'" required>
-                                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                <input matInput [type]="hide_1 ? 'password' : 'text'"
+                                       [formControl]="passwordFirst"
+                                       required>
+                                <button mat-icon-button matSuffix (click)="hidePassword_1($event)" >
+                                <mat-icon>{{hide_1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
+                                <mat-error *ngIf="this.passwordFirst.errors">{{getPasswordErrorMessageFirst()}}</mat-error>
                             </mat-form-field>
+                            <div *ngIf="this.registerForm.errors?.['no_equal']">Las contraseñas no coinciden</div>
                         </div>
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
                                 <mat-label>Confirmá tu contraseña</mat-label>
-                                <input matInput [type]="hide ? 'password' : 'text'" required>
-                                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                <input matInput [type]="hide_2 ? 'password' : 'text'"
+                                       formControlName="password"
+                                       required>
+                                <button mat-icon-button matSuffix (click)="hidePassword_2($event)" >
+                                <mat-icon>{{hide_2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
+                                <mat-error *ngIf="this.registerForm.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
@@ -48,7 +56,7 @@
                             <mat-checkbox class="example-margin">Recordarme</mat-checkbox>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="false">Crear mi cuenta</button>
+                            <button mat-raised-button color="primary" [disabled]="this.registerForm.invalid">Crear mi cuenta</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Ya tenés una cuenta?
