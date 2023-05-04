@@ -15,7 +15,7 @@
                                        formControlName="email" 
                                        required>
                                 <mat-error *ngIf="this.loginForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
-                              </mat-form-field>
+                            </mat-form-field>
                         </div>
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
@@ -33,7 +33,7 @@
                             <mat-checkbox formControlName="remember_me">Recordarme</mat-checkbox>
                         </div>
                         <div class="form-input-50 fs-09 forget-psw-align pb-2">
-                            <a href="#" class="link">Olvidé mi contraseña!</a>
+                            <a routerLink="../forget" class="link">Olvidé mi contraseña!</a>
                         </div>
                         <div class="form-input-100">
                             <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Entrar</button>

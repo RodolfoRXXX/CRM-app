@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BlockedRoutingModule } from './blocked-routing.module';
 import { BlockedComponent } from './blocked.component';
 import { MaterialModule } from 'src/app/material/material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { MaterialModule } from 'src/app/material/material/material.module';
   imports: [
     CommonModule,
     BlockedRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class BlockedModule { }

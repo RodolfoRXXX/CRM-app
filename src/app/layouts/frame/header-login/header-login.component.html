@@ -1,10 +1,10 @@
 
 <!-- Button que se muestra cuando la pantalla no es móvil -->
-<button mat-flat-button color="primary" *ngIf="screenLarge">
+<button mat-flat-button color="primary" (click)="goLogin()" *ngIf="screenLarge">
     <mat-icon>account_circle</mat-icon><span>Ingresar</span>
 </button>
 
 <!-- Button que se muestra para el móvil -->
-<button mat-icon-button value="sidebarclosed"  *ngIf="!screenLarge">
+<button mat-icon-button value="sidebarclosed" (click)="goLogin()" *ngIf="!screenLarge">
     <mat-icon>account_circle</mat-icon>
 </button>

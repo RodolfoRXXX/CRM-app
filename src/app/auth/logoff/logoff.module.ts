@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { LogoffRoutingModule } from './logoff-routing.module';
 import { LogoffComponent } from './logoff.component';
+import { MaterialModule } from 'src/app/material/material/material.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { LogoffComponent } from './logoff.component';
   ],
   imports: [
     CommonModule,
-    LogoffRoutingModule
+    LogoffRoutingModule,
+    MaterialModule
   ]
 })
 export class LogoffModule { }

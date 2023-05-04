@@ -5,7 +5,8 @@ export interface User {
     'password': string,
     'role': Role,
     'state': string,
-    'thumbnail': string
+    'thumbnail': string,
+    'code': string
 }
 
 export interface Role {

@@ -67,8 +67,9 @@ export class RechargeComponent {
         })
   }
 
-  logAllOut(): void {
-    this._auth.clearAllStorage()?this._router.navigate(['login']):'';
+  logOffAll(): void {
+    this._auth.setRememberOption(false);
+    this._router.navigate(['../logoff']);
   }
 
 }

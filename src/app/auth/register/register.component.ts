@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -16,6 +16,7 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   enterprises: Array<any> = [];
   passwordFirst!: FormControl;
+  remember_me!: FormControl;
 
   constructor(
     private _auth: AuthService,
@@ -28,14 +29,21 @@ export class RegisterComponent implements OnInit {
       Validators.minLength(4),
       Validators.maxLength(10)
     ]);
+    this.remember_me = new FormControl(false);
    }
 
   ngOnInit(): void {
     this.createForm();
+    this.passwordFirst.valueChanges.subscribe( value => {
+      if( ((this.registerForm.value.password.length > 3) && (this.registerForm.value.password.length < 11) ) && (value !== this.registerForm.value.password)) {
+        this.registerForm.controls['password'].setErrors({ no_equal: true });
+      }
+    } )
   }
 
   createForm(): void {
     this.registerForm = new FormGroup({
+        name : new FormControl(''),
         email : new FormControl('', [
           Validators.required,
           (control: AbstractControl):ValidationErrors|null => {
@@ -46,7 +54,18 @@ export class RegisterComponent implements OnInit {
           (control: AbstractControl):ValidationErrors|null => {
           return (control.value !== this.passwordFirst.value) ? {no_equal: {value: control.value}} : null;}
         ]),
-        remember_me : new FormControl('')
+        role: new FormGroup({
+          main: new FormControl(''),
+          second: new FormControl(''),
+          third: new FormControl(''),
+          fourth: new FormControl(''),
+          fifth: new FormControl('')
+        }),
+        state: new FormControl('inactive'),
+        thumbnail: new FormControl('assets/images/users/blanck_user.png'),
+        id_enterprise: new FormControl('', [
+          Validators.required
+        ])
     }
     );
   }
@@ -103,7 +122,21 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.registerForm.value);
+    this._api.postTypeRequest('user', this.registerForm.value).subscribe({
+      next: (res: any) => {
+        if(res) {
+          this._auth.setDataInLocalStorage(res.id, "", res, this.remember_me.value);
+          this._router.navigate(['init']);
+        }else {
+          //ventana de error
+          console.log('No se ha creado la cuenta');
+        }
+      },
+      error: (error) => {
+        //ventana de error
+        console.log(error)
+      }
+    })
   }
 
 }

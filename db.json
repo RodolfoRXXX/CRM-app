@@ -7,14 +7,15 @@
       "password": "1234",
       "role": {
         "main": "administrador",
-        "second":"operador",
+        "second": "operador",
         "third": "pañolero",
         "fourth": "comprador",
         "fifth": "administrativo"
       },
       "state": "active",
       "thumbnail": "assets/images/users/diego.jpg",
-      "id_enterprise": 1
+      "id_enterprise": 1,
+      "code": "11111aaaaa"
     },
     {
       "id": 2,
@@ -23,14 +24,15 @@
       "password": "1234",
       "role": {
         "main": "operador",
-        "second":"",
+        "second": "",
         "third": "",
         "fourth": "",
         "fifth": ""
       },
       "state": "active",
       "thumbnail": "assets/images/users/armando.jpg",
-      "id_enterprise": 1
+      "id_enterprise": 1,
+      "code": "11111aaaab"
     },
     {
       "id": 3,
@@ -39,14 +41,15 @@
       "password": "1234",
       "role": {
         "main": "comprador",
-        "second":"",
+        "second": "",
         "third": "",
         "fourth": "",
         "fifth": ""
       },
       "state": "inactive",
       "thumbnail": "assets/images/users/francisca.jpg",
-      "id_enterprise": 1
+      "id_enterprise": 1,
+      "code": "11111aaaac"
     },
     {
       "id": 5,
@@ -55,14 +58,15 @@
       "password": "1234",
       "role": {
         "main": "operador",
-        "second":"pañolero",
+        "second": "pañolero",
         "third": "",
         "fourth": "",
         "fifth": ""
       },
-      "state": "inactive",
+      "state": "active",
       "thumbnail": "assets/images/users/javier.jpg",
-      "id_enterprise": 1
+      "id_enterprise": 1,
+      "code": "11111aaaad"
     },
     {
       "id": 7,
@@ -71,14 +75,83 @@
       "password": "1234",
       "role": {
         "main": "administrativo",
-        "second":"",
+        "second": "",
         "third": "",
         "fourth": "",
         "fifth": ""
       },
       "state": "active",
       "thumbnail": "assets/images/users/diana.jpg",
-      "id_enterprise": 1
+      "id_enterprise": 1,
+      "code": "11111aaaae"
+    },
+    {
+      "name": "",
+      "email": "algomas@gmail.com",
+      "password": "1234",
+      "role": {
+        "main": "",
+        "second": "",
+        "third": "",
+        "fourth": "",
+        "fifth": ""
+      },
+      "state": "inactive",
+      "thumbnail": "assets/images/users/blanck_user.png",
+      "id_enterprise": 2,
+      "id": 9,
+      "code": "11111aaaaf"
+    },
+    {
+      "name": "",
+      "email": "gerardo@gmail.com",
+      "password": "1234",
+      "role": {
+        "main": "",
+        "second": "",
+        "third": "",
+        "fourth": "",
+        "fifth": ""
+      },
+      "state": "inactive",
+      "thumbnail": "assets/images/users/blanck_user.png",
+      "id_enterprise": 1,
+      "id": 10,
+      "code": "11111aaaag"
+    },
+    {
+      "name": "",
+      "email": "daniel@gmail.com",
+      "password": "1234",
+      "role": {
+        "main": "",
+        "second": "",
+        "third": "",
+        "fourth": "",
+        "fifth": ""
+      },
+      "state": "inactive",
+      "thumbnail": "assets/images/users/blanck_user.png",
+      "id_enterprise": 1,
+      "id": 11,
+      "code": "11111aaaah"
+    },
+    {
+      "name": "",
+      "email": "roberto@gmail.com",
+      "password": "1234",
+      "role": {
+        "main": "",
+        "second": "",
+        "third": "",
+        "fourth": "",
+        "fifth": ""
+      },
+      "state": "inactive",
+      "thumbnail": "assets/images/users/blanck_user.png",
+      "id_enterprise": 2,
+      "id": 12,
+      "code": "11111aaaai"
     }
   ],
   "enterprise": [

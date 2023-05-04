@@ -18,29 +18,46 @@ export class AuthService {
   private _isActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public readonly isActive$ : Observable<boolean> = this._isActive.asObservable();
 
-  //Cambia el estado del observable isLogged$ si hay data en el localStorage
-  isLogged() {
-    if(localStorage.getItem("userData") !== null) this._isLogged.next(true);
-  }
-
-  //Cambia el estado del observable isAuthenticated$ si las credenciales se verificaron
-  isAuthenticated() {
-    if(localStorage.getItem("token") !== null) this._isAuthenticated.next(true);
-  }
-
-  //Cambia el estado del observable isActive$ si el usuario está activo
-  isActive(): boolean {
-      const userData = localStorage.getItem('userData');
-      if((userData) && (JSON.parse(userData).state === 'active')){
-        this._isActive.next(true);
-        return true;
+  //Consulta si el estado de los observables Behavior
+      //Cambia el estado del observable isLogged$ si hay data en el localStorage
+      isLogged() {
+        if(localStorage.getItem("userData") !== null) this._isLogged.next(true);
       }
-      this._isActive.next(false);
-      return false;
-  }
+
+      //Cambia el estado del observable isAuthenticated$ si las credenciales se verificaron
+      isAuthenticated() {
+        if(localStorage.getItem("token") !== null) this._isAuthenticated.next(true);
+      }
+
+      //Cambia el estado del observable isActive$ si el usuario está activo
+      isActive(): boolean {
+        const userData = localStorage.getItem('userData');
+        if((userData) && (JSON.parse(userData).state === 'active')){
+          this.setActiveState(true);
+          return true;
+        }
+        this.setActiveState(false);
+        return false;
+      }
+
+  //Setea los valores de los observables Behavior
+      //Setea el estado del observable isLogged$
+      setLoggedState(state: boolean) {
+        this._isLogged.next(state);
+      }
+
+      //Setea el estado del observable isAuthenticated$
+      setAuthenticatedState(state: boolean) {
+        this._isAuthenticated.next(state);
+      }
+
+      //Setea el estado del observable isActive$
+      setActiveState(state: boolean) {
+        this._isActive.next(state);
+      }
 
   isNotAuthenticated() {
-    this._isAuthenticated.next(false);
+    this.setAuthenticatedState(false);
   }
 
   //Guarda las credenciales de acceso en el localstorage y actualiza los observables de logged y authenticated
@@ -49,8 +66,8 @@ export class AuthService {
     this.setIdUserToLocalStorage(id);
     this.setToken(token);
     this.setRememberOption(remember);
-    this._isLogged.next(true);
-    this._isAuthenticated.next(true);
+    this.setLoggedState(true);
+    this.setAuthenticatedState(true);
     this.isActive();
   }
 
@@ -85,7 +102,7 @@ export class AuthService {
 
   //Setea la variable rememberOption en el localStorage para saber si el usuario desea guardar sus datos para el próximo inicio de sesión
   setRememberOption(remember_me: boolean) {
-    localStorage.setItem("rememberOption", remember_me.toString());
+      localStorage.setItem("rememberOption", remember_me.toString());
   }
 
   //Obtnener el valor de la variable rememberOption
@@ -96,22 +113,16 @@ export class AuthService {
 
   //Limpio toda la información del usuario logueado
   clearStorage(): boolean{
-    this._isLogged.next(false);
-    this._isAuthenticated.next(false);
     if(this.getRememberOption()){
+      this.setAuthenticatedState(false);
       localStorage.removeItem('token')
       return false;
     }else {
+      this.setLoggedState(false);
+      this.setAuthenticatedState(false);
       localStorage.clear();
       return true;
     }
-  }
-
-  clearAllStorage(): boolean {
-    this._isLogged.next(false);
-    this._isAuthenticated.next(false);
-    localStorage.clear();
-      return true;
   }
 
 }

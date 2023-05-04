@@ -34,12 +34,13 @@ export class HeaderRechargeComponent {
     this.role = data.role.main;
   }
 
-  logOut(): void {
-    (this._auth.clearStorage())?this._router.navigate(['login']):this._router.navigate(['recharge']);
+  logOff(): void {
+    this._router.navigate(['../logoff']);
   }
 
-  logAllOut(): void {
-    this._auth.clearAllStorage()?this._router.navigate(['login']):'';
+  logOffAll(): void {
+    this._auth.setRememberOption(false);
+    this._router.navigate(['../logoff']);
   }
 
 }

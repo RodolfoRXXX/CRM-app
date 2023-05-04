@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
           Validators.minLength(4),
           Validators.maxLength(10)
         ]),
-        remember_me : new FormControl('')
+        remember_me : new FormControl(false)
     });
   }
 
@@ -45,7 +45,6 @@ export class LoginComponent implements OnInit {
     ev.preventDefault();
     this.hide = !this.hide;
   }
-
   getEmailErrorMessage() {
     if(this.loginForm.controls['email'].hasError('required')) {
       return 'Tenés que ingresar un valor'}

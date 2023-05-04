@@ -2,7 +2,7 @@
     <div class="login-register-box">
         <mat-card class="mat-card">
             <mat-card-content class="mat-card-content">
-                <form >
+                <form [formGroup]="recoverForm" (ngSubmit)="onSubmit()">
                     <div class="text-center">
                         <img src="assets/images/logo-icon.png" alt="homepage">
                         <h4 class="m-t-0 mb-4">Recuperá tu cuenta</h4>
@@ -11,38 +11,63 @@
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
                                 <mat-label>Ingresá tu correo</mat-label>
-                                <input matInput placeholder="algo@ejemplo.com" required>
-                                <!-- <input matInput placeholder="pat@example.com" [formControl]="email" required> -->
-                                <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>  -->
-                              </mat-form-field>
+                                <input matInput placeholder="algo@ejemplo.com"
+                                       formControlName="email" 
+                                       required>
+                                <mat-error *ngIf="this.recoverForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
+                            </mat-form-field>
                         </div>
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
                                 <mat-label>Ingresá una contraseña</mat-label>
-                                <input matInput [type]="hide ? 'password' : 'text'" required>
-                                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                <input matInput [type]="hide_1 ? 'password' : 'text'"
+                                       [formControl]="passwordFirst"
+                                       required>
+                                <button mat-icon-button matSuffix (click)="hidePassword_1($event)" >
+                                <mat-icon>{{hide_1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
+                                <mat-error *ngIf="this.passwordFirst.errors">{{getPasswordErrorMessageFirst()}}</mat-error>
                             </mat-form-field>
+                            <div *ngIf="this.recoverForm.errors?.['no_equal']">Las contraseñas no coinciden</div>
                         </div>
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
                                 <mat-label>Confirmá tu contraseña</mat-label>
-                                <input matInput [type]="hide ? 'password' : 'text'" required>
-                                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                <input matInput [type]="hide_2 ? 'password' : 'text'"
+                                       formControlName="password"
+                                       required>
+                                <button mat-icon-button matSuffix (click)="hidePassword_2($event)" >
+                                <mat-icon>{{hide_2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
+                                <mat-error *ngIf="this.recoverForm.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
-                            <mat-form-field hintLabel="Max 10 caracteres" appearance="fill">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Busca tu empresa</mat-label>
+                                <mat-select formControlName="id_enterprise" required>
+                                    <mat-option *ngFor="let enterprise of enterprises" [value]="enterprise.id">
+                                      {{enterprise.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="this.recoverForm.controls['id_enterprise'].hasError('required')">Tenés que elegir una empresa</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-input-100">
+                            <mat-form-field hintLabel="10 caracteres" appearance="fill">
                                 <mat-label>Ingresá el código alfanumérico</mat-label>
-                                <input matInput #input maxlength="10" required>
+                                <input matInput 
+                                       #input 
+                                       maxlength="10"
+                                       minlength="10" 
+                                       formControlName="code"
+                                       required>
+                                <mat-error *ngIf="this.recoverForm.controls['code']!.errors">{{getCodeErrorMessage()}}</mat-error>
                                 <mat-hint align="end">{{input.value.length}}/10</mat-hint>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100 mt-3">
-                            <button mat-raised-button color="primary" [disabled]="false">Recuperar mi cuenta</button>
+                            <button mat-raised-button color="primary" [disabled]="this.recoverForm.invalid">Recuperar mi cuenta</button>
                         </div>
                     </div>
                 </form>

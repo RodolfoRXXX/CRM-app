@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ForgetRoutingModule } from './forget-routing.module';
 import { ForgetComponent } from './forget.component';
 import { MaterialModule } from 'src/app/material/material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { MaterialModule } from 'src/app/material/material/material.module';
   imports: [
     CommonModule,
     ForgetRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class ForgetModule { }

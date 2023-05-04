@@ -32,6 +32,12 @@ export class ApiService {
     )
   }
 
+  patchTypeRequest(url:any, payload:any){
+    return this._http.patch(`${this.baseUrl}${url}`, payload).pipe(
+      catchError(this.handleError)
+    )
+  }
+
   //Manejo de errores
   private handleError( error: HttpErrorResponse ){
     if( error.error instanceof ErrorEvent ){

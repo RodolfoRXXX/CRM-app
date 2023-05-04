@@ -15,7 +15,7 @@
                                        formControlName="email" 
                                        required>
                                 <mat-error *ngIf="this.registerForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
-                              </mat-form-field>
+                            </mat-form-field>
                         </div>
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
@@ -45,15 +45,16 @@
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
                                 <mat-label>Busca tu empresa</mat-label>
-                                <mat-select required>
+                                <mat-select formControlName="id_enterprise" required>
                                     <mat-option *ngFor="let enterprise of enterprises" [value]="enterprise.id">
                                       {{enterprise.name}}
                                     </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="this.registerForm.controls['id_enterprise'].hasError('required')">Tenés que elegir una empresa</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-50 pb-2">
-                            <mat-checkbox class="example-margin">Recordarme</mat-checkbox>
+                            <mat-checkbox [formControl]="remember_me">Recordarme</mat-checkbox>
                         </div>
                         <div class="form-input-100">
                             <button mat-raised-button color="primary" [disabled]="this.registerForm.invalid">Crear mi cuenta</button>

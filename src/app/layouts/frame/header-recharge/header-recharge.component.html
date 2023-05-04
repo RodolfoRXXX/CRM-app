@@ -21,12 +21,12 @@
 </button>
 
 <mat-menu #profile="matMenu" class="">
-    <button mat-menu-item *ngIf="isAuthenticated">
-        <mat-icon>dashboard</mat-icon> Tablero </button>
-    <button mat-menu-item *ngIf="isAuthenticated">
-        <mat-icon>settings</mat-icon> Configuración </button>
-    <button mat-menu-item *ngIf="isLogged && isAuthenticated" (click)="logOut()">
+    <a mat-menu-item *ngIf="isAuthenticated" routerLink="init/dasboard" class="fs-w-500">
+        <mat-icon>dashboard</mat-icon> Tablero </a>
+    <a mat-menu-item *ngIf="isAuthenticated" routerLink="settings" class="fs-w-500">
+        <mat-icon>settings</mat-icon> Configuración </a>
+    <button mat-menu-item *ngIf="isLogged && isAuthenticated" (click)="logOff()" class="fs-w-300">
         <mat-icon>exit_to_app</mat-icon> Cerrar sesión </button>
-    <button mat-menu-item *ngIf="isLogged && !isAuthenticated" (click)="logAllOut()">
+    <button mat-menu-item *ngIf="isLogged && !isAuthenticated" (click)="logOffAll()">
         <mat-icon>exit_to_app</mat-icon> Olvidar sesión </button>
 </mat-menu>
