@@ -20,13 +20,16 @@ $sidebar-alt: #f2f6f8;
 $bodycolor: #eef5f9;
 $headingtext: #455a64;
 $bodytext: #67757c;
-$sidebar-text: #67757c;
-$sidebar-icons: #99abb4;
+    $sidebar-text: #67757c;
+    $sidebar-icons: #838a8e;
 
 $font-16: 16px;
 
 $light-text: #a6b7bf;
-$themecolor: mat.get-color-from-palette(mat.define-palette(mat.$teal-palette, 800));
+
+    $themecolor: mat.get-color-from-palette(mat.define-palette(mat.$teal-palette, 800));
+    $themeAccent: mat.get-color-from-palette(mat.define-palette(mat.$light-green-palette, 300));
+
 $themecolor-alt: #26c6da;
 $themecolor-dark: #028ee1;
 

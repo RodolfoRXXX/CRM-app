@@ -11,5 +11,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+
+        .breadcrumb-item a {
+            color: $themeAccent;
+        }
     }
 }

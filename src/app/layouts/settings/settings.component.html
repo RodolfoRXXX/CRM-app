@@ -1,9 +1,11 @@
+<!--
 <mat-drawer-container class="container-sidenav" autosize>
     <mat-drawer id="snav" [(opened)]="opened" [mode]="mode" disableClose>
         <div class="user-profile" style="background: url(assets/images/users/user-info.jpg) no-repeat; background-size: cover;">
             <div class="profile-img"> <img src="assets/images/users/armando.jpg" alt="user"> </div>
             <div class="profile-text"><a class=""> Armando </a></div>
         </div>
+        --> <!--
         <mat-nav-list role="navigation">
             <mat-list-item class="mat-list-title" disabled="true">
                 <span class="title-section">Configuración</span>
@@ -27,6 +29,23 @@
                 <a matListItemTitle href="#">Cerrar la cuenta</a>
              </mat-list-item>
         </mat-nav-list>
+        --> <!--
+        <mat-nav-list appAccordion>
+            <mat-list-item appAccordionLink routerLinkActive="selected" group="userData">
+                <a class="" appAccordionToggle routerLink="user-data">
+                    <mat-icon>av_timer</mat-icon> 
+                    <span>Datos de usuario</span> 
+                    <span fxFlex></span>
+                </a> 
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive="selected" group="billing">
+                <a class="" appAccordionToggle routerLink="billing">
+                    <mat-icon>crop_7_5</mat-icon> 
+                    <span>Facturación</span> 
+                    <span fxFlex></span>
+                </a> 
+            </mat-list-item>
+        </mat-nav-list>
     </mat-drawer>
   
     <div class="content-sidenav">
@@ -44,6 +63,93 @@
         </div>
       </div>
     </div>
-  
+    <router-outlet></router-outlet>
+
 </mat-drawer-container>
+-->
+
+<mat-sidenav-container class="container-sidenav" autosize>
+    <mat-sidenav id="snav" [(opened)]="opened" [mode]="mode" disableClose> 
+        <div class="user-profile" style="background: url(assets/images/users/user-info.jpg) no-repeat; background-size: cover;">
+            <div class="profile-img"> <img src="assets/images/users/armando.jpg" alt="user"> </div>
+            <div class="profile-text"><a class=""> Armando </a></div>
+        </div>
+        <mat-nav-list appAccordion>
+            <mat-list-item appAccordionLink routerLinkActive="selected" group="userData">
+                <div class="mat-list-item-content">
+                    <a class="fw-400" appAccordionToggle routerLink="user-data">
+                        <mat-icon>fingerprint</mat-icon> 
+                        <span>Datos de usuario</span> 
+                        <span fxFlex></span>
+                    </a> 
+                </div>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive="selected" group="billing">
+                <div class="mat-list-item-content">
+                    <a class="fw-400" appAccordionToggle routerLink="billing">
+                        <mat-icon>attach_money</mat-icon> 
+                        <span>Facturación</span> 
+                        <span fxFlex></span>
+                    </a> 
+                </div>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive="selected" group="edit-username">
+                <div class="mat-list-item-content">
+                    <a class="fw-400" appAccordionToggle routerLink="edit-username">
+                        <mat-icon>account_circle</mat-icon> 
+                        <span>Editar nombre de usuario</span> 
+                        <span fxFlex></span>
+                    </a> 
+                </div>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive="selected" group="edit-password">
+                <div class="mat-list-item-content">
+                    <a class="fw-400" appAccordionToggle routerLink="edit-password">
+                        <mat-icon>vpn_key</mat-icon> 
+                        <span>Editar contraseña</span> 
+                        <span fxFlex></span>
+                    </a> 
+                </div>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive="selected" group="edit-email">
+                <div class="mat-list-item-content">
+                    <a class="fw-400" appAccordionToggle routerLink="edit-email">
+                        <mat-icon>email</mat-icon> 
+                        <span>Editar Correo de ingreso</span> 
+                        <span fxFlex></span>
+                    </a> 
+                </div>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive="selected" group="delete-account">
+                <div class="mat-list-item-content">
+                    <a class="fw-400" appAccordionToggle routerLink="delete-account">
+                        <mat-icon>power_settings_new</mat-icon> 
+                        <span>Eliminar cuenta</span> 
+                        <span fxFlex></span>
+                    </a> 
+                </div>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="page-wrapper">
+        <div class="content-sidenav">
+            <div class="page-breadcrumb">
+              <div>
+                  <p class="mb-0 fw-500">
+                      Configuración
+                  </p>
+              </div>
+              <div style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                  <ol class="breadcrumb mb-0">
+                      <li class="breadcrumb-item"><a href="init/dashboard">Home</a></li>
+                      <li class="breadcrumb-item" aria-current="page">Configuración</li>
+                  </ol>
+              </div>
+            </div>
+          </div>
+        <div class="page-content">
+            <router-outlet></router-outlet>
+        </div>    
+    </mat-sidenav-content>
+</mat-sidenav-container>
   
