@@ -1,1 +1,49 @@
-<p>settings works!</p>
+<mat-drawer-container class="container-sidenav" autosize>
+    <mat-drawer id="snav" [(opened)]="opened" [mode]="mode" disableClose>
+        <div class="user-profile" style="background: url(assets/images/users/user-info.jpg) no-repeat; background-size: cover;">
+            <div class="profile-img"> <img src="assets/images/users/armando.jpg" alt="user"> </div>
+            <div class="profile-text"><a class=""> Armando </a></div>
+        </div>
+        <mat-nav-list role="navigation">
+            <mat-list-item class="mat-list-title" disabled="true">
+                <span class="title-section">Configuración</span>
+            </mat-list-item>
+            <mat-list-item class="mat-list-item" [activated]="true" [disableRipple]="true">
+                <a matListItemTitle href="#">Datos del usuario</a>
+            </mat-list-item>
+            <mat-list-item class="mat-list-item" routerLinkActive="selected" [disableRipple]="true">
+                <a matListItemTitle href="#">Facturación</a>
+             </mat-list-item>
+             <mat-list-item class="mat-list-item" routerLinkActive="selected" [disableRipple]="true">
+                <a matListItemTitle href="#">Cambio de nombre de usuario</a>
+             </mat-list-item>
+             <mat-list-item class="mat-list-item" routerLinkActive="selected" [disableRipple]="true">
+                <a matListItemTitle href="#">Cambio de correo electrónico</a>
+             </mat-list-item>
+             <mat-list-item class="mat-list-item" routerLinkActive="selected" [disableRipple]="true">
+                <a matListItemTitle href="#">Cambio de contraseña</a>
+             </mat-list-item>
+             <mat-list-item class="mat-list-item" routerLinkActive="selected" [disableRipple]="true">
+                <a matListItemTitle href="#">Cerrar la cuenta</a>
+             </mat-list-item>
+        </mat-nav-list>
+    </mat-drawer>
+  
+    <div class="content-sidenav">
+      <div class="page-breadcrumb">
+        <div>
+            <p class="mb-0 fw-500">
+                Configuración
+            </p>
+        </div>
+        <div style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="init/dashboard">Home</a></li>
+                <li class="breadcrumb-item" aria-current="page">Configuración</li>
+            </ol>
+        </div>
+      </div>
+    </div>
+  
+</mat-drawer-container>
+  

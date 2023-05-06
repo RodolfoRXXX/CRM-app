@@ -1,9 +1,15 @@
 
 
+@use '@angular/material' as mat;
+
+@include mat.core();
+
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
 
 $bodyfont: 'Poppins', sans-serif;
 $headingfont: 'Poppins', sans-serif;
+
+/* Colores seleccionados */
 
 /*Theme Colors*/
 
@@ -14,13 +20,13 @@ $sidebar-alt: #f2f6f8;
 $bodycolor: #eef5f9;
 $headingtext: #455a64;
 $bodytext: #67757c;
-$sidebar-text: #607d8b;
+$sidebar-text: #67757c;
 $sidebar-icons: #99abb4;
 
 $font-16: 16px;
 
 $light-text: #a6b7bf;
-$themecolor: #1e88e5;
+$themecolor: mat.get-color-from-palette(mat.define-palette(mat.$teal-palette, 800));
 $themecolor-alt: #26c6da;
 $themecolor-dark: #028ee1;
 

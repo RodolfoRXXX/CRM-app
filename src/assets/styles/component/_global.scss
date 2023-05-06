@@ -59,6 +59,10 @@ a.link {
   }
 }
 
+.active {
+  background: rgba(0, 0, 0, 0.04)!important;
+}
+
 .img-responsive {
   width: 100%;
   height: auto;
@@ -244,28 +248,28 @@ html body {
     font-size: 18px;
   }
 
-  .fs-w-100 {
+  .fw-100 {
     font-weight: 100;
   }
-  .fs-w-200 {
+  .fw-200 {
     font-weight: 200;
   }
-  .fs-w-300 {
+  .fw-300 {
     font-weight: 300;
   }
-  .fs-w-400 {
+  .fw-400 {
     font-weight: 400;
   }
-  .fs-w-500 {
+  .fw-500 {
     font-weight: 500;
   }
-  .fs-w-600 {
+  .fw-600 {
     font-weight: 600;
   }
-  .fs-w-700 {
+  .fw-700 {
     font-weight: 700;
   }
-  .fs-w-bold {
+  .fw-bold {
     font-weight: bold;
   }
 

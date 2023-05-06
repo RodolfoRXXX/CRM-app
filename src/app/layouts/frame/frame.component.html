@@ -8,7 +8,7 @@
         <!-- sidebar toggle -->
         <!-- ============================================================== -->  
         <div class="sidenav-header">
-            <button mat-icon-button value="sidebarclosed" *ngIf="isAuthenticated">
+            <button mat-icon-button value="sidebarclosed" (click)="toggleSidenav()" *ngIf="isAuthenticated">
                 <mat-icon>menu</mat-icon>
             </button>
         </div>

@@ -1,8 +1,8 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { ConectorsService } from 'src/app/services/conectors.service';
 
 @Component({
   selector: 'app-frame',
@@ -10,15 +10,18 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 })
 export class FrameComponent implements OnInit, OnDestroy {
 
-  isLogged: boolean = false;
-  isAuthenticated: boolean = false;
-  screenLarge: boolean = true;
+  isLogged!: boolean;
+  isAuthenticated!: boolean;
+  screenLarge!: boolean;
+  openSidenav!: boolean;
 
   constructor(
     private _auth: AuthService,
-    private _router: Router,
-    public breakpointObserver: BreakpointObserver
-  ) { }
+    public breakpointObserver: BreakpointObserver,
+    private _conector: ConectorsService
+  ) {
+    this.setScreen();
+  }
 
 
   ngOnDestroy(): void {
@@ -27,7 +30,6 @@ export class FrameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isUserLogged();
     this.isUserAuthenticated()
-    this.setScreen();
     this._auth.isActive()
   }
 
@@ -44,7 +46,15 @@ export class FrameComponent implements OnInit, OnDestroy {
         .observe(['(min-width: 768px)'])
         .subscribe((state: BreakpointState) => {
           state.matches?(this.screenLarge = true):(this.screenLarge = false);
+          this._conector.setScreenState(this.screenLarge);
+          this._conector.setOpenedState(this.screenLarge);
+          this.openSidenav = this.screenLarge;
         })
+  }
+
+  toggleSidenav() {
+    this.openSidenav = !this.openSidenav;
+    this._conector.setOpenedState(this.openSidenav);
   }
 
 }

@@ -1,79 +1,84 @@
-/*
-Template Name: Material Pro Admin
-Author: Themedesigner
-Email: niravjoshi87@gmail.com
-File: scss
-*/
 
-/*******************
-Main sidebar
-******************/
-
-mat-sidenav {
-    width: 240px;
+mat-drawer {
+    width: 300px;
     padding-top: 0px;
+    background-color: #fff;
+    color: #000000de;
   }
   #snav {
     box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
-    .mat-list-item {
+    mat-nav-list {
+      padding: 15px 10px;
       height: auto;
-      &:hover {
-        background: none;
+      .mat-list-title {
+        &:hover {
+          background: none!important;
+        }
+        .title-section {
+          font-size: 14px;
+          color: #000;
+        }
       }
-  
-      .mat-list-item-content {
-        display: block;
-        padding: 0px 15px;
+      .mat-list-item {
         &:hover {
           background: none;
-          > a {
-            color: $themecolor;
+          color: $themecolor;
+        }
+    
+        .mat-list-item-content {
+          display: block;
+          padding: 0px 15px;
+          &:hover {
+            background: none;
+            > a {
+              color: blue;
+            }
           }
         }
-      }
-  
-      a {
-        height: 45px;
-        padding: 0 10px;
-        margin-bottom: 10px;
-        align-items: center;
-        display: flex;
-        font-size: 15px;
-        white-space: nowrap;
-        color: $sidebar-text;
-        mat-icon:not(.dd-icon) {
-          margin-right: 8px;
+    
+        a {
+          height: 45px;
+          padding: 0 5px;
+          align-items: center;
+          display: flex;
+          font-size: 15px;
+          white-space: nowrap;
+          color: $sidebar-text;
+          mat-icon:not(.dd-icon) {
+            margin-right: 8px;
+          }
+          mat-icon {
+            color: $sidebar-icons;
+          }
+          .dd-icon {
+            font-size: 16px;
+            width: 16px;
+            transition: 0.2s ease-in;
+            margin: 5px 0 5px 5px;
+            height: 16px;
+          }
         }
-        mat-icon {
-          color: $sidebar-icons;
-        }
-        .dd-icon {
-          font-size: 16px;
-          width: 16px;
-          transition: 0.2s ease-in;
-          margin: 5px 0 5px 5px;
-          height: 16px;
-        }
-      }
-      &.selected > .mat-list-item-content > a {
-        background: $themecolor-alt;
-        border-radius: $radius;
-        color: $white;
-  
-        mat-icon {
+        &.selected > .mat-list-item-content > a {
+          background: $themecolor-alt;
+          border-radius: $radius;
           color: $white;
+    
+          mat-icon {
+            color: $white;
+          }
+          .dd-icon {
+            -webkit-transform: rotate(-180deg);
+            transform: rotate(-180deg);
+          }
         }
-        .dd-icon {
-          -webkit-transform: rotate(-180deg);
-          transform: rotate(-180deg);
+        &.selected .sub-item .mat-list-item-content a.selected {
+          background: transparent;
+          color: $inverse;
+          font-weight: 500;
         }
-      }
-      &.selected .sub-item .mat-list-item-content a.selected {
-        background: transparent;
-        color: $inverse;
-        font-weight: 500;
       }
     }
+    
   }
   /*******************
   use profile section
@@ -81,7 +86,6 @@ mat-sidenav {
   
   .user-profile {
     position: relative;
-    background-size: cover;
   
     .profile-img {
       width: 50px;

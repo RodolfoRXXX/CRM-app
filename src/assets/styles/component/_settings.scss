@@ -1,0 +1,15 @@
+
+
+.container-sidenav {
+    height: calc(100vh - 64px);
+}
+
+.content-sidenav {
+    background: #fff;
+    .page-breadcrumb {
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
