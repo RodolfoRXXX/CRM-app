@@ -1,0 +1,22 @@
+<div id="snav">
+    <div class="user-profile" style="background: url(assets/images/users/user-info.jpg) no-repeat; background-size: cover;">
+        <div class="profile-img"> <img src="assets/images/users/armando.jpg" alt="user"> </div>
+        <div class="profile-text"><a class=""> Armando </a></div>
+    </div>
+    <mat-nav-list appAccordion>
+        <p class="mat-nav-list-title">
+            Configuración
+        </p>
+        <mat-list-item appAccordionLink *ngFor="let menusetting of menuSettings.getMenuSettings()" routerLinkActive="selected">
+            <div class="mat-list-item-content">
+                <a class="fw-400" appAccordionToggle routerLink="{{ menusetting.state }}">
+                    <mat-icon>{{ menusetting.icon }}</mat-icon> 
+                    <span>{{ menusetting.name }}</span> 
+                    <span fxFlex></span>
+                </a> 
+            </div>
+        </mat-list-item>
+
+    </mat-nav-list>
+</div>
+

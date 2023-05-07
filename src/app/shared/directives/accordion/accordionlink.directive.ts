@@ -1,6 +1,7 @@
 import { Directive, HostBinding, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { AccordionDirective } from './accordion.directive';
 
+
 @Directive({
   selector: '[appAccordionlink]'
 })
@@ -25,9 +26,9 @@ export class AccordionlinkDirective implements OnInit, OnDestroy {
 
   constructor(
     @Inject(AccordionDirective) nav: AccordionDirective
-  ) { 
+  ) {
     this.nav = nav;
-   }
+  }
 
   ngOnInit(): any {
     this.nav.addLink(this);
@@ -40,6 +41,6 @@ export class AccordionlinkDirective implements OnInit, OnDestroy {
   toggle(): any {
     this.selected = !this.selected;
   }
-  
+
 
 }
