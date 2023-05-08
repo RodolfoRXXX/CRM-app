@@ -11,6 +11,7 @@ import { EditPasswordComponent } from './components/edit-password/edit-password.
 import { EditEmailComponent } from './components/edit-email/edit-email.component';
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
 import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.component';
+import { IndexComponent } from './components/index/index.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.comp
         EditUsernameComponent,
         EditPasswordComponent,
         EditEmailComponent,
-        DeleteAccountComponent
+        DeleteAccountComponent,
+        IndexComponent
     ],
     imports: [
       CommonModule,

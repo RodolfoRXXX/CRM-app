@@ -1,7 +1,7 @@
 
 
 .container-sidenav {
-    height: calc(100vh - 64px);
+    min-height: calc(100vh - 64px);
 }
 
 .content-sidenav {
@@ -16,5 +16,32 @@
         .breadcrumb-item a {
             color: $themeAccent;
         }
+    }
+}
+
+.index-container {
+    padding: 20px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    .ripple-container {
+        width: 180px;
+        height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: $sidebar-text;
+        margin-right: 25px;
+        h5 {
+            margin: 5px 0 0;
+            text-align: center;
+        }
+        &:hover {
+            background: none;
+            > h5 {
+              color: $themeAccent;
+            }
+          }
     }
 }

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { RouterModule } from '@angular/router';
-import { MenuSettings } from '../../menu-items/menu-settings';
+import { MenuItems } from '../../menu-items/menu-items';
 import { CommonModule } from '@angular/common';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: true,
@@ -14,13 +15,32 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   providers: [
-    MenuSettings
+    MenuItems
   ]
 })
 export class SidebarComponent {
 
+  @Input() setMenu!: string;
+  name!: string;
+  pic!: string;
+  role!: string;
+
   constructor(
-    public menuSettings: MenuSettings
-  ) {}
+    public menuItems: MenuItems,
+    private _auth: AuthService
+  ) {
+    this.getDataUser();
+  }
+
+  getDataUser() {
+    const data = JSON.parse(this._auth.getDataFromLocalStorage());
+    if(data.name.length) {
+      this.name = data.name;
+    }else {
+      this.name = data.email.split("@")[0];
+    }
+    this.pic = data.thumbnail;
+    this.role = data.role.main;
+  }
 
 }

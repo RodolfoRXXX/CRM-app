@@ -7,17 +7,20 @@ import { EditUsernameComponent } from './components/edit-username/edit-username.
 import { EditPasswordComponent } from './components/edit-password/edit-password.component';
 import { EditEmailComponent } from './components/edit-email/edit-email.component';
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
+import { IndexComponent } from './components/index/index.component';
 
 const routes: Routes = [
   { path: '', component: SettingsComponent,
     children: [
+      { path: '', redirectTo: 'index', pathMatch: 'full' },
+      { path: 'index', component: IndexComponent },
       { path: 'user-data', component: UserDataComponent },
       { path: 'billing', component: BillingComponent },
       { path: 'edit-username', component: EditUsernameComponent },
       { path: 'edit-password', component: EditPasswordComponent },
       { path: 'edit-email', component: EditEmailComponent },
       { path: 'delete-account', component: DeleteAccountComponent },
-      { path: '**', redirectTo: '', pathMatch: 'full' }
+      { path: '**', redirectTo: 'index', pathMatch: 'full' }
     ]
   }
 ];

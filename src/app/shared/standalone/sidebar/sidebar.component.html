@@ -1,21 +1,57 @@
 <div id="snav">
     <div class="user-profile" style="background: url(assets/images/users/user-info.jpg) no-repeat; background-size: cover;">
-        <div class="profile-img"> <img src="assets/images/users/armando.jpg" alt="user"> </div>
-        <div class="profile-text"><a class=""> Armando </a></div>
+        <div class="profile-img"> <img [src]="pic" alt="{{ name }}"> </div>
+        <div class="profile-text"><span> {{ name }} - {{ role }} </span></div>
     </div>
     <mat-nav-list appAccordion>
-        <p class="mat-nav-list-title">
-            Configuración
-        </p>
-        <mat-list-item appAccordionLink *ngFor="let menusetting of menuSettings.getMenuSettings()" routerLinkActive="selected">
-            <div class="mat-list-item-content">
-                <a class="fw-400" appAccordionToggle routerLink="{{ menusetting.state }}">
-                    <mat-icon>{{ menusetting.icon }}</mat-icon> 
-                    <span>{{ menusetting.name }}</span> 
-                    <span fxFlex></span>
-                </a> 
-            </div>
-        </mat-list-item>
+        <ng-container *ngIf="setMenu == 'settings'">
+            <p class="mat-nav-list-title">
+                Configuración
+            </p>
+            <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuSettings()" routerLinkActive="selected">
+                <div class="mat-list-item-content">
+                    <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                        <mat-icon>{{ menu.icon }}</mat-icon> 
+                        <span>{{ menu.name }}</span> 
+                        <span fxFlex></span>
+                    </a> 
+                </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+        </ng-container>
+
+        <ng-container *ngIf="setMenu == 'init'">
+            <ng-container *ngIf="true">
+                <p class="mat-nav-list-title">
+                    Gestión
+                </p>
+                <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuManagement()" routerLinkActive="selected">
+                    <div class="mat-list-item-content">
+                        <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                            <mat-icon>{{ menu.icon }}</mat-icon> 
+                            <span>{{ menu.name }}</span> 
+                            <span fxFlex></span>
+                        </a> 
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </ng-container>
+            <ng-container *ngIf="true">
+                <p class="mat-nav-list-title">
+                    Operación
+                </p>
+                <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuOperation()" routerLinkActive="selected">
+                    <div class="mat-list-item-content">
+                        <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                            <mat-icon>{{ menu.icon }}</mat-icon> 
+                            <span>{{ menu.name }}</span> 
+                            <span fxFlex></span>
+                        </a> 
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </ng-container>
+        </ng-container>
 
     </mat-nav-list>
 </div>
