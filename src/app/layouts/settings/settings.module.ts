@@ -12,6 +12,7 @@ import { EditEmailComponent } from './components/edit-email/edit-email.component
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
 import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.component';
 import { IndexComponent } from './components/index/index.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { IndexComponent } from './components/index/index.component';
       CommonModule,
       SettingsRoutingModule,
       MaterialModule,
-      SidebarComponent
+      SidebarComponent,
+      ReactiveFormsModule
   ],
     exports: [
       

@@ -1,1 +1,53 @@
-<p>user-data works!</p>
+<mat-card class="mat-card">
+    <mat-card-content class="mat-card-content">
+        <mat-card-title class="mat-card-title">
+            Datos del usuario
+        </mat-card-title>
+        <mat-card-subtitle class="mat-card-subtitle">
+            Completá con tus información
+        </mat-card-subtitle>
+        <div>
+            <mat-tab-group>
+                <mat-tab label="Datos personales">
+                    <form [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
+                        <div class="form-auth">
+                            <div class="form-input-100">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Ingresá tu nombre completo</mat-label>
+                                    <input matInput placeholder="Nombre y apellido"
+                                           formControlName="name" 
+                                           required>
+                                    <mat-error *ngIf="this.userDataForm.controls['name']!.errors">{{getNameErrorMessage()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-input-100">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Ingresá tu dirección</mat-label>
+                                    <input matInput placeholder="Calle sin nombre 123"
+                                           formControlName="address" 
+                                           required>
+                                    <mat-error *ngIf="this.userDataForm.controls['address']!.errors">{{getAddressErrorMessage()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-input-100">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Ingresá tu teléfono</mat-label>
+                                    <input matInput placeholder="341xxxxxxx"
+                                           formControlName="phone" 
+                                           required>
+                                    <mat-error *ngIf="this.userDataForm.controls['phone']!.errors">{{getPhoneErrorMessage()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-input-100">
+                                <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid">Entrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab label="Datos laborales">
+
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </mat-card-content>
+</mat-card>
