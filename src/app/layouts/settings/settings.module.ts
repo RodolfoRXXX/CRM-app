@@ -13,6 +13,7 @@ import { DeleteAccountComponent } from './components/delete-account/delete-accou
 import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.component';
 import { IndexComponent } from './components/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 @NgModule({
@@ -37,7 +38,7 @@ import { ReactiveFormsModule } from '@angular/forms';
       
     ],
     providers: [
-      
+        { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
     ]
 })
 export class SettingsModule { }

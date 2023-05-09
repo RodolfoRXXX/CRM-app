@@ -69,11 +69,20 @@ export class UserDataComponent implements OnInit {
 
   createWorkForm(): void {
     this.workDataForm = new FormGroup({
-        work_hour: new FormControl('', [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(30)
-        ]),
+        monday_in: new FormControl({ value: '', disabled: true }),
+        monday_out: new FormControl({ value: '', disabled: true }),
+        tuesday_in: new FormControl({ value: '', disabled: true }),
+        tuesday_out: new FormControl({ value: '', disabled: true }),
+        wednesday_in: new FormControl({ value: '', disabled: true }),
+        wednesday_out: new FormControl({ value: '', disabled: true }),
+        thursday_in: new FormControl({ value: '', disabled: true }),
+        thursday_out: new FormControl({ value: '', disabled: true }),
+        friday_in: new FormControl({ value: '', disabled: true }),
+        friday_out: new FormControl({ value: '', disabled: true }),
+        saturday_in: new FormControl({ value: '', disabled: true }),
+        saturday_out: new FormControl({ value: '', disabled: true }),
+        sunday_in: new FormControl({ value: '', disabled: true }),
+        sunday_out: new FormControl({ value: '', disabled: true }),
         name_er : new FormControl('', [
           Validators.required,
           Validators.minLength(4),
@@ -85,6 +94,23 @@ export class UserDataComponent implements OnInit {
           Validators.maxLength(15)
         ])
     });
+  }
+
+  enableRange(e: any, day: string) {
+    (day === 'monday')?((e.checked)?this.workDataForm.get('monday_in')?.enable():this.workDataForm.get('monday_in')?.disable()):'';
+    (day === 'monday')?((e.checked)?(this.workDataForm.get('monday_out')?.enable()):this.workDataForm.get('monday_out')?.disable()):'';
+    (day === 'tuesday')?((e.checked)?this.workDataForm.get('tuesday_in')?.enable():this.workDataForm.get('tuesday_in')?.disable()):'';
+    (day === 'tuesday')?((e.checked)?(this.workDataForm.get('tuesday_out')?.enable()):this.workDataForm.get('tuesday_out')?.disable()):'';
+    (day === 'wednesday')?((e.checked)?this.workDataForm.get('wednesday_in')?.enable():this.workDataForm.get('wednesday_in')?.disable()):'';
+    (day === 'wednesday')?((e.checked)?(this.workDataForm.get('wednesday_out')?.enable()):this.workDataForm.get('wednesday_out')?.disable()):'';
+    (day === 'thursday')?((e.checked)?this.workDataForm.get('thursday_in')?.enable():this.workDataForm.get('thursday_in')?.disable()):'';
+    (day === 'thursday')?((e.checked)?(this.workDataForm.get('thursday_out')?.enable()):this.workDataForm.get('thursday_out')?.disable()):'';
+    (day === 'friday')?((e.checked)?this.workDataForm.get('friday_in')?.enable():this.workDataForm.get('friday_in')?.disable()):'';
+    (day === 'friday')?((e.checked)?(this.workDataForm.get('friday_out')?.enable()):this.workDataForm.get('friday_out')?.disable()):'';
+    (day === 'saturday')?((e.checked)?this.workDataForm.get('saturday_in')?.enable():this.workDataForm.get('saturday_in')?.disable()):'';
+    (day === 'saturday')?((e.checked)?(this.workDataForm.get('saturday_out')?.enable()):this.workDataForm.get('saturday_out')?.disable()):'';
+    (day === 'sunday')?((e.checked)?this.workDataForm.get('sunday_in')?.enable():this.workDataForm.get('sunday_in')?.disable()):'';
+    (day === 'sunday')?((e.checked)?(this.workDataForm.get('sunday_out')?.enable()):this.workDataForm.get('sunday_out')?.disable()):'';
   }
 
   getNameErrorMessage() {
@@ -130,7 +156,7 @@ export class UserDataComponent implements OnInit {
   }
 
   onSubmitUser() {
-
+    console.log(this.userDataForm.value);
   }
 
   onSubmitWork() {
