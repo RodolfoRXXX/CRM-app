@@ -1,5 +1,8 @@
-<mat-card class="mat-card">
+<mat-card class="mat-card card-setting">
     <mat-card-content class="mat-card-content">
+        <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button">
+            <mat-icon>close</mat-icon>
+        </a>
         <mat-card-title class="mat-card-title">
             Datos del usuario
         </mat-card-title>
@@ -10,42 +13,243 @@
             <mat-tab-group>
                 <mat-tab label="Datos personales">
                     <form [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
-                        <div class="form-auth">
-                            <div class="form-input-100">
+                        <div class="user-data-container">
+                            <div class="user-data-input">
                                 <mat-form-field appearance="fill">
-                                    <mat-label>Ingresá tu nombre completo</mat-label>
+                                    <mat-label>Nombre completo</mat-label>
                                     <input matInput placeholder="Nombre y apellido"
                                            formControlName="name" 
                                            required>
                                     <mat-error *ngIf="this.userDataForm.controls['name']!.errors">{{getNameErrorMessage()}}</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="form-input-100">
+                            <div class="user-data-input">
                                 <mat-form-field appearance="fill">
-                                    <mat-label>Ingresá tu dirección</mat-label>
+                                    <mat-label>Dirección</mat-label>
                                     <input matInput placeholder="Calle sin nombre 123"
                                            formControlName="address" 
                                            required>
                                     <mat-error *ngIf="this.userDataForm.controls['address']!.errors">{{getAddressErrorMessage()}}</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="form-input-100">
+                            <div class="user-data-input-mid">
                                 <mat-form-field appearance="fill">
-                                    <mat-label>Ingresá tu teléfono</mat-label>
+                                    <mat-label>Teléfono</mat-label>
                                     <input matInput placeholder="341xxxxxxx"
                                            formControlName="phone" 
                                            required>
                                     <mat-error *ngIf="this.userDataForm.controls['phone']!.errors">{{getPhoneErrorMessage()}}</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="form-input-100">
-                                <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid">Entrar</button>
+                            <div class="user-data-input-mid">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Cumpleaños</mat-label>
+                                    <input matInput [matDatepicker]="picker" formControlName="date">
+                                    <mat-hint>MM/DD/AAAA</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error *ngIf="this.userDataForm.controls['date']!.errors">{{getDateErrorMessage()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="user-data-input">
+                                <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid">Guardar</button>
                             </div>
                         </div>
                     </form>
                 </mat-tab>
                 <mat-tab label="Datos laborales">
-
+                    <form [formGroup]="workDataForm" (ngSubmit)="onSubmitWork()">
+                        <div class="user-data-container">
+                            <div class="user-data-input mt-2">
+                                <p class="">Horarios laborales</p>
+                            </div>
+                            <div class="work-hour border-bottom mb-1">
+                                <div class="work-hour-day">
+                                    <mat-checkbox class="example-margin">Lunes</mat-checkbox>
+                                </div>
+                                <div class="work-hour-range">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario ingreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario egreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="work-hour border-bottom mb-1">
+                                <div class="work-hour-day">
+                                    <mat-checkbox class="example-margin">Martes</mat-checkbox>
+                                </div>
+                                <div class="work-hour-range">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario ingreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario egreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="work-hour border-bottom mb-1">
+                                <div class="work-hour-day">
+                                    <mat-checkbox class="example-margin">Miércoles</mat-checkbox>
+                                </div>
+                                <div class="work-hour-range">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario ingreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario egreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="work-hour border-bottom mb-1">
+                                <div class="work-hour-day">
+                                    <mat-checkbox class="example-margin">Jueves</mat-checkbox>
+                                </div>
+                                <div class="work-hour-range">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario ingreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario egreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="work-hour border-bottom mb-1">
+                                <div class="work-hour-day">
+                                    <mat-checkbox class="example-margin">Viernes</mat-checkbox>
+                                </div>
+                                <div class="work-hour-range">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario ingreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario egreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="work-hour border-bottom mb-1">
+                                <div class="work-hour-day">
+                                    <mat-checkbox class="example-margin">Sábado</mat-checkbox>
+                                </div>
+                                <div class="work-hour-range">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario ingreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario egreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="work-hour border-bottom mb-1">
+                                <div class="work-hour-day">
+                                    <mat-checkbox class="example-margin">Domingo</mat-checkbox>
+                                </div>
+                                <div class="work-hour-range">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario ingreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Horario egreso</mat-label>
+                                        <mat-select>
+                                          <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="user-data-input mt-2">
+                                <p class="">Contacto de emergencia</p>
+                            </div>
+                            <div class="user-data-input-mid">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Nombre del contacto</mat-label>
+                                    <input matInput placeholder="341xxxxxxx"
+                                           formControlName="name_er" 
+                                           required>
+                                    <mat-error *ngIf="this.workDataForm.controls['name_er']!.errors">{{getNameErErrorMessage()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="user-data-input-mid">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Teléfono del contacto</mat-label>
+                                    <input matInput placeholder="341xxxxxxx"
+                                           formControlName="phone_er" 
+                                           required>
+                                    <mat-error *ngIf="this.workDataForm.controls['phone_er']!.errors">{{getPhoneErErrorMessage()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="user-data-input">
+                                <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
                 </mat-tab>
             </mat-tab-group>
         </div>

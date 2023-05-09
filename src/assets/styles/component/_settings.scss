@@ -48,3 +48,49 @@
           }
     }
 }
+
+.card-setting {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-data-container {
+    flex-flow: row wrap;
+    box-sizing: border-box;
+    display: flex;
+    padding-top: 20px;
+    mat-form-field {
+        width: 100%;
+    }
+    .user-data-input {
+        flex: 1 1 100%;
+        box-sizing: border-box;
+        max-width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .user-data-input-mid {
+        flex: 1 1 50%;
+        box-sizing: border-box;
+        max-width: 50%;
+        margin-bottom: 0.5rem;
+    }
+    .work-hour {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        .work-hour-day {
+            display: flex;
+            align-items: center;
+        }
+        .work-hour-range {
+            display: flex;
+            justify-content: space-between;
+            mat-form-field {
+                margin-left: 15px;
+            }
+        }
+    }
+}
