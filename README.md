@@ -1,5 +1,5 @@
-# tickets-app
-Aplicación que sirve para gestionar los tickets solicitados a una empresa
+# Limpar projectt
+Aplicación que sirve como un sistema de gestión de prueb para una empresa de recolección
 
 <h3>Primera etapa</h3>
 <ul>
