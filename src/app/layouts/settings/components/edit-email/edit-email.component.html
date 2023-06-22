@@ -1,1 +1,55 @@
-<p>edit-email works!</p>
+<mat-card class="mat-card card-image">
+    <mat-card-content class="mat-card-content">
+        <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button">
+            <mat-icon>close</mat-icon>
+        </a>
+        <mat-card-title class="mat-card-title">
+            Email de acceso
+        </mat-card-title>
+        <mat-card-subtitle class="mat-card-subtitle">
+            Editá tu cuenta de correo electrónico de acceso
+        </mat-card-subtitle>
+        <div>
+            <div class="user-password-container">
+                <form [formGroup]="checkPassword" (ngSubmit)="onSubmitChecker()">
+                    <div class="user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Contraseña actual</mat-label>
+                            <input matInput
+                                    formControlName="password_old"
+                                    type="password" 
+                                    required>
+                            <mat-error *ngIf="this.checkPassword.controls['password_old']!.errors">{{getPasswordOldErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </form>
+                <form [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
+                    <div class="user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Nueva correo electrónico</mat-label>
+                            <input matInput
+                                    formControlName="email_new"
+                                    type="email" 
+                                    required>
+                            <mat-error *ngIf="this.userDataForm.controls['email_new']!.errors">{{getEmailNewErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Reingresa nueva correo electrónico</mat-label>
+                            <input matInput
+                                    formControlName="email_verify"
+                                    type="email" 
+                                    required>
+                            <mat-error *ngIf="this.userDataForm.controls['email_verify']!.errors">{{getEmailVerifyErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="user-data-input">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+

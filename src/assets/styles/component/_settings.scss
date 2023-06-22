@@ -94,3 +94,74 @@
         }
     }
 }
+
+//Edit-image
+
+.card-image {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.box-image {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    .label-image {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        display: none;
+        p {
+            display: block;
+            font-weight: 400;
+            text-align: center;
+        }
+    }
+    .user-image {
+        object-fit: cover;
+        height: 100%;
+    }
+    &:hover .user-image {
+        filter: blur(3px);
+    }
+    &:hover .label-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+}
+
+.box-image-error {
+    height: 20px;
+    .error-image {
+        font-size: 0.9rem;
+        color: red;
+    }
+}
+
+#user-image {
+    display: none;
+}
+
+
+//Edit-password
+
+.user-password-container {
+    display: flex;
+    flex-direction: column;
+    mat-form-field {
+        width: 100%;
+    }
+    .user-data-input {
+        flex: 1 1 100%;
+        box-sizing: border-box;
+        max-width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}

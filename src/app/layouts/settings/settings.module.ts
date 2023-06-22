@@ -14,6 +14,7 @@ import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.comp
 import { IndexComponent } from './components/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { EditUserphotoComponent } from './components/edit-userphoto/edit-userphoto.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
         EditPasswordComponent,
         EditEmailComponent,
         DeleteAccountComponent,
-        IndexComponent
+        IndexComponent,
+        EditUserphotoComponent
     ],
     imports: [
       CommonModule,

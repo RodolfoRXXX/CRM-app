@@ -3,11 +3,12 @@ import { Menu } from '../interfaces/menu.interface';
 
 const MENUSETTINGS = [
     { state: 'user-data', name: 'Datos del usuario', type: 'link', icon: 'fingerprint' },
-    { state: 'billing', name: 'Facturación', type: 'link', icon: 'attach_money' },
+    //{ state: 'billing', name: 'Facturación', type: 'link', icon: 'attach_money' },
+    { state: 'edit-userphoto', name: 'Editar imagen de usuario', type: 'link', icon: 'add_a_photo' },
     { state: 'edit-username', name: 'Editar nombre de usuario', type: 'link', icon: 'account_circle' },
     { state: 'edit-password', name: 'Editar contraseña', type: 'link', icon: 'vpn_key' },
     { state: 'edit-email', name: 'Editar correo de ingreso', type: 'link', icon: 'email' },
-    { state: 'delete-account', name: 'Eliminar cuenta', type: 'link', icon: 'power_settings_new' }
+    //{ state: 'delete-account', name: 'Eliminar cuenta', type: 'link', icon: 'power_settings_new' }
 ];
 
 const MENUMANAGEMENT = [

@@ -4,22 +4,23 @@
             <mat-icon>close</mat-icon>
         </a>
         <mat-card-title class="mat-card-title">
-            Nombre de usuario
+            Imagen del usuario
         </mat-card-title>
         <mat-card-subtitle class="mat-card-subtitle">
-            Editá tu nombre de usuario
+            Cargá tu imagen
         </mat-card-subtitle>
         <div>
+            <div class="box-image">
+                <label class="label-image" for="user-image"><p><mat-icon>add_a_photo</mat-icon> <br>Cargá tu imagen aquí</p></label>
+                <img class="user-image" src="../../../../../assets/images/users/blanck_user.png" alt="image-previsualization">
+            </div>
             <form [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
-                <div class="user-data-container pt-0">
+                <div class="user-data-container">
                     <div class="user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Nombre de usuario</mat-label>
-                            <input matInput
-                                    formControlName="name" 
-                                    required>
-                            <mat-error *ngIf="this.userDataForm.controls['name']!.errors">{{getUserNameErrorMessage()}}</mat-error>
-                        </mat-form-field>
+                        <input type="file" formControlName="image" id="user-image">
+                        <div class="box-image-error">
+                            <p class="error-image" *ngIf="this.userDataForm.controls['image']!.errors && this.userDataForm.controls['image']!.value">{{getImageErrorMessage()}}</p>
+                        </div>
                     </div>
                     <div class="user-data-input">
                         <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid">Guardar</button>

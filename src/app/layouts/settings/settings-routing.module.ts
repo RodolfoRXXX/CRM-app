@@ -8,6 +8,7 @@ import { EditPasswordComponent } from './components/edit-password/edit-password.
 import { EditEmailComponent } from './components/edit-email/edit-email.component';
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
 import { IndexComponent } from './components/index/index.component';
+import { EditUserphotoComponent } from './components/edit-userphoto/edit-userphoto.component';
 
 const routes: Routes = [
   { path: '', component: SettingsComponent,
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'index', component: IndexComponent },
       { path: 'user-data', component: UserDataComponent },
       { path: 'billing', component: BillingComponent },
+      { path: 'edit-userphoto', component: EditUserphotoComponent },
       { path: 'edit-username', component: EditUsernameComponent },
       { path: 'edit-password', component: EditPasswordComponent },
       { path: 'edit-email', component: EditEmailComponent },
