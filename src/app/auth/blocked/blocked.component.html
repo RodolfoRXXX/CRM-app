@@ -18,18 +18,21 @@
                                        #input 
                                        maxlength="10"
                                        minlength="10" 
-                                       formControlName="code"
+                                       formControlName="activation_code"
                                        required>
-                                <mat-error *ngIf="this.blockedForm.controls['code']!.errors">{{getCodeErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.blockedForm.controls['activation_code']!.errors">{{getCodeErrorMessage()}}</mat-error>
                                 <mat-hint align="end">{{input.value.length}}/10</mat-hint>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100 mt-3">
-                            <button mat-raised-button type="submit" color="primary" [disabled]="this.blockedForm.invalid">Activar mi cuenta</button>
+                            <button mat-raised-button type="submit" color="primary" [disabled]="this.blockedForm.invalid || loading">Activar mi cuenta</button>
                         </div>
                     </div>
                 </form>
             </mat-card-content>
+            <mat-card-footer class="login-footer">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+            </mat-card-footer>
         </mat-card>          
     </div>
 </div>

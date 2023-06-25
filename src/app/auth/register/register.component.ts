@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators }
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -17,11 +18,13 @@ export class RegisterComponent implements OnInit {
   enterprises: Array<any> = [];
   passwordFirst!: FormControl;
   remember_me!: FormControl;
+  loading: boolean = false;
 
   constructor(
     private _auth: AuthService,
     private _api: ApiService,
-    private _router: Router
+    private _router: Router,
+    private _notify: NotificationService
   ) { 
     this.getEnterprises();
     this.passwordFirst = new FormControl('', [
@@ -54,35 +57,36 @@ export class RegisterComponent implements OnInit {
           (control: AbstractControl):ValidationErrors|null => {
           return (control.value !== this.passwordFirst.value) ? {no_equal: {value: control.value}} : null;}
         ]),
-        role: new FormGroup({
-          main: new FormControl(''),
-          second: new FormControl(''),
-          third: new FormControl(''),
-          fourth: new FormControl(''),
-          fifth: new FormControl('')
-        }),
-        state: new FormControl('inactive'),
+        role: new FormControl(''),
         thumbnail: new FormControl('assets/images/users/blanck_user.png'),
         id_enterprise: new FormControl('', [
           Validators.required
-        ])
+        ]),
+        activation_code: new FormControl(''),
+        state: new FormControl(0),
+        remember_me : new FormControl(false)
     }
     );
   }
 
   getEnterprises() {
-    this._api.getTypeRequest(`enterprise`).subscribe({
+    this._api.getTypeRequest('user/get-enterprise').subscribe({
       next: (res: any) => {
-        if(res.length){
-            this.enterprises = res;
+        if(res.status == 1) {
+          if(res.data.length){
+            this.enterprises = res.data;
+          } else{
+            //Array vacío
+            this._notify.showWarn('Ha ocurrido un problema. Por favor recargá la página.');
+          }
         } else{
-          //devuelve error
-          console.log('array vacío')
+          //Error de conexión con la base de datos
+          this._notify.showWarn('Ha ocurrido un problema. Por favor recargá la página.');
         }
       },
       error: (error) => {
-        //ventana de error
-        console.log(error)
+        //Error de conexión con la base de datos
+        this._notify.showWarn('Ha ocurrido un problema. Por favor recargá la página.');
       }
     })
   }
@@ -122,19 +126,29 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    this._api.postTypeRequest('user', this.registerForm.value).subscribe({
+    this.loading =  true;
+    this._api.postTypeRequest('user/register', this.registerForm.value).subscribe({
       next: (res: any) => {
-        if(res) {
-          this._auth.setDataInLocalStorage(res.id, "", res, this.remember_me.value);
-          this._router.navigate(['init']);
-        }else {
-          //ventana de error
-          console.log('No se ha creado la cuenta');
+        if(res.status == 1){
+          if(res.data == 'existente') {
+            this.loading =  false;
+            this._notify.showError('El correo ya pertenece a un usuario registrado.');
+          } else {
+            //Creó el usuario
+            this._notify.showSuccess('Usuario nuevo creado!');
+            this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this.registerForm.value.remember_me);
+            this._router.navigate(['init']);
+          }
+        } else{
+          //Problemas de conexión con la base de datos(res.status == 0)
+          this.loading =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
         }
       },
       error: (error) => {
-        //ventana de error
-        console.log(error)
+        //Error de conexión, no pudo consultar con la base de datos
+        this.loading =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }
     })
   }

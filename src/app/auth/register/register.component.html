@@ -57,7 +57,7 @@
                             <mat-checkbox [formControl]="remember_me">Recordarme</mat-checkbox>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="this.registerForm.invalid">Crear mi cuenta</button>
+                            <button mat-raised-button color="primary" [disabled]="this.registerForm.invalid || loading">Crear mi cuenta</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Ya tenés una cuenta?
@@ -67,6 +67,9 @@
                     </div>
                 </form>
             </mat-card-content>
+            <mat-card-footer class="login-footer">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+            </mat-card-footer>
         </mat-card>          
     </div>
 </div>

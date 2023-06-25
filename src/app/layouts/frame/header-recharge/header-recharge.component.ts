@@ -31,7 +31,12 @@ export class HeaderRechargeComponent {
       this.name = data.email.split("@")[0];
     }
     this.pic = data.thumbnail;
-    this.role = data.role.main;
+    if(data.role.length) {
+      this.role = JSON.parse(data.role)[0];
+    } else {
+      this.role = '';
+    }
+    
   }
 
   logOff(): void {

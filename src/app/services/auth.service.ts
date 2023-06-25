@@ -31,8 +31,8 @@ export class AuthService {
 
       //Cambia el estado del observable isActive$ si el usuario está activo
       isActive(): boolean {
-        const userData = localStorage.getItem('userData');
-        if((userData) && (JSON.parse(userData).state === 'active')){
+        const state = localStorage.getItem('state');
+        if((state) && (JSON.parse(state) == '1')){
           this.setActiveState(true);
           return true;
         }
@@ -61,14 +61,15 @@ export class AuthService {
   }
 
   //Guarda las credenciales de acceso en el localstorage y actualiza los observables de logged y authenticated
-  setDataInLocalStorage(id: number, token: any, data:any, remember:boolean): void {
-    localStorage.setItem("userData", JSON.stringify(data));
+  setDataInLocalStorage(id: number, token: any, state:any, data:any, remember:boolean): void {
+    localStorage.setItem('userData', JSON.stringify(data));
+    this.setState(state);
     this.setIdUserToLocalStorage(id);
     this.setToken(token);
     this.setRememberOption(remember);
     this.setLoggedState(true);
     this.setAuthenticatedState(true);
-    this.isActive();
+    //this.isActive();
   }
 
   //Devuelvo las credenciales de acceso
@@ -88,6 +89,11 @@ export class AuthService {
     } else {
       return null;
     }
+  }
+
+  //Guardo el state activo o no de la cuenta
+  setState(state: any): void {
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   //Guardo el token del usuario logueado

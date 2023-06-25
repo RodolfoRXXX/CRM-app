@@ -1,0 +1,30 @@
+/* Appearance Soft: */
+/* Info */
+.mat-mdc-snack-bar-container.snackbar-type-soft-info .mdc-snackbar__surface {
+    background-color: rgb(59, 135, 165, 0.9)!important;
+}
+
+/* Success */
+.mat-mdc-snack-bar-container.snackbar-type-soft-success .mdc-snackbar__surface {
+    background-color: rgb(6, 188, 90, 0.9)!important;
+}
+
+/* Error */
+.mat-mdc-snack-bar-container.snackbar-type-soft-error .mdc-snackbar__surface {
+    background-color: rgb(214, 60, 38, 0.9)!important;
+}
+
+/* Warn */
+.mat-mdc-snack-bar-container.snackbar-type-soft-warning .mdc-snackbar__surface {
+    background-color: rgb(211, 200, 37, 0.9)!important;
+}
+
+/* Common */
+.mat-mdc-snack-bar-container.snackbar-type-soft-info .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.snackbar-type-soft-success .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.snackbar-type-soft-error .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.snackbar-type-soft-warning .mdc-snackbar__surface {
+    .mat-mdc-button {
+        color: #fff!important;
+    }
+}

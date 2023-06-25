@@ -36,7 +36,7 @@
                             <a routerLink="../forget" class="link">Olvidé mi contraseña!</a>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Entrar</button>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || loading">Entrar</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> No tenés una cuenta?
@@ -46,6 +46,9 @@
                     </div>
                 </form>
             </mat-card-content>
+            <mat-card-footer class="login-footer">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+            </mat-card-footer>
         </mat-card>          
     </div>
 </div>

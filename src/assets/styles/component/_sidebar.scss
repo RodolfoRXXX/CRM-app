@@ -161,6 +161,7 @@ use profile section
       background: rgba(0, 0, 0, 0.5);
       display: block;
       white-space: nowrap;
+      text-transform: capitalize;
       &:after {
         position: absolute;
         right: 20px;

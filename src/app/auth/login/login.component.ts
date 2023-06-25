@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
-import { isEmpty } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -14,11 +14,13 @@ export class LoginComponent implements OnInit {
   emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
   hide = true;
   loginForm!: FormGroup;
+  loading: boolean = false;
 
   constructor(
     private _router: Router,
     private _api: ApiService,
-    private _auth: AuthService
+    private _auth: AuthService,
+    private _notify: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -63,19 +65,31 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this._api.getTypeRequest(`user/?email=${this.loginForm.value.email}&password=${this.loginForm.value.password}`).subscribe({
+    this.loading = true;
+    this._api.postTypeRequest('user/login', this.loginForm.value).subscribe({
       next: (res: any) => {
-        if(res.length){
-            this._auth.setDataInLocalStorage(res[0].id, "", res[0], this.loginForm.value.remember_me);
+        if(res.status == 1){
+          //Accedió a la base de datos y encontró o no el usuario
+          if(res.data.length){
+            //Encontró el usuario
+            this._notify.showSuccess('Acceso autorizado!');
+            this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this.loginForm.value.remember_me);
             this._router.navigate(['init']);
+          } else{
+            //No encontró el usuario
+            this.loading =  false;
+            this._notify.showError('Las credenciales de acceso no son correctas.')
+          }
         } else{
-          //devuelve error
-          console.log('error de logueo')
+          //Problemas de conexión con la base de datos(res.status == 0)
+          this.loading =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
         }
       },
       error: (error) => {
-        //ventana de error
-        console.log(error)
+        //Error de conexión, no pudo consultar con la base de datos
+        this.loading =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }
     }) 
   }

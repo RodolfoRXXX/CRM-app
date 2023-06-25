@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-blocked',
@@ -11,11 +12,13 @@ import { AuthService } from 'src/app/services/auth.service';
 export class BlockedComponent implements OnInit {
 
   blockedForm!: FormGroup;
+  loading: boolean = false;
 
   constructor(
     private _auth: AuthService,
     private _api: ApiService,
-    private _router: Router
+    private _router: Router,
+    private _notify: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +43,7 @@ export class BlockedComponent implements OnInit {
   createForm(): void {
     this.blockedForm = new FormGroup({
         email: new FormControl(''),
-        code: new FormControl('', [
+        activation_code: new FormControl('', [
           Validators.required,
           Validators.minLength(10)
         ])
@@ -49,41 +52,42 @@ export class BlockedComponent implements OnInit {
   }
 
   getCodeErrorMessage() {
-    if(this.blockedForm.controls['code'].hasError('required')) {
+    if(this.blockedForm.controls['activation_code'].hasError('required')) {
       return 'Tenés que ingresar un código'}
-    if(this.blockedForm.controls['code'].hasError('minlength')) {
+    if(this.blockedForm.controls['activation_code'].hasError('minlength')) {
       return 'El código debe tener 10 caracteres'}
     return ''
   }
 
   onSubmit() {
-    this._api.getTypeRequest(`user/?email=${this.blockedForm.value.email}&code=${this.blockedForm.value.code}`).subscribe({
+    this.loading = true;
+    this._api.postTypeRequest('user/verificate-code', this.blockedForm.value).subscribe({
       next: (res: any) => {
-        if(res.length) {
-          this._api.patchTypeRequest(`user/${res[0].id}`, { state: 'active' }).subscribe({
-            next: (res:any) => {
-              if(res){
-                this._auth.setActiveState(true);
-              }else {
-                console.log("Sin activación");
-              }
-            },
-            error: (error) => {
-              //Ventana de error de cambio
-              console.log('Error del patch:' + error)
-            },
-            complete: () => {
+        if(res.status == 1){
+          //Accedió a la base de datos y verificó el usuario y el código de activación
+          if(res.data.changedRows == 1){
+            //Encontró el usuario
+            this._notify.showSuccess('Cuenta desbloqueada!');
+            this._auth.setActiveState(true);
+            this._auth.setState(1);
+            setTimeout(() => {
               this._router.navigate(['init']);
-            }
-          })
-        }else {
-          //ventana de error
-          console.log('No se ha podido encontrar la cuenta a modificar');
+            }, 2000);
+          } else{
+            //No encontró el usuario
+            this.loading =  false;
+            this._notify.showError('El código es incorrecto.')
+          }
+        } else{
+          //Problemas de conexión con la base de datos(res.status == 0)
+          this.loading =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
         }
       },
       error: (error) => {
-        //ventana de error
-        console.log('Error del get:' + error)
+        //Error de conexión, no pudo consultar con la base de datos
+        this.loading =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }
     })
   }

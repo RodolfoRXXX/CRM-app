@@ -36,7 +36,7 @@ export class RechargeComponent {
     this._api.getTypeRequest(`user/?email=${this.rechargeForm.value.email}&password=${this.rechargeForm.value.password}`).subscribe({
       next: (res: any) => {
         if(res.length){
-            this._auth.setDataInLocalStorage(res[0].id, "", res[0], this.rechargeForm.value.remember_me);
+            //this._auth.setDataInLocalStorage(res[0].id, "", res[0], this.rechargeForm.value.remember_me);
             this._router.navigate(['init']);
         } else{
           //devuelve error

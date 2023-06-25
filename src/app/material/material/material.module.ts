@@ -18,6 +18,8 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   exports: [
@@ -39,7 +41,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatDividerModule,
     MatTabsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatProgressBarModule
   ]
 })
 export class MaterialModule { }
