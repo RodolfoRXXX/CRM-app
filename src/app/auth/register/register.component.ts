@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
       if( ((this.registerForm.value.password.length > 3) && (this.registerForm.value.password.length < 11) ) && (value !== this.registerForm.value.password)) {
         this.registerForm.controls['password'].setErrors({ no_equal: true });
       }
-    } )
+    })
   }
 
   createForm(): void {

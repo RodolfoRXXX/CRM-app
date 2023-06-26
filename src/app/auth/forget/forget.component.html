@@ -1,8 +1,9 @@
 <div class="login-register">
     <div class="login-register-box">
-        <mat-card class="mat-card">
+
+        <mat-card class="mat-card" *ngIf="show_window == 'email'">
             <mat-card-content class="mat-card-content">
-                <form [formGroup]="forgetForm" (ngSubmit)="onSubmit()">
+                <form [formGroup]="forgetForm" (ngSubmit)="sendEmail()">
                     <div class="text-center">
                         <img src="assets/images/logo-icon.png" alt="homepage">
                         <h4 class="m-t-0 mb-4">Reestablecer contraseña</h4>
@@ -15,13 +16,18 @@
                             <mat-form-field appearance="fill">
                                 <mat-label>Ingresá tu correo</mat-label>
                                 <input matInput placeholder="algo@ejemplo.com"
-                                       formControlName="email" 
+                                       formControlName="email_validator" 
                                        required>
-                                <mat-error *ngIf="this.forgetForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.forgetForm.controls['email_validator']!.errors">{{getEmailValidatorErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="forgetForm.invalid">Enviar</button>
+                            <button mat-raised-button color="primary" [disabled]="forgetForm.invalid || loading_email">Enviar</button>
+                        </div>
+                        <div class="form-input-100 new-register-link">
+                            <span> Ya tengo un código
+                                <a (click)="goCode()" class="text-success link">Ingresalo!</a>
+                            </span>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Recordás tus credenciales?
@@ -31,6 +37,106 @@
                     </div>
                 </form>
             </mat-card-content>
-        </mat-card>          
+            <mat-card-footer class="login-footer">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading_email"></mat-progress-bar>
+            </mat-card-footer>
+        </mat-card>
+        
+        <mat-card class="mat-card" *ngIf="show_window == 'code'">
+            <mat-card-content class="mat-card-content">
+                <form [formGroup]="codeForm" (ngSubmit)="sendCode()">
+                    <div class="text-center">
+                        <img src="assets/images/logo-icon.png" alt="homepage">
+                        <h4 class="m-t-0 mb-4">Verificá tu cuenta</h4>
+                    </div>
+                    <p class="text-center font-14">
+                        Ingresá tu correo electrónico y el código alfanumérico para continuar
+                    </p>
+                    <div class="form-auth">
+                        <div class="form-input-100">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Ingresá tu correo</mat-label>
+                                <input matInput placeholder="algo@ejemplo.com"
+                                       formControlName="email" 
+                                       required>
+                                <mat-error *ngIf="this.codeForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-input-100">
+                            <mat-form-field hintLabel="10 caracteres" appearance="fill">
+                                <mat-label>Ingresá el código alfanumérico</mat-label>
+                                <input matInput 
+                                       #input 
+                                       maxlength="10"
+                                       minlength="10" 
+                                       formControlName="activation_code"
+                                       required>
+                                <mat-error *ngIf="this.codeForm.controls['activation_code']!.errors">{{getCodeErrorMessage()}}</mat-error>
+                                <mat-hint align="end">{{input.value.length}}/10</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-input-100 mt-3">
+                            <button mat-raised-button type="submit" color="primary" [disabled]="this.codeForm.invalid || loading_code">Activar mi cuenta</button>
+                        </div>
+                        <div class="form-input-100 new-register-link">
+                            <span> Reenviar el código?
+                                <a (click)="goPassword()" class="text-success link">Reenvialo!</a>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </mat-card-content>
+            <mat-card-footer class="login-footer">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading_code"></mat-progress-bar>
+            </mat-card-footer>
+        </mat-card> 
+
+        <mat-card class="mat-card" *ngIf="show_window == 'password'">
+            <mat-card-content class="mat-card-content">
+                <form [formGroup]="passwordForm" (ngSubmit)="sendPassword()">
+                    <div class="text-center">
+                        <img src="assets/images/logo-icon.png" alt="homepage">
+                        <h4 class="m-t-0 mb-4">Ingresá tu nueva contraseña</h4>
+                    </div>
+                    <p class="text-center font-14">
+                        Ingresá tu nueva contraseña de acceso y confirmala
+                    </p>
+                    <div class="form-auth">
+                        <div class="form-input-100">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Ingresá una contraseña</mat-label>
+                                <input matInput [type]="hide_1 ? 'password' : 'text'"
+                                       [formControl]="passwordFirst"
+                                       required>
+                                <button mat-icon-button matSuffix (click)="hidePassword_1($event)" >
+                                <mat-icon>{{hide_1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <mat-error *ngIf="this.passwordFirst.errors">{{getPasswordErrorMessageFirst()}}</mat-error>
+                            </mat-form-field>
+                            <div *ngIf="this.passwordForm.errors?.['no_equal']">Las contraseñas no coinciden</div>
+                        </div>
+                        <div class="form-input-100">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Confirmá tu contraseña</mat-label>
+                                <input matInput [type]="hide_2 ? 'password' : 'text'"
+                                       formControlName="password"
+                                       required>
+                                <button mat-icon-button matSuffix (click)="hidePassword_2($event)" >
+                                <mat-icon>{{hide_2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <mat-error *ngIf="this.passwordForm.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-input-100 mt-3">
+                            <button mat-raised-button type="submit" color="primary" [disabled]="this.passwordForm.invalid || loading_code">Activar mi cuenta</button>
+                        </div>
+                    </div>
+                </form>
+            </mat-card-content>
+            <mat-card-footer class="login-footer">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading_code"></mat-progress-bar>
+            </mat-card-footer>
+        </mat-card>
+
     </div>
 </div>
