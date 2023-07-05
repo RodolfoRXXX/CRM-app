@@ -12,7 +12,8 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class ForgetComponent implements OnInit {
 
   emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
-  forgetForm!: FormGroup;
+  forgotForm!: FormGroup;
+  formMsg!: FormGroup;
   codeForm!: FormGroup;
   passwordForm!: FormGroup;
   loading_email: boolean = false;
@@ -39,6 +40,7 @@ export class ForgetComponent implements OnInit {
 
   ngOnInit(): void {
     this.createEmailForm();
+    this.creeateFormMsg();
     this.createCodeForm();
     this.createPasswordForm();
     this.passwordFirst.valueChanges.subscribe( value => {
@@ -49,8 +51,8 @@ export class ForgetComponent implements OnInit {
   }
 
   createEmailForm(): void {
-    this.forgetForm = new FormGroup({
-        email_validator : new FormControl('', [
+    this.forgotForm = new FormGroup({
+        email : new FormControl('', [
           Validators.required,
           (control: AbstractControl):ValidationErrors|null => {
           return !this.emailReg.test(control.value) ? {error_format: {value: control.value}} : null;}
@@ -58,8 +60,17 @@ export class ForgetComponent implements OnInit {
     });
   }
 
+  creeateFormMsg() {
+    this.formMsg = new FormGroup({
+      email: new FormControl(''),
+      data: new FormControl(''),
+      tipo: new FormControl('code')
+  });
+  }
+
   createCodeForm(): void {
     this.codeForm = new FormGroup({
+        id: new FormControl(''),
         email: new FormControl('', [
           Validators.required,
           (control: AbstractControl):ValidationErrors|null => {
@@ -69,17 +80,13 @@ export class ForgetComponent implements OnInit {
           Validators.required,
           Validators.minLength(10)
         ])
-    }
-    );
+    });
   }
 
   createPasswordForm(): void {
     this.passwordForm = new FormGroup({
-        email : new FormControl('', [
-          Validators.required,
-          (control: AbstractControl):ValidationErrors|null => {
-          return !this.emailReg.test(control.value) ? {error_format: {value: control.value}} : null;}
-        ]),
+        id: new FormControl(''),
+        email: new FormControl(''),
         password : new FormControl('', [
           Validators.required,
           (control: AbstractControl):ValidationErrors|null => {
@@ -99,9 +106,9 @@ export class ForgetComponent implements OnInit {
   }
 
   getEmailValidatorErrorMessage() {
-    if(this.forgetForm.controls['email_validator'].hasError('required')) {
+    if(this.forgotForm.controls['email'].hasError('required')) {
       return 'Tenés que ingresar un valor'}
-    if(this.forgetForm.controls['email_validator'].hasError('error_format')) {
+    if(this.forgotForm.controls['email'].hasError('error_format')) {
       return 'No es un correo válido'}
     return ''
   }
@@ -152,16 +159,141 @@ export class ForgetComponent implements OnInit {
   }
 
   sendEmail(): void {
-    this._notify.showSuccess('Correo enviado!');
-    this.forgetForm.value;
+    this.loading_email = true;
+    this._api.postTypeRequest('user/verificate-email', this.forgotForm.value).subscribe({
+      next: (res: any) => {
+        if(res.status == 1){
+          //No hubo error de conexión con la DB
+          if(res.data.length){
+            //Encontró el correo electrónico y devuelve el código de activación
+            this.formMsg.patchValue({
+              email: res.data[0].email,
+              data: res.data[0].activation_code
+            });
+            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe({
+              next: (res: any) => {
+                if(res.status == 1){
+                  //Email enviado o no
+                  if(res.data == 'ok') {
+                    this._notify.showSuccess('Código enviado con éxito!');
+                    this.loading_email =  false;
+                    setTimeout(() => {
+                      this.goCode();
+                    }, 2000);
+                  } else {
+                    this.loading_email =  false;
+                    this._notify.showError('Ocurrió un problema al enviar el código a tu correo electrónico. Intentá nuevamente por favor.')
+                  }
+                } else {
+                  this.loading_email =  false;
+                  this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+                }
+              },
+              error: (error) => {
+                //Error de conexión, no pudo consultar con la base de datos
+                this.loading_email =  false;
+                this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+              }
+            });
+          } else{
+            //No encontró el correo electrónico
+            this.loading_email =  false;
+            this._notify.showError('El correo electrónico ingresado no esta registrado.')
+          }
+        } else{
+          //Problemas de conexión con la base de datos(res.status == 0)
+          this.loading_email =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+        }
+      },
+      error: () => {
+        //Error de conexión, no pudo consultar con la base de datos
+        this.loading_email =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+      }
+    })
   }
 
   sendCode() {
-    this.codeForm.value;
+    this.loading_code = true;
+    this._api.postTypeRequest('user/verificate-email', this.codeForm.value).subscribe({
+      next: (res: any) => {
+        if(res.status == 1){
+          //No hubo error de conexión con la DB
+          if(res.data.length){
+            //Encontró el correo electrónico y devuelve el código de activación
+            this.passwordForm.patchValue({
+              id: res.data[0].id,
+              email: res.data[0].email
+            });
+            this.formMsg.patchValue({
+              email: res.data[0].email,
+              data: '',
+              tipo: 'change_pass',
+            });
+            if(res.data[0].activation_code === this.codeForm.value.activation_code) {
+              //Código verificado
+              this._notify.showSuccess('Verificación exitosa!');
+              this.loading_code =  false;
+              setTimeout(() => {
+                this.goPassword();
+              }, 2000);
+            } else {
+              //Código No verificado
+              this._notify.showError('Hubo un problema con el código ingresado.');
+              this.loading_code =  false;
+            }
+          } else{
+            //No encontró el correo electrónico
+            this.loading_code =  false;
+            this._notify.showError('El correo electrónico ingresado no esta registrado.')
+          }
+        } else{
+          //Problemas de conexión con la base de datos(res.status == 0)
+          console.log(res)
+          this.loading_code =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+        }
+      },
+      error: () => {
+        //Error de conexión, no pudo consultar con la base de datos
+        this.loading_code =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+      }
+    })
   }
 
   sendPassword() {
-    this.passwordForm.value;
+    this.loading_password = true;
+    this._api.putTypeRequest('user/restore-password', this.passwordForm.value).subscribe({
+      next: (res: any) => {
+        if(res.status == 1){
+          //No hubo error de conexión con la DB
+          if(res.data.changedRows == 1){
+            //Actualizó la contraseña
+            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
+            this._notify.showSuccess('Has actualizado tu contraseña con éxito!');
+            setTimeout(() => {
+              this.loading_password =  false;
+              this._router.navigate(['login']);
+            }, 2000);
+          } else{
+            //No se actualizó la contraseña
+            this.loading_password =  false;
+            this._notify.showWarn('La contraseña nueva no puede ser igual a la anterior.')
+          }
+        } else{
+          //Problemas de conexión con la base de datos(res.status == 0)
+          this.loading_password =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+        }
+      },
+      error: () => {
+        //Error de conexión, no pudo consultar con la base de datos
+        this.loading_password =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+      }
+    })
   }
 
 }

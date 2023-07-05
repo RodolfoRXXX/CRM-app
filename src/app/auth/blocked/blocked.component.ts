@@ -61,7 +61,7 @@ export class BlockedComponent implements OnInit {
 
   onSubmit() {
     this.loading = true;
-    this._api.postTypeRequest('user/verificate-code', this.blockedForm.value).subscribe({
+    this._api.postTypeRequest('profile/verificate-user', this.blockedForm.value).subscribe({
       next: (res: any) => {
         if(res.status == 1){
           //Accedió a la base de datos y verificó el usuario y el código de activación

@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Md5 } from 'ts-md5';
+
 
 @Component({
   selector: 'app-register',
@@ -15,6 +17,7 @@ export class RegisterComponent implements OnInit {
   hide_1 = true;
   hide_2 = true;
   registerForm!: FormGroup;
+  formMsg!: FormGroup;
   enterprises: Array<any> = [];
   passwordFirst!: FormControl;
   remember_me!: FormControl;
@@ -37,6 +40,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.creeateFormMsg();
     this.passwordFirst.valueChanges.subscribe( value => {
       if( ((this.registerForm.value.password.length > 3) && (this.registerForm.value.password.length < 11) ) && (value !== this.registerForm.value.password)) {
         this.registerForm.controls['password'].setErrors({ no_equal: true });
@@ -67,6 +71,14 @@ export class RegisterComponent implements OnInit {
         remember_me : new FormControl(false)
     }
     );
+  }
+
+  creeateFormMsg() {
+    this.formMsg = new FormGroup({
+      email: new FormControl(''),
+      data: new FormControl(''),
+      tipo: new FormControl('register')
+  });
   }
 
   getEnterprises() {
@@ -127,6 +139,14 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.loading =  true;
+    const md5 = new Md5();
+    const hash_code = Md5.hashStr(this.registerForm.get('email')?.value).slice(0,10);
+    this.formMsg.patchValue({
+      email: this.registerForm.get('email')?.value,
+      data: hash_code
+    });
+    this.registerForm.controls['activation_code'].setValue(hash_code);
+    md5.end();
     this._api.postTypeRequest('user/register', this.registerForm.value).subscribe({
       next: (res: any) => {
         if(res.status == 1){
@@ -135,9 +155,13 @@ export class RegisterComponent implements OnInit {
             this._notify.showError('El correo ya pertenece a un usuario registrado.');
           } else {
             //Creó el usuario
+            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
             this._notify.showSuccess('Usuario nuevo creado!');
             this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this.registerForm.value.remember_me);
-            this._router.navigate(['init']);
+            setTimeout(() => {
+              this.loading =  false;
+              this._router.navigate(['init']);
+            }, 2000);
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)

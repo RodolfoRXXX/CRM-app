@@ -74,7 +74,10 @@ export class LoginComponent implements OnInit {
             //Encontró el usuario
             this._notify.showSuccess('Acceso autorizado!');
             this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this.loginForm.value.remember_me);
-            this._router.navigate(['init']);
+            setTimeout(() => {
+              this.loading =  false;
+              this._router.navigate(['init']);
+            }, 2000);
           } else{
             //No encontró el usuario
             this.loading =  false;

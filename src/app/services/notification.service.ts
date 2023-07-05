@@ -15,7 +15,7 @@ export class NotificationService {
   }
  
   showSuccess(msg: string) {
-    this.open(msg ,3000, 'success');
+    this.open(msg ,2000, 'success');
   }
  
   showInfo(msg: string) {

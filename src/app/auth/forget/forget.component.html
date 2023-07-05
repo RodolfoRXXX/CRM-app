@@ -3,7 +3,7 @@
 
         <mat-card class="mat-card" *ngIf="show_window == 'email'">
             <mat-card-content class="mat-card-content">
-                <form [formGroup]="forgetForm" (ngSubmit)="sendEmail()">
+                <form [formGroup]="forgotForm" (ngSubmit)="sendEmail()">
                     <div class="text-center">
                         <img src="assets/images/logo-icon.png" alt="homepage">
                         <h4 class="m-t-0 mb-4">Reestablecer contraseña</h4>
@@ -16,13 +16,13 @@
                             <mat-form-field appearance="fill">
                                 <mat-label>Ingresá tu correo</mat-label>
                                 <input matInput placeholder="algo@ejemplo.com"
-                                       formControlName="email_validator" 
+                                       formControlName="email" 
                                        required>
-                                <mat-error *ngIf="this.forgetForm.controls['email_validator']!.errors">{{getEmailValidatorErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.forgotForm.controls['email']!.errors">{{getEmailValidatorErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="forgetForm.invalid || loading_email">Enviar</button>
+                            <button mat-raised-button color="primary" [disabled]="forgotForm.invalid || loading_email">Enviar código</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Ya tengo un código
@@ -76,11 +76,11 @@
                             </mat-form-field>
                         </div>
                         <div class="form-input-100 mt-3">
-                            <button mat-raised-button type="submit" color="primary" [disabled]="this.codeForm.invalid || loading_code">Activar mi cuenta</button>
+                            <button mat-raised-button color="primary" [disabled]="this.codeForm.invalid || loading_code">Verificar código</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Reenviar el código?
-                                <a (click)="goPassword()" class="text-success link">Reenvialo!</a>
+                                <a (click)="goEmail()" class="text-success link">Reenvialo!</a>
                             </span>
                         </div>
                     </div>
@@ -128,13 +128,13 @@
                             </mat-form-field>
                         </div>
                         <div class="form-input-100 mt-3">
-                            <button mat-raised-button type="submit" color="primary" [disabled]="this.passwordForm.invalid || loading_code">Activar mi cuenta</button>
+                            <button mat-raised-button color="primary" [disabled]="this.passwordForm.invalid || loading_password">Actualizar mi cuenta</button>
                         </div>
                     </div>
                 </form>
             </mat-card-content>
             <mat-card-footer class="login-footer">
-                <mat-progress-bar mode="indeterminate" *ngIf="loading_code"></mat-progress-bar>
+                <mat-progress-bar mode="indeterminate" *ngIf="loading_password"></mat-progress-bar>
             </mat-card-footer>
         </mat-card>
 

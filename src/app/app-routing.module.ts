@@ -12,7 +12,6 @@ const routes: Routes = [
         { path: 'register', loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterModule), canActivate: [isNot_logged, isNot_authenticated] },
         { path: 'recharge', loadChildren: () => import('./auth/recharge/recharge.module').then(m => m.RechargeModule), canActivate: [is_logged, isNot_authenticated] },
         { path: 'forget', loadChildren: () => import('./auth/forget/forget.module').then(m => m.ForgetModule), canActivate: [isNot_logged, isNot_authenticated] },
-        { path: 'recover', loadChildren: () => import('./auth/recover/recover.module').then(m => m.RecoverModule), canActivate: [isNot_logged, isNot_authenticated] },
         { path: 'logoff', loadChildren: () => import('./auth/logoff/logoff.module').then(m => m.LogoffModule), canActivate: [is_logged] },
         { path: 'blocked', loadChildren: () => import('./auth/blocked/blocked.module').then(m => m.BlockedModule), canActivate: [is_logged, is_authenticated, isNot_active] },
         { path: 'init', loadChildren: () => import('./layouts/init/init.module').then(m => m.InitModule), canActivate: [is_logged, is_authenticated, is_active] },
