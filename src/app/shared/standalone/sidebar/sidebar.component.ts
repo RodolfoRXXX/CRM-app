@@ -23,7 +23,8 @@ export class SidebarComponent {
   @Input() setMenu!: string;
   name!: string;
   pic!: string;
-  role!: string;
+  enterprise!: string;
+  admin: boolean = false;
 
   constructor(
     public menuItems: MenuItems,
@@ -40,12 +41,16 @@ export class SidebarComponent {
       this.name = data.email.split("@")[0];
     }
     this.pic = data.thumbnail;
-    if(data.role.length) {
-      this.role = JSON.parse(data.role)[0];
+    if(data.enterprise.length) {
+      this.enterprise = data.enterprise;
     } else {
-      this.role = '';
+      this.enterprise = '';
     }
-    
+    if(JSON.parse(data.role)['gestión']) {
+      this.admin = true;
+    } else {
+      this.admin = false;
+    }
   }
 
 }

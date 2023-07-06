@@ -14,7 +14,8 @@ export class HeaderRechargeComponent {
 
   name!: string;
   pic!: string;
-  role!: string;
+  role!: any;
+  list!: any;
 
   constructor(
     private _auth: AuthService,
@@ -31,10 +32,12 @@ export class HeaderRechargeComponent {
       this.name = data.email.split("@")[0];
     }
     this.pic = data.thumbnail;
-    if(data.role.length) {
-      this.role = JSON.parse(data.role)[0];
-    } else {
-      this.role = '';
+    this.list = JSON.parse(data.role)
+      for(var key in this.list) {
+        if(this.list[key]) {
+          this.role = key;
+          break;
+        }
     }
     
   }
