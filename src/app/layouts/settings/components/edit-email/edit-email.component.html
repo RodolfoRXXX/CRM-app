@@ -15,11 +15,18 @@
                     <div class="user-data-input">
                         <mat-form-field appearance="fill">
                             <mat-label>Contraseña actual</mat-label>
-                            <input matInput
-                                    formControlName="password_old"
+                            <input matInput [type]="hide ? 'password' : 'text'"
+                                    formControlName="password"
                                     type="password" 
-                                    required>
-                            <mat-error *ngIf="this.checkPassword.controls['password_old']!.errors">{{getPasswordOldErrorMessage()}}</mat-error>
+                                    required
+                                    (focus)="clean_btn_verify()">
+                                    <button mat-icon-button matSuffix (click)="hidePassword($event)" >
+                                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                    <button mat-mini-fab matSuffix (click)="onSubmitChecker()" [color]="color" [disabled]="btn_verify_pass">
+                                        <mat-icon>{{ icon }}</mat-icon> <!-- search / check / close -->
+                                    </button>
+                            <mat-error *ngIf="this.checkPassword.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                 </form>
@@ -28,28 +35,31 @@
                         <mat-form-field appearance="fill">
                             <mat-label>Nueva correo electrónico</mat-label>
                             <input matInput
-                                    formControlName="email_new"
+                                    [formControl]="emailFirst"
                                     type="email" 
                                     required>
-                            <mat-error *ngIf="this.userDataForm.controls['email_new']!.errors">{{getEmailNewErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.emailFirst.errors">{{getEmailFirstErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="user-data-input">
                         <mat-form-field appearance="fill">
                             <mat-label>Reingresa nueva correo electrónico</mat-label>
                             <input matInput
-                                    formControlName="email_verify"
+                                    formControlName="email"
                                     type="email" 
                                     required>
-                            <mat-error *ngIf="this.userDataForm.controls['email_verify']!.errors">{{getEmailVerifyErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="user-data-input">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid">Guardar</button>
+                        <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid || !this.userDataForm.controls['email'].value.length ">Guardar</button>
                     </div>
                 </form>
             </div>
         </div>
     </mat-card-content>
+    <mat-card-footer class="login-footer">
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
 </mat-card>
 

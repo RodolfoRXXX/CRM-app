@@ -9,7 +9,8 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { MaterialModule } from './material/material/material.module';
 import { HeaderLoginComponent } from './layouts/frame/header-login/header-login.component';
 import { HeaderRechargeComponent } from './layouts/frame/header-recharge/header-recharge.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { InterceptorService } from './services/interceptor.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,13 @@ import { HttpClientModule } from '@angular/common/http';
   exports: [
     
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -32,14 +32,15 @@ export class HeaderRechargeComponent {
       this.name = data.email.split("@")[0];
     }
     this.pic = data.thumbnail;
-    this.list = JSON.parse(data.role)
+    if(data.role.length) {
+      this.list = JSON.parse(data.role)
       for(var key in this.list) {
         if(this.list[key]) {
           this.role = key;
           break;
         }
     }
-    
+    }
   }
 
   logOff(): void {

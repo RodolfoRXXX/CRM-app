@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
           (control: AbstractControl):ValidationErrors|null => {
           return (control.value !== this.passwordFirst.value) ? {no_equal: {value: control.value}} : null;}
         ]),
-        role: new FormControl(''),
+        role: new FormControl('{"gestión": false, "operación":false, "depósito":false, "compras":false, "administración":false}'),
         thumbnail: new FormControl('assets/images/users/blanck_user.png'),
         id_enterprise: new FormControl('', [
           Validators.required
@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit {
       email: new FormControl(''),
       data: new FormControl(''),
       tipo: new FormControl('register')
-  });
+    });
   }
 
   getEnterprises() {

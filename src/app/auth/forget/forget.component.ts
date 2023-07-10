@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
@@ -28,7 +27,6 @@ export class ForgetComponent implements OnInit {
   constructor(
     private _router: Router,
     private _api: ApiService,
-    private _auth: AuthService,
     private _notify: NotificationService
   ) {
     this.passwordFirst = new FormControl('', [

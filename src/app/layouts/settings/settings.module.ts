@@ -15,6 +15,8 @@ import { IndexComponent } from './components/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { EditUserphotoComponent } from './components/edit-userphoto/edit-userphoto.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from 'src/app/services/interceptor.service';
 
 
 @NgModule({
@@ -40,7 +42,12 @@ import { EditUserphotoComponent } from './components/edit-userphoto/edit-userpho
       
     ],
     providers: [
-        { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
+        { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: InterceptorService,
+            multi: true
+        }
     ]
 })
 export class SettingsModule { }

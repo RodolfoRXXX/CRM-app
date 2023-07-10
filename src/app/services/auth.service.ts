@@ -98,7 +98,7 @@ export class AuthService {
 
   //Guardo el token del usuario logueado
   setToken(token: any): void {
-    localStorage.setItem("token", JSON.stringify(token));
+    localStorage.setItem('token', token);
   }
 
   //Obtengo el token del usuario logueado

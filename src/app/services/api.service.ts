@@ -47,7 +47,7 @@ export class ApiService {
       //error del lado servidor
       console.error(`El backend retornó el código de error ${error.status}. El cuerpo del mensaje de error es ${error.message}`);
     }
-    return throwError(() => new Error('Algo malo sucedió. por favor intenta más tarde.'));
+    return throwError(() => new Error('Algo malo sucedió. por favor intenta más tarde.' + error));
   }
 
 
