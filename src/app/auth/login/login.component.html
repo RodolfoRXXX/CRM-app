@@ -36,7 +36,7 @@
                             <a routerLink="../forget" class="link">Olvidé mi contraseña!</a>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || loading">Entrar</button>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || this.disable_submit">Entrar</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> No tenés una cuenta?

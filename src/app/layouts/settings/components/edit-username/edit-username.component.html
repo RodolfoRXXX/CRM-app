@@ -16,16 +16,19 @@
                         <mat-form-field appearance="fill">
                             <mat-label>Nombre de usuario</mat-label>
                             <input matInput
-                                    formControlName="name" 
+                                    formControlName="name"
                                     required>
                             <mat-error *ngIf="this.userDataForm.controls['name']!.errors">{{getUserNameErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="user-data-input">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid">Guardar</button>
+                        <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid || this.userDataForm.controls['name'].value == act_name || this.disable_submit">Guardar</button>
                     </div>
                 </div>
             </form>
         </div>
     </mat-card-content>
+    <mat-card-footer class="login-footer">
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
 </mat-card>

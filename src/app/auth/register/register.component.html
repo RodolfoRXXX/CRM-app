@@ -57,7 +57,7 @@
                             <mat-checkbox [formControl]="remember_me">Recordarme</mat-checkbox>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="this.registerForm.invalid || loading">Crear mi cuenta</button>
+                            <button mat-raised-button color="primary" [disabled]="this.registerForm.invalid || this.disable_submit">Crear mi cuenta</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Ya tenés una cuenta?

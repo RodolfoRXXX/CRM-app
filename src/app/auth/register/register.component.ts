@@ -14,21 +14,26 @@ import { Md5 } from 'ts-md5';
 export class RegisterComponent implements OnInit {
 
   emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
-  hide_1 = true;
-  hide_2 = true;
+  hide_1!: boolean;
+  hide_2!: boolean;
   registerForm!: FormGroup;
   formMsg!: FormGroup;
   enterprises: Array<any> = [];
   passwordFirst!: FormControl;
   remember_me!: FormControl;
-  loading: boolean = false;
+  loading!: boolean;
+  disable_submit!: boolean;
 
   constructor(
     private _auth: AuthService,
     private _api: ApiService,
     private _router: Router,
     private _notify: NotificationService
-  ) { 
+  ) {
+    this.hide_1 = true;
+    this.hide_2 = true;
+    this.loading = false;
+    this.disable_submit = false;
     this.getEnterprises();
     this.passwordFirst = new FormControl('', [
       Validators.required,
@@ -138,6 +143,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    this.disable_submit = true;
     this.loading =  true;
     const md5 = new Md5();
     const hash_code = Md5.hashStr(this.registerForm.get('email')?.value).slice(0,10);
@@ -149,28 +155,29 @@ export class RegisterComponent implements OnInit {
     md5.end();
     this._api.postTypeRequest('user/register', this.registerForm.value).subscribe({
       next: (res: any) => {
+        this.loading =  false;
         if(res.status == 1){
           if(res.data == 'existente') {
-            this.loading =  false;
+            this.disable_submit = false;
             this._notify.showError('El correo ya pertenece a un usuario registrado.');
           } else {
             //Creó el usuario
-            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
             this._notify.showSuccess('Usuario nuevo creado!');
             this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this.registerForm.value.remember_me);
             setTimeout(() => {
-              this.loading =  false;
               this._router.navigate(['init']);
             }, 2000);
+            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
-          this.loading =  false;
+          this.disable_submit = false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
         }
       },
       error: (error) => {
         //Error de conexión, no pudo consultar con la base de datos
+        this.disable_submit = false;
         this.loading =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }

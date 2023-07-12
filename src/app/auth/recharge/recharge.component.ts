@@ -11,11 +11,11 @@ import { NotificationService } from 'src/app/services/notification.service';
 })
 export class RechargeComponent {
 
-  hide = true;
   email!: string;
   pic!: string;
   rechargeForm!: FormGroup;
-  loading: boolean = false;
+  hide!: boolean;
+  loading!: boolean;
   
   constructor(
     private _auth: AuthService,
@@ -23,6 +23,8 @@ export class RechargeComponent {
     private _router: Router,
     private _notify: NotificationService
   ) {
+    this.hide = true;
+    this.loading = false;
     this.createForm();
     this.setDataUser();
   }
@@ -39,6 +41,7 @@ export class RechargeComponent {
     this.loading = true;
     this._api.postTypeRequest('user/recharge', this.rechargeForm.value).subscribe({
       next: (res: any) => {
+        this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y encontró o no el usuario
           if(res.data.length){
@@ -46,17 +49,14 @@ export class RechargeComponent {
             this._notify.showSuccess('Acceso autorizado!');
             this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this.rechargeForm.value.remember_me);
             setTimeout(() => {
-              this.loading =  false;
               this._router.navigate(['init']);
             }, 2000);
           } else{
             //No se pudo loguear
-            this.loading =  false;
             this._notify.showError('No ha sido posible acceder. Intentá nuevamente')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
-          this.loading =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
       },

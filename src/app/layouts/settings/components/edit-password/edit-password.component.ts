@@ -22,6 +22,7 @@ export class EditPasswordComponent implements OnInit {
   btn_verify_pass: boolean;
   loading: boolean;
   passwordFirst!: FormControl;
+  disable_submit!: boolean;
 
   constructor(
     private _auth: AuthService,
@@ -36,6 +37,7 @@ export class EditPasswordComponent implements OnInit {
     this.hide = true;
     this.hide_1 = true;
     this.hide_2 = true;
+    this.disable_submit = false;
     this.passwordFirst = new FormControl({ value: '', disabled: true }, [
       Validators.required,
       Validators.minLength(4),
@@ -191,6 +193,7 @@ export class EditPasswordComponent implements OnInit {
   }
 
   onSubmitUser() {
+    this.disable_submit = true;
     this.loading =  true;
     this._api.postTypeRequest('profile/update-password', this.userDataForm.value).subscribe({
       next: (res: any) => {
@@ -198,20 +201,22 @@ export class EditPasswordComponent implements OnInit {
           //Accedió a la base de datos y no hubo problemas
           if(res.data.changedRows == 1){
             //Modificó la contraseña
-            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
             this.loading =  false;
             this._notify.showSuccess('Contraseña actualizada!');
             this._auth.setRememberOption(false);
             setTimeout(() => {
               this._router.navigate(['../logoff']);
             }, 2000);
+            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
           } else{
             //No hubo modificación
+            this.disable_submit = false;
             this.loading =  false;
             this._notify.showError('No se detectaron cambios. Ingresá una contraseña diferente al actual.')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
+          this.disable_submit = false;
           this.loading =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
@@ -219,6 +224,7 @@ export class EditPasswordComponent implements OnInit {
       error: (error) => {
         console.log(error)
         //Error de conexión, no pudo consultar con la base de datos
+        this.disable_submit = false;
         this.loading =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
       }

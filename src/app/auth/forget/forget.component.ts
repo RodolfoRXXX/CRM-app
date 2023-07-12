@@ -15,13 +15,14 @@ export class ForgetComponent implements OnInit {
   formMsg!: FormGroup;
   codeForm!: FormGroup;
   passwordForm!: FormGroup;
-  loading_email: boolean = false;
-  loading_code: boolean = false;
-  loading_password: boolean = false;
-  show_window: string = 'email';
+  loading_email!: boolean;
+  loading_code!: boolean;
+  loading_password!: boolean;
+  show_window!: string;
+  disable_submit!: boolean;
 
-  hide_1 = true;
-  hide_2 = true;
+  hide_1!: boolean;
+  hide_2!: boolean;
   passwordFirst!: FormControl;
 
   constructor(
@@ -29,6 +30,13 @@ export class ForgetComponent implements OnInit {
     private _api: ApiService,
     private _notify: NotificationService
   ) {
+    this.loading_email = false;
+    this.loading_code = false;
+    this.loading_password = false;
+    this.show_window = 'email';
+    this.disable_submit = false;
+    this.hide_1 = true;
+    this.hide_2 = true;
     this.passwordFirst = new FormControl('', [
       Validators.required,
       Validators.minLength(4),
@@ -97,7 +105,6 @@ export class ForgetComponent implements OnInit {
     ev.preventDefault();
     this.hide_1 = !this.hide_1;
   }
-
   hidePassword_2(ev: any): void {
     ev.preventDefault();
     this.hide_2 = !this.hide_2;
@@ -110,7 +117,6 @@ export class ForgetComponent implements OnInit {
       return 'No es un correo válido'}
     return ''
   }
-
   getEmailErrorMessage() {
     if(this.codeForm.controls['email'].hasError('required')) {
       return 'Tenés que ingresar un valor'}
@@ -118,7 +124,6 @@ export class ForgetComponent implements OnInit {
       return 'No es un correo válido'}
     return ''
   }
-
   getCodeErrorMessage() {
     if(this.codeForm.controls['activation_code'].hasError('required')) {
       return 'Tenés que ingresar un código'}
@@ -126,7 +131,6 @@ export class ForgetComponent implements OnInit {
       return 'El código debe tener 10 caracteres'}
     return ''
   }
-
   getPasswordErrorMessageFirst() {
     if(this.passwordFirst.hasError('required')) {
       return 'Tenés que ingresar un valor'}
@@ -147,16 +151,15 @@ export class ForgetComponent implements OnInit {
   goCode() {
     this.show_window = 'code';
   }
-
   goEmail() {
     this.show_window = 'email';
   }
-
   goPassword() {
     this.show_window = 'password';
   }
 
   sendEmail(): void {
+    this.disable_submit = true;
     this.loading_email = true;
     this._api.postTypeRequest('user/verificate-email', this.forgotForm.value).subscribe({
       next: (res: any) => {
@@ -170,42 +173,47 @@ export class ForgetComponent implements OnInit {
             });
             this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe({
               next: (res: any) => {
+                this.loading_email =  false;
                 if(res.status == 1){
                   //Email enviado o no
                   if(res.data == 'ok') {
                     this._notify.showSuccess('Código enviado con éxito!');
-                    this.loading_email =  false;
                     setTimeout(() => {
                       this.goCode();
+                      this.disable_submit = false;
                     }, 2000);
                   } else {
-                    this.loading_email =  false;
+                    this.disable_submit = false;
                     this._notify.showError('Ocurrió un problema al enviar el código a tu correo electrónico. Intentá nuevamente por favor.')
                   }
                 } else {
-                  this.loading_email =  false;
+                  this.disable_submit = false;
                   this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
                 }
               },
               error: (error) => {
                 //Error de conexión, no pudo consultar con la base de datos
+                this.disable_submit = false;
                 this.loading_email =  false;
                 this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
               }
             });
           } else{
             //No encontró el correo electrónico
+            this.disable_submit = false;
             this.loading_email =  false;
             this._notify.showError('El correo electrónico ingresado no esta registrado.')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
+          this.disable_submit = false;
           this.loading_email =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
       },
       error: () => {
         //Error de conexión, no pudo consultar con la base de datos
+        this.disable_submit = false;
         this.loading_email =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
       }
@@ -213,9 +221,11 @@ export class ForgetComponent implements OnInit {
   }
 
   sendCode() {
+    this.disable_submit = true;
     this.loading_code = true;
     this._api.postTypeRequest('user/verificate-email', this.codeForm.value).subscribe({
       next: (res: any) => {
+        this.loading_code =  false;
         if(res.status == 1){
           //No hubo error de conexión con la DB
           if(res.data.length){
@@ -232,29 +242,29 @@ export class ForgetComponent implements OnInit {
             if(res.data[0].activation_code === this.codeForm.value.activation_code) {
               //Código verificado
               this._notify.showSuccess('Verificación exitosa!');
-              this.loading_code =  false;
               setTimeout(() => {
                 this.goPassword();
+                this.disable_submit = false;
               }, 2000);
             } else {
               //Código No verificado
+              this.disable_submit = false;
               this._notify.showError('Hubo un problema con el código ingresado.');
-              this.loading_code =  false;
             }
           } else{
             //No encontró el correo electrónico
-            this.loading_code =  false;
+            this.disable_submit = false;
             this._notify.showError('El correo electrónico ingresado no esta registrado.')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
-          console.log(res)
-          this.loading_code =  false;
+          this.disable_submit = false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
       },
       error: () => {
         //Error de conexión, no pudo consultar con la base de datos
+        this.disable_submit = false;
         this.loading_code =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
       }
@@ -262,32 +272,35 @@ export class ForgetComponent implements OnInit {
   }
 
   sendPassword() {
+    this.disable_submit = true;
     this.loading_password = true;
     this._api.putTypeRequest('user/restore-password', this.passwordForm.value).subscribe({
       next: (res: any) => {
+        this.loading_password =  false;
         if(res.status == 1){
           //No hubo error de conexión con la DB
           if(res.data.changedRows == 1){
             //Actualizó la contraseña
-            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
             this._notify.showSuccess('Has actualizado tu contraseña con éxito!');
             setTimeout(() => {
-              this.loading_password =  false;
               this._router.navigate(['login']);
+              this.disable_submit = false;
             }, 2000);
+            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
           } else{
             //No se actualizó la contraseña
-            this.loading_password =  false;
+            this.disable_submit = false;
             this._notify.showWarn('La contraseña nueva no puede ser igual a la anterior.')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
-          this.loading_password =  false;
+          this.disable_submit = false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
       },
       error: () => {
         //Error de conexión, no pudo consultar con la base de datos
+        this.disable_submit = false;
         this.loading_password =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
       }

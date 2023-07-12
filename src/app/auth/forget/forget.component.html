@@ -22,7 +22,7 @@
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="forgotForm.invalid || loading_email">Enviar código</button>
+                            <button mat-raised-button color="primary" [disabled]="forgotForm.invalid || this.disable_submit">Enviar código</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Ya tengo un código
@@ -76,7 +76,7 @@
                             </mat-form-field>
                         </div>
                         <div class="form-input-100 mt-3">
-                            <button mat-raised-button color="primary" [disabled]="this.codeForm.invalid || loading_code">Verificar código</button>
+                            <button mat-raised-button color="primary" [disabled]="this.codeForm.invalid || this.disable_submit">Verificar código</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Reenviar el código?
@@ -128,7 +128,7 @@
                             </mat-form-field>
                         </div>
                         <div class="form-input-100 mt-3">
-                            <button mat-raised-button color="primary" [disabled]="this.passwordForm.invalid || loading_password">Actualizar mi cuenta</button>
+                            <button mat-raised-button color="primary" [disabled]="this.passwordForm.invalid || this.disable_submit">Actualizar mi cuenta</button>
                         </div>
                     </div>
                 </form>

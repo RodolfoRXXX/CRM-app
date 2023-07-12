@@ -14,14 +14,18 @@ export class LoginComponent implements OnInit {
   emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
   hide = true;
   loginForm!: FormGroup;
-  loading: boolean = false;
+  loading!: boolean;
+  disable_submit!: boolean;
 
   constructor(
     private _router: Router,
     private _api: ApiService,
     private _auth: AuthService,
     private _notify: NotificationService
-  ) {}
+  ) { 
+    this.loading = false;
+    this.disable_submit = false;
+   }
 
   ngOnInit(): void {
     this.createForm();
@@ -65,9 +69,11 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.disable_submit = true;
     this.loading = true;
     this._api.postTypeRequest('user/login', this.loginForm.value).subscribe({
       next: (res: any) => {
+        this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y encontró o no el usuario
           if(res.data.length){
@@ -75,22 +81,22 @@ export class LoginComponent implements OnInit {
             this._notify.showSuccess('Acceso autorizado!');
             this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this.loginForm.value.remember_me);
             setTimeout(() => {
-              this.loading =  false;
               this._router.navigate(['init']);
             }, 2000);
           } else{
             //No encontró el usuario
-            this.loading =  false;
+            this.disable_submit = false;
             this._notify.showError('Las credenciales de acceso no son correctas.')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
-          this.loading =  false;
+          this.disable_submit = false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
         }
       },
       error: (error) => {
         //Error de conexión, no pudo consultar con la base de datos
+        this.disable_submit = false;
         this.loading =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }

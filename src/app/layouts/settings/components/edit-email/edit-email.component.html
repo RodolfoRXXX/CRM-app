@@ -52,7 +52,7 @@
                         </mat-form-field>
                     </div>
                     <div class="user-data-input">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid || !this.userDataForm.controls['email'].value.length">Guardar</button>
+                        <button #submit mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid || !this.userDataForm.controls['email'].value.length || this.disable_submit">Guardar</button>
                     </div>
                 </form>
             </div>

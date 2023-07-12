@@ -22,6 +22,7 @@ export class EditEmailComponent implements OnInit {
   icon: string;
   btn_verify_pass: boolean;
   loading: boolean;
+  disable_submit!: boolean;
 
   constructor(
     private _auth: AuthService,
@@ -33,6 +34,7 @@ export class EditEmailComponent implements OnInit {
     this.color = 'primary';
     this.icon = 'search';
     this.btn_verify_pass = false;
+    this.disable_submit = false;
     this.emailFirst = new FormControl({value: '', disabled: true}, [
       Validators.required,
       Validators.minLength(4),
@@ -189,6 +191,7 @@ export class EditEmailComponent implements OnInit {
   }
 
   onSubmitUser() {
+    this.disable_submit = true;
     this.loading =  true;
     const md5 = new Md5();
     const hash_code = Md5.hashStr(this.userDataForm.get('email')?.value).slice(0,10);
@@ -204,20 +207,22 @@ export class EditEmailComponent implements OnInit {
           //Accedió a la base de datos y no hubo problemas
           if(res.data.changedRows == 1){
             //Modificó el correo electrónico
-            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
             this.loading =  false;
             this._notify.showSuccess('Correo electrónico actualizado!');
             this._auth.setRememberOption(false);
             setTimeout(() => {
               this._router.navigate(['../logoff']);
             }, 2000);
+            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
           } else{
             //No hubo modificación
+            this.disable_submit = false;
             this.loading =  false;
             this._notify.showError('No se detectaron cambios. Ingresá un correo diferente al actual.')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
+          this.disable_submit = false;
           this.loading =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
@@ -225,6 +230,7 @@ export class EditEmailComponent implements OnInit {
       error: (error) => {
         console.log(error)
         //Error de conexión, no pudo consultar con la base de datos
+        this.disable_submit = false;
         this.loading =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
       }
