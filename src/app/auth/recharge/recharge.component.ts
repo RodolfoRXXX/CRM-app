@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { environment } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-recharge',
@@ -76,7 +77,7 @@ export class RechargeComponent {
   setDataUser() {
     this.getDataUser()
         .then( value => {
-          this.pic = value.thumbnail;
+          this.pic = environment.SERVER + value.thumbnail;
           this.email = value.email;
           this.rechargeForm.patchValue({
             email: value.email,

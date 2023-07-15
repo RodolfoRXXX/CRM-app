@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MenuItems } from '../../menu-items/menu-items';
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/enviroments/enviroment';
 
 @Component({
   standalone: true,
@@ -40,7 +41,7 @@ export class SidebarComponent {
     }else {
       this.name = data.email.split("@")[0];
     }
-    this.pic = data.thumbnail;
+    this.pic = environment.SERVER + data.thumbnail;
     if(data.enterprise.length) {
       this.enterprise = data.enterprise;
     } else {

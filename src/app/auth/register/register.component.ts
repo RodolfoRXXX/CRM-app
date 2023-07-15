@@ -67,7 +67,7 @@ export class RegisterComponent implements OnInit {
           return (control.value !== this.passwordFirst.value) ? {no_equal: {value: control.value}} : null;}
         ]),
         role: new FormControl('{"gestión": false, "operación":false, "depósito":false, "compras":false, "administración":false}'),
-        thumbnail: new FormControl('assets/images/users/blanck_user.png'),
+        thumbnail: new FormControl('blanck_user.png'),
         id_enterprise: new FormControl('', [
           Validators.required
         ]),

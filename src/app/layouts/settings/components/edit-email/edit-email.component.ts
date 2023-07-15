@@ -203,11 +203,11 @@ export class EditEmailComponent implements OnInit {
     });
     this._api.postTypeRequest('profile/update-email', this.userDataForm.value).subscribe({
       next: (res: any) => {
+        this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
           if(res.data.changedRows == 1){
             //Modificó el correo electrónico
-            this.loading =  false;
             this._notify.showSuccess('Correo electrónico actualizado!');
             this._auth.setRememberOption(false);
             setTimeout(() => {
@@ -217,13 +217,11 @@ export class EditEmailComponent implements OnInit {
           } else{
             //No hubo modificación
             this.disable_submit = false;
-            this.loading =  false;
             this._notify.showError('No se detectaron cambios. Ingresá un correo diferente al actual.')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
           this.disable_submit = false;
-          this.loading =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
       },

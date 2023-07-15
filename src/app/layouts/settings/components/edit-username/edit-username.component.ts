@@ -84,11 +84,11 @@ export class EditUsernameComponent implements OnInit {
     this.loading =  true;
     this._api.postTypeRequest('profile/update-username', this.userDataForm.value).subscribe({
       next: (res: any) => {
+        this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
           if(res.changedRows == 1){
             //Modificó el usuario
-            this.loading =  false;
             this._notify.showSuccess('Nombre de usuario actualizado!');
             this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this._auth.getRememberOption());
             setTimeout(() => {
@@ -98,18 +98,15 @@ export class EditUsernameComponent implements OnInit {
           } else{
             //No hubo modificación
             this.disable_submit = false;
-            this.loading =  false;
             this._notify.showError('No se detectaron cambios. Ingresá un nombre de usuario diferente al actual.')
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
           this.disable_submit = false;
-          this.loading =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
       },
       error: (error) => {
-        console.log(error)
         //Error de conexión, no pudo consultar con la base de datos
         this.disable_submit = false;
         this.loading =  false;

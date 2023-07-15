@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-header-recharge',
@@ -31,7 +32,7 @@ export class HeaderRechargeComponent {
     }else {
       this.name = data.email.split("@")[0];
     }
-    this.pic = data.thumbnail;
+    this.pic = environment.SERVER + data.thumbnail;
     if(data.role.length) {
       this.list = JSON.parse(data.role)
       for(var key in this.list) {
