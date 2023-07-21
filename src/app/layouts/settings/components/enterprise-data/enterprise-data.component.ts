@@ -153,37 +153,67 @@ export class EnterpriseDataComponent implements OnInit {
       return 'Este valor debe tener menos de 30 caracteres'}
     return ''
   }
+  getCuitErrorMessage() {
+    if(this.userDataForm.controls['cuit'].hasError('minlength')) {
+      return 'Este valor debe tener más de 4 caracteres'}
+    if(this.userDataForm.controls['cuit'].hasError('maxlength')) {
+      return 'Este valor debe tener menos de 30 caracteres'}
+    return ''
+  }
   getAddressErrorMessage() {
-    if(this.userDataForm.controls['address'].hasError('required')) {
-      return 'Tenés que ingresar un valor'}
     if(this.userDataForm.controls['address'].hasError('minlength')) {
       return 'Este valor debe tener más de 4 caracteres'}
     if(this.userDataForm.controls['address'].hasError('maxlength')) {
       return 'Este valor debe tener menos de 30 caracteres'}
     return ''
   }
-  getPhoneErrorMessage() {
-    if(this.userDataForm.controls['phone'].hasError('required')) {
-      return 'Tenés que ingresar un valor'}
-    if(this.userDataForm.controls['phone'].hasError('minlength')) {
+  getCpErrorMessage() {
+    if(this.userDataForm.controls['cp'].hasError('minlength')) {
       return 'Este valor debe tener más de 4 caracteres'}
-    if(this.userDataForm.controls['phone'].hasError('maxlength')) {
+    if(this.userDataForm.controls['cp'].hasError('maxlength')) {
+      return 'Este valor debe tener menos de 30 caracteres'}
+    return ''
+  }
+  getPhone1ErrorMessage() {
+    if(this.userDataForm.controls['phone_1'].hasError('minlength')) {
+      return 'Este valor debe tener más de 4 caracteres'}
+    if(this.userDataForm.controls['phone_1'].hasError('maxlength')) {
       return 'Este valor debe tener menos de 15 caracteres'}
     return ''
   }
-  getDateErrorMessage() {
-    if(this.userDataForm.controls['date'].hasError('required')) {
-      return 'Tenés que ingresar un valor'}
+  getPhone2ErrorMessage() {
+    if(this.userDataForm.controls['phone_2'].hasError('minlength')) {
+      return 'Este valor debe tener más de 4 caracteres'}
+    if(this.userDataForm.controls['phone_2'].hasError('maxlength')) {
+      return 'Este valor debe tener menos de 15 caracteres'}
     return ''
   }
-  getWorkHourErrorMessage() {
-
+  getCityErrorMessage() {
+    if(this.userDataForm.controls['city'].hasError('required')) {
+      return 'Tenés que ingresar un valor'}
+    if(this.userDataForm.controls['city'].hasError('minlength')) {
+      return 'Este valor debe tener más de 4 caracteres'}
+    if(this.userDataForm.controls['city'].hasError('maxlength')) {
+      return 'Este valor debe tener menos de 15 caracteres'}
+    return ''
   }
-  getNameErErrorMessage() {
-
+  getStateErrorMessage() {
+    if(this.userDataForm.controls['state'].hasError('required')) {
+      return 'Tenés que ingresar un valor'}
+    if(this.userDataForm.controls['state'].hasError('minlength')) {
+      return 'Este valor debe tener más de 4 caracteres'}
+    if(this.userDataForm.controls['state'].hasError('maxlength')) {
+      return 'Este valor debe tener menos de 15 caracteres'}
+    return ''
   }
-  getPhoneErErrorMessage() {
-
+  getCountryErrorMessage() {
+    if(this.userDataForm.controls['Country'].hasError('required')) {
+      return 'Tenés que ingresar un valor'}
+    if(this.userDataForm.controls['Country'].hasError('minlength')) {
+      return 'Este valor debe tener más de 4 caracteres'}
+    if(this.userDataForm.controls['Country'].hasError('maxlength')) {
+      return 'Este valor debe tener menos de 15 caracteres'}
+    return ''
   }
 
   openDialog(): void {

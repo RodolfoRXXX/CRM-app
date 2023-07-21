@@ -33,7 +33,7 @@
                             <input matInput placeholder="00-12345678-9"
                                     formControlName="cuit" 
                                     >
-                            <mat-error *ngIf="this.userDataForm.controls['cuit']!.errors">{{getAddressErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['cuit']!.errors">{{getCuitErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                             <input matInput placeholder="Calle sin nombre 123"
                                     formControlName="address" 
                                     >
-                            <mat-error *ngIf="this.userDataForm.controls['address']!.errors">{{getNameErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['address']!.errors">{{getAddressErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mid-user-data-input">
@@ -54,7 +54,7 @@
                             <input matInput placeholder="Calle sin nombre 123"
                                     formControlName="cp" 
                                     >
-                            <mat-error *ngIf="this.userDataForm.controls['cp']!.errors">{{getAddressErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['cp']!.errors">{{getCpErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                             <input matInput placeholder="123-4567"
                                     formControlName="phone_1" 
                                     >
-                            <mat-error *ngIf="this.userDataForm.controls['phone_1']!.errors">{{getNameErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['phone_1']!.errors">{{getPhone1ErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mid-user-data-input">
@@ -77,7 +77,7 @@
                             <input matInput placeholder="123-4567"
                                     formControlName="phone_2" 
                                     >
-                            <mat-error *ngIf="this.userDataForm.controls['phone_2']!.errors">{{getAddressErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['phone_2']!.errors">{{getPhone2ErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             <input matInput
                                     formControlName="city" 
                                     required>
-                            <mat-error *ngIf="this.userDataForm.controls['city']!.errors">{{getNameErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['city']!.errors">{{getCityErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mid-user-data-input">
@@ -98,7 +98,7 @@
                             <input matInput
                                     formControlName="state" 
                                     required>
-                            <mat-error *ngIf="this.userDataForm.controls['state']!.errors">{{getNameErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['state']!.errors">{{getStateErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mid-user-data-input">
@@ -107,7 +107,7 @@
                             <input matInput
                                     formControlName="country" 
                                     required>
-                            <mat-error *ngIf="this.userDataForm.controls['country']!.errors">{{getNameErrorMessage()}}</mat-error>
+                            <mat-error *ngIf="this.userDataForm.controls['country']!.errors">{{getCountryErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
