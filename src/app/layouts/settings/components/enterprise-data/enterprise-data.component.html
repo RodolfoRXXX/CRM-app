@@ -1,0 +1,124 @@
+<mat-card class="mat-card card-setting">
+    <mat-card-content class="mat-card-content">
+        <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button">
+            <mat-icon>close</mat-icon>
+        </a>
+        <mat-card-title class="mat-card-title">
+            Datos de la empresa
+        </mat-card-title>
+        <mat-card-subtitle class="mat-card-subtitle">
+            Completá con la información de tu empresa
+        </mat-card-subtitle>
+        <div>
+            <div class="m-b-20 box-image" matTooltip="Cargá tu logo" [matMenuTriggerFor]="menu" #menuTrigger>
+                <img class="user-image" [src]="base_image" alt="image-previsualization">
+            </div>
+            <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openDialog()">Cargar logo</button>
+            </mat-menu>
+            <form [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
+                <div class="mid-user-data-container">
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Razón social</mat-label>
+                            <input matInput
+                                    formControlName="name" 
+                                    required>
+                            <mat-error *ngIf="this.userDataForm.controls['name']!.errors">{{getNameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>CUIT(sin guiones)</mat-label>
+                            <input matInput placeholder="00-12345678-9"
+                                    formControlName="cuit" 
+                                    >
+                            <mat-error *ngIf="this.userDataForm.controls['cuit']!.errors">{{getAddressErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="mid-user-data-container">
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Dirección</mat-label>
+                            <input matInput placeholder="Calle sin nombre 123"
+                                    formControlName="address" 
+                                    >
+                            <mat-error *ngIf="this.userDataForm.controls['address']!.errors">{{getNameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Código postal</mat-label>
+                            <input matInput placeholder="Calle sin nombre 123"
+                                    formControlName="cp" 
+                                    >
+                            <mat-error *ngIf="this.userDataForm.controls['cp']!.errors">{{getAddressErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="mid-user-data-container">
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Teléfono 1</mat-label>
+                            <span matPrefix>+341 &nbsp;</span>
+                            <input matInput placeholder="123-4567"
+                                    formControlName="phone_1" 
+                                    >
+                            <mat-error *ngIf="this.userDataForm.controls['phone_1']!.errors">{{getNameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Teléfono 2</mat-label>
+                            <span matPrefix>+341 &nbsp;</span>
+                            <input matInput placeholder="123-4567"
+                                    formControlName="phone_2" 
+                                    >
+                            <mat-error *ngIf="this.userDataForm.controls['phone_2']!.errors">{{getAddressErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="mid-user-data-container">
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Ciudad</mat-label>
+                            <input matInput
+                                    formControlName="city" 
+                                    required>
+                            <mat-error *ngIf="this.userDataForm.controls['city']!.errors">{{getNameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Provincia</mat-label>
+                            <input matInput
+                                    formControlName="state" 
+                                    required>
+                            <mat-error *ngIf="this.userDataForm.controls['state']!.errors">{{getNameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mid-user-data-input">
+                        <mat-form-field appearance="fill">
+                            <mat-label>País</mat-label>
+                            <input matInput
+                                    formControlName="country" 
+                                    required>
+                            <mat-error *ngIf="this.userDataForm.controls['country']!.errors">{{getNameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="user-data-input m-t-20">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid || userDataForm.untouched || userDataForm.pristine">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </mat-card-content>
+    <mat-card-footer class="login-footer">
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

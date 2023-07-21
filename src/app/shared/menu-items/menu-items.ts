@@ -3,6 +3,7 @@ import { Menu } from '../interfaces/menu.interface';
 
 const MENUSETTINGS = [
     { state: 'user-data', name: 'Datos del usuario', type: '', icon: 'fingerprint' },
+    { state: 'enterprise-data', name: 'Datos de la empresa', type: 'admmin', icon: 'business' },
     { state: 'billing', name: 'Facturación', type: 'admin', icon: 'attach_money' },
     { state: 'edit-userphoto', name: 'Editar imagen de usuario', type: '', icon: 'add_a_photo' },
     { state: 'edit-username', name: 'Editar nombre de usuario', type: '', icon: 'account_circle' },

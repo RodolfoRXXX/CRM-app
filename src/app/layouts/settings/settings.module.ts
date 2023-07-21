@@ -17,6 +17,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { EditUserphotoComponent } from './components/edit-userphoto/edit-userphoto.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
+import { EnterpriseDataComponent } from './components/enterprise-data/enterprise-data.component';
+import { UpdateDirective } from 'src/app/shared/directives/update/update.directive';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { InterceptorService } from 'src/app/services/interceptor.service';
         EditEmailComponent,
         DeleteAccountComponent,
         IndexComponent,
-        EditUserphotoComponent
+        EditUserphotoComponent,
+        EnterpriseDataComponent,
+        UpdateDirective
     ],
     imports: [
       CommonModule,

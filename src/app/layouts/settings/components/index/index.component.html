@@ -5,6 +5,13 @@
         <mat-icon>fingerprint</mat-icon>
         <h5>Datos del usuario</h5>
     </a>
+    <a routerLink="../enterprise-data" class="ripple-container mat-elevation-z4"
+     matRipple
+     [matRippleCentered]=true
+     *ngIf="admin">
+        <mat-icon>business</mat-icon>
+        <h5>Datos de la empresa</h5>
+    </a>
     <a routerLink="../billing" class="ripple-container mat-elevation-z4"
      matRipple
      [matRippleCentered]=true

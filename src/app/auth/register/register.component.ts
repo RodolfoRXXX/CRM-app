@@ -87,7 +87,7 @@ export class RegisterComponent implements OnInit {
   }
 
   getEnterprises() {
-    this._api.getTypeRequest('user/get-enterprise').subscribe({
+    this._api.getTypeRequest('user/get-enterprises').subscribe({
       next: (res: any) => {
         if(res.status == 1) {
           if(res.data.length){

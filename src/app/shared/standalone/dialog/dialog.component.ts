@@ -1,24 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit} from '@angular/core';
+import { MaterialModule } from 'src/app/material/material/material.module';
+import { CommonModule } from '@angular/common';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ImageService } from 'src/app/services/image.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { environment } from 'src/enviroments/enviroment';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ImageService } from 'src/app/services/image.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { environment } from 'src/enviroments/enviroment';
 
 @Component({
-  selector: 'app-edit-userphoto',
-  templateUrl: './edit-userphoto.component.html'
+  standalone: true,
+  selector: 'app-dialog',
+  templateUrl: './dialog.component.html',
+  imports: [
+    MaterialModule,
+    CommonModule,
+    ReactiveFormsModule
+  ]
 })
-export class EditUserphotoComponent implements OnInit {
+export class DialogComponent implements OnInit {
 
   userDataForm!: FormGroup;
   base_image!: string;
   name_image!: string;
-  data: any = {
+  state: any = {
     id: 0,
     enterprise: '',
-    name: '',
     blanck: true
   }
   disable_submit!: boolean;
@@ -27,54 +36,40 @@ export class EditUserphotoComponent implements OnInit {
   error_image!: string;
 
   constructor(
+    public dialogRef: MatDialogRef<DialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _image: ImageService,
     private _auth: AuthService,
     private _api: ApiService,
-    private _notify: NotificationService
+    private _notify: NotificationService,
   ) { 
     this.disable_submit = false;
     this.loading = false;
     this.load = false;
-    this.setDataUser();
-   }
-
-  ngOnInit(): void { 
-    this.createUserForm()
-   }
-
-  async getDataUser(): Promise<any> {
-    const data = await JSON.parse(this._auth.getDataFromLocalStorage());
-    return data;
+    this.createUserForm();
   }
 
-  setDataUser() {
-    this.getDataUser()
-        .then( data => {
-          this.name_image = data.thumbnail;
-          this.base_image = environment.SERVER + this.name_image;
-          this.data.id = data.id;
-          this.data.enterprise = data.enterprise;
-          if((data.name)&&(data.name.length)) {
-            this.data.name = data.name
-          } else {
-            this.data.name = data.email.split("@")[0]
-          }
-          if(data.thumbnail != 'blanck_user.png') {
-            this.data.blanck = false;
-          }
-        })
+  ngOnInit(): void {
+    this.name_image = this.data.thumbnail;
+    this.base_image = environment.SERVER + this.name_image;
+    this.state.id = this.data.id;
+    this.state.enterprise = this.data.enterprise;
+    this.state.blanck = this.data.blanck;
   }
 
-  createUserForm(): void {
+  createUserForm() {
     this.userDataForm = new FormGroup({
-        id: new FormControl(''),
-        enterprise: new FormControl(''),
-        name: new FormControl(''),
-        thumbnail : new FormControl('', [
-          Validators.required
-        ]),
-        blanck: new FormControl(true)
-    });
+      id: new FormControl(''),
+      enterprise: new FormControl(''),
+      thumbnail : new FormControl('', [
+        Validators.required
+      ]),
+      blanck: new FormControl(true)
+  });
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 
   getImageErrorMessage() {
@@ -85,7 +80,6 @@ export class EditUserphotoComponent implements OnInit {
 
   capture_img(event: any) {
     this.load = true;
-    this.disable_submit = true;
     const archivoCapturado = event.target.files[0];
     setTimeout(() => {
       if ((archivoCapturado.type == 'image/jpg') || (archivoCapturado.type == 'image/jpeg') || (archivoCapturado.type == 'image/png')){
@@ -140,35 +134,31 @@ export class EditUserphotoComponent implements OnInit {
           thumbnail: ''
         })
       }
-      this.disable_submit = false;
     }, 2500);
   }
-  
-  onSubmitUser() {
+
+  imageSubmit() {
     this.disable_submit = true;
     this.loading =  true;
     this.userDataForm.patchValue({
-      id: this.data.id,
-      enterprise: this.data.enterprise,
-      name: this.data.name,
-      blanck: this.data.blanck
+      id: this.state.id,
+      enterprise: this.state.enterprise,
+      blanck: this.state.blanck
     })
-    this._api.postTypeRequest('profile/load-user-image', this.userDataForm.value).subscribe({
+    console.log(this.userDataForm.value);
+    this._api.postTypeRequest('profile/load-logo-image', this.userDataForm.value).subscribe({
       next: (res: any) => {
-        this.loading =  false;
+        this.load =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
           if(res.changedRows == 1){
             //Modificó la contraseña
-            this._notify.showSuccess('Nueva imagen de usuario!');
-            this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this._auth.getRememberOption());
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            this.dialogRef.close(true);
+            this._notify.showSuccess('Nueva logo de usuario!');
           } else{
             //No hubo modificación
             this.disable_submit = false;
-            this._notify.showError('No se detectaron cambios. Ingresá una imagen diferente al actual.')
+            this._notify.showError('No se detectaron cambios. Ingresá un logo diferente al actual.')
           }
         } else{
           this.disable_submit = false;
@@ -179,10 +169,12 @@ export class EditUserphotoComponent implements OnInit {
       error: (error) => {
         //Error de conexión, no pudo consultar con la base de datos
         this.disable_submit = false;
-        this.loading =  false;
+        this.load =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
       }
     })
   }
 
 }
+
+

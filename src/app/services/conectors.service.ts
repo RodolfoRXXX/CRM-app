@@ -14,6 +14,10 @@ export class ConectorsService {
   private _screenLarge: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public readonly screenLarge$ : Observable<boolean> = this._screenLarge.asObservable();
 
+  //Observable para actualizar un componente hijo
+  private _update: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly update$ : Observable<boolean> = this._update.asObservable();
+
   //GETTERS
     getOpenedState(): Observable<boolean> {
       return this.isOpened$;
@@ -21,8 +25,10 @@ export class ConectorsService {
     getScreenState(): Observable<boolean> {
       return this.screenLarge$;
     }
-
-  
+    getUpdate(): Observable<boolean> {
+      return this.update$;
+    }
+    
 
 
   //SETTERS
@@ -31,6 +37,9 @@ export class ConectorsService {
     }
     setScreenState(state: boolean) {
       this._screenLarge.next(state);
+    }
+    setUpdate(state: boolean) {
+      this._update.next(state);
     }
 
 }

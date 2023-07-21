@@ -36,6 +36,7 @@
         align-items: center;
         color: $sidebar-text;
         margin: 12.5px;
+        border-left: 4px solid $themecolor;
         h5 {
             margin: 5px 0 0;
             text-align: center;
@@ -43,7 +44,7 @@
         &:hover {
             background: none;
             > h5 {
-              color: $themeAccent;
+              color: $themecolor;
             }
             > mat-icon {
                 font-weight:600;
@@ -101,6 +102,20 @@
     }
 }
 
+.mid-user-data-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0 10px;
+    .mid-user-data-input {
+        width: 100%;
+        padding: 10px 10px 0;
+        mat-form-field {
+            width: 100%;
+        }
+    }
+}
+
 //Edit-image
 
 .card-image {
@@ -115,6 +130,7 @@
     margin-right: auto;
     height: 200px;
     width: 200px;
+    cursor: pointer;
     .spinner-load-image {
         position: absolute;
         height: 100%;
@@ -166,6 +182,7 @@
 #user-image {
     display: none;
 }
+
 
 
 //Edit-password
