@@ -207,11 +207,11 @@ export class EnterpriseDataComponent implements OnInit {
     return ''
   }
   getCountryErrorMessage() {
-    if(this.userDataForm.controls['Country'].hasError('required')) {
+    if(this.userDataForm.controls['country'].hasError('required')) {
       return 'Tenés que ingresar un valor'}
-    if(this.userDataForm.controls['Country'].hasError('minlength')) {
+    if(this.userDataForm.controls['country'].hasError('minlength')) {
       return 'Este valor debe tener más de 4 caracteres'}
-    if(this.userDataForm.controls['Country'].hasError('maxlength')) {
+    if(this.userDataForm.controls['country'].hasError('maxlength')) {
       return 'Este valor debe tener menos de 15 caracteres'}
     return ''
   }
