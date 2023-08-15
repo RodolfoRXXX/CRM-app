@@ -53,6 +53,29 @@
   }
 }
 
+
+/*-- ============================================================== 
+ Tablet and below(968px) 
+ ============================================================== */
+
+ @media (max-width: 968px) {
+  .user-data-container .work-hour {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .work-hour-day {
+      padding-left: 0;
+    }
+    .work-hour-range {
+      mat-form-field {
+        width: 190px;
+        margin-left: 5px;
+      }
+  }
+  }
+
+ }
+
 /*-- ============================================================== 
  Phone and below ipad(767px) 
  ============================================================== */
@@ -116,3 +139,19 @@
   }
 
 }
+
+/*-- ============================================================== 
+ Small phones(400px) 
+ ============================================================== */
+
+ @media (max-width: 400px) {
+  .user-data-container .work-hour {
+    
+    .work-hour-range {
+      mat-form-field {
+        width: 140px;
+      }
+  }
+  }
+
+ }

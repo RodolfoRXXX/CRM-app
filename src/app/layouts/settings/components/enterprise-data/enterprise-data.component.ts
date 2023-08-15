@@ -18,8 +18,7 @@ export class EnterpriseDataComponent implements OnInit {
   base_image!: string;
   name_image!: string;
   state: any = {
-    id: 0,
-    enterprise: ''
+    id: 0
   }
   disable_submit!: boolean;
   loading!: boolean;
@@ -49,26 +48,22 @@ export class EnterpriseDataComponent implements OnInit {
 
   setDataUser() {
     this.getDataUser()
-        .then( data => {
-          this.state.enterprise = data.enterprise;
-          this._api.getTypeRequest('user/get-enterprises').subscribe({
+        .then( (data: { enterprise: any; }) => {
+          this._api.postTypeRequest('profile/get-enterprise', { name: data.enterprise }).subscribe({
             next: (res: any) => {
               this.load = false;
               if(res.status == 1){
                 //Accedió a la base de datos y no hubo problemas
                 if(res.data.length) {
-                  const result = res.data.find( (value:any) => value.name == this.state.enterprise);
-                  this.name_image = result.thumbnail;
+                  this.name_image = res.data[0].thumbnail;
                   this.base_image = environment.SERVER + this.name_image;
-                  this.state.thumbnail = result.thumbnail;
-                  this.state.id = result.id;
-                  if(result.thumbnail != 'blanck_enterprise.png') {
+                    this.state.id = res.data[0].id;
+                    this.state.enterprise = res.data[0].name;
+                    this.state.thumbnail = res.data[0].thumbnail;
+                  if(res.data[0].thumbnail != 'blanck_enterprise.png') {
                     this.state.blanck = false;
                   }
-                  this.userDataForm.patchValue({
-                    id: result.id
-                  })
-                  this.setFormValue(result);
+                  this.setFormValue(res.data[0]);
                 } else {
                   this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
                 }
@@ -77,7 +72,7 @@ export class EnterpriseDataComponent implements OnInit {
                   this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
               }
             },
-            error: (error) => {
+            error: (error: any) => {
               //Error de conexión, no pudo consultar con la base de datos
               this.load = false;
               this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
@@ -87,6 +82,7 @@ export class EnterpriseDataComponent implements OnInit {
   }
 
   setFormValue(data: any) {
+    this.userDataForm.controls['id'].setValue(data.id);
     this.userDataForm.controls['name'].setValue(data.name);
     this.userDataForm.controls['cuit'].setValue(data.cuit);
     this.userDataForm.controls['address'].setValue(data.address);
@@ -225,7 +221,7 @@ export class EnterpriseDataComponent implements OnInit {
         thumbnail: this.state.thumbnail
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if(result) {
         window.location.reload();
       }
@@ -257,7 +253,7 @@ export class EnterpriseDataComponent implements OnInit {
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
       },
-      error: (error) => {
+      error: (error: any) => {
         //Error de conexión, no pudo consultar con la base de datos
         this.disable_submit = false;
         this.loading =  false;

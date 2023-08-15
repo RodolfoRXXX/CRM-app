@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    this.creeateFormMsg();
+    this.createFormMsg();
     this.passwordFirst.valueChanges.subscribe( value => {
       if( ((this.registerForm.value.password.length > 3) && (this.registerForm.value.password.length < 11) ) && (value !== this.registerForm.value.password)) {
         this.registerForm.controls['password'].setErrors({ no_equal: true });
@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  creeateFormMsg() {
+  createFormMsg() {
     this.formMsg = new FormGroup({
       email: new FormControl(''),
       data: new FormControl(''),

@@ -62,6 +62,11 @@
     margin-right: auto;
 }
 
+.form-user-data {
+    overflow: hidden;
+    margin-top: 10px;
+}
+
 .user-data-container {
     flex-flow: row wrap;
     box-sizing: border-box;
@@ -89,12 +94,13 @@
         align-items: flex-start;
         width: 100%;
         .work-hour-day {
-            display: flex;
-            align-items: center;
+            width: 100%;
+            padding-left: 15px;
         }
         .work-hour-range {
             display: flex;
             justify-content: space-between;
+            
             mat-form-field {
                 margin-left: 15px;
             }
@@ -104,9 +110,10 @@
 
 .mid-user-data-container {
     display: flex;
+    box-sizing: border-box;
     flex-direction: row;
     width: 100%;
-    padding: 0 10px;
+    padding: 10px 10px 0;
     .mid-user-data-input {
         width: 100%;
         padding: 10px 10px 0;
