@@ -11,7 +11,8 @@
         </mat-card-subtitle>
         <div>
             <div class="m-b-20 box-image" matTooltip="Cargá tu logo" [matMenuTriggerFor]="menu" #menuTrigger>
-                <img class="user-image" [src]="base_image" alt="image-previsualization">
+                <mat-spinner *ngIf="!base_image"></mat-spinner>
+                <img class="user-image" [src]="base_image" alt="image-previsualization" *ngIf="base_image">
             </div>
             <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openDialog()">Cargar logo</button>

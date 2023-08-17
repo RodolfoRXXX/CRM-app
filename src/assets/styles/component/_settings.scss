@@ -137,6 +137,9 @@
     margin-right: auto;
     height: 200px;
     width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     .spinner-load-image {
         position: absolute;
@@ -207,3 +210,48 @@
         margin-bottom: 0.5rem;
     }
 }
+
+
+//Billing
+
+.billing-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 80px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.billing-recharge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    width: 100%;
+}
+
+.mat-mdc-table .mat-mdc-row {
+    cursor: pointer;
+    &:hover {
+        background: rgb(238, 236, 236)!important;
+    }
+}
+
+.bill-filter-input {
+    margin-top: 20px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.box-table {
+    overflow-x: auto;
+    table {
+        width: 100%;
+    }
+}
+    

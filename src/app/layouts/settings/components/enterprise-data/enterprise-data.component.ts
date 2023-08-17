@@ -48,8 +48,8 @@ export class EnterpriseDataComponent implements OnInit {
 
   setDataUser() {
     this.getDataUser()
-        .then( (data: { enterprise: any; }) => {
-          this._api.postTypeRequest('profile/get-enterprise', { name: data.enterprise }).subscribe({
+        .then( (data: { id_enterprise: any; }) => {
+          this._api.postTypeRequest('profile/get-enterprise', { id: data.id_enterprise }).subscribe({
             next: (res: any) => {
               this.load = false;
               if(res.status == 1){
