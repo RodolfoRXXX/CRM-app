@@ -1,2 +1,25 @@
-<p>init works!</p>
-<router-outlet></router-outlet>
+<mat-sidenav-container class="container-sidenav" autosize>
+    <mat-sidenav [(opened)]="opened" [mode]="mode" disableClose> 
+        <app-sidebar [setMenu]="'init'"></app-sidebar>
+    </mat-sidenav>
+    <mat-sidenav-content class="page-wrapper">
+        <div class="content-sidenav">
+            <div class="page-breadcrumb">
+              <div>
+                  <p class="mb-0 fw-500">
+                      {{ title }}
+                  </p>
+              </div>
+              <div style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                  <ol class="breadcrumb mb-0">
+                      <li class="breadcrumb-item"><a href="init">Home</a></li>
+                      <li class="breadcrumb-item" aria-current="page">{{ title }}</li>
+                  </ol>
+              </div>
+            </div>
+          </div>
+        <div class="page-content">
+            <router-outlet *update="update"></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

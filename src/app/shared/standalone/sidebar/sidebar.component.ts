@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { MaterialModule } from 'src/app/material/material/material.module';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MenuItems } from '../../menu-items/menu-items';
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/enviroments/enviroment';
+import { ConectorsService } from 'src/app/services/conectors.service';
 
 @Component({
   standalone: true,
@@ -25,17 +26,21 @@ export class SidebarComponent {
   name!: string;
   pic!: string;
   enterprise!: string;
-  admin: boolean = false;
+  expand!: string;
+  role!: any
 
   constructor(
     public menuItems: MenuItems,
-    private _auth: AuthService
+    private _auth: AuthService,
+    private _router: Router,
+    private _conector: ConectorsService
   ) {
     this.getDataUser();
   }
 
   getDataUser() {
     const data = JSON.parse(this._auth.getDataFromLocalStorage());
+    this.role = JSON.parse(data.role);
     if(data.name.length) {
       this.name = data.name;
     }else {
@@ -47,11 +52,17 @@ export class SidebarComponent {
     } else {
       this.enterprise = '';
     }
-    if(JSON.parse(data.role)['gestión']) {
-      this.admin = true;
-    } else {
-      this.admin = false;
-    }
+    for(var key in JSON.parse(data.role)) {
+      if(JSON.parse(data.role)[key]) {
+        this.expand = key;
+        break;
+      }
+  }
+  }
+
+  redirectTo( URI: string, title: string ) {
+    this._router.navigateByUrl(`init/${URI}`);
+    this._conector.setUpdateTitle(title);
   }
 
 }

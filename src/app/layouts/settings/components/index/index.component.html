@@ -8,14 +8,14 @@
     <a routerLink="../enterprise-data" class="ripple-container mat-elevation-z4"
      matRipple
      [matRippleCentered]=true
-     *ngIf="admin">
+     *ngIf="role.gestion">
         <mat-icon>business</mat-icon>
         <h5>Datos de la empresa</h5>
     </a>
     <a routerLink="../billing" class="ripple-container mat-elevation-z4"
      matRipple
      [matRippleCentered]=true
-     *ngIf="admin">
+     *ngIf="role.gestion">
         <mat-icon>attach_money</mat-icon>
         <h5>Facturación</h5>
     </a>
@@ -46,7 +46,7 @@
     <a routerLink="../delete-account" class="ripple-container mat-elevation-z4"
      matRipple
      [matRippleCentered]=true
-     *ngIf="admin">
+     *ngIf="role.gestion">
         <mat-icon>power_settings_new</mat-icon>
         <h5>Eliminar cuenta</h5>
     </a>

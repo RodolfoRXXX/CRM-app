@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class IndexComponent {
 
-  admin: boolean = false;
+  role!: any
 
   constructor(
     private _auth: AuthService
@@ -17,11 +17,7 @@ export class IndexComponent {
 
   getDataUser() {
     const data = JSON.parse(this._auth.getDataFromLocalStorage());
-    if(JSON.parse(data.role)['gestión']) {
-      this.admin = true;
-    } else {
-      this.admin = false;
-    }
+    this.role = JSON.parse(data.role);
   }
 
 }

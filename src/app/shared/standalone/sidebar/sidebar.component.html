@@ -9,7 +9,7 @@
                 Configuración
             </p>
             <ng-container *ngFor="let menu of menuItems.getMenuSettings()">
-                <mat-list-item appAccordionLink *ngIf="(!admin && menu.type == 'admin')?(false):(true)" routerLinkActive="selected">
+                <mat-list-item appAccordionLink *ngIf="(!role.gestion && menu.type == 'admin')?(false):(true)" routerLinkActive="selected">
                     <div class="mat-list-item-content">
                         <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
                             <mat-icon>{{ menu.icon }}</mat-icon> 
@@ -23,38 +23,105 @@
         </ng-container>
 
         <ng-container *ngIf="setMenu == 'init'">
-            <ng-container *ngIf="true">
-                <p class="mat-nav-list-title">
-                    Gestión
-                </p>
-                <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuManagement()" routerLinkActive="selected">
-                    <div class="mat-list-item-content">
-                        <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
-                            <mat-icon>{{ menu.icon }}</mat-icon> 
-                            <span>{{ menu.name }}</span> 
-                            <span fxFlex></span>
-                        </a> 
-                    </div>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-            </ng-container>
-            <ng-container *ngIf="true">
-                <p class="mat-nav-list-title">
-                    Operación
-                </p>
-                <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuOperation()" routerLinkActive="selected">
-                    <div class="mat-list-item-content">
-                        <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
-                            <mat-icon>{{ menu.icon }}</mat-icon> 
-                            <span>{{ menu.name }}</span> 
-                            <span fxFlex></span>
-                        </a> 
-                    </div>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-            </ng-container>
+            <mat-accordion>
+                <mat-expansion-panel [expanded]="expand === 'gestion'" (opened)="redirectTo('management', 'Tablero')" *ngIf="role.gestion">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Gestión
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuManagement()" routerLinkActive="selected">
+                        <div class="mat-list-item-content">
+                            <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                                <mat-icon>{{ menu.icon }}</mat-icon> 
+                                <span>{{ menu.name }}</span> 
+                                <span fxFlex></span>
+                            </a> 
+                        </div>
+                    </mat-list-item>
+                </mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expand === 'operacion'" (opened)="redirectTo('operation', 'Tablero')" *ngIf="role.operacion">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Operación
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuOperation()" routerLinkActive="selected">
+                        <div class="mat-list-item-content">
+                            <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                                <mat-icon>{{ menu.icon }}</mat-icon> 
+                                <span>{{ menu.name }}</span> 
+                                <span fxFlex></span>
+                            </a> 
+                        </div>
+                    </mat-list-item>
+                </mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expand === 'deposito'" (opened)="redirectTo('depo', 'Tablero')" *ngIf="role.deposito">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Depósito
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuDepo()" routerLinkActive="selected">
+                        <div class="mat-list-item-content">
+                            <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                                <mat-icon>{{ menu.icon }}</mat-icon> 
+                                <span>{{ menu.name }}</span> 
+                                <span fxFlex></span>
+                            </a> 
+                        </div>
+                    </mat-list-item>
+                </mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expand === 'compras'" (opened)="redirectTo('purchase', 'Tablero')" *ngIf="role.compras">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Compras
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuPurchase()" routerLinkActive="selected">
+                        <div class="mat-list-item-content">
+                            <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                                <mat-icon>{{ menu.icon }}</mat-icon> 
+                                <span>{{ menu.name }}</span> 
+                                <span fxFlex></span>
+                            </a> 
+                        </div>
+                    </mat-list-item>
+                </mat-expansion-panel>
+                <mat-expansion-panel [expanded]="expand === 'administracion'" (opened)="redirectTo('administration', 'Tablero')" *ngIf="role.administracion">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Administración
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuAdministration()" routerLinkActive="selected">
+                        <div class="mat-list-item-content">
+                            <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                                <mat-icon>{{ menu.icon }}</mat-icon> 
+                                <span>{{ menu.name }}</span> 
+                                <span fxFlex></span>
+                            </a> 
+                        </div>
+                    </mat-list-item>
+                </mat-expansion-panel>
+                <mat-expansion-panel (opened)="redirectTo('chat', 'Tablero')">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Chat
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list-item appAccordionLink *ngFor="let menu of menuItems.getMenuChat()" routerLinkActive="selected">
+                        <div class="mat-list-item-content">
+                            <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                                <mat-icon>{{ menu.icon }}</mat-icon> 
+                                <span>{{ menu.name }}</span> 
+                                <span fxFlex></span>
+                            </a> 
+                        </div>
+                    </mat-list-item>
+                </mat-expansion-panel>
+            </mat-accordion>
         </ng-container>
 
     </mat-nav-list>
 </div>
-
