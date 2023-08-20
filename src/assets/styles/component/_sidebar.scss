@@ -80,6 +80,27 @@ mat-sidenav {
     margin: 0 25px;
   }
 }
+
+.submenu {
+  .mat-expansion-panel-body {
+    padding: 0 0 16px 24px!important;
+    .submenu-1 {
+      padding-right: 0!important;
+      mat-expansion-panel-header {
+        padding-left: 15px;
+        mat-panel-title {
+          font-weight: 400;
+          color: #67757c!important;
+        }
+      }
+      mat-panel-title mat-icon:not(.dd-icon) {
+        margin-right: 8px!important;
+      }
+    }
+  }
+}
+
+
 /*******************
 use profile section
 ******************/
