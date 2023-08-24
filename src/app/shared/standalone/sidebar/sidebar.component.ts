@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/enviroments/enviroment';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { Employee, Role } from '../../interfaces/employee.interface';
+import { Employee } from '../../interfaces/employee.interface';
 
 @Component({
   standalone: true,
@@ -30,6 +30,7 @@ export class SidebarComponent implements OnChanges {
   enterprise!: string;
   expand!: string;
   roles!: any;
+  is_employee!: boolean;
 
   constructor(
     public menuItems: MenuItems,
@@ -39,12 +40,16 @@ export class SidebarComponent implements OnChanges {
   ) {
     this.getDataUser();
   }
+  
   ngOnChanges(changes: SimpleChanges): void {
-    this.roles = JSON.parse(changes["employee"].currentValue.role)
-    for(var key in this.roles) {
-      if(this.roles[key]) {
-        this.expand = key;
-        break;
+    if(changes["employee"].currentValue.role) {
+      this.roles = JSON.parse(changes["employee"].currentValue.role)
+      for(var key in this.roles) {
+        if(this.roles[key]) {
+          this.expand = key;
+          this.is_employee = true;
+          break;
+        }
       }
     }
   }
@@ -61,8 +66,7 @@ export class SidebarComponent implements OnChanges {
       this.enterprise = data.enterprise;
     } else {
       this.enterprise = '';
-    }
-    
+    } 
   }
 
   redirectTo( URI: string, title: string ) {

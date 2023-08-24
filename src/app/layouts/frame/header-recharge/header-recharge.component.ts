@@ -30,9 +30,9 @@ export class HeaderRechargeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._conector.getRole().subscribe( data => {
+    this._conector.getEmployee().subscribe( data => {
       if(data) {
-        this.list = JSON.parse(data);
+        this.list = JSON.parse(data.role);
         for(var key in this.list) {
           if(this.list[key]) {
             this.role = key;
@@ -41,7 +41,7 @@ export class HeaderRechargeComponent implements OnInit {
         }
       }
       this.cdRef.detectChanges();
-    });
+    })
   }
 
   getDataUser() {

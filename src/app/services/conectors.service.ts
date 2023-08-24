@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Employee, empty_employee } from '../shared/interfaces/employee.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,9 @@ export class ConectorsService {
   private _updateTitle: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public readonly updateTitle$ : Observable<string> = this._updateTitle.asObservable();
 
-  //Observable para actualizar el string del header-recharge, el rol del usuario
-  private _role: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public readonly role$ : Observable<string> = this._role.asObservable();
+  //Observable para actualizar el observable que contiene el objeto del empleado que accedió
+  private _employee: BehaviorSubject<Employee> = new BehaviorSubject<Employee>(empty_employee);
+  public readonly employee$ : Observable<Employee> = this._employee.asObservable();
 
   //GETTERS
     getOpenedState(): Observable<boolean> {
@@ -39,8 +40,8 @@ export class ConectorsService {
     getUpdateTitle(): Observable<string> {
       return this.updateTitle$;
     }
-    getRole(): Observable<string> {
-      return this.role$;
+    getEmployee(): Observable<Employee> {
+      return this.employee$;
     }
 
 
@@ -57,8 +58,8 @@ export class ConectorsService {
     setUpdateTitle(text: string) {
       this._updateTitle.next(text);
     }
-    setRole(text: string) {
-      this._role.next(text);
+    setEmployee(employee: Employee) {
+      this._employee.next(employee);
     }
 
 }

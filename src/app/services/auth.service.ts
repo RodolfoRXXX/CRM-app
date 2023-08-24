@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { empty_employee } from '../shared/interfaces/employee.interface';
 import { ConectorsService } from './conectors.service';
 
 @Injectable({
@@ -129,7 +130,7 @@ export class AuthService {
   //Limpio toda la información del usuario logueado
   clearStorage(): boolean{
     this._conector.setUpdateTitle('');
-    this._conector.setRole('');
+    this._conector.setEmployee(empty_employee);
     if(this.getRememberOption()){
       this.setAuthenticatedState(false);
       localStorage.removeItem('token')

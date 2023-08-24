@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Menu } from '../interfaces/menu.interface';
 
 const MENUSETTINGS = [
-    { state: 'user-data', name: 'Datos del usuario', type: '', icon: 'fingerprint', children: [] },
-    { state: 'enterprise-data', name: 'Datos de la empresa', type: 'admmin', icon: 'business', children: [] },
+    { state: 'user-data', name: 'Datos del usuario', type: 'employee', icon: 'fingerprint', children: [] },
+    { state: 'enterprise-data', name: 'Datos de la empresa', type: 'admin', icon: 'business', children: [] },
     { state: 'billing', name: 'Facturación', type: 'admin', icon: 'attach_money', children: [] },
     { state: 'edit-userphoto', name: 'Editar imagen de usuario', type: '', icon: 'add_a_photo', children: [] },
     { state: 'edit-username', name: 'Editar nombre de usuario', type: '', icon: 'account_circle', children: [] },

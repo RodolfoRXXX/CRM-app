@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { Employee, empty_employee } from 'src/app/shared/interfaces/employee.interface';
 
 @Component({
   selector: 'app-init',
@@ -28,7 +28,11 @@ export class InitComponent implements OnInit {
 
   ngOnInit(): void {
     this.employee = this._actRoute.snapshot.data['employee'].data[0];
-    this._conector.setRole(this.employee.role);
+    if(this.employee) {
+      this._conector.setEmployee(this.employee);
+    } else {
+      this.employee = empty_employee;
+    }
     this._conector.getUpdate().subscribe( state => {
       if(this.update) {
         this.update = !this.update;

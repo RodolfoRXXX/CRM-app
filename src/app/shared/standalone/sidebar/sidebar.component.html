@@ -9,7 +9,7 @@
                 Configuración
             </p>
             <ng-container *ngFor="let menu of menuItems.getMenuSettings()">
-                <mat-list-item appAccordionLink *ngIf="(!roles.gestion && menu.type == 'admin')?(false):(true)" routerLinkActive="selected">
+                <mat-list-item appAccordionLink *ngIf="((!roles.gestion && menu.type == 'admin')||(!is_employee && menu.type == 'employee'))?(false):(true)" routerLinkActive="selected">
                     <div class="mat-list-item-content">
                         <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
                             <mat-icon>{{ menu.icon }}</mat-icon> 

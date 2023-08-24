@@ -9,12 +9,14 @@ import { Role } from 'src/app/shared/interfaces/employee.interface';
 export class IndexComponent {
 
   roles!: Role;
+  is_employee!: boolean;
 
   constructor(
     private _conector: ConectorsService
   ) { 
-    this._conector.getRole().subscribe( value => {
-      this.roles = JSON.parse(value);
+    this._conector.getEmployee().subscribe( value => {
+      this.roles = JSON.parse(value.role);
+      this.is_employee = (value.id != 0)?true:false;
     })
    }
 

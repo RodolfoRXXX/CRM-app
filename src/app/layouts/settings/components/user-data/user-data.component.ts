@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Employee } from 'src/app/shared/interfaces/employee.interface';
 
 @Component({
   selector: 'app-user-data',
@@ -17,6 +17,7 @@ export class UserDataComponent implements OnInit {
   loading!: boolean;
   disable_submit!: boolean;
   disable_submit_work!: boolean;
+  employee!: Employee;
 
   work_hour: any = {}
 
@@ -49,58 +50,26 @@ export class UserDataComponent implements OnInit {
 
   constructor(
     private _api: ApiService,
-    private _auth: AuthService,
     private _conector: ConectorsService,
     private _notify: NotificationService
   ) { 
     this.loading = false;
     this.disable_submit = false;
     this.disable_submit_work = false;
-    this.setDataUser();
   }
 
   ngOnInit(): void {
     this.createUserForm();
     this.createWorkForm();
+    this._conector.getEmployee().subscribe( employee => {
+      if(employee.id != 0) {
+        //empleado existente
+        this.setFormUser(employee);
+      }
+    })
   }
 
-  async getDataUser(): Promise<any> {
-    const data = await JSON.parse(this._auth.getDataFromLocalStorage());
-    return data;
-  }
-
-  setDataUser() {
-    this.getDataUser()
-        .then( data => {
-          this._api.postTypeRequest('profile/get-employee', {id_user: data.id}).subscribe({
-            next: (res: any) => {
-              if(res.status == 1){
-                //Accedió a la base de datos y no hubo problemas
-                if(res.data.length) {
-                  //Encontró employee
-                  this.setFormUser(res.data[0]);
-                  this.setFormWork(res.data[0]);
-                } else {
-                  //No existe el employee
-                  this.userDataForm.controls['id_user'].setValue(data.id);
-                  this.userDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
-                  this.workDataForm.controls['id_user'].setValue(data.id);
-                  this.workDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
-                }
-              } else{
-                  //Problemas de conexión con la base de datos(res.status == 0)
-                  this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
-              }
-            },
-            error: (error) => {
-              //Error de conexión, no pudo consultar con la base de datos
-              this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
-            }
-          })
-        })
-  }
-
-  setFormUser(data: any) {
+  setFormUser(data: Employee) {
     this.userDataForm.controls['id_user'].setValue(data.id);
     this.userDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
     this.userDataForm.controls['name'].setValue(data.name);
@@ -109,8 +78,6 @@ export class UserDataComponent implements OnInit {
     this.userDataForm.controls['date'].setValue(data.date);
     this.userDataForm.controls['phone'].setValue(data.phone);
     this.userDataForm.controls['mobile'].setValue(data.mobile);
-  }
-  setFormWork(data: any) {
     this.workDataForm.controls['id_user'].setValue(data.id);
     this.workDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
     const value = (data.working_hours)?JSON.parse(data.working_hours):'';
@@ -240,74 +207,47 @@ export class UserDataComponent implements OnInit {
     (day === 'sunday_out')?(this.workDataForm.get('work_hour.sunday.sunday_out')?.enable(), this.workDataForm.get('work_hour.sunday.sunday_out')?.setValue(e)):'';
   }
 
-  getNameErrorMessage() {
-    if(this.userDataForm.controls['name'].hasError('required')) {
-      return 'Tenés que ingresar un valor'}
-    if(this.userDataForm.controls['name'].hasError('minlength')) {
-      return 'Este valor debe tener más de 4 caracteres'}
-    if(this.userDataForm.controls['name'].hasError('maxlength')) {
-      return 'Este valor debe tener menos de 30 caracteres'}
-    return ''
-  }
-  getEmailErrorMessage() {
-    if(this.userDataForm.controls['email'].hasError('error_format')) {
-      return 'No es un correo válido'}
-    return ''
-  }
-  getAddressErrorMessage() {
-    if(this.userDataForm.controls['address'].hasError('required')) {
-      return 'Tenés que ingresar un valor'}
-    if(this.userDataForm.controls['address'].hasError('minlength')) {
-      return 'Este valor debe tener más de 4 caracteres'}
-    if(this.userDataForm.controls['address'].hasError('maxlength')) {
-      return 'Este valor debe tener menos de 30 caracteres'}
-    return ''
-  }
-  getPhoneErrorMessage() {
-    if(this.userDataForm.controls['phone'].hasError('minlength')) {
-      return 'Este valor debe tener más de 4 caracteres'}
-    if(this.userDataForm.controls['phone'].hasError('maxlength')) {
-      return 'Este valor debe tener menos de 15 caracteres'}
-    return ''
-  }
-  getMobileErrorMessage() {
-    if(this.userDataForm.controls['mobile'].hasError('required')) {
-      return 'Tenés que ingresar un valor'}
-    if(this.userDataForm.controls['mobile'].hasError('minlength')) {
-      return 'Este valor debe tener más de 4 caracteres'}
-    if(this.userDataForm.controls['mobile'].hasError('maxlength')) {
-      return 'Este valor debe tener menos de 20 caracteres'}
-    return ''
-  }
-  getNameErErrorMessage() {
-    if(this.workDataForm.controls['name_er'].hasError('minlength')) {
-      return 'Mínimo de 4 caracteres'}
-    if(this.workDataForm.controls['name_er'].hasError('maxlength')) {
-      return 'Máximo de 30 caracteres'}
-    return ''
-  }
-  getPhoneErErrorMessage() {
-    if(this.workDataForm.controls['phone_er'].hasError('minlength')) {
-      return 'Mínimo de 4 caracteres'}
-    if(this.workDataForm.controls['phone_er'].hasError('maxlength')) {
-      return 'Máximo de 15 caracteres'}
+  getError() {
+    //name
+    if(this.userDataForm.controls['name'].hasError('required')) return 'Tenés que ingresar un valor';
+    if(this.userDataForm.controls['name'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+    if(this.userDataForm.controls['name'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
+
+    //email
+    if(this.userDataForm.controls['email'].hasError('error_format')) return 'No es un correo válido';
+
+    //address
+    if(this.userDataForm.controls['address'].hasError('required')) return 'Tenés que ingresar un valor';
+    if(this.userDataForm.controls['address'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+    if(this.userDataForm.controls['address'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
+
+    //phone
+    if(this.userDataForm.controls['phone'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+    if(this.userDataForm.controls['phone'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
+
+    //mobile
+    if(this.userDataForm.controls['mobile'].hasError('required')) return 'Tenés que ingresar un valor';
+    if(this.userDataForm.controls['mobile'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+    if(this.userDataForm.controls['mobile'].hasError('maxlength')) return 'Este valor debe tener menos de 20 caracteres';
+
+    //name-er
+    if(this.workDataForm.controls['name_er'].hasError('minlength')) return 'Mínimo de 4 caracteres';
+    if(this.workDataForm.controls['name_er'].hasError('maxlength')) return 'Máximo de 30 caracteres';
+
+    //phone-er
+    if(this.workDataForm.controls['phone_er'].hasError('minlength')) return 'Mínimo de 4 caracteres';
+    if(this.workDataForm.controls['phone_er'].hasError('maxlength')) return 'Máximo de 15 caracteres';
+
     return ''
   }
   err_out() {
-    if(this.workDataForm.get('work_hour.monday.monday_out')!.hasError('required')) {
-      return 'Ingresá un valor'}
-    if(this.workDataForm.get('work_hour.tuesday.tuesday_out')!.hasError('required')) {
-      return 'Ingresá un valor'}
-    if(this.workDataForm.get('work_hour.wednesday.wednesday_out')!.hasError('required')) {
-      return 'Ingresá un valor'}
-    if(this.workDataForm.get('work_hour.thursday.thursday_out')!.hasError('required')) {
-      return 'Ingresá un valor'}
-    if(this.workDataForm.get('work_hour.friday.friday_out')!.hasError('required')) {
-      return 'Ingresá un valor'}
-    if(this.workDataForm.get('work_hour.saturday.saturday_out')!.hasError('required')) {
-      return 'Ingresá un valor'}
-    if(this.workDataForm.get('work_hour.sunday.sunday_out')!.hasError('required')) {
-      return 'Ingresá un valor'}
+    if(this.workDataForm.get('work_hour.monday.monday_out')!.hasError('required')) return 'Ingresá un valor';
+    if(this.workDataForm.get('work_hour.tuesday.tuesday_out')!.hasError('required')) return 'Ingresá un valor';
+    if(this.workDataForm.get('work_hour.wednesday.wednesday_out')!.hasError('required')) return 'Ingresá un valor';
+    if(this.workDataForm.get('work_hour.thursday.thursday_out')!.hasError('required')) return 'Ingresá un valor';
+    if(this.workDataForm.get('work_hour.friday.friday_out')!.hasError('required')) return 'Ingresá un valor';
+    if(this.workDataForm.get('work_hour.saturday.saturday_out')!.hasError('required')) return 'Ingresá un valor';
+    if(this.workDataForm.get('work_hour.sunday.sunday_out')!.hasError('required')) return 'Ingresá un valor';
     return ''
   }
 
