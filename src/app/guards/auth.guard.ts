@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, map, pipe, tap } from 'rxjs';
+import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 
   //Guard para cuidar rutas de usuarios no logueados
@@ -75,7 +76,7 @@ import { AuthService } from '../services/auth.service';
     return fx;
   }
 
-  //Guard para cuidar ruta de usuarios no activos
+  //Guard para cuidar ruta de usuarios no verificados
   export const is_active: CanActivateFn =
     (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
       return isActive();
@@ -87,13 +88,13 @@ import { AuthService } from '../services/auth.service';
     return _authSvc.isActive$.pipe(
       tap( (isActive : boolean) => {
         if(!isActive) {
-          _router.navigate(['blocked']);
+          _router.navigate(['verify']);
         }
       } )
     )
   }
 
-  //Guard para cuidar la ruta init si el usuario no está activo
+  //Guard para cuidar la ruta init si el usuario no está verificado
   export const isNot_active: CanActivateFn =
     (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
       return isNotActive();
@@ -109,4 +110,50 @@ import { AuthService } from '../services/auth.service';
     );
     const fx = change_sign(state);
     return fx;
+  }
+
+  //Guard para confirmar si el usuario es un empleado
+  export const is_employee: CanActivateFn =
+    (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+      return isEmployee();
+    };
+
+  const isEmployee = () : | boolean | UrlTree | Observable< boolean | UrlTree > | Promise< boolean | UrlTree > => {
+    const _apiSvc = inject(ApiService);
+    const _authSvc = inject(AuthService);
+    const _router  = inject(Router);
+
+    const id = _authSvc.getUserId();
+
+    if(!id) return _router.navigate(['blocked']);
+
+    const result = _apiSvc.postTypeRequest('profile/get-employee', {id_user: id})
+                  .pipe(
+                      map( (value:any) => (value.data.length)?true:false),
+                      tap( (value:boolean) => (!value)?_router.navigate(['blocked']):'' )
+                  )
+            return result;
+  }
+
+  //Guard para evitar que un empleado acceda al componente de "empleado bloqueado"
+  export const isNot_employee: CanActivateFn =
+    (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+      return isNotEmployee();
+    };
+
+  const isNotEmployee = () : | boolean | UrlTree | Observable< boolean | UrlTree > | Promise< boolean | UrlTree > => {
+    const _apiSvc = inject(ApiService);
+    const _authSvc = inject(AuthService);
+    const _router  = inject(Router);
+
+    const id = _authSvc.getUserId();
+
+    if(!id) return _router.navigate(['blocked']);
+
+    const result = _apiSvc.postTypeRequest('profile/get-employee', {id_user: id})
+                  .pipe(
+                      map( (value:any) => (value.data.length)?false:true),
+                      tap( (value:boolean) => (!value)?_router.navigate(['init']):'' )
+                  )
+            return result;
   }

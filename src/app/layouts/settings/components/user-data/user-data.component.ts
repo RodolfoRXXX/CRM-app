@@ -72,15 +72,20 @@ export class UserDataComponent implements OnInit {
   setDataUser() {
     this.getDataUser()
         .then( data => {
-          this._api.postTypeRequest('profile/get-employee', {id: data.id}).subscribe({
+          this._api.postTypeRequest('profile/get-employee', {id_user: data.id}).subscribe({
             next: (res: any) => {
               if(res.status == 1){
                 //Accedió a la base de datos y no hubo problemas
                 if(res.data.length) {
+                  //Encontró employee
                   this.setFormUser(res.data[0]);
                   this.setFormWork(res.data[0]);
                 } else {
-                  this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+                  //No existe el employee
+                  this.userDataForm.controls['id_user'].setValue(data.id);
+                  this.userDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
+                  this.workDataForm.controls['id_user'].setValue(data.id);
+                  this.workDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
                 }
               } else{
                   //Problemas de conexión con la base de datos(res.status == 0)
@@ -96,7 +101,8 @@ export class UserDataComponent implements OnInit {
   }
 
   setFormUser(data: any) {
-    this.userDataForm.controls['id'].setValue(data.id);
+    this.userDataForm.controls['id_user'].setValue(data.id);
+    this.userDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
     this.userDataForm.controls['name'].setValue(data.name);
     this.userDataForm.controls['email'].setValue(data.email);
     this.userDataForm.controls['address'].setValue(data.address);
@@ -105,7 +111,8 @@ export class UserDataComponent implements OnInit {
     this.userDataForm.controls['mobile'].setValue(data.mobile);
   }
   setFormWork(data: any) {
-    this.workDataForm.controls['id'].setValue(data.id);
+    this.workDataForm.controls['id_user'].setValue(data.id);
+    this.workDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
     const value = (data.working_hours)?JSON.parse(data.working_hours):'';
     this.work_hour = value;
     (value.monday)?this.workDataForm.get('work_hour.monday.monday_in')?.setValue(value.monday.monday_in):'';
@@ -128,7 +135,8 @@ export class UserDataComponent implements OnInit {
 
   createUserForm(): void {
     this.userDataForm = new FormGroup({
-        id: new FormControl(''),
+        id_user: new FormControl(''),
+        id_enterprise: new FormControl(''),
         name : new FormControl('', [
           Validators.required,
           Validators.minLength(4),
@@ -158,7 +166,8 @@ export class UserDataComponent implements OnInit {
 
   createWorkForm(): void {
     this.workDataForm = new FormGroup({
-      id: new FormControl(''),
+      id_user: new FormControl(''),
+      id_enterprise: new FormControl(''),
       work_hour: new FormGroup({
         monday: new FormGroup({
           monday_in: new FormControl({ value: '', disabled: true }),
@@ -303,7 +312,6 @@ export class UserDataComponent implements OnInit {
   }
 
   onSubmitUser() {
-    console.log(this.userDataForm.value);
     this.disable_submit = true;
     this.loading = true;
     this._api.postTypeRequest('profile/update-employee-personal', this.userDataForm.value).subscribe({
@@ -311,7 +319,7 @@ export class UserDataComponent implements OnInit {
         this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
-          if(res.data.changedRows == 1){
+          if(res.data.affectedRows == 1){
             //Modificó el usuario
             this._notify.showSuccess('Información actualizada con éxito!');
           } else{
@@ -338,6 +346,7 @@ export class UserDataComponent implements OnInit {
   }
 
   onSubmitWork() {
+    console.log(this.workDataForm.value) //no actualiza el work_hour cuando lo cambio
     this.disable_submit_work = true;
     this.loading = true;
     Object.assign(this.workDataForm.value.work_hour, this.work_hour);
@@ -346,7 +355,7 @@ export class UserDataComponent implements OnInit {
         this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
-          if(res.data.changedRows == 1){
+          if(res.data.affectedRows == 1){
             //Modificó el usuario
             this._notify.showSuccess('Información actualizada con éxito!');
           } else{

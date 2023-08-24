@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
-  selector: 'app-blocked',
-  templateUrl: './blocked.component.html'
+  selector: 'app-verify',
+  templateUrl: './verify.component.html'
 })
-export class BlockedComponent implements OnInit {
+export class VerifyComponent {
 
-  blockedForm!: FormGroup;
+  verifyForm!: FormGroup;
   loading: boolean = false;
   disable_submit!: boolean;
 
@@ -37,14 +37,14 @@ export class BlockedComponent implements OnInit {
   setDataUser() {
     this.getDataUser()
         .then( value => {
-          this.blockedForm.patchValue({
+          this.verifyForm.patchValue({
             email: value.email
           })
         })
   }
 
   createForm(): void {
-    this.blockedForm = new FormGroup({
+    this.verifyForm = new FormGroup({
         email: new FormControl(''),
         activation_code: new FormControl('', [
           Validators.required,
@@ -55,9 +55,9 @@ export class BlockedComponent implements OnInit {
   }
 
   getCodeErrorMessage() {
-    if(this.blockedForm.controls['activation_code'].hasError('required')) {
+    if(this.verifyForm.controls['activation_code'].hasError('required')) {
       return 'Tenés que ingresar un código'}
-    if(this.blockedForm.controls['activation_code'].hasError('minlength')) {
+    if(this.verifyForm.controls['activation_code'].hasError('minlength')) {
       return 'El código debe tener 10 caracteres'}
     return ''
   }
@@ -65,7 +65,7 @@ export class BlockedComponent implements OnInit {
   onSubmit() {
     this.disable_submit = true;
     this.loading = true;
-    this._api.postTypeRequest('profile/verificate-user', this.blockedForm.value).subscribe({
+    this._api.postTypeRequest('profile/verificate-user', this.verifyForm.value).subscribe({
       next: (res: any) => {
         if(res.status == 1){
           //Accedió a la base de datos y verificó el usuario y el código de activación

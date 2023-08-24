@@ -46,7 +46,7 @@ export class ForgetComponent implements OnInit {
 
   ngOnInit(): void {
     this.createEmailForm();
-    this.creeateFormMsg();
+    this.createFormMsg();
     this.createCodeForm();
     this.createPasswordForm();
     this.passwordFirst.valueChanges.subscribe( value => {
@@ -66,7 +66,7 @@ export class ForgetComponent implements OnInit {
     });
   }
 
-  creeateFormMsg() {
+  createFormMsg() {
     this.formMsg = new FormGroup({
       email: new FormControl(''),
       data: new FormControl(''),

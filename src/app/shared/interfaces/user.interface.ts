@@ -3,16 +3,7 @@ export interface User {
     name: string,
     email: string,
     password: string,
-    role: Role,
     state: string,
     thumbnail: string,
     code: string
-}
-
-export interface Role {
-    main: string,
-    second: string,
-    third: string,
-    fourth: string,
-    fifth: string
 }

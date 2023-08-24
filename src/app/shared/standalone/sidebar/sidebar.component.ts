@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { Router, RouterModule } from '@angular/router';
 import { MenuItems } from '../../menu-items/menu-items';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/enviroments/enviroment';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { Employee, Role } from '../../interfaces/employee.interface';
 
 @Component({
   standalone: true,
@@ -20,14 +21,15 @@ import { ConectorsService } from 'src/app/services/conectors.service';
     MenuItems
   ]
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnChanges {
 
   @Input() setMenu!: string;
+  @Input() employee!: Employee;
   name!: string;
   pic!: string;
   enterprise!: string;
   expand!: string;
-  role!: any
+  roles!: any;
 
   constructor(
     public menuItems: MenuItems,
@@ -37,10 +39,18 @@ export class SidebarComponent {
   ) {
     this.getDataUser();
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.roles = JSON.parse(changes["employee"].currentValue.role)
+    for(var key in this.roles) {
+      if(this.roles[key]) {
+        this.expand = key;
+        break;
+      }
+    }
+  }
 
   getDataUser() {
     const data = JSON.parse(this._auth.getDataFromLocalStorage());
-    this.role = JSON.parse(data.role);
     if(data.name.length) {
       this.name = data.name;
     }else {
@@ -52,12 +62,7 @@ export class SidebarComponent {
     } else {
       this.enterprise = '';
     }
-    for(var key in JSON.parse(data.role)) {
-      if(JSON.parse(data.role)[key]) {
-        this.expand = key;
-        break;
-      }
-  }
+    
   }
 
   redirectTo( URI: string, title: string ) {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { ConectorsService } from 'src/app/services/conectors.service';
+import { Role } from 'src/app/shared/interfaces/employee.interface';
 
 @Component({
   selector: 'app-index',
@@ -7,17 +8,14 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class IndexComponent {
 
-  role!: any
+  roles!: Role;
 
   constructor(
-    private _auth: AuthService
-  ) {
-    this.getDataUser();
-  }
-
-  getDataUser() {
-    const data = JSON.parse(this._auth.getDataFromLocalStorage());
-    this.role = JSON.parse(data.role);
-  }
+    private _conector: ConectorsService
+  ) { 
+    this._conector.getRole().subscribe( value => {
+      this.roles = JSON.parse(value);
+    })
+   }
 
 }

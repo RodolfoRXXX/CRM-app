@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { ConectorsService } from 'src/app/services/conectors.service';
 import { environment } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-header-recharge',
   templateUrl: './header-recharge.component.html'
 })
-export class HeaderRechargeComponent {
+export class HeaderRechargeComponent implements OnInit {
 
   @Input() screenLarge!: boolean;
   @Input() isAuthenticated!: boolean;
@@ -20,9 +21,27 @@ export class HeaderRechargeComponent {
 
   constructor(
     private _auth: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _conector: ConectorsService,
+    private cdRef:ChangeDetectorRef,
   ) {
     this.getDataUser();
+    this.role = '';
+  }
+
+  ngOnInit(): void {
+    this._conector.getRole().subscribe( data => {
+      if(data) {
+        this.list = JSON.parse(data);
+        for(var key in this.list) {
+          if(this.list[key]) {
+            this.role = key;
+            break;
+          }
+        }
+      }
+      this.cdRef.detectChanges();
+    });
   }
 
   getDataUser() {
@@ -33,15 +52,6 @@ export class HeaderRechargeComponent {
       this.name = data.email.split("@")[0];
     }
     this.pic = environment.SERVER + data.thumbnail;
-    if(data.role.length) {
-      this.list = JSON.parse(data.role)
-      for(var key in this.list) {
-        if(this.list[key]) {
-          this.role = key;
-          break;
-        }
-    }
-    }
   }
 
   logOff(): void {

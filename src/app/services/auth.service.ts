@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ConectorsService } from './conectors.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  constructor(
+    private _conector: ConectorsService
+  ) { }
 
   //Observable para usuario logueado
   private _isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -27,6 +32,9 @@ export class AuthService {
       //Cambia el estado del observable isAuthenticated$ si las credenciales se verificaron
       isAuthenticated() {
         if(localStorage.getItem("token") !== null) this._isAuthenticated.next(true);
+      }
+      isNotAuthenticated() {
+        this.setAuthenticatedState(false);
       }
 
       //Cambia el estado del observable isActive$ si el usuario está activo
@@ -56,10 +64,7 @@ export class AuthService {
         this._isActive.next(state);
       }
 
-  isNotAuthenticated() {
-    this.setAuthenticatedState(false);
-  }
-
+// ----------------- SET ----------------
   //Guarda las credenciales de acceso en el localstorage y actualiza los observables de logged y authenticated
   setDataInLocalStorage(id: number, token: any, state:any, data:any, remember:boolean): void {
     localStorage.setItem('userData', JSON.stringify(data));
@@ -71,17 +76,33 @@ export class AuthService {
     this.setAuthenticatedState(true);
     //this.isActive();
   }
-
-  //Devuelvo las credenciales de acceso
-  getDataFromLocalStorage(): any | null {
-    return localStorage.getItem('userData');
-  }
-
   //Guardo el Id del usuario logueado
   setIdUserToLocalStorage(id: number): void {
     localStorage.setItem("userId", id.toString());
   }
+  //Guardo el state activo o no de la cuenta
+  setState(state: any): void {
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+  //Guardo el token del usuario logueado
+  setToken(token: any): void {
+    localStorage.setItem('token', token);
+  }
+  //Setea la variable rememberOption en el localStorage para saber si el usuario desea guardar sus datos para el próximo inicio de sesión
+  setRememberOption(remember_me: boolean) {
+    localStorage.setItem("rememberOption", remember_me.toString());
+  }
+  //Setear el objeto role del usuario logueado y guardarlo en el localStorage
+  setRole(role: any): void {
+    localStorage.setItem('role', role);
+  }
 
+
+// ----------------- SET ----------------
+  //Devuelvo las credenciales de acceso
+  getDataFromLocalStorage(): any | null {
+    return localStorage.getItem('userData');
+  }
   //Obtengo el userId del usuario logueado
   getUserId(){
     if (localStorage.getItem('userId')) {
@@ -90,35 +111,25 @@ export class AuthService {
       return null;
     }
   }
-
-  //Guardo el state activo o no de la cuenta
-  setState(state: any): void {
-    localStorage.setItem('state', JSON.stringify(state));
-  }
-
-  //Guardo el token del usuario logueado
-  setToken(token: any): void {
-    localStorage.setItem('token', token);
-  }
-
   //Obtengo el token del usuario logueado
   getToken(): any | null{
     return localStorage.getItem('token');
   }
-
-  //Setea la variable rememberOption en el localStorage para saber si el usuario desea guardar sus datos para el próximo inicio de sesión
-  setRememberOption(remember_me: boolean) {
-      localStorage.setItem("rememberOption", remember_me.toString());
-  }
-
-  //Obtnener el valor de la variable rememberOption
+  //Obtener el valor de la variable rememberOption
   getRememberOption() {
     let remember_me = (localStorage.getItem('rememberOption') === 'true');
     return remember_me;
   }
+  //Recuperar el objeto role del usuario logueado
+  getRole(): any | null{
+    return localStorage.getItem('role');
+  }
 
+// ------------- CLEAR STORAGE --------------
   //Limpio toda la información del usuario logueado
   clearStorage(): boolean{
+    this._conector.setUpdateTitle('');
+    this._conector.setRole('');
     if(this.getRememberOption()){
       this.setAuthenticatedState(false);
       localStorage.removeItem('token')

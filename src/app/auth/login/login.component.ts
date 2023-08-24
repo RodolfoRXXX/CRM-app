@@ -91,7 +91,6 @@ export class LoginComponent implements OnInit {
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
           this.disable_submit = false;
-          console.log('error')
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
         }
       },

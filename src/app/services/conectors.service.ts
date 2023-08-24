@@ -22,6 +22,10 @@ export class ConectorsService {
   private _updateTitle: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public readonly updateTitle$ : Observable<string> = this._updateTitle.asObservable();
 
+  //Observable para actualizar el string del header-recharge, el rol del usuario
+  private _role: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public readonly role$ : Observable<string> = this._role.asObservable();
+
   //GETTERS
     getOpenedState(): Observable<boolean> {
       return this.isOpened$;
@@ -34,6 +38,9 @@ export class ConectorsService {
     }
     getUpdateTitle(): Observable<string> {
       return this.updateTitle$;
+    }
+    getRole(): Observable<string> {
+      return this.role$;
     }
 
 
@@ -49,6 +56,9 @@ export class ConectorsService {
     }
     setUpdateTitle(text: string) {
       this._updateTitle.next(text);
+    }
+    setRole(text: string) {
+      this._role.next(text);
     }
 
 }
