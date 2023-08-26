@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
@@ -20,7 +19,6 @@ export class EditUsernameComponent implements OnInit {
   constructor(
     private _auth: AuthService,
     private _api: ApiService,
-    private _conector: ConectorsService,
     private _notify: NotificationService
   ) {
     this.loading = false;
@@ -92,14 +90,14 @@ export class EditUsernameComponent implements OnInit {
             this._notify.showSuccess('Nombre de usuario actualizado!');
             this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this._auth.getRememberOption());
             this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           } else{
             //No hubo modificación
             this.disable_submit = false;
             this._notify.showError('No se detectaron cambios. Ingresá un nombre de usuario diferente al actual.')
           }
-          setTimeout(() => {
-            this._conector.setUpdate(true);
-          }, 200);
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
           this.disable_submit = false;

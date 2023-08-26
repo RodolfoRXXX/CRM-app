@@ -86,16 +86,16 @@
                 <mat-tab label="Datos laborales">
                     <form [formGroup]="workDataForm" (ngSubmit)="onSubmitWork()">
                         <div class="user-data-container">
-                            <ng-container formGroupName="work_hour">
+                            <div formGroupName="work_hour">
                                 <div class="user-data-input mt-2">
                                     <p class="">Ingresá tus horarios laborales</p>
                                 </div>
                                 <!-- Monday -->
-                                <div class="work-hour border-bottom mb-1">
+                                <div class="work-hour border-bottom mb-1" formGroupName="monday">
                                     <div class="work-hour-day">
                                         <mat-checkbox (change)="enableRange($event, 'monday_in')">Lunes</mat-checkbox>
                                     </div>
-                                    <div class="work-hour-range" formGroupName="monday">
+                                    <div class="work-hour-range">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Entrada</mat-label>
                                             <mat-select formControlName="monday_in" (valueChange)="enableRange($event, 'monday_out')">
@@ -265,7 +265,7 @@
                                         </mat-form-field>
                                     </div>
                                 </div>
-                            </ng-container>
+                            </div>
                             <div class="user-data-input mt-2">
                                 <p class="m-b-0">Ingresá tu contacto de emergencia</p>
                             </div>

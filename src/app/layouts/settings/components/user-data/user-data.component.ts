@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
@@ -51,16 +51,17 @@ export class UserDataComponent implements OnInit {
   constructor(
     private _api: ApiService,
     private _conector: ConectorsService,
-    private _notify: NotificationService
+    private _notify: NotificationService,
+    private cdr: ChangeDetectorRef
   ) { 
     this.loading = false;
     this.disable_submit = false;
     this.disable_submit_work = false;
+    this.createUserForm();
+    this.createWorkForm();
   }
 
   ngOnInit(): void {
-    this.createUserForm();
-    this.createWorkForm();
     this._conector.getEmployee().subscribe( employee => {
       if(employee.id != 0) {
         //empleado existente
@@ -70,40 +71,57 @@ export class UserDataComponent implements OnInit {
   }
 
   setFormUser(data: Employee) {
-    this.userDataForm.controls['id_user'].setValue(data.id);
-    this.userDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
-    this.userDataForm.controls['name'].setValue(data.name);
-    this.userDataForm.controls['email'].setValue(data.email);
-    this.userDataForm.controls['address'].setValue(data.address);
-    this.userDataForm.controls['date'].setValue(data.date);
-    this.userDataForm.controls['phone'].setValue(data.phone);
-    this.userDataForm.controls['mobile'].setValue(data.mobile);
-    this.workDataForm.controls['id_user'].setValue(data.id);
-    this.workDataForm.controls['id_enterprise'].setValue(data.id_enterprise);
+    this.userDataForm.setValue({
+      id_user: data.id,
+      name: data.name,
+      email: data.email,
+      address: data.address,
+      date: data.date,
+      phone: data.phone,
+      mobile: data.mobile,
+    })
     const value = (data.working_hours)?JSON.parse(data.working_hours):'';
     this.work_hour = value;
-    (value.monday)?this.workDataForm.get('work_hour.monday.monday_in')?.setValue(value.monday.monday_in):'';
-    (value.monday)?this.workDataForm.get('work_hour.monday.monday_out')?.setValue(value.monday.monday_out):'';
-    (value.tuesday)?this.workDataForm.get('work_hour.tuesday.tuesday_in')?.setValue(value.tuesday.tuesday_in):'';
-    (value.tuesday)?this.workDataForm.get('work_hour.tuesday.tuesday_out')?.setValue(value.tuesday.tuesday_out):'';
-    (value.wednesday)?this.workDataForm.get('work_hour.wednesday.wednesday_in')?.setValue(value.wednesday.wednesday_in):'';
-    (value.wednesday)?this.workDataForm.get('work_hour.wednesday.wednesday_out')?.setValue(value.wednesday.wednesday_out):'';
-    (value.thursday)?this.workDataForm.get('work_hour.thursday.thursday_in')?.setValue(value.thursday.thursday_in):'';
-    (value.thursday)?this.workDataForm.get('work_hour.thursday.thursday_out')?.setValue(value.thursday.thursday_out):'';
-    (value.friday)?this.workDataForm.get('work_hour.friday.friday_in')?.setValue(value.friday.friday_in):'';
-    (value.friday)?this.workDataForm.get('work_hour.friday.friday_out')?.setValue(value.friday.friday_out):'';
-    (value.saturday)?this.workDataForm.get('work_hour.saturday.saturday_in')?.setValue(value.saturday.saturday_in):'';
-    (value.saturday)?this.workDataForm.get('work_hour.saturday.saturday_out')?.setValue(value.saturday.saturday_out):'';
-    (value.sunday)?this.workDataForm.get('work_hour.sunday.sunday_in')?.setValue(value.sunday.sunday_in):'';
-    (value.sunday)?this.workDataForm.get('work_hour.sunday.sunday_out')?.setValue(value.sunday.sunday_out):'';
-    (data.name_er)?this.workDataForm.controls['name_er'].setValue(data.name_er):'';
-    (data.phone_er)?this.workDataForm.controls['phone_er'].setValue(data.phone_er):'';
+    this.workDataForm.setValue({
+      id_user: data.id,
+      work_hour: {
+        monday: {
+          monday_in: (value.monday)?value.monday.monday_in:'',
+          monday_out: (value.monday)?value.monday.monday_out:''
+        },
+        tuesday: {
+          tuesday_in: (value.tuesday)?value.tuesday.tuesday_in:'',
+          tuesday_out: (value.tuesday)?value.tuesday.tuesday_out:''
+        },
+        wednesday: {
+          wednesday_in: (value.wednesday)?value.wednesday.wednesday_in:'',
+          wednesday_out: (value.wednesday)?value.wednesday.wednesday_out:''
+        },
+        thursday: {
+          thursday_in: (value.thursday)?value.thursday.thursday_in:'',
+          thursday_out: (value.thursday)?value.thursday.thursday_out:''
+        },
+        friday: {
+          friday_in: (value.friday)?value.friday.friday_in:'',
+          friday_out: (value.friday)?value.friday.friday_out:''
+        },
+        saturday: {
+          saturday_in: (value.saturday)?value.saturday.saturday_in:'',
+          saturday_out: (value.saturday)?value.saturday.saturday_out:''
+        },
+        sunday: {
+          sunday_in: (value.sunday)?value.sunday.sunday_in:'',
+          sunday_out: (value.sunday)?value.sunday.sunday_out:''
+        },
+      },
+      name_er: data.name_er,
+      phone_er: data.phone_er
+    });
   }
 
   createUserForm(): void {
     this.userDataForm = new FormGroup({
         id_user: new FormControl(''),
-        id_enterprise: new FormControl(''),
         name : new FormControl('', [
           Validators.required,
           Validators.minLength(4),
@@ -134,7 +152,6 @@ export class UserDataComponent implements OnInit {
   createWorkForm(): void {
     this.workDataForm = new FormGroup({
       id_user: new FormControl(''),
-      id_enterprise: new FormControl(''),
       work_hour: new FormGroup({
         monday: new FormGroup({
           monday_in: new FormControl({ value: '', disabled: true }),
@@ -259,13 +276,14 @@ export class UserDataComponent implements OnInit {
         this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
-          if(res.data.affectedRows == 1){
+          if(res.changedRows == 1){
             //Modificó el usuario
             this._notify.showSuccess('Información actualizada con éxito!');
+            this._conector.setEmployee(res.data[0]);
           } else{
             //No hubo modificación
             this.disable_submit = false;
-            this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
+            this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.');
           }
           setTimeout(() => {
             this._conector.setUpdate(true);
@@ -282,22 +300,22 @@ export class UserDataComponent implements OnInit {
         this.loading =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }
-    })
+    })    
   }
 
   onSubmitWork() {
-    console.log(this.workDataForm.value) //no actualiza el work_hour cuando lo cambio
     this.disable_submit_work = true;
     this.loading = true;
-    Object.assign(this.workDataForm.value.work_hour, this.work_hour);
-    this._api.postTypeRequest('profile/update-employee-work', this.workDataForm.value).subscribe({
+    if(this.workDataForm['value']['work_hour']) Object.assign(this.work_hour, this.workDataForm['value']['work_hour']);
+    this._api.postTypeRequest('profile/update-employee-work', {data: this.workDataForm['value'], work_hour: this.work_hour}).subscribe({
       next: (res: any) => {
         this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
-          if(res.data.affectedRows == 1){
+          if(res.changedRows == 1){
             //Modificó el usuario
             this._notify.showSuccess('Información actualizada con éxito!');
+            this._conector.setEmployee(res.data[0]);
           } else{
             //No hubo modificación
             this.disable_submit = false;
