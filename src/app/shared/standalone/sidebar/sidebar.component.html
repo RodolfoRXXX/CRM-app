@@ -25,7 +25,7 @@
         <ng-container *ngIf="setMenu == 'init'">
             <mat-accordion>
 
-                <mat-expansion-panel class="submenu" [expanded]="expand === 'gestion'" (opened)="redirectTo('management', 'Tablero')" *ngIf="roles.gestion">
+                <mat-expansion-panel class="submenu" [expanded]="expand === 'gestion'" (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Gestión');" *ngIf="roles.gestion">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             Gestión
@@ -35,7 +35,7 @@
                         <mat-list-item class="submenu-1" [class.submenu-1]=" menu.children.length " [routerLinkActive]="(menu.children.length == 0)?'selected':''">
                             <div *ngIf="menu.children.length">
                                 <mat-accordion>
-                                    <mat-expansion-panel>
+                                    <mat-expansion-panel (opened)="setTitle(menu.name)">
                                         <mat-expansion-panel-header>
                                             <mat-panel-title>
                                                 <mat-icon>{{ menu.icon }}</mat-icon> 
@@ -64,7 +64,7 @@
                     </ng-container>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel class="submenu" [expanded]="expand === 'operacion'" (opened)="redirectTo('operation', 'Tablero')" *ngIf="roles.operacion">
+                <mat-expansion-panel class="submenu" [expanded]="expand === 'operacion'" (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Operación');" *ngIf="roles.operacion">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             Operación
@@ -74,7 +74,7 @@
                         <mat-list-item class="submenu-1" [class.submenu-1]=" menu.children.length " [routerLinkActive]="(menu.children.length == 0)?'selected':''">
                             <div *ngIf="menu.children.length">
                                 <mat-accordion>
-                                    <mat-expansion-panel>
+                                    <mat-expansion-panel (opened)="setTitle(menu.name)">
                                         <mat-expansion-panel-header>
                                             <mat-panel-title>
                                                 <mat-icon>{{ menu.icon }}</mat-icon> 
@@ -104,7 +104,7 @@
                     </ng-container>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel class="submenu" [expanded]="expand === 'deposito'" (opened)="redirectTo('depo', 'Tablero')" *ngIf="roles.deposito">
+                <mat-expansion-panel class="submenu" [expanded]="expand === 'deposito'" (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Depósito');" *ngIf="roles.deposito">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             Depósito
@@ -114,7 +114,7 @@
                         <mat-list-item class="submenu-1" [class.submenu-1]=" menu.children.length " [routerLinkActive]="(menu.children.length == 0)?'selected':''">
                             <div *ngIf="menu.children.length">
                                 <mat-accordion>
-                                    <mat-expansion-panel>
+                                    <mat-expansion-panel (opened)="setTitle(menu.name)">
                                         <mat-expansion-panel-header>
                                             <mat-panel-title>
                                                 <mat-icon>{{ menu.icon }}</mat-icon> 
@@ -144,7 +144,7 @@
                     </ng-container>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel class="submenu" [expanded]="expand === 'administracion'" (opened)="redirectTo('administration', 'Tablero')" *ngIf="roles.administracion">
+                <mat-expansion-panel class="submenu" [expanded]="expand === 'administracion'" (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Administración');" *ngIf="roles.administracion">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             Administración
@@ -154,7 +154,7 @@
                         <mat-list-item class="submenu-1" [class.submenu-1]=" menu.children.length " [routerLinkActive]="(menu.children.length == 0)?'selected':''">
                             <div *ngIf="menu.children.length">
                                 <mat-accordion>
-                                    <mat-expansion-panel>
+                                    <mat-expansion-panel (opened)="setTitle(menu.name)">
                                         <mat-expansion-panel-header>
                                             <mat-panel-title>
                                                 <mat-icon>{{ menu.icon }}</mat-icon> 
@@ -184,7 +184,7 @@
                     </ng-container>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel (opened)="redirectTo('chat', 'Tablero')">
+                <mat-expansion-panel (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Chat');">
                     <mat-expansion-panel-header>
                     <mat-panel-title>
                         Chat

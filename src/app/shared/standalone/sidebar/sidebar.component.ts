@@ -69,9 +69,14 @@ export class SidebarComponent implements OnChanges {
     } 
   }
 
-  redirectTo( URI: string, title: string ) {
+  redirectTo( URI: string ) {
     this._router.navigateByUrl(`init/${URI}`);
+  }
+  setTitle( title: string ) {
     this._conector.setUpdateTitle(title);
+  }
+  setSector( sector: string ) {
+    this._conector.setUpdateSector(sector);
   }
 
 }

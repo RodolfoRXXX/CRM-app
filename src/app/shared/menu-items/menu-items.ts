@@ -13,21 +13,19 @@ const MENUSETTINGS = [
 ];
 
 const MENUMANAGEMENT = [
-    { state: 'management', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
+    { state: 'dashboard', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
     { state: 'tickets-management', name: 'Tickets', type: '', icon: 'assignment', children: [
-        { state: 'ticket-creator', name: 'Crear ticket', type: '', icon: '' },
-        { state: 'ticket-list', name: 'Lista de tickets', type: '', icon: '' },
-        { state: 'ticket-historic', name: 'Histórico de tickets', type: '', icon: '' }
+        { state: 'ticket/create-ticket', name: 'Crear ticket', type: '', icon: '' },
+        { state: 'ticket/list-ticket', name: 'Lista de tickets', type: '', icon: '' },
+        { state: 'ticket/historic-ticket', name: 'Histórico de tickets', type: '', icon: '' }
     ] },
     { state: 'indicators-management', name: 'Indicadores', type: '', icon: 'assessment', children: [
-        { state: 'ticket-creator', name: 'Indicador 1', type: '', icon: 'dashboard' },
-        { state: 'ticket-list', name: 'Indicador 2', type: '', icon: 'dashboard' },
-        { state: 'ticket-historic', name: 'Indicador 3', type: '', icon: 'dashboard' }
+        { state: 'indicator1', name: 'Indicador 1', type: '', icon: '' },
+        { state: 'indicator2', name: 'Indicador 2', type: '', icon: '' },
+        { state: 'indicator3', name: 'Indicador 3', type: '', icon: '' }
     ] },
-    { state: 'users-management', name: 'Usuarios', type: '', icon: 'people', children: [
-        { state: 'ticket-creator', name: 'Usuarios 1', type: '', icon: 'dashboard' },
-        { state: 'ticket-list', name: 'Usuarios 2', type: '', icon: 'dashboard' },
-        { state: 'ticket-historic', name: 'Usuarios 3', type: '', icon: 'dashboard' }
+    { state: 'users-management', name: 'Empleados', type: '', icon: 'people', children: [
+        { state: 'employee/employee-list', name: 'Lista de empleados', type: '', icon: '' }
     ] }
 ];
 

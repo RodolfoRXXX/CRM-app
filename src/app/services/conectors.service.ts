@@ -19,9 +19,13 @@ export class ConectorsService {
   private _update: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public readonly update$ : Observable<boolean> = this._update.asObservable();
 
-  //Observable para actualizar el string de la barra superior de "init"
+  //Observable para actualizar el string de título de la barra superior de "init"
   private _updateTitle: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public readonly updateTitle$ : Observable<string> = this._updateTitle.asObservable();
+
+  //Observable para actualizar el string final de la barra superior de "init"
+  private _updateSector: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public readonly updateSector$ : Observable<string> = this._updateSector.asObservable();
 
   //Observable para actualizar el observable que contiene el objeto del empleado que accedió
   private _employee: BehaviorSubject<Employee> = new BehaviorSubject<Employee>(empty_employee);
@@ -40,6 +44,9 @@ export class ConectorsService {
     getUpdateTitle(): Observable<string> {
       return this.updateTitle$;
     }
+    getUpdateSector(): Observable<string> {
+      return this.updateSector$;
+    }
     getEmployee(): Observable<Employee> {
       return this.employee$;
     }
@@ -57,6 +64,9 @@ export class ConectorsService {
     }
     setUpdateTitle(text: string) {
       this._updateTitle.next(text);
+    }
+    setUpdateSector(text: string) {
+      this._updateSector.next(text);
     }
     setEmployee(employee: Employee) {
       this._employee.next(employee);

@@ -67,9 +67,12 @@ const routes: Routes = [
         { 
           path: '**', 
           redirectTo: 'page-not-found', 
-          pathMatch: 'full' }
+          pathMatch: 'full' 
+        }
       ]
-  }
+  },
+  { path: 'ticket', loadChildren: () => import('./work-modules/ticket/ticket.module').then(m => m.TicketModule) },
+  { path: 'employee', loadChildren: () => import('./work-modules/employee/employee.module').then(m => m.EmployeeModule) }
 ];
 
 

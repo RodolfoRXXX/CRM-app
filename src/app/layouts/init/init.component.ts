@@ -14,6 +14,7 @@ export class InitComponent implements OnInit {
   mode!: any;
   update!: boolean;
   title!: string;
+  sector!: string;
   employee!: Employee;
 
   constructor(
@@ -46,7 +47,10 @@ export class InitComponent implements OnInit {
   ngAfterViewChecked() {
     this._conector.getUpdateTitle().subscribe( title => {
       this.title = title;
-    } )
+    });
+    this._conector.getUpdateSector().subscribe( sector => {
+      this.sector = sector;
+    });
     this.cdRef.detectChanges();
   }
 
