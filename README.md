@@ -1,4 +1,4 @@
-# Limpar projectt
+# Limpar project
 Aplicación que sirve como un sistema de gestión de prueb para una empresa de recolección
 
 <h3>Primera etapa</h3>
