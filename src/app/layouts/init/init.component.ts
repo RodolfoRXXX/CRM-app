@@ -1,6 +1,4 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee, empty_employee } from 'src/app/shared/interfaces/employee.interface';
 
@@ -19,21 +17,12 @@ export class InitComponent implements OnInit {
 
   constructor(
     private _conector: ConectorsService,
-    private cdRef:ChangeDetectorRef,
-    private _actRoute: ActivatedRoute,
-    private _auth: AuthService
+    private cdRef:ChangeDetectorRef
   ) {
-    this._conector.getOpenedState().subscribe( state => this.opened = state )
-    this._conector.getScreenState().subscribe( state => state?this.mode = 'side':this.mode = 'over' )
+    
   }
 
   ngOnInit(): void {
-    this.employee = this._actRoute.snapshot.data['employee'].data[0];
-    if(this.employee) {
-      this._conector.setEmployee(this.employee);
-    } else {
-      this.employee = empty_employee;
-    }
     this._conector.getUpdate().subscribe( state => {
       if(this.update) {
         this.update = !this.update;

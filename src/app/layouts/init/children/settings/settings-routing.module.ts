@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SettingsComponent } from './settings.component';
-import { BillingComponent } from './components/billing/billing.component';
-import { UserDataComponent } from './components/user-data/user-data.component';
-import { EditUsernameComponent } from './components/edit-username/edit-username.component';
-import { EditPasswordComponent } from './components/edit-password/edit-password.component';
-import { EditEmailComponent } from './components/edit-email/edit-email.component';
-import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
-import { IndexComponent } from './components/index/index.component';
-import { EditUserphotoComponent } from './components/edit-userphoto/edit-userphoto.component';
-import { EnterpriseDataComponent } from './components/enterprise-data/enterprise-data.component';
+import { BillingComponent } from '../../../settings/components/billing/billing.component';
+import { UserDataComponent } from '../../../settings/components/user-data/user-data.component';
+import { EditUsernameComponent } from '../../../settings/components/edit-username/edit-username.component';
+import { EditPasswordComponent } from '../../../settings/components/edit-password/edit-password.component';
+import { EditEmailComponent } from '../../../settings/components/edit-email/edit-email.component';
+import { DeleteAccountComponent } from '../../../settings/components/delete-account/delete-account.component';
+import { IndexComponent } from '../../../settings/components/index/index.component';
+import { EditUserphotoComponent } from '../../../settings/components/edit-userphoto/edit-userphoto.component';
+import { EnterpriseDataComponent } from '../../../settings/components/enterprise-data/enterprise-data.component';
 
 const routes: Routes = [
   { path: '', component: SettingsComponent,

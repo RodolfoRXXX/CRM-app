@@ -4,21 +4,20 @@ import { CommonModule } from '@angular/common';
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings.component';
 import { MaterialModule } from 'src/app/material/material/material.module';
-import { BillingComponent } from './components/billing/billing.component';
-import { UserDataComponent } from './components/user-data/user-data.component';
-import { EditUsernameComponent } from './components/edit-username/edit-username.component';
-import { EditPasswordComponent } from './components/edit-password/edit-password.component';
-import { EditEmailComponent } from './components/edit-email/edit-email.component';
-import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
+import { BillingComponent } from '../../../settings/components/billing/billing.component';
+import { UserDataComponent } from '../../../settings/components/user-data/user-data.component';
+import { EditUsernameComponent } from '../../../settings/components/edit-username/edit-username.component';
+import { EditPasswordComponent } from '../../../settings/components/edit-password/edit-password.component';
+import { EditEmailComponent } from '../../../settings/components/edit-email/edit-email.component';
+import { DeleteAccountComponent } from '../../../settings/components/delete-account/delete-account.component';
 import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.component';
-import { IndexComponent } from './components/index/index.component';
+import { IndexComponent } from '../../../settings/components/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { EditUserphotoComponent } from './components/edit-userphoto/edit-userphoto.component';
+import { EditUserphotoComponent } from '../../../settings/components/edit-userphoto/edit-userphoto.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
-import { EnterpriseDataComponent } from './components/enterprise-data/enterprise-data.component';
-import { UpdateDirective } from 'src/app/shared/directives/update/update.directive';
+import { EnterpriseDataComponent } from '../../../settings/components/enterprise-data/enterprise-data.component';
 
 
 @NgModule({
@@ -32,8 +31,7 @@ import { UpdateDirective } from 'src/app/shared/directives/update/update.directi
         DeleteAccountComponent,
         IndexComponent,
         EditUserphotoComponent,
-        EnterpriseDataComponent,
-        UpdateDirective
+        EnterpriseDataComponent
     ],
     imports: [
       CommonModule,

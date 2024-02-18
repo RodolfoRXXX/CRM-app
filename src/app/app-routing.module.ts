@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { FrameComponent } from './layouts/frame/frame.component';
 import { isNot_active, isNot_authenticated, isNot_employee, isNot_logged, is_active, is_authenticated, is_employee, is_logged } from './guards/auth.guard';
 import { RouterModule, Routes } from '@angular/router';
-import { InitResolver } from './resolver/init.resolver';
 
 
 const routes: Routes = [
@@ -39,26 +38,9 @@ const routes: Routes = [
           canActivate: [is_logged] 
         },
         { 
-          path: 'verify', 
-          loadChildren: () => import('./auth/verify/verify.module').then(m => m.VerifyModule), 
-          canActivate: [is_logged, is_authenticated, isNot_active] 
-        },
-        { 
-          path: 'blocked', 
-          loadChildren: () => import('./auth/blocked/blocked.module').then(m => m.BlockedModule), 
-          canActivate: [is_logged, is_authenticated, is_active, isNot_employee] 
-        },
-        { 
           path: 'init', 
           loadChildren: () => import('./layouts/init/init.module').then(m => m.InitModule), 
-          canActivate: [is_logged, is_authenticated, is_active, is_employee],
-          resolve: { employee: InitResolver } 
-        },
-        { 
-          path: 'settings', 
-          loadChildren: () => import('./layouts/settings/settings.module').then(m => m.SettingsModule), 
-          canActivate: [is_logged, is_authenticated],
-          resolve: { employee: InitResolver } 
+          canActivate: [is_logged, is_authenticated]
         },
         { 
           path: 'page-not-found', 
@@ -70,9 +52,9 @@ const routes: Routes = [
           pathMatch: 'full' 
         }
       ]
-  },
+  },/*
   { path: 'ticket', loadChildren: () => import('./work-modules/ticket/ticket.module').then(m => m.TicketModule) },
-  { path: 'employee', loadChildren: () => import('./work-modules/employee/employee.module').then(m => m.EmployeeModule) }
+  { path: 'employee', loadChildren: () => import('./work-modules/employee/employee.module').then(m => m.EmployeeModule) }*/
 ];
 
 

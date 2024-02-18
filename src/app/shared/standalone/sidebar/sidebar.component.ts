@@ -70,7 +70,7 @@ export class SidebarComponent implements OnChanges {
   }
 
   redirectTo( URI: string ) {
-    this._router.navigateByUrl(`init/${URI}`);
+    //this._router.navigateByUrl(`init/main/${URI}`);
   }
   setTitle( title: string ) {
     this._conector.setUpdateTitle(title);

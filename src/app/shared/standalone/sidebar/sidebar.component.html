@@ -25,7 +25,7 @@
         <ng-container *ngIf="setMenu == 'init'">
             <mat-accordion>
 
-                <mat-expansion-panel class="submenu" [expanded]="expand === 'gestion'" (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Gestión');" *ngIf="roles.gestion">
+                <mat-expansion-panel class="submenu" [expanded]="expand === 'gestion'" (opened)="redirectTo(''); setTitle('Tablero'); setSector('Gestión');" *ngIf="roles.gestion">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             Gestión
@@ -64,7 +64,7 @@
                     </ng-container>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel class="submenu" [expanded]="expand === 'operacion'" (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Operación');" *ngIf="roles.operacion">
+                <mat-expansion-panel class="submenu" [expanded]="expand === 'operacion'" (opened)="redirectTo(''); setTitle('Tablero'); setSector('Operación');" *ngIf="roles.operacion">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             Operación
@@ -104,7 +104,7 @@
                     </ng-container>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel class="submenu" [expanded]="expand === 'deposito'" (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Depósito');" *ngIf="roles.deposito">
+                <mat-expansion-panel class="submenu" [expanded]="expand === 'deposito'" (opened)="redirectTo(''); setTitle('Tablero'); setSector('Depósito');" *ngIf="roles.deposito">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             Depósito
@@ -144,7 +144,7 @@
                     </ng-container>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel class="submenu" [expanded]="expand === 'administracion'" (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Administración');" *ngIf="roles.administracion">
+                <mat-expansion-panel class="submenu" [expanded]="expand === 'administracion'" (opened)="redirectTo(''); setTitle('Tablero'); setSector('Administración');" *ngIf="roles.administracion">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             Administración
@@ -184,7 +184,7 @@
                     </ng-container>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel (opened)="redirectTo('dashboard'); setTitle('Tablero'); setSector('Chat');">
+                <mat-expansion-panel (opened)="redirectTo(''); setTitle('Tablero'); setSector('Chat');">
                     <mat-expansion-panel-header>
                     <mat-panel-title>
                         Chat

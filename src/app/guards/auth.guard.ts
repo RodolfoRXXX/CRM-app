@@ -88,7 +88,7 @@ import { AuthService } from '../services/auth.service';
     return _authSvc.isActive$.pipe(
       tap( (isActive : boolean) => {
         if(!isActive) {
-          _router.navigate(['verify']);
+          _router.navigate(['init/verify']);
         }
       } )
     )
@@ -125,12 +125,12 @@ import { AuthService } from '../services/auth.service';
 
     const id = _authSvc.getUserId();
 
-    if(!id) return _router.navigate(['blocked']);
+    if(!id) return _router.navigate(['init/blocked']);
 
     const result = _apiSvc.postTypeRequest('profile/get-employee', {id_user: id})
                   .pipe(
                       map( (value:any) => (value.data.length)?true:false),
-                      tap( (value:boolean) => (!value)?_router.navigate(['blocked']):'' )
+                      tap( (value:boolean) => (!value)?_router.navigate(['init/blocked']):'' )
                   )
             return result;
   }
@@ -148,7 +148,7 @@ import { AuthService } from '../services/auth.service';
 
     const id = _authSvc.getUserId();
 
-    if(!id) return _router.navigate(['blocked']);
+    if(!id) return _router.navigate(['init/blocked']);
 
     const result = _apiSvc.postTypeRequest('profile/get-employee', {id_user: id})
                   .pipe(
