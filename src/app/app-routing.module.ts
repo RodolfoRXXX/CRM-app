@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FrameComponent } from './layouts/frame/frame.component';
-import { isNot_active, isNot_authenticated, isNot_employee, isNot_logged, is_active, is_authenticated, is_employee, is_logged } from './guards/auth.guard';
+import { isNot_authenticated, isNot_logged, is_authenticated, is_logged } from './guards/auth.guard';
 import { RouterModule, Routes } from '@angular/router';
 
 

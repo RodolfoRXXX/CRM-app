@@ -39,3 +39,7 @@ $tickets-app-theme: mat.define-light-theme((
 .background-main {
     background: mat.get-color-from-palette($tickets-app-primary, 'lighter');
 }
+
+.text-main {
+  color: mat.get-color-from-palette($tickets-app-primary);
+}

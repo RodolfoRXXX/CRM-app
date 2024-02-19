@@ -7,6 +7,10 @@
                         <img src="assets/images/logo-icon.png" alt="homepage">
                         <h4 class="m-t-0 mb-4">Registrate</h4>
                     </div>
+                    <div class="text-center">
+                        <h4 class="m-t-0 mb-2">Todo empieza aquí</h4>
+                        <p class="text-left">Manejá tu negocio de una forma más fácil y divertida!</p>
+                    </div>
                     <div class="form-auth">
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
@@ -14,7 +18,7 @@
                                 <input matInput placeholder="algo@ejemplo.com"
                                        formControlName="email" 
                                        required>
-                                <mat-error *ngIf="this.registerForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.registerForm.controls['email']!.errors" class="fs-08">{{getEmailErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
@@ -26,7 +30,7 @@
                                 <button mat-icon-button matSuffix (click)="hidePassword_1($event)" >
                                 <mat-icon>{{hide_1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
-                                <mat-error *ngIf="this.passwordFirst.errors">{{getPasswordErrorMessageFirst()}}</mat-error>
+                                <mat-error *ngIf="this.passwordFirst.errors" class="fs-08">{{getPasswordErrorMessageFirst()}}</mat-error>
                             </mat-form-field>
                             <div *ngIf="this.registerForm.errors?.['no_equal']">Las contraseñas no coinciden</div>
                         </div>
@@ -39,7 +43,7 @@
                                 <button mat-icon-button matSuffix (click)="hidePassword_2($event)" >
                                 <mat-icon>{{hide_2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
-                                <mat-error *ngIf="this.registerForm.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.registerForm.controls['password']!.errors" class="fs-08">{{getPasswordErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
@@ -50,18 +54,18 @@
                                       {{enterprise.name}}
                                     </mat-option>
                                 </mat-select>
-                                <mat-error *ngIf="this.registerForm.controls['id_enterprise'].hasError('required')">Tenés que elegir una empresa</mat-error>
+                                <mat-error *ngIf="this.registerForm.controls['id_enterprise'].hasError('required')" class="fs-08">Tenés que elegir una empresa</mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="form-input-50 pb-2">
-                            <mat-checkbox [formControl]="remember_me">Recordarme</mat-checkbox>
+                        <div class="form-input-100 pb-2">
+                            <mat-checkbox formControlName="agree_policy">Acepto la <span class="text-main fw-bolder">política de privacidad y términos</span></mat-checkbox>
                         </div>
                         <div class="form-input-100">
-                            <button mat-raised-button color="primary" [disabled]="this.registerForm.invalid || this.disable_submit">Crear mi cuenta</button>
+                            <button mat-raised-button color="primary" [disabled]="this.registerForm.invalid || this.disable_submit || !this.registerForm.get('agree_policy')?.value">Crear mi cuenta</button>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Ya tenés una cuenta?
-                                <a href="#" class="text-success link">Ingresá!</a>
+                                <a href="#" class="text-success link fw-bolder">Ingresá!</a>
                             </span>
                         </div>
                     </div>

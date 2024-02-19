@@ -20,7 +20,6 @@ export class RegisterComponent implements OnInit {
   formMsg!: FormGroup;
   enterprises: Array<any> = [];
   passwordFirst!: FormControl;
-  remember_me!: FormControl;
   loading!: boolean;
   disable_submit!: boolean;
 
@@ -40,7 +39,6 @@ export class RegisterComponent implements OnInit {
       Validators.minLength(4),
       Validators.maxLength(10)
     ]);
-    this.remember_me = new FormControl(false);
    }
 
   ngOnInit(): void {
@@ -72,7 +70,9 @@ export class RegisterComponent implements OnInit {
         ]),
         activation_code: new FormControl(''),
         state: new FormControl(0),
-        remember_me : new FormControl(false)
+        agree_policy : new FormControl(false, [
+          Validators.required,
+        ])
     }
     );
   }
@@ -116,6 +116,8 @@ export class RegisterComponent implements OnInit {
     ev.preventDefault();
     this.hide_2 = !this.hide_2;
   }
+
+  //Error message section
 
   getEmailErrorMessage() {
     if(this.registerForm.controls['email'].hasError('required')) {
@@ -162,7 +164,7 @@ export class RegisterComponent implements OnInit {
           } else {
             //Creó el usuario
             this._notify.showSuccess('Usuario nuevo creado!');
-            this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this.registerForm.value.remember_me);
+            this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], false);
             setTimeout(() => {
               this._router.navigate(['init']);
             }, 2000);

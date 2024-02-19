@@ -1,6 +1,13 @@
 // auth
 
 .login-register {
+    min-height: 100vh;
+    display: flex;
+    background-size: cover;
+    align-items: center;
+}
+
+.login-register-init {
     height: calc(100vh - 64px);
     display: flex;
     background-size: cover;
@@ -10,7 +17,7 @@
 .login-register-box {
     max-width: 420px;
     min-width: 280px;
-    margin: 0 auto;
+    margin: 10px auto;
     vertical-align: middle;
     .profile-pic-recharge {
         height: 100px;

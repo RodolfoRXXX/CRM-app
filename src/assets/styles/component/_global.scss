@@ -272,11 +272,18 @@ html body {
   .fw-bold {
     font-weight: bold;
   }
+  .fw-bolder {
+    font-weight: bolder;
+  }
 
   //  capitalize
-
   .cap {
     text-transform: capitalize;
+  }
+
+  //  cursor pointer
+  .cursor-pointer {
+    cursor: pointer;
   }
 
 }

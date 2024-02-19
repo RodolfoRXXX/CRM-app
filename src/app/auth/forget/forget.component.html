@@ -18,7 +18,7 @@
                                 <input matInput placeholder="algo@ejemplo.com"
                                        formControlName="email" 
                                        required>
-                                <mat-error *ngIf="this.forgotForm.controls['email']!.errors">{{getEmailValidatorErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.forgotForm.controls['email']!.errors" class="fs-08">{{getEmailValidatorErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
@@ -26,12 +26,12 @@
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Ya tengo un código
-                                <a (click)="goCode()" class="text-success link">Ingresalo!</a>
+                                <a (click)="goCode()" class="text-success link cursor-pointer fw-bolder">Ingresalo!</a>
                             </span>
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Recordás tus credenciales?
-                                <a routerLink="../login" class="text-success link">Ingresá!</a>
+                                <a routerLink="../login" class="text-success link fw-bolder">Ingresá!</a>
                             </span>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                                 <input matInput placeholder="algo@ejemplo.com"
                                        formControlName="email" 
                                        required>
-                                <mat-error *ngIf="this.codeForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.codeForm.controls['email']!.errors" class="fs-08">{{getEmailErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
@@ -71,7 +71,7 @@
                                        minlength="10" 
                                        formControlName="activation_code"
                                        required>
-                                <mat-error *ngIf="this.codeForm.controls['activation_code']!.errors">{{getCodeErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.codeForm.controls['activation_code']!.errors" class="fs-08">{{getCodeErrorMessage()}}</mat-error>
                                 <mat-hint align="end">{{input.value.length}}/10</mat-hint>
                             </mat-form-field>
                         </div>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> Reenviar el código?
-                                <a (click)="goEmail()" class="text-success link">Reenvialo!</a>
+                                <a (click)="goEmail()" class="text-success link cursor-pointer fw-bolder">Reenvialo!</a>
                             </span>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                                 <button mat-icon-button matSuffix (click)="hidePassword_1($event)" >
                                 <mat-icon>{{hide_1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
-                                <mat-error *ngIf="this.passwordFirst.errors">{{getPasswordErrorMessageFirst()}}</mat-error>
+                                <mat-error *ngIf="this.passwordFirst.errors" class="fs-08">{{getPasswordErrorMessageFirst()}}</mat-error>
                             </mat-form-field>
                             <div *ngIf="this.passwordForm.errors?.['no_equal']">Las contraseñas no coinciden</div>
                         </div>
@@ -124,7 +124,7 @@
                                 <button mat-icon-button matSuffix (click)="hidePassword_2($event)" >
                                 <mat-icon>{{hide_2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
-                                <mat-error *ngIf="this.passwordForm.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.passwordForm.controls['password']!.errors" class="fs-08">{{getPasswordErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100 mt-3">

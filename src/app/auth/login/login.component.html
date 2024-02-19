@@ -7,6 +7,10 @@
                         <img src="assets/images/logo-icon.png" alt="homepage">
                         <h4 class="m-t-0 mb-4">Iniciar sesión</h4>
                     </div>
+                    <div class="text-center">
+                        <h4 class="m-t-0 mb-2">Bienvenido a Bamboo!</h4>
+                        <p class="text-left">Ingresá tus datos de acceso y vivamos la experiencia!</p>
+                    </div>
                     <div class="form-auth">
                         <div class="form-input-100">
                             <mat-form-field appearance="fill">
@@ -14,7 +18,7 @@
                                 <input matInput placeholder="algo@ejemplo.com"
                                        formControlName="email" 
                                        required>
-                                <mat-error *ngIf="this.loginForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.loginForm.controls['email']!.errors" class="fs-08">{{getEmailErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-100">
@@ -26,7 +30,7 @@
                                 <button mat-icon-button matSuffix type="button" (click)="hidePassword($event)" >
                                   <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 </button>
-                                <mat-error *ngIf="this.loginForm.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
+                                <mat-error *ngIf="this.loginForm.controls['password']!.errors" class="fs-08">{{getPasswordErrorMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="form-input-50 pb-2">
@@ -40,7 +44,7 @@
                         </div>
                         <div class="form-input-100 new-register-link">
                             <span> No tenés una cuenta?
-                                <a routerLink="../register" class="text-success link">Registrate!</a>
+                                <a routerLink="../register" class="text-success link fw-bolder">Registrate!</a>
                             </span>
                         </div>
                     </div>
