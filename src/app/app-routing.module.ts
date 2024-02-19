@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
-import { FrameComponent } from './layouts/frame/frame.component';
 import { isNot_authenticated, isNot_logged, is_authenticated, is_logged } from './guards/auth.guard';
 import { RouterModule, Routes } from '@angular/router';
 
-
 const routes: Routes = [
-  { path: '', component: FrameComponent,
-      children: [
         { 
           path: '', 
           redirectTo: 'recharge', 
@@ -51,12 +47,7 @@ const routes: Routes = [
           redirectTo: 'page-not-found', 
           pathMatch: 'full' 
         }
-      ]
-  },/*
-  { path: 'ticket', loadChildren: () => import('./work-modules/ticket/ticket.module').then(m => m.TicketModule) },
-  { path: 'employee', loadChildren: () => import('./work-modules/employee/employee.module').then(m => m.EmployeeModule) }*/
-];
-
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
