@@ -62,12 +62,22 @@ export class UserDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    //Carga los datos del empleado logueado
     this._conector.getEmployee().subscribe( employee => {
       if(employee.id != 0) {
         //empleado existente
         this.setFormUser(employee);
       }
     })
+
+    //Modifica el título de la vista principal
+    this._conector.setUpdateTitle('Configuración/Mi cuenta')
+  }
+
+  ngOnDestroy() {
+    //Modifica el título de la vista principal al cerrar el componente
+    this._conector.setUpdateTitle('Configuración')
   }
 
   setFormUser(data: Employee) {

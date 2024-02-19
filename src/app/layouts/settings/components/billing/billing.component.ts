@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
   selector: 'app-billing',
   templateUrl: './billing.component.html'
 })
-export class BillingComponent implements AfterViewInit {
+export class BillingComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['position', 'date', 'amount', 'state', 'bill'];
   dataSource = new MatTableDataSource();
@@ -36,6 +36,17 @@ export class BillingComponent implements AfterViewInit {
     this._paginator.lastPageLabel = "última página";
     this._paginator.nextPageLabel = "Próxima página";
     this._paginator.previousPageLabel = "Anterior página";
+  }
+
+
+  ngOnInit(): void {
+    //Modifica el título de la vista principal
+    this._conector.setUpdateTitle('Configuración/Facturación')
+  }
+
+  ngOnDestroy() {
+    //Modifica el título de la vista principal al cerrar el componente
+    this._conector.setUpdateTitle('Configuración')
   }
 
   getDataLocal(): Promise<any> {

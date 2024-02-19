@@ -12,6 +12,7 @@ export class SettingsComponent implements OnInit {
   opened: boolean = false;
   mode!: any;
   update!: boolean;
+  title!: string;
   employee!: Employee;
 
   constructor(
@@ -23,19 +24,28 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    //Recibe los datos del resolver y carga los datos en la vista
     this.employee = this._actRoute.snapshot.data['employee'].data[0];
     if(this.employee) {
       this._conector.setEmployee(this.employee);
     } else {
       this.employee = empty_employee;
     }
+
+    //Ante cambios actualiza los componentes hijos(VER SI FUNCIONA!)
     this._conector.getUpdate().subscribe( state => {
       if(this.update) {
         this.update = !this.update;
       } else {
         this.update = state;
       }
-    } );
+    });
+
+    //Actualiza el título de la vista de acuerdo al componente cargado
+    this._conector.getUpdateTitle().subscribe( value => {
+      (value)?this.title = value:this.title = "Configuración"
+    })
   }
 
 }

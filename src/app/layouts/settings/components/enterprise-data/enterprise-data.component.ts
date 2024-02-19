@@ -39,6 +39,14 @@ export class EnterpriseDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.createUserForm();
+
+    //Modifica el título de la vista principal
+    this._conector.setUpdateTitle('Configuración/Mi empresa')
+  }
+
+  ngOnDestroy() {
+    //Modifica el título de la vista principal al cerrar el componente
+    this._conector.setUpdateTitle('Configuración')
   }
 
   async getDataUser(): Promise<any> {

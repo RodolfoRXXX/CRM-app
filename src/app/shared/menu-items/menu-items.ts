@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Menu } from '../interfaces/menu.interface';
 
 const MENUSETTINGS = [
-    { state: 'user-data', name: 'Datos del usuario', type: 'employee', icon: 'fingerprint', children: [] },
-    { state: 'enterprise-data', name: 'Datos de la empresa', type: 'admin', icon: 'business', children: [] },
+    { state: 'user-data', name: 'Mi cuenta', type: 'employee', icon: 'fingerprint', children: [] },
+    { state: 'enterprise-data', name: 'Mi empresa', type: 'admin', icon: 'business', children: [] },
     { state: 'billing', name: 'Facturación', type: 'admin', icon: 'attach_money', children: [] },
+    { state: 'edit-password', name: 'Seguridad', type: '', icon: 'vpn_key', children: [] },
     { state: 'edit-userphoto', name: 'Editar imagen de usuario', type: '', icon: 'add_a_photo', children: [] },
     { state: 'edit-username', name: 'Editar nombre de usuario', type: '', icon: 'account_circle', children: [] },
-    { state: 'edit-password', name: 'Editar contraseña', type: '', icon: 'vpn_key', children: [] },
     { state: 'edit-email', name: 'Editar correo de ingreso', type: '', icon: 'email', children: [] },
     { state: 'delete-account', name: 'Eliminar cuenta', type: 'admin', icon: 'power_settings_new', children: [] }
 ];
