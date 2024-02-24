@@ -131,12 +131,17 @@
     margin-right: auto;
 }
 
+.box-edit-image {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 .box-image {
     position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
+    min-width: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,7 +155,10 @@
         align-items: center;
         background-color: rgba(255, 255, 255, 0.7);
         z-index: 2;
-        border-radius: 50%;
+        mat-spinner {
+            height: 20%!important;
+            width: 20%!important;
+        }
     }
     .label-image {
         position: absolute;
@@ -165,13 +173,13 @@
         }
     }
     .user-image {
-        border-radius: 50%;
+        border-radius: 5%;
         object-fit: cover;
         height: 100%;
         width: 100%;
     }
     &:hover .user-image {
-        filter: blur(3px);
+        filter: blur(2px);
     }
     &:hover .label-image {
         display: flex;
@@ -183,6 +191,7 @@
 
 .box-image-error {
     height: 20px;
+    padding-left: 20px;
     .error-image {
         font-size: 0.9rem;
         color: red;
@@ -193,7 +202,25 @@
     display: none;
 }
 
-
+.image-data-input {
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+    padding-left: 20px;
+    & button {
+        margin-right: 10px;
+    }
+    & mat-icon {
+        position: relative;
+        top: 3px;
+    }
+}
+.text-data-input {
+    padding-left: 20px;
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.54);
+}
 
 //Edit-password
 

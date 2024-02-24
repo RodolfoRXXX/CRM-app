@@ -1,23 +1,49 @@
-<mat-card class="mat-card card-setting">
+<mat-card class="mat-card">
     <mat-card-content class="mat-card-content">
         <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button">
-            <mat-icon>close</mat-icon>
+            <mat-icon>keyboard_backspace</mat-icon>
         </a>
         <mat-card-title class="mat-card-title">
-            Datos de la empresa
+            Detalles de la empresa
         </mat-card-title>
         <mat-card-subtitle class="mat-card-subtitle">
-            Completá con la información de tu empresa
+            Completá con la información de la empresa
         </mat-card-subtitle>
-        <div>
-            <div class="m-b-20 box-image" matTooltip="Cargá tu logo" [matMenuTriggerFor]="menu" #menuTrigger>
-                <mat-spinner *ngIf="!base_image"></mat-spinner>
-                <img class="user-image" [src]="base_image" alt="image-previsualization" *ngIf="base_image">
+        <div class="box-edit-image">
+            <div class="box-image">
+                <div class="spinner-load-image" *ngIf="load">
+                    <mat-spinner></mat-spinner>
+                </div>
+                <label class="label-image" for="user-image"><p><mat-icon>add_a_photo</mat-icon> <br>Cargá tu imagen aquí</p></label>
+                <img class="user-image" [src]="base_image">
             </div>
-            <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openDialog()">Cargar logo</button>
-            </mat-menu>
-            <form [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
+            <form [formGroup]="picDataForm" enctype="multipart/form-data" (ngSubmit)="onSubmitPic()">
+                <div class="user-data-container pt-0">
+                    <div class="user-data-input">
+                        <input type="file" id="user-image" accept="image/*" (change)="capture_img($event)">
+                    </div>
+                    <div class="image-data-input">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="picDataForm.invalid || this.load || this.disable_pic">
+                            <span *ngIf="screenLarge">Guardar nueva imagen</span>
+                            <span *ngIf="!screenLarge"><mat-icon>add_a_photo</mat-icon></span>
+                        </button>
+                        <button mat-stroked-button color="warn" type="reset" (click)="setDataUser()">
+                            <span *ngIf="screenLarge">Reset</span>
+                            <span *ngIf="!screenLarge"><mat-icon>refresh</mat-icon></span>
+                        </button>
+                    </div>
+                    <div class="text-data-input">
+                        <p>La imagen debe ser mayor a 50KB y no superar los 10MB. Los formatos aceptados son JPG, JPEG y PNG.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="box-image-error">
+            <p class="error-image" *ngIf="(this.picDataForm.controls['thumbnail']!.errors && this.picDataForm.controls['thumbnail']!.value) || (error_image)">{{ error_image }}</p>
+        </div>
+        <div>
+            <!-- Este es el bueno -->
+            <form class="form-user-data" [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
                 <div class="mid-user-data-container">
                     <div class="mid-user-data-input">
                         <mat-form-field appearance="fill">

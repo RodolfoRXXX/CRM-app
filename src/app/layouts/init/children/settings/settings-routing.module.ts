@@ -6,9 +6,7 @@ import { UserDataComponent } from '../../../settings/components/user-data/user-d
 import { EditUsernameComponent } from '../../../settings/components/edit-username/edit-username.component';
 import { EditPasswordComponent } from '../../../settings/components/edit-password/edit-password.component';
 import { EditEmailComponent } from '../../../settings/components/edit-email/edit-email.component';
-import { DeleteAccountComponent } from '../../../settings/components/delete-account/delete-account.component';
 import { IndexComponent } from '../../../settings/components/index/index.component';
-import { EditUserphotoComponent } from '../../../settings/components/edit-userphoto/edit-userphoto.component';
 import { EnterpriseDataComponent } from '../../../settings/components/enterprise-data/enterprise-data.component';
 
 const routes: Routes = [
@@ -19,11 +17,9 @@ const routes: Routes = [
       { path: 'user-data', component: UserDataComponent },
       { path: 'enterprise-data', component: EnterpriseDataComponent },
       { path: 'billing', component: BillingComponent },
-      { path: 'edit-userphoto', component: EditUserphotoComponent },
       { path: 'edit-username', component: EditUsernameComponent },
       { path: 'edit-password', component: EditPasswordComponent },
       { path: 'edit-email', component: EditEmailComponent },
-      { path: 'delete-account', component: DeleteAccountComponent },
       { path: '**', redirectTo: 'index', pathMatch: 'full' }
     ]
   }

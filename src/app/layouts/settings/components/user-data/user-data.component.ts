@@ -1,9 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { ImageService } from 'src/app/services/image.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { environment } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-user-data',
@@ -12,12 +15,25 @@ import { Employee } from 'src/app/shared/interfaces/employee.interface';
 export class UserDataComponent implements OnInit {
 
   emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+  picDataForm!: FormGroup;
   userDataForm!: FormGroup;
   workDataForm!: FormGroup;
   loading!: boolean;
+  load!: boolean;
+  disable_pic!: boolean;
   disable_submit!: boolean;
   disable_submit_work!: boolean;
   employee!: Employee;
+  base_image!: string;
+  name_image!: string;
+  error_image!: string;
+  data: any = {
+    id: 0,
+    enterprise: '',
+    name: '',
+    blanck: true
+  }
+  screenLarge!: boolean;
 
   work_hour: any = {}
 
@@ -52,17 +68,23 @@ export class UserDataComponent implements OnInit {
     private _api: ApiService,
     private _conector: ConectorsService,
     private _notify: NotificationService,
-    private cdr: ChangeDetectorRef
-  ) { 
+    private cdr: ChangeDetectorRef,
+    private _image: ImageService,
+    private _auth: AuthService,
+  ) {
+    this.base_image = '../../../../../assets/images/users/blanck_user.png'; 
     this.loading = false;
+    this.disable_pic = true;
     this.disable_submit = false;
     this.disable_submit_work = false;
+    this.load = false;
+    this.setDataUser();
+    this.createPicForm();
     this.createUserForm();
     this.createWorkForm();
   }
 
   ngOnInit(): void {
-
     //Carga los datos del empleado logueado
     this._conector.getEmployee().subscribe( employee => {
       if(employee.id != 0) {
@@ -73,11 +95,40 @@ export class UserDataComponent implements OnInit {
 
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Configuración/Mi cuenta')
+
+    //Carga el detector de tamaño del dispositivo
+    this._conector.getScreenState().subscribe( screen => {
+      this.screenLarge = screen
+    } )
   }
 
   ngOnDestroy() {
     //Modifica el título de la vista principal al cerrar el componente
     this._conector.setUpdateTitle('Configuración')
+  }
+
+  async getDataUser(): Promise<any> {
+    const data = await JSON.parse(this._auth.getDataFromLocalStorage());
+    return data;
+  }
+
+  setDataUser() {
+    this.getDataUser()
+        .then( data => {
+          this.name_image = data.thumbnail;
+          this.base_image = environment.SERVER + this.name_image;
+          this.data.id = data.id;
+          this.data.enterprise = data.enterprise;
+          if((data.name)&&(data.name.length)) {
+            this.data.name = data.name
+          } else {
+            this.data.name = data.email.split("@")[0]
+          }
+          if(data.thumbnail != 'blanck_user.png') {
+            this.data.blanck = false;
+          }
+        })
+        .finally( () => this.error_image = '')
   }
 
   setFormUser(data: Employee) {
@@ -126,6 +177,18 @@ export class UserDataComponent implements OnInit {
       },
       name_er: data.name_er,
       phone_er: data.phone_er
+    });
+  }
+
+  createPicForm(): void {
+    this.picDataForm = new FormGroup({
+        id: new FormControl(''),
+        enterprise: new FormControl(''),
+        name: new FormControl(''),
+        thumbnail : new FormControl('', [
+          Validators.required
+        ]),
+        blanck: new FormControl(true)
     });
   }
 
@@ -234,6 +297,66 @@ export class UserDataComponent implements OnInit {
     (day === 'sunday_out')?(this.workDataForm.get('work_hour.sunday.sunday_out')?.enable(), this.workDataForm.get('work_hour.sunday.sunday_out')?.setValue(e)):'';
   }
 
+  capture_img(event: any) {
+    this.load = true;
+    const archivoCapturado = event.target.files[0];
+    setTimeout(() => {
+      if ((archivoCapturado.type == 'image/jpg') || (archivoCapturado.type == 'image/jpeg') || (archivoCapturado.type == 'image/png')){
+        if ((archivoCapturado.size > 10240) && (archivoCapturado.size < 10485760)) {
+          this._image.extraerBase64(archivoCapturado).then( (imagen:any) => {
+            this.load = false;
+            try {
+              if(imagen.base){
+                this.base_image = imagen.base;
+                this.picDataForm.patchValue({
+                  thumbnail: imagen.base
+                })
+                this.error_image = '';
+                this.disable_pic = false;
+              } else {
+                this.base_image = '../../../../../assets/images/users/error_image.png';
+                this.error_image = 'Ha ocurrido un error con la imagen';
+                this.picDataForm.patchValue({
+                  thumbnail: ''
+                })
+              }
+            } catch (error) {
+              this.base_image = '../../../../../assets/images/users/error_image.png';
+              this.error_image = 'Ha ocurrido un error con la imagen';
+              this.picDataForm.patchValue({
+                thumbnail: ''
+              })
+            }
+          });
+        } else if(archivoCapturado.size > 10485760) {
+          //error de peso mayor
+          this.load = false;
+          this.base_image = '../../../../../assets/images/users/error_image.png';
+          this.error_image = 'La imagen no debe superar los 10MB';
+          this.picDataForm.patchValue({
+            thumbnail: ''
+          })
+        } else {
+          //error de peso menor
+          this.load = false;
+          this.base_image = '../../../../../assets/images/users/error_image.png';
+          this.error_image = 'La imagen debe superar los 50KB';
+          this.picDataForm.patchValue({
+            thumbnail: ''
+          })
+        }
+      } else{
+        //error de formato
+        this.load = false;
+        this.base_image = '../../../../../assets/images/users/error_image.png';
+        this.error_image = 'La imagen tiene un formato incompatible';
+        this.picDataForm.patchValue({
+          thumbnail: ''
+        })
+      }
+    }, 2500);
+  }
+
   getError() {
     //name
     if(this.userDataForm.controls['name'].hasError('required')) return 'Tenés que ingresar un valor';
@@ -276,6 +399,47 @@ export class UserDataComponent implements OnInit {
     if(this.workDataForm.get('work_hour.saturday.saturday_out')!.hasError('required')) return 'Ingresá un valor';
     if(this.workDataForm.get('work_hour.sunday.sunday_out')!.hasError('required')) return 'Ingresá un valor';
     return ''
+  }
+  getImageErrorMessage() {
+    if(this.picDataForm.controls['thumbnail'].hasError('required')) {
+      return 'Tenés que ingresar un valor'}
+    return ''
+  }
+
+  onSubmitPic() {
+    this.disable_pic = true;
+    this.load = true;
+    this.picDataForm.patchValue({
+      id: this.data.id,
+      blanck: this.data.blanck
+    })
+    this._api.postTypeRequest('profile/load-user-image', this.picDataForm.value).subscribe({
+      next: (res: any) => {
+        this.load =  false;
+        if(res.status == 1){
+          //Accedió a la base de datos y no hubo problemas
+          if(res.changedRows == 1){
+            //Modificó la imagen
+            this._notify.showSuccess('Nueva imagen de usuario!');
+            this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this._auth.getRememberOption());
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          } else{
+            //No hubo modificación
+            this._notify.showError('No se detectaron cambios. Ingresá una imagen diferente al actual.')
+          }
+        } else{
+            //Problemas de conexión con la base de datos(res.status == 0)
+            this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+        }
+      },
+      error: (error) => {
+        //Error de conexión, no pudo consultar con la base de datos
+        this.load =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+      }
+    })
   }
 
   onSubmitUser() {

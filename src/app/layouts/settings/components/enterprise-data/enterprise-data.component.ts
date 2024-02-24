@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { ImageService } from 'src/app/services/image.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { DialogComponent } from 'src/app/shared/standalone/dialog/dialog.component';
 import { environment } from 'src/enviroments/enviroment';
 
 @Component({
@@ -14,34 +13,41 @@ import { environment } from 'src/enviroments/enviroment';
 })
 export class EnterpriseDataComponent implements OnInit {
 
+  picDataForm!: FormGroup;
   userDataForm!: FormGroup;
-  base_image!: string;
-  name_image!: string;
-  state: any = {
-    id: 0
-  }
+  disable_pic!: boolean;
   disable_submit!: boolean;
   loading!: boolean;
   load!: boolean;
+  base_image!: string;
+  error_image!: string;
+  screenLarge!: boolean;
 
   constructor(
     private _auth: AuthService,
     private _api: ApiService,
     private _notify: NotificationService,
     private _conector: ConectorsService,
-    public dialog: MatDialog
+    private _image: ImageService,
   ) { 
+    this.base_image = '../../../../../assets/images/users/blanck_enterprise.png';
+    this.disable_pic = true;
     this.disable_submit = false;
     this.loading = false;
     this.load = true;
     this.setDataUser();
+    this.createPicForm();
+    this.createUserForm();
    }
 
   ngOnInit(): void {
-    this.createUserForm();
-
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Configuración/Mi empresa')
+
+    //Carga el detector de tamaño del dispositivo
+    this._conector.getScreenState().subscribe( screen => {
+      this.screenLarge = screen
+    })
   }
 
   ngOnDestroy() {
@@ -63,13 +69,14 @@ export class EnterpriseDataComponent implements OnInit {
               if(res.status == 1){
                 //Accedió a la base de datos y no hubo problemas
                 if(res.data.length) {
-                  this.name_image = res.data[0].thumbnail;
-                  this.base_image = environment.SERVER + this.name_image;
-                    this.state.id = res.data[0].id;
-                    this.state.enterprise = res.data[0].name;
-                    this.state.thumbnail = res.data[0].thumbnail;
+                  this.base_image = environment.SERVER + res.data[0].thumbnail;
+                  this.picDataForm.patchValue({
+                    id: res.data[0].id,
+                  })
                   if(res.data[0].thumbnail != 'blanck_enterprise.png') {
-                    this.state.blanck = false;
+                    this.picDataForm.patchValue({
+                      blanck: false
+                    })
                   }
                   this.setFormValue(res.data[0]);
                 } else {
@@ -87,6 +94,7 @@ export class EnterpriseDataComponent implements OnInit {
             }
           })
         })
+        .finally( () => this.error_image = '')
   }
 
   setFormValue(data: any) {
@@ -100,6 +108,16 @@ export class EnterpriseDataComponent implements OnInit {
     this.userDataForm.controls['city'].setValue(data.city);
     this.userDataForm.controls['state'].setValue(data.state);
     this.userDataForm.controls['country'].setValue(data.country);
+  }
+
+  createPicForm(): void {
+    this.picDataForm = new FormGroup({
+        id: new FormControl(''),
+        thumbnail : new FormControl('', [
+          Validators.required
+        ]),
+        blanck: new FormControl(true)
+    });
   }
 
   createUserForm(): void {
@@ -148,6 +166,66 @@ export class EnterpriseDataComponent implements OnInit {
     });
   }
 
+  capture_img(event: any) {
+    this.load = true;
+    const archivoCapturado = event.target.files[0];
+    setTimeout(() => {
+      if ((archivoCapturado.type == 'image/jpg') || (archivoCapturado.type == 'image/jpeg') || (archivoCapturado.type == 'image/png')){
+        if ((archivoCapturado.size > 10240) && (archivoCapturado.size < 10485760)) {
+          this._image.extraerBase64(archivoCapturado).then( (imagen:any) => {
+            this.load = false;
+            try {
+              if(imagen.base){
+                this.base_image = imagen.base;
+                this.picDataForm.patchValue({
+                  thumbnail: imagen.base
+                })
+                this.disable_pic = false;
+                this.error_image = '';
+              } else {
+                this.base_image = '../../../../../assets/images/users/error_image.png';
+                this.error_image = 'Ha ocurrido un error con la imagen';
+                this.picDataForm.patchValue({
+                  thumbnail: ''
+                })
+              }
+            } catch (error) {
+              this.base_image = '../../../../../assets/images/users/error_image.png';
+              this.error_image = 'Ha ocurrido un error con la imagen';
+              this.picDataForm.patchValue({
+                thumbnail: ''
+              })
+            }
+          });
+        } else if(archivoCapturado.size > 10485760) {
+          //error de peso mayor
+          this.load = false;
+          this.base_image = '../../../../../assets/images/users/error_image.png';
+          this.error_image = 'La imagen no debe superar los 10MB';
+          this.picDataForm.patchValue({
+            thumbnail: ''
+          })
+        } else {
+          //error de peso menor
+          this.load = false;
+          this.base_image = '../../../../../assets/images/users/error_image.png';
+          this.error_image = 'La imagen debe superar los 50KB';
+          this.picDataForm.patchValue({
+            thumbnail: ''
+          })
+        }
+      } else{
+        //error de formato
+        this.load = false;
+        this.base_image = '../../../../../assets/images/users/error_image.png';
+        this.error_image = 'La imagen tiene un formato incompatible';
+        this.picDataForm.patchValue({
+          thumbnail: ''
+        })
+      }
+    }, 2500);
+  }
+
   getError() {
     //name
     if(this.userDataForm.controls['name'].hasError('required')) return 'Tenés que ingresar un valor';
@@ -192,21 +270,34 @@ export class EnterpriseDataComponent implements OnInit {
     return ''
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      data: { 
-        id: this.state.id,
-        enterprise: this.state.enterprise,
-        blanck: this.state.blanck,
-        thumbnail: this.state.thumbnail
+  onSubmitPic() {
+    this.disable_pic = true;
+    this.load = true;
+    this._api.postTypeRequest('profile/load-logo-image', this.picDataForm.value).subscribe({
+      next: (res: any) => {
+        this.load =  false;
+        if(res.status == 1){
+          //Accedió a la base de datos y no hubo problemas
+          if(res.changedRows == 1){
+            //Modificó la imagen
+            this.picDataForm.controls['thumbnail'].reset;
+            this._notify.showSuccess('Nueva imagen de empresa!');
+          } else{
+            //No hubo modificación
+            this._notify.showError('No se detectaron cambios. Ingresá una imagen diferente al actual.')
+          }
+        } else{
+            //Problemas de conexión con la base de datos(res.status == 0)
+            this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+        }
+      },
+      error: (error) => {
+        //Error de conexión, no pudo consultar con la base de datos
+        this.load =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
       }
-    });
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if(result) {
-        window.location.reload();
-      }
-    });
-  }  
+    })
+  }
 
   onSubmitUser() {
     this.disable_submit = true;
@@ -217,7 +308,7 @@ export class EnterpriseDataComponent implements OnInit {
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
           if(res.data.changedRows == 1){
-            //Modificó el usuario
+            //Modificó datos empresa
             this._notify.showSuccess('Información actualizada con éxito!');
           } else{
             //No hubo modificación
