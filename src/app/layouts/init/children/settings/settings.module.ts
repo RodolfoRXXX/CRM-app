@@ -6,9 +6,6 @@ import { SettingsComponent } from './settings.component';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { BillingComponent } from '../../../settings/components/billing/billing.component';
 import { UserDataComponent } from '../../../settings/components/user-data/user-data.component';
-import { EditUsernameComponent } from '../../../settings/components/edit-username/edit-username.component';
-import { EditPasswordComponent } from '../../../settings/components/edit-password/edit-password.component';
-import { EditEmailComponent } from '../../../settings/components/edit-email/edit-email.component';
 import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.component';
 import { IndexComponent } from '../../../settings/components/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +13,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { EnterpriseDataComponent } from '../../../settings/components/enterprise-data/enterprise-data.component';
+import { SecurityComponent } from 'src/app/layouts/settings/components/security/security.component';
 
 
 @NgModule({
@@ -23,11 +21,9 @@ import { EnterpriseDataComponent } from '../../../settings/components/enterprise
         SettingsComponent,
         BillingComponent,
         UserDataComponent,
-        EditUsernameComponent,
-        EditPasswordComponent,
-        EditEmailComponent,
         IndexComponent,
-        EnterpriseDataComponent
+        EnterpriseDataComponent,
+        SecurityComponent,
     ],
     imports: [
       CommonModule,

@@ -8,13 +8,11 @@ import { MaterialModule } from './material/material/material.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InterceptorService } from './services/interceptor.service';
 import { SpinnerComponent } from './shared/spinner.component';
-import { SecurityComponent } from './layouts/settings/components/security/security.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SpinnerComponent,
-    SecurityComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

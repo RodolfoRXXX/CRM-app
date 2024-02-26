@@ -1,39 +1,37 @@
 <mat-card id="sdialog" class="mat-card card-image">
   <mat-card-content class="mat-card-content">
-      <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button" (click)="cancel()">
-          <mat-icon>close</mat-icon>
-      </a>
+    <a mat-icon-button class="close-card" routerLink="#" aria-label="close-button" (click)="closeDialog()">
+        <mat-icon>keyboard_backspace</mat-icon>
+    </a>
       <mat-card-title class="mat-card-title">
-          Logo de la empresa {{ data.enterprise }}
+          Acceso restringido
       </mat-card-title>
       <mat-card-subtitle class="mat-card-subtitle">
-          Cargá tu logo
+          Ingresá tu contraseña de acceso para modificar
       </mat-card-subtitle>
       <div>
-          <div class="box-image">
-              <div class="spinner-load-image" *ngIf="load">
-                  <mat-spinner></mat-spinner>
-              </div>
-              <label class="label-image" for="user-image"><p><mat-icon>add_a_photo</mat-icon> <br>Cargá tu imagen aquí</p></label>
-              <img class="user-image" [src]="base_image" alt="image-previsualization">
-          </div>
-          <form [formGroup]="userDataForm" enctype="multipart/form-data" (ngSubmit)="imageSubmit()">
-              <div class="user-data-container">
-                  <div class="user-data-input">
-                      <input type="file" id="user-image" accept="image/*" (change)="capture_img($event)">
-                      <div class="box-image-error">
-                          <p class="error-image" *ngIf="(this.userDataForm.controls['thumbnail']!.errors && this.userDataForm.controls['thumbnail']!.value) || (error_image)">{{ error_image }}</p>
-                      </div>
-                  </div>
-                  <div class="user-data-input">
-                    <button mat-button class="m-r-10" type="button" (click)="cancel()">Cancelar</button>
-                    <button mat-raised-button color="primary" type="submit" [disabled]="userDataForm.invalid || this.disable_submit">Guardar</button>
-                  </div>
-              </div>
-          </form>
+        <form [formGroup]="checkPassword" (ngSubmit)="onSubmitChecker()">
+            <div class="user-data-input">
+                <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Contraseña actual</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'"
+                            formControlName="password"
+                            type="password" 
+                            required
+                            (focus)="clean_btn_verify()">
+                            <button mat-icon-button matSuffix (click)="hidePassword($event)" >
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <button mat-mini-fab matSuffix (click)="onSubmitChecker()" [color]="color" [disabled]="btn_verify_pass">
+                                <mat-icon>{{ icon }}</mat-icon> <!-- search / primary -->
+                            </button>
+                    <mat-error *ngIf="this.checkPassword.controls['password']!.errors">{{getPasswordCheckErrorMessage()}}</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
       </div>
   </mat-card-content>
   <mat-card-footer class="login-footer">
-      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-  </mat-card-footer>
+    <mat-progress-bar mode="indeterminate" *ngIf="loading_check_password"></mat-progress-bar>
+    </mat-card-footer>
 </mat-card>

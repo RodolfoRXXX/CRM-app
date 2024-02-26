@@ -5,9 +5,7 @@ const MENUSETTINGS = [
     { state: 'user-data', name: 'Mi cuenta', type: 'employee', icon: 'fingerprint', children: [] },
     { state: 'enterprise-data', name: 'Mi empresa', type: 'admin', icon: 'business', children: [] },
     { state: 'billing', name: 'Facturación', type: 'admin', icon: 'attach_money', children: [] },
-    { state: 'edit-password', name: 'Seguridad', type: '', icon: 'vpn_key', children: [] },
-    { state: 'edit-username', name: 'Editar nombre de usuario', type: '', icon: 'account_circle', children: [] },
-    { state: 'edit-email', name: 'Editar correo de ingreso', type: '', icon: 'email', children: [] }
+    { state: 'security', name: 'Seguridad', type: '', icon: 'vpn_key', children: [] },
 ];
 
 const MENUMANAGEMENT = [
