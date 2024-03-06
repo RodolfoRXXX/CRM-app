@@ -14,6 +14,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { EnterpriseDataComponent } from '../../../settings/components/enterprise-data/enterprise-data.component';
 import { SecurityComponent } from 'src/app/layouts/settings/components/security/security.component';
+import { RolesComponent } from 'src/app/layouts/settings/components/roles/roles.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { SecurityComponent } from 'src/app/layouts/settings/components/security/
         IndexComponent,
         EnterpriseDataComponent,
         SecurityComponent,
+        RolesComponent
     ],
     imports: [
       CommonModule,

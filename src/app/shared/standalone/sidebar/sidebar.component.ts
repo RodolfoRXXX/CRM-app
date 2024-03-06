@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { Router, RouterModule } from '@angular/router';
 import { MenuItems } from '../../menu-items/menu-items';
@@ -21,15 +21,14 @@ import { Employee } from '../../interfaces/employee.interface';
     MenuItems
   ]
 })
-export class SidebarComponent implements OnChanges {
+export class SidebarComponent implements OnInit {
 
   @Input() setMenu!: string;
   @Input() employee!: Employee;
   name!: string;
   pic!: string;
   enterprise!: string;
-  expand!: string;
-  roles!: any;
+  permissions: string[] = [];
   is_employee!: boolean;
 
   constructor(
@@ -40,18 +39,15 @@ export class SidebarComponent implements OnChanges {
   ) {
     this.getDataUser();
   }
-  
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes["employee"].currentValue.role) {
-      this.roles = JSON.parse(changes["employee"].currentValue.role)
-      for(var key in this.roles) {
-        if(this.roles[key]) {
-          this.expand = key;
-          this.is_employee = true;
-          break;
-        }
-      }
-    }
+
+  ngOnInit(): void {
+    this._conector.getEmployee().subscribe( value => {
+      //la lista de permisos se almacena como un string y luego se lo separa en un array
+      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
+      //que es el valor vacío, por eso la desigualdad es mayor a 1
+      this.permissions = value.list_of_permissions.split(',')
+      this.is_employee = (value.id > 0)?true:false;
+    })
   }
 
   getDataUser() {

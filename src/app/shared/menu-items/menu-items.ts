@@ -3,9 +3,10 @@ import { Menu } from '../interfaces/menu.interface';
 
 const MENUSETTINGS = [
     { state: 'user-data', name: 'Mi cuenta', type: 'employee', icon: 'fingerprint', children: [] },
-    { state: 'enterprise-data', name: 'Mi empresa', type: 'admin', icon: 'business', children: [] },
-    { state: 'billing', name: 'Facturación', type: 'admin', icon: 'attach_money', children: [] },
+    { state: 'enterprise-data', name: 'Mi empresa', type: '1', icon: 'business', children: [] },
+    { state: 'billing', name: 'Facturación', type: '2', icon: 'attach_money', children: [] },
     { state: 'security', name: 'Seguridad', type: '', icon: 'vpn_key', children: [] },
+    { state: 'roles', name: 'Roles y permisos', type: '3', icon: 'security', children: [] },
 ];
 
 const MENUMANAGEMENT = [
@@ -25,54 +26,6 @@ const MENUMANAGEMENT = [
     ] }
 ];
 
-const MENUOPERATION = [
-    { state: 'operation', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: 'tickets-management', name: 'Tickets', type: '', icon: 'assignment', children: [
-        { state: 'ticket-list-operator', name: 'Mis tickets', type: '', icon: 'assignment_ind' },
-        { state: 'ticket-historic-operator', name: 'Histórico de tickets', type: '', icon: 'dashboard' }
-    ] },
-    { state: 'edit-username', name: 'Prueba 9', type: 'link', icon: 'account_circle', children: [] },
-    { state: 'edit-password', name: 'Prueba 10', type: 'link', icon: 'vpn_key', children: [] },
-    { state: 'edit-email', name: 'Prueba 11', type: 'link', icon: 'email', children: [] },
-    { state: 'delete-account', name: 'Prueba 12', type: 'link', icon: 'power_settings_new', children: [] }
-];
-
-const MENUDEPO = [
-    { state: 'depo', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: 'billing', name: 'Prueba 8', type: 'link', icon: 'attach_money', children: [] },
-    { state: 'edit-username', name: 'Prueba 9', type: 'link', icon: 'account_circle', children: [] },
-    { state: 'edit-password', name: 'Prueba 10', type: 'link', icon: 'vpn_key', children: [] },
-    { state: 'edit-email', name: 'Prueba 11', type: 'link', icon: 'email', children: [] },
-    { state: 'delete-account', name: 'Prueba 12', type: 'link', icon: 'power_settings_new', children: [] }
-];
-
-const MENUPURCHASE = [
-    { state: 'purchase', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: 'billing', name: 'Prueba 8', type: 'link', icon: 'attach_money', children: [] },
-    { state: 'edit-username', name: 'Prueba 9', type: 'link', icon: 'account_circle', children: [] },
-    { state: 'edit-password', name: 'Prueba 10', type: 'link', icon: 'vpn_key', children: [] },
-    { state: 'edit-email', name: 'Prueba 11', type: 'link', icon: 'email', children: [] },
-    { state: 'delete-account', name: 'Prueba 12', type: 'link', icon: 'power_settings_new', children: [] }
-];
-
-const MENUADMINISTRATION = [
-    { state: 'administration', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: 'billing', name: 'Prueba 8', type: 'link', icon: 'attach_money', children: [] },
-    { state: 'edit-username', name: 'Prueba 9', type: 'link', icon: 'account_circle', children: [] },
-    { state: 'edit-password', name: 'Prueba 10', type: 'link', icon: 'vpn_key', children: [] },
-    { state: 'edit-email', name: 'Prueba 11', type: 'link', icon: 'email', children: [] },
-    { state: 'delete-account', name: 'Prueba 12', type: 'link', icon: 'power_settings_new', children: [] }
-];
-
-const MENUCHAT = [
-    { state: 'chat', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: 'billing', name: 'Prueba 8', type: 'link', icon: 'attach_money', children: [] },
-    { state: 'edit-username', name: 'Prueba 9', type: 'link', icon: 'account_circle', children: [] },
-    { state: 'edit-password', name: 'Prueba 10', type: 'link', icon: 'vpn_key', children: [] },
-    { state: 'edit-email', name: 'Prueba 11', type: 'link', icon: 'email', children: [] },
-    { state: 'delete-account', name: 'Prueba 12', type: 'link', icon: 'power_settings_new', children: [] }
-];
-
 @Injectable()
 export class MenuItems {
     getMenuSettings(): Menu[] {
@@ -80,20 +33,5 @@ export class MenuItems {
     }
     getMenuManagement(): Menu[] {
         return MENUMANAGEMENT;
-    }
-    getMenuOperation(): Menu[] {
-        return MENUOPERATION;
-    }
-    getMenuDepo(): Menu[] {
-        return MENUDEPO;
-    }
-    getMenuPurchase(): Menu[] {
-        return MENUPURCHASE;
-    }
-    getMenuAdministration(): Menu[] {
-        return MENUADMINISTRATION;
-    }
-    getMenuChat(): Menu[] {
-        return MENUCHAT;
     }
 }

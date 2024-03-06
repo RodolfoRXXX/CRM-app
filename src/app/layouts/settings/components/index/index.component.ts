@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { Role } from 'src/app/shared/interfaces/employee.interface';
 
 @Component({
   selector: 'app-index',
@@ -8,15 +7,18 @@ import { Role } from 'src/app/shared/interfaces/employee.interface';
 })
 export class IndexComponent {
 
-  roles!: Role;
-  is_employee!: boolean;
+  permissions: string[] = [];
+  is_employee = false;
 
   constructor(
     private _conector: ConectorsService
   ) { 
     this._conector.getEmployee().subscribe( value => {
-      this.roles = JSON.parse(value.role);
-      this.is_employee = (value.id != 0)?true:false;
+      //la lista de permisos se almacena como un string y luego se lo separa en un array
+      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
+      //que es el valor vacío, por eso la desigualdad es mayor a 1
+      this.permissions = value.list_of_permissions.split(',')
+      this.is_employee = (value.id > 0)?true:false;
     })
    }
 

@@ -6,6 +6,7 @@ import { UserDataComponent } from '../../../settings/components/user-data/user-d
 import { IndexComponent } from '../../../settings/components/index/index.component';
 import { EnterpriseDataComponent } from '../../../settings/components/enterprise-data/enterprise-data.component';
 import { SecurityComponent } from 'src/app/layouts/settings/components/security/security.component';
+import { RolesComponent } from 'src/app/layouts/settings/components/roles/roles.component';
 
 const routes: Routes = [
   { path: '', component: SettingsComponent,
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'enterprise-data', component: EnterpriseDataComponent },
       { path: 'billing', component: BillingComponent },
       { path: 'security', component: SecurityComponent },
+      { path: 'roles', component: RolesComponent },
       { path: '**', redirectTo: 'index', pathMatch: 'full' }
     ]
   }

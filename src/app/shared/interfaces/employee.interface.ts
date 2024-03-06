@@ -8,11 +8,13 @@ export interface Employee {
     date: string,
     phone: string,
     mobile: string,
-    role: string,
+    role: number,
     working_hours: string,
     name_er: string,
     phone_er: string,
-    state: number
+    state: number,
+    name_role: string,
+    list_of_permissions: string,
 }
 
 export const empty_employee: Employee = {
@@ -25,16 +27,11 @@ export const empty_employee: Employee = {
     date: '',
     phone: '',
     mobile: '',
-    role: '{"gestion": false, "operacion": false, "deposito": false, "administracion": false}',
+    role: 0,
     working_hours: '',
     name_er: '',
     phone_er: '',
-    state: 0
-}
-
-export interface Role {
-    gestion: boolean,
-    operacion: boolean,
-    deposito: boolean,
-    administracion: boolean
+    state: 0,
+    name_role: '',
+    list_of_permissions: '',
 }
