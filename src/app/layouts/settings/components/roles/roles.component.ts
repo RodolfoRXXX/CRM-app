@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of as observableOf } from 'rxjs';
@@ -7,6 +6,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { environment } from 'src/enviroments/enviroment';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogEditPermissionsComponent } from 'src/app/shared/standalone/dialog/dialog-edit-permissions/dialog-edit-permissions.component';
 
 @Component({
   selector: 'app-roles',
@@ -23,23 +24,16 @@ export class RolesComponent implements OnInit, AfterViewInit {
   is_large!: boolean;
   card_users: any = [];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   constructor(
     private _auth: AuthService,
     private _api: ApiService,
     private _conector: ConectorsService,
-    private _paginator: MatPaginatorIntl
+    public _dialog: MatDialog
   ) {
     this.resultsLength = 0;
     this.load = true;
     this.recharge = false;
     this.getUsers();
-    this._paginator.itemsPerPageLabel = "Registros por página";
-    this._paginator.firstPageLabel = "Primera página";
-    this._paginator.lastPageLabel = "última página";
-    this._paginator.nextPageLabel = "Próxima página";
-    this._paginator.previousPageLabel = "Anterior página";
     this.source = environment.SERVER;
   }
 
@@ -87,14 +81,14 @@ export class RolesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    merge(this.paginator.page)
+    merge()
       .pipe(
         startWith({}),
         map(() => this.getDataLocal()),
         switchMap((id) => {
           this.recharge = false;
           this.load = true;
-          return this._api.postTypeRequest('profile/get-users', { id: id, page: this.paginator.pageIndex, size: 10 })
+          return this._api.postTypeRequest('profile/get-users', { id: id })
                         .pipe(catchError(async () => {observableOf(null); this.recharge = true;}));
         }),
         map((data:any) => {
@@ -102,13 +96,14 @@ export class RolesComponent implements OnInit, AfterViewInit {
           if (data === null) {
             return [];
           }
-          console.log(data)
           //Completa el array que completa las cards
           data.data.filter( (value:any) => value.role != null).forEach((element:any) => {
             if(!this.card_users.find( (value:any) => value.role == element.role )) {
               this.card_users.push({
-                'role': element.role,
-                'user': [element]
+                'id_role'  : element.id_role,
+                'role'     : element.role,
+                'icon_role': element.icon_role,
+                'user'     : [element]
               })
             } else {
               this.card_users[this.card_users.findIndex( (value:any) => value.role == element.role )].user.push(element)
@@ -122,6 +117,10 @@ export class RolesComponent implements OnInit, AfterViewInit {
 
   rechargeData() {
     this._conector.setUpdate(true);
+  }
+
+  openEditRoleDialog(id_role: any, role:string, icon_role: string): void {
+    this._dialog.open(DialogEditPermissionsComponent, { data: { id_role: id_role, role: role, icon_role: icon_role } });
   }
 
 }

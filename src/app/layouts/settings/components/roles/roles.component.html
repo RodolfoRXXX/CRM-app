@@ -1,17 +1,23 @@
 <!-- Card con roles -->
 
-<div class="box-title">
-    <p class="title">Listado de roles</p>
-    <p class="subtitle">Los roles permiten definir el acceso o restricción de los usuarios a diferentes secciones de la aplicación.</p>
+<div class="box-upper-title">
+    <div class="box-title">
+        <p class="title">Listado de roles</p>
+        <p class="subtitle">Los roles permiten definir el acceso o restricción de los usuarios a diferentes secciones de la aplicación.</p>
+    </div>
+    <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button">
+        <mat-icon>keyboard_backspace</mat-icon>
+    </a>
 </div>
 
 <div class="row g-4">
+    <!-- Cards de roles -->
     <div class="col-xl-4 col-lg-6 col-md-6" *ngFor="let card of card_users">
         <mat-card class="mat-card m-0">
             <mat-card-header>
-              <div style="display: flex; justify-content:space-between; align-items: center; margin-bottom: 0.5rem; width: 100%;">
-                <h6 class="mb-0" style="color: rgba(0, 0, 0, 0.54); font-weight: 500;">Total {{ card['user'].length }} usuarios</h6>
-                <ul style="padding-left: 0; list-style: none; display: flex; align-items: center; margin-bottom: 0;">
+              <div class="box-roles m-b-05r w-100">
+                <h6 class="card-role-title mb-0">Total {{ card['user'].length }} usuarios</h6>
+                <ul class="card-role-list">
                     <ng-container *ngFor="let user of card.user, let i = index">
                         <li *ngIf="i < 3" [ngStyle]="{'margin-left':(i == 0?'0':'-0.65rem') }" [style.z-index]="card['user'].length - i">
                             <button
@@ -20,18 +26,18 @@
                                 matTooltipPosition=above
                                 class="btn-header-login p-1"
                                 style="background-color: #fff;"
-                            > <img style="width: 100%; height: 100%; border-radius: 50%;" [src]="source + user.thumbnail" alt="avatar" class="profile-pic-icon">
+                            > <img class="profile-pic-icon card-role-img" [src]="source + user.thumbnail" alt="avatar">
                             </button>
                         </li>
                     </ng-container>
-                        <li style="position: relative; margin-left: -0.65rem; z-index: 0;" *ngIf="card['user'].length > 3">
+                        <li class="card-role-list-li" *ngIf="card['user'].length > 3">
                             <button
                                 mat-icon-button
                                 matTooltip="+ {{ card['user'].length - 3 }}"
                                 matTooltipPosition=above
                                 class="btn-header-login p-1"
                                 style="background-color: #fff;"
-                            > <p style="margin-bottom: 0!important; color: rgba(0, 0, 0, 0.54); font-size: 0.95rem; font-weight: 500;">+ {{ card['user'].length - 3 }}</p>
+                            > <p>+ {{ card['user'].length - 3 }}</p>
                             </button>
                         </li>
                 </ul>
@@ -39,30 +45,29 @@
             </mat-card-header>
             <mat-card-content style="display: flex; justify-content: space-between; align-items: center;">
                 <h3 class="mb-0" style="text-transform: capitalize;">{{ card.role }}</h3>
-                <button mat-button color="primary">Editar</button>
+                <button mat-button color="primary" (click)="openEditRoleDialog(card.id_role, card.role, card.icon_role)">Editar</button>
             </mat-card-content>
           </mat-card>
     </div>
     <!-- Card para crear roles -->
     <div class="col-xl-4 col-lg-6 col-md-6">
-        <mat-card class="mat-card m-0" style="height: 100%;">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; height: 100%;">
-                <div><img src="" alt=""></div>
-                <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end;">
+        <mat-card class="mat-card m-0 h-100">
+            <div class="box-roles p-20 h-100">
+                <div class="box-role-create">
                     <button mat-raised-button color="primary">Crear Rol</button>
-                    <h5 class="mb-0 mt-2" style="color: rgba(0, 0, 0, 0.54); font-weight: 500;">Crea un rol si no existe</h5>
+                    <h5 class="mb-0 mt-2 text-center">Crea un rol si no existe</h5>
                 </div>
             </div>
         </mat-card>
     </div>
 </div>
 
-
 <!-- Listadod de usuarios y sus roles -->
-
-<div class="box-title mt-5">
-    <p class="title">Listado de usuarios</p>
-    <p class="subtitle mb-1">Los roles permiten definir el acceso o restricción de los usuarios a diferentes secciones de la aplicación.</p>
+<div class="box-upper-title">
+    <div class="box-title mt-5">
+        <p class="title">Listado de usuarios</p>
+        <p class="subtitle mb-1">Los roles permiten definir el acceso o restricción de los usuarios a diferentes secciones de la aplicación.</p>
+    </div>
 </div>
 
 <div>
@@ -77,14 +82,14 @@
             <ng-container matColumnDef="user">
               <th mat-header-cell *matHeaderCellDef> Usuario </th>
               <td mat-cell *matCellDef="let element">
-                <div style="display: flex; justify-content: left; align-items: center;">
-                    <div style="margin-right: 0.5rem;">
-                        <div style="position: relative; width: 2.5rem; height: 2.5rem; cursor: pointer;">
-                            <img style="width: 100%; height: 100%; border-radius: 50%;" [src]="source + element.thumbnail" [alt]="element.email">
+                <div class="table-column">
+                    <div class="pic-profile">
+                        <div>
+                            <img [src]="source + element.thumbnail" [alt]="element.email">
                         </div>
                     </div>
-                    <div style="display: flex; align-items: center;">
-                        <h5 style="text-transform: capitalize; margin-bottom: 0;">{{ (element.name_employee)?element.name_employee:element.email.split("@")[0] }}</h5>
+                    <div class="text">
+                        <h5>{{ (element.name_employee)?element.name_employee:element.email.split("@")[0] }}</h5>
                     </div>
                 </div>
               </td>
@@ -94,7 +99,7 @@
             <ng-container *ngIf="is_large" matColumnDef="email">
               <th mat-header-cell *matHeaderCellDef> Email </th>
               <td mat-cell *matCellDef="let element">
-                <h5 class="text-muted" style="margin-bottom: 0;">{{element.email}} </h5>
+                <h5 class="text-muted mb-0">{{element.email}} </h5>
               </td>
             </ng-container>
           
@@ -102,9 +107,9 @@
             <ng-container matColumnDef="role">
               <th mat-header-cell *matHeaderCellDef> Rol </th>
               <td mat-cell *matCellDef="let element">
-                <div style="display: flex; justify-content: left; align-items: center;">
+                <div class="table-column">
                     <mat-icon color="primary" [matTooltip]=element.role matTooltipPosition=above>{{ element.icon_role }}</mat-icon>
-                    <h5 *ngIf="is_large" style="margin-bottom: 0; text-transform: capitalize; margin-left: 0.5rem;">{{ element.role }}</h5>
+                    <h5 *ngIf="is_large">{{ element.role }}</h5>
                 </div>
               </td>
             </ng-container>
@@ -113,8 +118,8 @@
             <ng-container matColumnDef="verified">
                 <th mat-header-cell *matHeaderCellDef> Verificado </th>
                 <td mat-cell *matCellDef="let element">
-                    <mat-chip class="cap" 
-                            [style]="{'background-color':element.verified_state == 1?'rgb(230, 247, 217)':'rgb(255, 196, 189)'}"
+                    <mat-chip class="cap font-14" 
+                            [style]="{'background-color':element.verified_state == 1?'rgb(230, 247, 217)':'rgb(255, 196, 189)' }"
                             >
                             <span *ngIf="is_large" [style]="{'color':element.verified_state == 1?'rgb(86, 202, 0)':'rgb(255, 87, 51)'}">{{ (element.verified_state)?'Verificado':'No verificado' }}</span>
                             <mat-icon *ngIf="!is_large">{{ element.verified_state == 1?'check':'close' }}</mat-icon>
@@ -126,7 +131,7 @@
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef> Estado </th>
               <td mat-cell *matCellDef="let element">
-                    <mat-chip class="cap" 
+                    <mat-chip class="cap font-14" 
                           [style]="{'background-color':element.state_employee == 1?'rgb(230, 247, 217)':'rgb(237, 238, 239)'}">
                           <span *ngIf="is_large" [style]="{'color':element.state_employee == 1?'rgb(86, 202, 0)':'rgb(138, 141, 147)'}">{{ (element.state_employee)?'Activo':'Inactivo' }}</span>
                           <mat-icon *ngIf="!is_large">{{ element.state_employee == 1?'check_circle_outline':'remove_circle_outline' }}</mat-icon>
@@ -140,7 +145,7 @@
                 <td mat-cell *matCellDef="let element">
                     <a href="#" mat-icon-button color="primary" aria-label="">
                         <mat-icon>
-                            <span style="height: 5px; width: 5px; background-color: red; border-radius: 50%; position: absolute;">1</span>
+                            <mat-icon class="badge-icon" *ngIf="element.state_employee == null || element.role == null">brightness_1</mat-icon>
                             visibility
                         </mat-icon>
                     </a>
@@ -154,8 +159,7 @@
             <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{input.value}}"</td>
             </tr>
-        </table>
-        <mat-paginator class="m-t-15" [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              
+        </table>              
     </div>
     <div class="billing-recharge" *ngIf="recharge">
         <!-- Botón para recargar los datos -->
