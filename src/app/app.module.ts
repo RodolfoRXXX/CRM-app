@@ -29,7 +29,7 @@ import { SpinnerComponent } from './shared/spinner.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptorService,
-      multi: true
+      multi: true,
     }
   ],
   bootstrap: [AppComponent]

@@ -1,15 +1,12 @@
-import { Component, Inject, OnInit, SimpleChange} from '@angular/core';
+import { Component, Inject} from '@angular/core';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
 import { ApiService } from 'src/app/services/api.service';
-import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { catchError, map, merge, startWith, switchMap, of as observableOf } from 'rxjs';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ConectorsService } from 'src/app/services/conectors.service';
 
 
 @Component({
@@ -20,12 +17,9 @@ import { ConectorsService } from 'src/app/services/conectors.service';
     MaterialModule,
     CommonModule,
     ReactiveFormsModule
-  ],
-  providers: [
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ]
 })
-export class DialogEditPermissionsComponent implements OnInit {
+export class DialogEditPermissionsComponent {
 
   permissions = new MatTableDataSource();
   permissions_list: any;
@@ -42,15 +36,12 @@ export class DialogEditPermissionsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data_role: any,
     private _api: ApiService,
     private _notify: NotificationService,
-    private _conector: ConectorsService,
   ) {
     this.loading_set_permission = false;
     this.disable_submit = false;
     this.get_permissions();
     this.setPermissionsForm();
   }
-
-  ngOnInit(): void {}
 
   get_permissions = () => {
     merge()
@@ -64,7 +55,7 @@ export class DialogEditPermissionsComponent implements OnInit {
           this.permissions_list = data.data
         } ),
         switchMap( () => {
-          return this._api.postTypeRequest('profile/get-enterprise-roles', { id_role: this.data_role.id_role })
+          return this._api.postTypeRequest('profile/get-enterprise-role', { id_role: this.data_role.id_role })
                           .pipe(catchError(async () => {observableOf(null);}));
         } ),
         map( (data:any) => {
@@ -88,7 +79,7 @@ export class DialogEditPermissionsComponent implements OnInit {
         name_role: new FormControl(this.data_role.role, [
           Validators.required,
           Validators.minLength(4),
-          Validators.maxLength(30)
+          Validators.maxLength(15)
         ]),
         list: new FormGroup({}),
         list_of_permissions: new FormControl('')
@@ -99,7 +90,7 @@ export class DialogEditPermissionsComponent implements OnInit {
     //name
     if(this.permissionForm.controls['name_role'].hasError('required')) return 'Tenés que ingresar un valor';
     if(this.permissionForm.controls['name_role'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.permissionForm.controls['name_role'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
+    if(this.permissionForm.controls['name_role'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
 
     return ''
   }
@@ -131,8 +122,7 @@ export class DialogEditPermissionsComponent implements OnInit {
             this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.');
           }
           setTimeout(() => {
-            this.closeDialog();
-            this._conector.setUpdate(true);
+            this.closeDialog(true);
           }, 2000);
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
@@ -147,11 +137,10 @@ export class DialogEditPermissionsComponent implements OnInit {
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }
     })  
-
   }
 
-  closeDialog() {
-    this.dialogRef.close();
+  closeDialog(state: boolean) {
+    this.dialogRef.close(state);
   }
 
 }

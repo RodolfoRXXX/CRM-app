@@ -30,22 +30,22 @@
                             </button>
                         </li>
                     </ng-container>
-                        <li class="card-role-list-li" *ngIf="card['user'].length > 3">
+                        <li class="card-role-list-li" *ngIf="card['user'].length > 3 || card['user'].length == 0">
                             <button
                                 mat-icon-button
-                                matTooltip="+ {{ card['user'].length - 3 }}"
+                                matTooltip="{{ (card['user'].length > 3)?( '+ ' + (card['user'].length - 3)):0 }}"
                                 matTooltipPosition=above
                                 class="btn-header-login p-1"
                                 style="background-color: #fff;"
-                            > <p>+ {{ card['user'].length - 3 }}</p>
+                            > <p>{{ (card['user'].length > 3)?( '+ ' + (card['user'].length - 3)):0 }}</p>
                             </button>
                         </li>
                 </ul>
               </div>
             </mat-card-header>
             <mat-card-content style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 class="mb-0" style="text-transform: capitalize;">{{ card.role }}</h3>
-                <button mat-button color="primary" (click)="openEditRoleDialog(card.id_role, card.role, card.icon_role)">Editar</button>
+                <h3 class="mb-0" style="text-transform: capitalize;">{{ card.name_role }}</h3>
+                <button mat-button color="primary" (click)="openEditRoleDialog(card.id, card.name_role, card.icon_role)">Editar</button>
             </mat-card-content>
           </mat-card>
     </div>
@@ -54,7 +54,7 @@
         <mat-card class="mat-card m-0 h-100">
             <div class="box-roles p-20 h-100">
                 <div class="box-role-create">
-                    <button mat-raised-button color="primary">Crear Rol</button>
+                    <button mat-raised-button color="primary"  (click)="openCreateRoleDialog()">Crear Rol</button>
                     <h5 class="mb-0 mt-2 text-center">Crea un rol si no existe</h5>
                 </div>
             </div>
