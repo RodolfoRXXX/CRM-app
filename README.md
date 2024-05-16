@@ -14,7 +14,6 @@ Aplicación web que se utiliza como sistema de gestión para un negocio de venta
       <li>Determinar el ámbito del proyecto</li>
       <li>Duración</li>
       <li>Estimación de costo</li>
-      <li>Asignación de recursos a cada fase</li>
     </ul>
   </li>
   <li><b>Diseño:</b> Aquí se debe diseñar la interfaz de usuario. En este punto definimos cómo se va a ver el software, detalles, colores, etc;</li>
@@ -114,4 +113,29 @@ Aplicación web que se utiliza como sistema de gestión para un negocio de venta
   <h4>12. El sistema debe contar con diferentes roles para gestionar la empresa, como ser: administrador, vendedor, etc (Alta)</h4>
     <p>Esta es una sección que solo la verá el administrador y podrá modificarla.</p>
     <p>Aquí el administrador podrá crear roles en la empresa y asignar a cada usuario con un rol y también definir permisos para cada rol.</p>
-    
+ 
+## <h3>Planificación:</h3>
+  <ol>
+      <li>Determinar el ámbito del proyecto</li>
+      <li>Duración</li>
+      <li>Estimación de costo</li>
+  </ol>
+  <h4>1. Determinar el ámbito del proyecto</h4>
+    <p>El proyecto Bamboo se trata de un sistema de gestión que está diseñado para resolver un problema de administración de una empresa que vende productos o servicios.</p>
+    <p>El sistema se encargará de generar remitos y facturarlos, como también de almacenar clientes y su información.</p>
+    <p>El sistema también permitirá la comunicación con clientes a través de whatsapp y automatizaciones.</p>
+
+  <h4>2. Duración</h4>
+    <p>El proyecto se realizará en diversas etapas para ponerlo en producción cuanto antes, de esa forma el cliente puede evaluarlo y utilizarlo para así poder solucionar
+      errores y generar mejoras.</p>
+    <p>Para la primera etapa del proyecto se evalua un tiempo de duración de 2 meses aprox.</p>
+
+  <h4>3. Estimación del costo</h4>
+    <p>El costo es en tiempo invertido por un solo programador hasta que la primera etapa esté finalizada, en la segunda se contratará un segundo programador para ir agregando 
+      mejoras y avanzar más rápido con el software.</p>
+    <p>El cliente que generó el pedido del sistema se hará cargo del primer webHosting y CloudServer por el término de 6 meses.</p>
+    <p>El costo del sistema se abona de forma mensual, por medio de la contratación de una licencia de uso. El precio aún no está fijado.</p>
+
+## <h3>Diseño:</h3>
+  <p>El diseño </p>
+  
