@@ -53,13 +53,13 @@ export class DialogCreateRoleComponent {
   setRoleForm(): void {
     this.roleForm = new FormGroup({
         id_enterprise: new FormControl(''),
-        icon_role: new FormControl('', [
-          Validators.required
-        ]),
         name_role: new FormControl('', [
           Validators.required,
           Validators.minLength(4),
           Validators.maxLength(15)
+        ]),
+        icon_role: new FormControl('', [
+          Validators.required
         ])
     });
   }
@@ -77,17 +77,22 @@ export class DialogCreateRoleComponent {
     return ''
   }
 
-  submitPermissions() {
+  createRole() {
     this.disable_submit = true;
     this.loading_create_role = true;
-
-    this._api.postTypeRequest('profile/create-role', this.roleForm.value).subscribe({
+    this._api.postTypeRequest('profile/create-new-role', this.roleForm.value).subscribe({
       next: (res: any) => {
         this.loading_create_role =  false;
         if(res.status == 1){
-            //Creó el nuevo rol
+          //Accedió a la base de datos y no hubo problemas
+          if(res.data.affectedRows == 1){
+            //Creó el rol
+            this._notify.showSuccess('Rol nuevo creado!');
+          } else{
+            //No hubo modificación
             this.disable_submit = false;
-            this._notify.showSuccess('Nuevo Rol creado!');
+            this._notify.showError('No se ha podido crear el rol');
+          }
           setTimeout(() => {
             this.closeDialog(true);
           }, 2000);

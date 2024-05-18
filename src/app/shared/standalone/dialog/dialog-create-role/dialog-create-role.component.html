@@ -13,7 +13,7 @@
           Modificá los permisos asignados a este Rol
       </mat-card-subtitle>
       <div>
-        <form [formGroup]="roleForm" (ngSubmit)="submitPermissions()">
+        <form [formGroup]="roleForm" (ngSubmit)="createRole()">
             <div class="mid-user-data-container">
                 <div style="width: 20%;">
                     <mat-form-field appearance="fill">
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="user-data-input m-t-10 text-center">
-                <button mat-raised-button color="primary" type="submit" [disabled]="this.roleForm.invalid || this.roleForm.untouched || this.roleForm.pristine || this.disable_submit">Guardar</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="this.roleForm.invalid || this.roleForm.untouched || this.roleForm.pristine || this.disable_submit">Crear</button>
                 <button mat-raised-button color="warn" class="m-l-10" type="reset" (click)="closeDialog(false)"> Cancelar </button>
             </div>
         </form>

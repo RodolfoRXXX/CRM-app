@@ -68,7 +68,7 @@ export class RolesComponent implements OnInit {
         switchMap( (id_enterprise) => {
           this.recharge = false;
           this.load = true;
-          return this._api.postTypeRequest('profile/get-roles', { id_enterprise: id_enterprise })
+          return this._api.postTypeRequest('profile/get-enterprise-roles', { id_enterprise: id_enterprise })
                           .pipe(catchError(async () => {observableOf(null);}));
         } ),
         map( (roles:any) => {
@@ -79,14 +79,14 @@ export class RolesComponent implements OnInit {
         } ),
         map(() => this.getDataLocal()),
         switchMap( (id_enterprise) => {
-          return this._api.postTypeRequest('profile/get-users', { id_enterprise: id_enterprise })
+          return this._api.postTypeRequest('profile/get-enterprise-users', { id_enterprise: id_enterprise })
                           .pipe(catchError(async () => {observableOf(null);}));
         } ),
         map( (data:any) => {
           this.load = false;
           if (data === null) {
             return [];
-          }      
+          }
               //Completa el array que completa las cards
               data.data.filter( (value:any) => value.role != null).forEach((element:any) => {
                 if(!this.card_users.find( (value:any) => value.name_role == element.role )) {
@@ -114,8 +114,8 @@ export class RolesComponent implements OnInit {
     this._conector.setUpdate(true);
   }
 
-  openEditRoleDialog(id_role: any, role:string, icon_role: string): void {
-    const dialogRef = this._dialog.open(DialogEditPermissionsComponent, { data: { id_role: id_role, role: role, icon_role: icon_role }, disableClose: true  });
+  openEditRoleDialog(id_role: any, role:string, icon_role: string, task:string): void {
+    const dialogRef = this._dialog.open(DialogEditPermissionsComponent, { data: { id_role: id_role, role: role, icon_role: icon_role, task: task }, disableClose: true  });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {

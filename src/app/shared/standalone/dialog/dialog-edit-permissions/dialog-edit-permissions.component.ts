@@ -55,7 +55,7 @@ export class DialogEditPermissionsComponent {
           this.permissions_list = data.data
         } ),
         switchMap( () => {
-          return this._api.postTypeRequest('profile/get-enterprise-role', { id_role: this.data_role.id_role })
+          return this._api.postTypeRequest('profile/get-role-permissions', { id_role: this.data_role.id_role })
                           .pipe(catchError(async () => {observableOf(null);}));
         } ),
         map( (data:any) => {
@@ -107,13 +107,12 @@ export class DialogEditPermissionsComponent {
     this.permissionForm.patchValue({
       list_of_permissions: list
     })
-
-    this._api.postTypeRequest('profile/update-permissions', this.permissionForm.value).subscribe({
+    this._api.postTypeRequest('profile/update-role-permissions', this.permissionForm.value).subscribe({
       next: (res: any) => {
         this.loading_set_permission =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
-          if(res.changedRows == 1){
+          if(res.data.changedRows == 1){
             //Modificó el usuario
             this._notify.showSuccess('Permisos actualizados con éxito!');
           } else{
@@ -136,7 +135,41 @@ export class DialogEditPermissionsComponent {
         this.loading_set_permission =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }
-    })  
+    })
+  }
+
+  deleteRole(){
+    this.disable_submit = true;
+    this.loading_set_permission = true;
+    this._api.postTypeRequest('profile/delete-role', { id: this.data_role.id_role }).subscribe({
+      next: (res: any) => {
+        this.loading_set_permission =  false;
+        if(res.status == 1){
+          //Accedió a la base de datos y no hubo problemas
+          if(res.data.affectedRows == 1){
+            //Eliminó el rol
+            this._notify.showSuccess('Rol eliminado');
+          } else{
+            //No hubo modificación
+            this.disable_submit = false;
+            this._notify.showError('No se ha podido eliminar el rol');
+          }
+          setTimeout(() => {
+            this.closeDialog(true);
+          }, 2000);
+        } else{
+          //Problemas de conexión con la base de datos(res.status == 0)
+          this.disable_submit = false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
+        }
+      },
+      error: (error) => {
+        //Error de conexión, no pudo consultar con la base de datos
+        this.disable_submit = false;
+        this.loading_set_permission =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
+      }
+    })
   }
 
   closeDialog(state: boolean) {

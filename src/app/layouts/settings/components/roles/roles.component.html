@@ -1,4 +1,7 @@
-<!-- Card con roles -->
+<!-- Roles Component -->
+
+
+<!-- Card title -->
 
 <div class="box-upper-title">
     <div class="box-title">
@@ -9,6 +12,9 @@
         <mat-icon>keyboard_backspace</mat-icon>
     </a>
 </div>
+
+
+<!-- Cards with roles -->
 
 <div class="row g-4">
     <!-- Cards de roles -->
@@ -45,7 +51,23 @@
             </mat-card-header>
             <mat-card-content style="display: flex; justify-content: space-between; align-items: center;">
                 <h3 class="mb-0" style="text-transform: capitalize;">{{ card.name_role }}</h3>
-                <button mat-button color="primary" (click)="openEditRoleDialog(card.id, card.name_role, card.icon_role)">Editar</button>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <button 
+                        mat-icon-button color="primary" 
+                        (click)="openEditRoleDialog(card.id, card.name_role, card.icon_role, 'edit')"
+                        matTooltip="Editar rol"
+                        matTooltipPosition=above
+                        ><mat-icon>edit</mat-icon>
+                    </button>
+                    <button 
+                        mat-icon-button color="primary" 
+                        (click)="openEditRoleDialog(card.id, card.name_role, card.icon_role, 'delete')"
+                        matTooltip="Eliminar rol"
+                        matTooltipPosition=above 
+                        [disabled]="card['user'].length > 0"
+                        ><mat-icon>delete</mat-icon>
+                    </button>
+                </div>
             </mat-card-content>
           </mat-card>
     </div>
@@ -62,13 +84,18 @@
     </div>
 </div>
 
-<!-- Listadod de usuarios y sus roles -->
+
+<!-- List of users title -->
+
 <div class="box-upper-title">
     <div class="box-title mt-5">
         <p class="title">Listado de usuarios</p>
         <p class="subtitle mb-1">Los roles permiten definir el acceso o restricción de los usuarios a diferentes secciones de la aplicación.</p>
     </div>
 </div>
+
+
+<!-- Table of users -->
 
 <div>
     <div class="box-table" *ngIf="!recharge">
