@@ -94,17 +94,12 @@ export class UserDataComponent implements OnInit {
     })
 
     //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Configuración/Mi cuenta')
+    this._conector.setUpdateTitle('Mi cuenta')
 
     //Carga el detector de tamaño del dispositivo
     this._conector.getScreenState().subscribe( screen => {
       this.screenLarge = screen
     } )
-  }
-
-  ngOnDestroy() {
-    //Modifica el título de la vista principal al cerrar el componente
-    this._conector.setUpdateTitle('Configuración')
   }
 
   async getDataUser(): Promise<any> {

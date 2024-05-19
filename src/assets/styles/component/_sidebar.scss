@@ -108,6 +108,8 @@ use profile section
 .user-profile {
   position: relative;
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 
   .profile-img {
     width: 50px;

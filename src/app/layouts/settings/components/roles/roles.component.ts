@@ -40,7 +40,7 @@ export class RolesComponent implements OnInit {
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Configuración/Roles y permisos')
+    this._conector.setUpdateTitle('Roles y Permisos')
 
     //Carga el detector de tamaño del dispositivo
     this._conector.getScreenState().subscribe( is_large => {
@@ -48,11 +48,6 @@ export class RolesComponent implements OnInit {
       this.displayedColumns = (is_large)?['user', 'email', 'role', 'verified', 'status', 'view']:['user', 'role', 'verified', 'status', 'view'];
     } )
 
-  }
-
-  ngOnDestroy() {
-    //Modifica el título de la vista principal al cerrar el componente
-    this._conector.setUpdateTitle('Configuración')
   }
 
   getDataLocal(): Promise<any> {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Menu } from '../interfaces/menu.interface';
 
 const MENUSETTINGS = [
+    { state: 'index', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
     { state: 'user-data', name: 'Mi cuenta', type: 'employee', icon: 'fingerprint', children: [] },
     { state: 'enterprise-data', name: 'Mi empresa', type: '1', icon: 'business', children: [] },
     { state: 'billing', name: 'Facturación', type: '2', icon: 'attach_money', children: [] },

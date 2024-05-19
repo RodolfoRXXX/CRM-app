@@ -76,7 +76,7 @@ export class SecurityComponent implements OnInit {
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Configuración/Seguridad')
+    this._conector.setUpdateTitle('Seguridad')
 
     this.passwordFirst.valueChanges.subscribe( value => {
       if( ((this.setPasswordDataForm.value.password?.length > 3) && (this.setPasswordDataForm.value.password?.length < 11) ) && (value !== this.setPasswordDataForm.value.password)) {
@@ -98,11 +98,6 @@ export class SecurityComponent implements OnInit {
         this.setEmailDataForm.controls['email'].setErrors({ no_equal: true });
       }
     })
-  }
-
-  ngOnDestroy() {
-    //Modifica el título de la vista principal al cerrar el componente
-    this._conector.setUpdateTitle('Configuración')
   }
 
   openDialog(): void {

@@ -29,8 +29,7 @@ export class EnterpriseDataComponent implements OnInit {
     private _notify: NotificationService,
     private _conector: ConectorsService,
     private _image: ImageService,
-  ) { 
-    this.base_image = '../../../../../assets/images/users/blanck_enterprise.png';
+  ) {
     this.disable_pic = true;
     this.disable_submit = false;
     this.loading = false;
@@ -42,17 +41,12 @@ export class EnterpriseDataComponent implements OnInit {
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Configuración/Mi empresa')
+    this._conector.setUpdateTitle('Mi empresa')
 
     //Carga el detector de tamaño del dispositivo
     this._conector.getScreenState().subscribe( screen => {
       this.screenLarge = screen
     })
-  }
-
-  ngOnDestroy() {
-    //Modifica el título de la vista principal al cerrar el componente
-    this._conector.setUpdateTitle('Configuración')
   }
 
   async getDataUser(): Promise<any> {

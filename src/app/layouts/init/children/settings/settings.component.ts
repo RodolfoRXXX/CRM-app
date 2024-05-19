@@ -12,6 +12,7 @@ export class SettingsComponent implements OnInit {
   opened: boolean = false;
   mode!: any;
   update!: boolean;
+  sector!: string;
   title!: string;
   employee!: Employee;
 
@@ -21,6 +22,7 @@ export class SettingsComponent implements OnInit {
   ) {
     this._conector.getOpenedState().subscribe( state => this.opened = state );
     this._conector.getScreenState().subscribe( state => state?this.mode = 'side':this.mode = 'over' );
+    this.sector = 'Configuración';
   }
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class SettingsComponent implements OnInit {
 
     //Actualiza el título de la vista de acuerdo al componente cargado
     this._conector.getUpdateTitle().subscribe( value => {
-      (value)?this.title = value:this.title = "Configuración"
+      (value)?this.title = value:this.title = ""
     })
   }
 

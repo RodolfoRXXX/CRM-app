@@ -23,7 +23,6 @@ export class MainComponent implements OnInit {
     this._conector.getScreenState().subscribe( state => state?this.mode = 'side':this.mode = 'over' )
   }
   ngOnInit(): void {
-
     //Recibe los datos del resolver y carga los datos en la vista
     this.employee = this._actRoute.snapshot.data['employee'].data[0];
     if(this.employee) {
@@ -34,7 +33,7 @@ export class MainComponent implements OnInit {
 
     //Actualiza el título de la vista de acuerdo al componente cargado
     this._conector.getUpdateTitle().subscribe( value => {
-      (value)?this.title = value:this.title = "Configuración"
+      (value)?this.title = value:this.title = ""
     })
   }
 

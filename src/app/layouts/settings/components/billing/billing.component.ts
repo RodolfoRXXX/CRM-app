@@ -41,12 +41,7 @@ export class BillingComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Configuración/Facturación')
-  }
-
-  ngOnDestroy() {
-    //Modifica el título de la vista principal al cerrar el componente
-    this._conector.setUpdateTitle('Configuración')
+    this._conector.setUpdateTitle('Facturación')
   }
 
   getDataLocal(): Promise<any> {

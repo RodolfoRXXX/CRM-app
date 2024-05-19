@@ -26,6 +26,7 @@ export class SidebarComponent implements OnInit {
   @Input() setMenu!: string;
   @Input() employee!: Employee;
   name!: string;
+  background_image!: string;
   pic!: string;
   enterprise!: string;
   permissions: string[] = [];
@@ -57,6 +58,7 @@ export class SidebarComponent implements OnInit {
     }else {
       this.name = data.email.split("@")[0];
     }
+    this.background_image = environment.SERVER + data.enterprise_thumbnail;
     this.pic = environment.SERVER + data.thumbnail;
     if(data.enterprise.length) {
       this.enterprise = data.enterprise;
