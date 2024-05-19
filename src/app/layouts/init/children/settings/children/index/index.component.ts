@@ -22,7 +22,7 @@ export class IndexComponent {
     })
    }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Tablero')
   }

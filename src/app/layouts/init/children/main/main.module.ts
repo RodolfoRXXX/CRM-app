@@ -9,11 +9,13 @@ import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.comp
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
+import { DashboardComponent } from './children/dashboard/dashboard/dashboard.component';
 
 
 @NgModule({
   declarations: [
-    MainComponent
+    MainComponent,
+    DashboardComponent
   ],
   imports: [
     CommonModule,
