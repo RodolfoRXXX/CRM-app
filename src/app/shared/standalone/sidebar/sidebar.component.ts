@@ -31,6 +31,9 @@ export class SidebarComponent implements OnInit {
   enterprise!: string;
   permissions: string[] = [];
   is_employee!: boolean;
+  isOpen!: number;
+  linkActive!: number;
+  isActive!: number;
 
   constructor(
     public menuItems: MenuItems,
@@ -75,6 +78,25 @@ export class SidebarComponent implements OnInit {
   }
   setSector( sector: string ) {
     this._conector.setUpdateSector(sector);
+  }
+
+  //setLink() => Setea las variables isOpen y linkActive con un valor numérico,
+  // este número es la ubicación en el arreglo de cada panel expansivo y de cada link que contiene cada panel expansivo
+  //linkActive guarda el número de link activo, solo de paneles de links expandibles
+  //isOpen guarda el número panel que está expandido
+  //el condicional evalúa el link activo y si esta función fue llamada por un link no expandible, entonces valoriza isActive con 0
+  // isActive es una variable numerica que guarda el número de panel expansible expandido, si queda 0 entonces el panel se retrae
+  setLink(item: any) {
+    this.linkActive = item
+    this.isOpen = item;
+    (item == 0)?this.isActive = 0:''
+  }
+
+  //_isLinkActive() => es una función llamada por un emisor de eventos((isActiveChange)="") que devuelve TRUE si el link está activo o FALSE en
+  // caso contrario y también devuelve el número de link activo para así valorizar la variable linkActive que permitirá agregar la clase 
+  // panelExpanded (que sombrea) al panel que tiene un link activo
+  _isLinkActive(event:any, item:any) {
+    event?this.linkActive = item:''
   }
 
 }

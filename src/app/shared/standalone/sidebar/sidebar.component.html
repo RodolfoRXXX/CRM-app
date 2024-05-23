@@ -3,25 +3,25 @@
         <div class="profile-img"> <img [src]="pic" alt="{{ name }}"> </div>
         <div class="profile-text"><span> {{ name }} - {{ enterprise }} </span></div>
     </div>
-    <mat-nav-list appAccordion>
+    <mat-nav-list>
         <ng-container *ngIf="setMenu == 'settings'">
             <p class="mat-nav-list-title">
                 Configuración
             </p>
             <ng-container *ngFor="let menu of menuItems.getMenuSettings()">
-                <mat-list-item appAccordionLink *ngIf="((permissions.includes(menu.type))||(is_employee && menu.type == 'employee')||(menu.type == ''))?true:false" routerLinkActive="selected">
+                <mat-list-item *ngIf="((permissions.includes(menu.type))||(is_employee && menu.type == 'employee')||(menu.type == ''))?true:false" routerLinkActive="selected">
                     <div class="mat-list-item-content">
-                        <a class="fw-400" appAccordionToggle routerLink="{{ menu.state }}">
+                        <a class="fw-400" routerLink="{{ menu.state }}">
                             <mat-icon>{{ menu.icon }}</mat-icon>
                             <span>{{ menu.name }}</span> 
                             <span fxFlex></span>
-                        </a> 
+                        </a>
                     </div>
                 </mat-list-item>
             </ng-container>
             <mat-divider></mat-divider>
         </ng-container>
-
+<!--
         <ng-container *ngIf="setMenu == 'init'">
             <p class="mat-nav-list-title">
                 Gestión
@@ -40,7 +40,6 @@
             <mat-divider></mat-divider>
         </ng-container>
 
-        <!--
         <ng-container *ngIf="setMenu == 'init'">
             <mat-expansion-panel class="submenu" >
                 <mat-expansion-panel-header>
@@ -81,7 +80,45 @@
                 </ng-container>
             </mat-expansion-panel>
         </ng-container>
-        -->
+-->
+        
+        <ng-container *ngIf="setMenu == 'init'">
+            <p class="mat-nav-list-title">
+                Gestión
+            </p>
+            <ng-container *ngFor="let menu of menuItems.getMenuManagement(); index as item">
+                <mat-list-item class="submenu" [routerLinkActive]="(menu.children.length == 0)?'selected':''">
+                    <div *ngIf="menu.children.length">
+                        <mat-accordion>
+                            <mat-expansion-panel (closed)="(this.isActive == item)?this.isOpen = 0:''" (opened)="this.isOpen = item; this.isActive = item" [expanded]="isOpen == item">
+                                <mat-expansion-panel-header [class.panelExpanded]="(isOpen == item) || (linkActive == item)">
+                                    <mat-panel-title>
+                                        <mat-icon>{{ menu.icon }}</mat-icon> 
+                                        <span>{{ menu.name }}</span>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <mat-list-item *ngFor="let submenu of menu.children" routerLinkActive="selected" (isActiveChange)="_isLinkActive($event, item)">
+                                    <div class="mat-list-item-content">
+                                        <a class="fw-400" routerLink="{{ submenu.state }}" (click)="setLink(item)">
+                                            <span>{{ submenu.name }}</span> 
+                                            <span fxFlex></span>
+                                        </a> 
+                                    </div>
+                                </mat-list-item>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                    <div *ngIf="menu.children.length == 0" class="mat-list-item-content">
+                        <a class="fw-400" routerLink="{{ menu.state }}" (click)="setLink(0)">
+                            <mat-icon>{{ menu.icon }}</mat-icon> 
+                            <span>{{ menu.name }}</span> 
+                            <span fxFlex></span>
+                        </a> 
+                    </div>
+                </mat-list-item>
+            </ng-container>
+        </ng-container>
+        
 
     </mat-nav-list>
 </div>

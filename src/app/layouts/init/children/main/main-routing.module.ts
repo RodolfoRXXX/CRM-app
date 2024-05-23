@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
-import { DashboardComponent } from './children/dashboard/dashboard/dashboard.component';
+import { DashboardComponent } from './children/dashboard/dashboard.component';
 
 const routes: Routes = [
   { 
@@ -15,6 +15,14 @@ const routes: Routes = [
         {
           path: 'dashboard',
           component: DashboardComponent
+        },
+        {
+          path: 'operation',
+          loadChildren: () => import('../../../../work-modules/operation/operation.module').then(m => m.OperationModule)
+        },
+        {
+          path: 'depo',
+          loadChildren: () => import('../../../../work-modules/depo/depo.module').then(m => m.DepoModule)
         },
         { 
           path: '**',

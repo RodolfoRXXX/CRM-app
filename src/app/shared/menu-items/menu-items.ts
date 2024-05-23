@@ -12,18 +12,21 @@ const MENUSETTINGS = [
 
 const MENUMANAGEMENT = [
     { state: 'dashboard', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: 'tickets-management', name: 'Tickets', type: '', icon: 'assignment', children: [
-        { state: 'ticket/create-ticket', name: 'Crear ticket', type: '', icon: '' },
+    { state: '', name: 'Gestión de pedidos', type: '', icon: 'assignment', children: [
+        { state: 'operation', name: 'Lista de pedidos', type: '', icon: '' },
         { state: 'ticket/list-ticket', name: 'Lista de tickets', type: '', icon: '' },
         { state: 'ticket/historic-ticket', name: 'Histórico de tickets', type: '', icon: '' }
     ] },
-    { state: 'indicators-management', name: 'Indicadores', type: '', icon: 'assessment', children: [
+    { state: 'indicators-management', name: 'Facturación', type: '', icon: 'assessment', children: [
         { state: 'indicator1', name: 'Indicador 1', type: '', icon: '' },
         { state: 'indicator2', name: 'Indicador 2', type: '', icon: '' },
         { state: 'indicator3', name: 'Indicador 3', type: '', icon: '' }
     ] },
-    { state: 'users-management', name: 'Empleados', type: '', icon: 'people', children: [
-        { state: 'employee/employee-list', name: 'Lista de empleados', type: '', icon: '' }
+    { state: '', name: 'Productos', type: '', icon: 'storage', children: [
+        { state: 'depo', name: 'Lista de productos', type: '', icon: '' },
+        { state: 'addProduct', name: 'Agregar producto nuevo', type: '', icon: '' },
+        { state: 'categories', name: 'Categorías', type: '', icon: '' },
+        { state: 'depos', name: 'Depósito', type: '', icon: '' }
     ] }
 ];
 
