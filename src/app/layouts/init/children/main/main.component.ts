@@ -35,6 +35,10 @@ export class MainComponent implements OnInit {
     this._conector.getUpdateTitle().subscribe( value => {
       (value)?this.title = value:this.title = ""
     })
+    //Actualiza el sector de la vista de acuerdo al componente cargado
+    this._conector.getUpdateSector().subscribe( value => {
+      (value)?this.sector = value:this.sector = ""
+    })
   }
 
 }

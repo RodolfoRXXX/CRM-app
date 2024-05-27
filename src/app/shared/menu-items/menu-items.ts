@@ -13,9 +13,7 @@ const MENUSETTINGS = [
 const MENUMANAGEMENT = [
     { state: 'dashboard', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
     { state: '', name: 'Gestión de pedidos', type: '', icon: 'assignment', children: [
-        { state: 'operation', name: 'Lista de pedidos', type: '', icon: '' },
-        { state: 'ticket/list-ticket', name: 'Lista de tickets', type: '', icon: '' },
-        { state: 'ticket/historic-ticket', name: 'Histórico de tickets', type: '', icon: '' }
+        { state: 'operation', name: 'Lista de pedidos', type: '', icon: '' }
     ] },
     { state: 'indicators-management', name: 'Facturación', type: '', icon: 'assessment', children: [
         { state: 'indicator1', name: 'Indicador 1', type: '', icon: '' },
@@ -23,10 +21,10 @@ const MENUMANAGEMENT = [
         { state: 'indicator3', name: 'Indicador 3', type: '', icon: '' }
     ] },
     { state: '', name: 'Productos', type: '', icon: 'storage', children: [
-        { state: 'depo', name: 'Lista de productos', type: '', icon: '' },
-        { state: 'addProduct', name: 'Agregar producto nuevo', type: '', icon: '' },
+        { state: 'product/product-list', name: 'Lista de productos', type: '', icon: '' },
+        { state: 'product/add-product', name: 'Agregar producto nuevo', type: '', icon: '' },
         { state: 'categories', name: 'Categorías', type: '', icon: '' },
-        { state: 'depos', name: 'Depósito', type: '', icon: '' }
+        { state: 'depo', name: 'Depósito', type: '', icon: '' }
     ] }
 ];
 
