@@ -109,10 +109,10 @@
                                   Filtro
                                 </mat-panel-title>
                                 <mat-panel-description>
-                                    <mat-chip-set aria-label="product-filter" *ngFor="let value of chips, index as index">
-                                            <mat-chip *ngIf="value.category">
-                                                {{ value.category }}
-                                                <button matChipRemove (click)="delete('', index)">
+                                    <mat-chip-set aria-label="product-filter" *ngFor="let item of chips | keyvalue">
+                                            <mat-chip *ngIf="item.value.length > 0">
+                                                {{ item.value }}
+                                                <button matChipRemove (click)="delete(item.key)">
                                                   <mat-icon>cancel</mat-icon>
                                                 </button>
                                             </mat-chip>
