@@ -23,12 +23,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   resultsLength!: number;
   load!: boolean;
   recharge!: boolean;
-  chips: any[] = [
-    {category: ''},
-    {stock: ''},
-    {state: ''},
-    {search: ''},
-  ];
+  chips: any = {category: '', stock: '', state: '', search: ''};
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -84,32 +79,31 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter() {
-    if(this.chips.length > 0) {
-      this.chips.forEach(element => {
-        this.dataSource.filter = element;
-      });
-    } else {
-      this.dataSource.filter = '';
+    for (let key in this.chips){
+      this.dataSource.filter = this.chips[key];
     }
   }
   add(value: Event, key: string) {
     let chip_str
+
+    //Verifica que el value que entra sea un string o un evento
     if(typeof value != 'string') {
+      //Si es un evento entonces lo lee como tal y recupera el string 
       chip_str = ((value.target as HTMLInputElement).value).trim().toLowerCase();
     } else {
+      //Si es un string entonces lo pasa como tal
       chip_str = value
     }
 
+    //Primero verifica que la variable interna asignada tenga un valor
     if(chip_str.length > 0) {
-
-      //index = this.chips.indexOf(chip_str);
-      //(index == -1)?this.chips.push(chip_str):'';
-      //this.applyFilter();
+      this.chips[key] = chip_str;
+      this.applyFilter();
     }
   }
-  delete(value: string, i: any) {
-      this.chips.splice(i, 1);
-    console.log(value, i)
+  delete(key: string) {
+    //Recibe la clave que debe borrar tomada desde el chip que representa el filtro aplicado y revaloriza el objeto chips a cadena vacía
+    this.chips[key] = ''
     this.applyFilter();
   }
 
