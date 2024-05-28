@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, map, merge, startWith, switchMap } from 'rxjs';
+import { catchError, map, merge, startWith, switchMap, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
@@ -26,6 +26,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   chips: any = {category: '', stock: '', state: '', search: ''};
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
 
   constructor(
     private _auth: AuthService,
@@ -57,6 +58,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this._conector.setUpdateTitle('Lista de productos')
   }
 
+  
+
   getDataLocal(): Promise<any> {
     const data = JSON.parse(this._auth.getDataFromLocalStorage());
     return data.id_enterprise;
@@ -79,9 +82,11 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter() {
+    let i = 0;
     for (let key in this.chips){
-      this.dataSource.filter = this.chips[key];
+      this.chips[key]?this.dataSource.filter = this.chips[key]:i++;
     }
+    (i == 4)?this.dataSource.filter = '':'';
   }
   add(value: Event, key: string) {
     let chip_str
@@ -89,19 +94,18 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     //Verifica que el value que entra sea un string o un evento
     if(typeof value != 'string') {
       //Si es un evento entonces lo lee como tal y recupera el string 
-      chip_str = ((value.target as HTMLInputElement).value).trim().toLowerCase();
+      chip_str = ((value.target as HTMLInputElement).value);
     } else {
       //Si es un string entonces lo pasa como tal
       chip_str = value
     }
-
     //Primero verifica que la variable interna asignada tenga un valor
     if(chip_str.length > 0) {
-      this.chips[key] = chip_str;
+      this.chips[key] = chip_str.trim().toLowerCase();
       this.applyFilter();
     }
   }
-  delete(key: string) {
+  delete(key: any) {
     //Recibe la clave que debe borrar tomada desde el chip que representa el filtro aplicado y revaloriza el objeto chips a cadena vacía
     this.chips[key] = ''
     this.applyFilter();
@@ -134,7 +138,3 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
 }
-function observableOf(arg0: null) {
-  throw new Error('Function not implemented.');
-}
-
