@@ -19,7 +19,8 @@
                                     <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
                                         <div>
                                             <p class="soft-grey-color font-14 mb-1">Productos con stock</p>
-                                            <h4 class="fw-500 mb-1">75</h4>
+                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.products_with_stock >= 0">{{ this.card_values.products_with_stock }}</h4>
+                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.products_with_stock >= 0)">Cargando...</p>
                                             <p class="soft-grey-color font-12 mb-0">
                                                 Cantidad de productos con stock
                                             </p>
@@ -39,7 +40,8 @@
                                     <div class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-4 pb-sm-0">
                                         <div>
                                             <p class="soft-grey-color font-14 mb-1">Valor de inventario</p>
-                                            <h4 class="fw-500 mb-1">$674,347.12</h4>
+                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.value_stock >= 0">${{ this.card_values.value_stock }}</h4>
+                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.value_stock >= 0)">Cargando...</p>
                                             <p class="soft-grey-color font-12 mb-0">
                                                 Valor total del inventario con stock
                                             </p>
@@ -57,7 +59,8 @@
                                     <div class="d-flex justify-content-between align-items-start border-end pb-4 pb-sm-0 card-widget-3">
                                         <div>
                                             <p class="soft-grey-color font-14 mb-1">Productos sin stock</p>
-                                            <h4 class="fw-500 mb-1">45</h4>
+                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.products_without_stock >= 0">{{ this.card_values.products_without_stock }}</h4>
+                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.products_without_stock >= 0)">Cargando...</p>
                                             <p class="soft-grey-color font-12 mb-0">
                                                 Ultimo movimiento menor a 60 días
                                             </p>
@@ -76,7 +79,8 @@
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
                                             <p class="soft-grey-color font-14 mb-1">Stock inmovilizado</p>
-                                            <h4 class="fw-500 mb-1">$168,345.23</h4>
+                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.immo_stock >= 0">${{ this.card_values.immo_stock }}</h4>
+                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.immo_stock >= 0)">Cargando...</p>
                                             <p class="soft-grey-color font-12 mb-0">
                                                 Ultimo movimiento mayor a 60 días
                                             </p>
@@ -98,10 +102,7 @@
                 <!-- Product List Table -->
                 <mat-card class="card mb-6">
                     <mat-card-content class="mat-card-content">
-                        <div class="billing-loader" *ngIf="load">
-                            <mat-spinner *ngIf="load"></mat-spinner>
-                        </div>
-
+                        <!-- Filters -->
                         <mat-accordion>
                             <mat-expansion-panel>
                               <mat-expansion-panel-header>
@@ -124,7 +125,9 @@
                                 <mat-form-field class="col-md-4">
                                     <mat-label>Categoría</mat-label>
                                     <mat-select [(ngModel)]="chips.category" (valueChange)="add($event, 'category')">
-                                        <mat-option value="Pagado">Pagado</mat-option>
+                                        <ng-container *ngFor="let category of categories">
+                                            <mat-option [value]="category.name">{{ category.name }}</mat-option>
+                                        </ng-container>
                                     </mat-select>
                                 </mat-form-field>
                                 <!-- Filtro Productos con Stock -->
@@ -151,9 +154,13 @@
                                 </mat-form-field>
                             </div>
                             </mat-expansion-panel>
-                          </mat-accordion>
-
-                        <div class="box-list" *ngIf="!recharge">
+                        </mat-accordion>
+                        <!-- Loader -->
+                        <div class="product-loader" *ngIf="load">
+                            <p>Cargando...</p>
+                        </div>
+                        <!-- Table of products -->
+                        <div class="box-list" *ngIf="!recharge && !empty_products">
                             <div class="row justify-content-end">
                                 <div class="btn-addProduct col-md-4">
                                     <button mat-flat-button color="primary">
@@ -161,37 +168,97 @@
                                     </button>
                                 </div>
                             </div>
-                            <table mat-table [dataSource]="dataSource" class="mt-1">
+                            <table mat-table [dataSource]="dataSource" class="mt-1" matSort>
                             
-                                <!-- Position Column -->
-                                <ng-container matColumnDef="position">
-                                <th mat-header-cell *matHeaderCellDef> No. </th>
-                                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-                                </ng-container>
-                            
-                                <!-- date Column -->
-                                <ng-container matColumnDef="date">
-                                <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                                <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-                                </ng-container>
-                            
-                                <!-- amount Column -->
-                                <ng-container matColumnDef="amount">
-                                <th mat-header-cell *matHeaderCellDef> Monto </th>
-                                <td mat-cell *matCellDef="let element">$ 25000 </td>
-                                </ng-container>
-                            
-                                <!-- state Column -->
-                                <ng-container matColumnDef="state">
-                                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                                <!-- detail Column -->
+                                <ng-container matColumnDef="detail">
+                                <th mat-header-cell *matHeaderCellDef></th>
                                 <td mat-cell *matCellDef="let element">
-                                    <mat-chip class="cap" [style]="{'background-color':element.state == 'pagado'?'rgb(129, 205, 82)':'rgb(255, 87, 51)'}"><span class="hide-968">{{element.state}}</span><mat-icon class="hide show-968">{{ element.state == 'pagado'?'attach_money':'money_off' }}</mat-icon></mat-chip>
+                                    <button mat-icon-button color="primary" (click)="openDialogDetail(element.id)">
+                                        <mat-icon style="position: relative; bottom: 2px;">add_circle_outline</mat-icon>
+                                    </button>
+                                </td>
+                                </ng-container>
+                            
+                                <!-- product Column -->
+                                <ng-container matColumnDef="product">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> PRODUCTO </th>
+                                <td mat-cell *matCellDef="let element"> 
+                                    <!-- código de la columna producto que incluye foto, nombre y descripción -->
+                                    <div class="product-column" matTooltip="{{ element.description }}" matTooltipPosition="above">
+                                        <div class="me-2 max-500-hidden">
+                                            <div class="avatar image-product">
+                                                <img [src]="uriImg + element.image">
+                                            </div>
+                                        </div>
+                                        <div class="text-product text-product-box">
+                                            <span class="name-product">
+                                                {{ element.name }}
+                                            </span>
+                                            <small class="description-product max-600-hidden">
+                                                {{ element.description }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                </ng-container>
+                            
+                                <!-- category Column -->
+                                <ng-container matColumnDef="category">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1280-hidden"> CATEGORIA </th>
+                                <td mat-cell *matCellDef="let element" class="text-center max-1280-hidden">
+                                    <!-- código que muestra el nombre de la categoría del producto -->
+                                    <span class="badge rounded-pill cap" [ngClass]="element.category_color || 'blanck-badge'">
+                                        {{ element.category_item }}
+                                    </span>
+                                </td>
+                                </ng-container>
+                            
+                                <!-- stock_real Column -->
+                                <ng-container matColumnDef="stock_real">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-400-hidden"> STOCK </th>
+                                <td mat-cell *matCellDef="let element" class="max-400-hidden">
+                                    <!-- código que muestra el valor en numero del stock -->
+                                    <p class="text-center mb-0">{{ element.stock_real }}</p>
                                 </td>
                                 </ng-container>
                 
-                                <ng-container matColumnDef="bill">
-                                    <th mat-header-cell *matHeaderCellDef> Factura </th>
-                                    <td mat-cell *matCellDef="let element"><a href="#"> <mat-icon>picture_as_pdf</mat-icon> </a></td>
+                                <!-- state_stock column -->
+                                <ng-container matColumnDef="state_stock">
+                                    <th mat-header-cell *matHeaderCellDef class="max-1400-hidden"> STOCK? </th>
+                                    <td mat-cell *matCellDef="let element" class="text-center max-1400-hidden">
+                                        <!-- ícono mostrando si hay o no stock para el filtro con/sin stock -->
+                                        <mat-icon [color]="element.is_stock == 'con stock'?'accent':'warn'">{{ element.is_stock == 'con stock'?'check_circle':'cancel' }}</mat-icon>
+                                    </td>
+                                </ng-container>
+
+                                <!-- sale_price Column -->
+                                <ng-container matColumnDef="sale_price">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-768-hidden"> PRECIO </th>
+                                    <td mat-cell *matCellDef="let element" class="max-768-hidden">
+                                        <!-- muestra el precio de venta -->
+                                        <p class="text-center mb-0">$ {{ element.sale_price }}</p>
+                                    </td>
+                                </ng-container>
+
+                                <!-- sku Column -->
+                                <ng-container matColumnDef="sku">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1500-hidden"> SKU </th>
+                                    <td mat-cell *matCellDef="let element" class="max-1500-hidden">
+                                        <!-- muestra el SKU del producto -->
+                                        <p class="mb-0 fs-09">{{ element.sku }}</p>
+                                    </td>
+                                </ng-container>
+
+                                <!-- state Column -->
+                                <ng-container matColumnDef="state">
+                                    <th mat-header-cell *matHeaderCellDef class="max-1150-hidden"> ESTADO </th>
+                                    <td mat-cell *matCellDef="let element" class="text-center max-1150-hidden">
+                                        <!-- código que muestra el estado del producto -->
+                                        <span class="badge rounded-pill cap" [ngClass]="element.state == 'activo'?'bg-label-success':'bg-label-danger'">
+                                            {{ element.state }}
+                                        </span>
+                                    </td>
                                 </ng-container>
                             
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -204,9 +271,18 @@
                             </table>
                             <mat-paginator class="m-t-15" [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              
                         </div>
-                        <div class="billing-recharge" *ngIf="recharge">
+                        <!-- Recharge button -->
+                        <div class="product-recharge" *ngIf="recharge">
                             <!-- Botón para recargar los datos -->
-                            <button mat-raised-button (click)="rechargeData()">Recargar los datos</button>
+                            <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
+                        </div>
+                        <!-- No products -->
+                        <div class="product-recharge" *ngIf="empty_products">
+                            <!-- Botón para recargar los datos -->
+                            <p>No hay productos</p>
+                            <button mat-flat-button color="primary">
+                                + Agregar Producto
+                            </button>
                         </div>
                     </mat-card-content>
                     <mat-card-footer class="login-footer">
@@ -214,61 +290,6 @@
                     </mat-card-footer>
                 </mat-card>
 
-            <!--
-            <div class="card">
-            <div class="box-table" *ngIf="!recharge">
-                <mat-form-field  class="bill-filter-input">
-                    <mat-label>Filtrar</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. texto" #input>
-                    <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
-                        <div class="col-md-4 product_status"></div>
-                        <div class="col-md-4 product_category"></div>
-                        <div class="col-md-4 product_stock"></div>
-                    </div>
-                </mat-form-field>
-                <table mat-table [dataSource]="dataSource">
-                    
-                    <ng-container matColumnDef="position">
-                        <th mat-header-cell *matHeaderCellDef> No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-                    </ng-container>
-                    
-                    <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                        <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-                    </ng-container>
-                    
-                    <ng-container matColumnDef="amount">
-                        <th mat-header-cell *matHeaderCellDef> Monto </th>
-                        <td mat-cell *matCellDef="let element">$ 25000 </td>
-                    </ng-container>
-                    
-                    <ng-container matColumnDef="state">
-                        <th mat-header-cell *matHeaderCellDef> Estado </th>
-                        <td mat-cell *matCellDef="let element">
-                        <mat-chip class="cap" [style]="{'background-color':element.state == 'pagado'?'rgb(129, 205, 82)':'rgb(255, 87, 51)'}"><span class="hide-968">{{element.state}}</span><mat-icon class="hide show-968">{{ element.state == 'pagado'?'attach_money':'money_off' }}</mat-icon></mat-chip>
-                        </td>
-                    </ng-container>
-    
-                    <ng-container matColumnDef="bill">
-                        <th mat-header-cell *matHeaderCellDef> Factura </th>
-                        <td mat-cell *matCellDef="let element"><a href="#"> <mat-icon>picture_as_pdf</mat-icon> </a></td>
-                        </ng-container>
-                    
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
-    
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{input.value}}"</td>
-                    </tr>
-                </table>
-                <mat-paginator class="m-t-15" [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              
-            </div>
-            <div class="billing-recharge" *ngIf="recharge">
-
-                <button mat-raised-button (click)="rechargeData()">Recargar los datos</button>
-            </div>
-        -->
             </div>
             <!-- / Content -->
         </div>

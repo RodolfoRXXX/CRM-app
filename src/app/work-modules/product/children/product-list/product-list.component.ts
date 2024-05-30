@@ -1,12 +1,14 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
 import { catchError, map, merge, startWith, switchMap, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { Employee, empty_employee } from 'src/app/shared/interfaces/employee.interface';
+import { Category } from 'src/app/shared/interfaces/category.interface';
+import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { environment } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-product-list',
@@ -18,27 +20,35 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   title!: string;
   sector!: string;
   employee!: Employee;
-  displayedColumns: string[] = ['position', 'date', 'amount', 'state', 'bill'];
+  categories!: Category[];
+  displayedColumns: string[] = ['detail', 'product', 'category', 'stock_real', 'state_stock', 'sale_price', 'sku', 'state'];
   dataSource = new MatTableDataSource();
   resultsLength!: number;
+  load_card1!: boolean;
+  load_card2!: boolean;
+  load_card3!: boolean;
+  load_card4!: boolean;
   load!: boolean;
   recharge!: boolean;
+  empty_products!: boolean;
   chips: any = {category: '', stock: '', state: '', search: ''};
+  card_values: any = {products_with_stock: null, value_stock: null, products_without_stock: null, immo_stock: null}
+
+  uriImg = environment.SERVER;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private _auth: AuthService,
     private _api: ApiService,
-    private _actRoute: ActivatedRoute,
     private _conector: ConectorsService,
     private _paginator: MatPaginatorIntl
   ) {
-    this.resultsLength = 0;
     this.load = true;
     this.recharge = false;
-    this.getCountBills();
+    this.empty_products = false;
+    this.getProducts();
     this._paginator.itemsPerPageLabel = "Registros por página";
     this._paginator.firstPageLabel = "Primera página";
     this._paginator.lastPageLabel = "última página";
@@ -46,32 +56,26 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this._paginator.previousPageLabel = "Anterior página";
   }
   ngOnInit(): void {
-    //Recibe los datos del resolver y carga los datos en la vista
-    this.employee = this._actRoute.snapshot.data['employee'].data[0];
-    if(this.employee) {
-      this._conector.setEmployee(this.employee);
-    } else {
-      this.employee = empty_employee;
-    }
-
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Lista de productos')
   }
 
-  
-
-  getDataLocal(): Promise<any> {
-    const data = JSON.parse(this._auth.getDataFromLocalStorage());
-    return data.id_enterprise;
+  getDataLocal(): number {
+    this._conector.getEmployee().subscribe( (item:Employee) => {
+      this.employee = item
+    })
+    return this.employee.id_enterprise;
   }
 
-  getCountBills(): void {
+  getProducts(): void {
     merge()
       .pipe(
         startWith({}),
         map(() => this.getDataLocal()),
-        switchMap((id) => {
-          return this._api.postTypeRequest('profile/get-count-bills', { id: id })
+        switchMap((id_enterprise) => {
+          this.getDataCard(id_enterprise);
+          this.getCategories(id_enterprise);
+          return this._api.postTypeRequest('profile/get-count-products', { id_enterprise: id_enterprise })
                         .pipe(catchError(async () => {observableOf(null); this.recharge = true;}));
         }),
         map(data => {
@@ -79,6 +83,43 @@ export class ProductListComponent implements OnInit, AfterViewInit {
         })
       )
     .subscribe((data: any) => this.resultsLength = data.data[0].total);
+  }
+
+  getCategories(id_enterprise: number): void {
+    this._api.postTypeRequest('profile/get-categories', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
+      this.categories = value.data
+    })
+  }
+
+  getDataCard(id_enterprise: number) {
+
+    let fecha = new Date();
+    fecha.setDate(fecha.getDate() - 60);
+    // Obtener el año, mes y día de la fecha actual.
+    let año = fecha.getFullYear();
+    let mes = fecha.getMonth() + 1; // Los meses van de 0 a 11, así que sumamos 1.
+    let dia = fecha.getDate();
+    let _dia;
+    let _mes;
+    if(dia < 10) {
+      _dia = '0' + dia
+    } else {
+      _dia = dia
+    }
+    if(mes < 10) {
+      _mes = '0' + mes
+    } else {
+      _mes = mes
+    }
+
+    // Formatear la fecha como texto según tus preferencias.
+    let date_limit = año + '-' + _mes + '-' + _dia;
+    this._api.postTypeRequest('profile/get-products-data', { id_enterprise: id_enterprise, date_limit: date_limit }).subscribe( (value:any) => {
+      (value.data[0].data)?this.card_values.products_with_stock = value.data[0].data:this.card_values.products_with_stock = 0;
+      (value.data[1].data)?this.card_values.value_stock = value.data[1].data:this.card_values.value_stock = 0;
+      (value.data[2].data)?this.card_values.products_without_stock = value.data[2].data:this.card_values.products_without_stock = 0;
+      (value.data[3].data)?this.card_values.immo_stock = value.data[3].data:this.card_values.immo_stock = 0;
+    })
   }
 
   applyFilter() {
@@ -116,21 +157,27 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       .pipe(
         startWith({}),
         map(() => this.getDataLocal()),
-        switchMap((id) => {
+        switchMap((id_enterprise) => {
           this.recharge = false;
           this.load = true;
-          return this._api.postTypeRequest('profile/get-bills', { id: id, page: this.paginator.pageIndex, size: 10 })
+          return this._api.postTypeRequest('profile/get-products', { id_enterprise: id_enterprise, page: this.paginator.pageIndex, size: 10 })
                         .pipe(catchError(async () => {observableOf(null); this.recharge = true;}));
         }),
         map(data => {
           this.load = false;
           if (data === null) {
+            this.empty_products = true;
             return [];
           }
           return data;
         })
       )
       .subscribe((data: any) => (this.dataSource.data = data.data));
+      this.dataSource.sort = this.sort;
+  }
+
+  openDialogDetail(id_product: number) {
+    console.log(id_product)
   }
 
   rechargeData() {

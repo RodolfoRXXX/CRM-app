@@ -16,8 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'product-list',
-        component: ProductListComponent,
-        resolve: { employee: InitResolver } 
+        component: ProductListComponent
       },
       {
         path: 'add-product',

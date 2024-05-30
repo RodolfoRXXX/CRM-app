@@ -56,7 +56,7 @@ export class InitComponent implements OnInit {
 
   setScreen(): void {
     this.breakpointObserver
-        .observe(['(min-width: 768px)'])
+        .observe(['(min-width: 992px)'])
         .subscribe((state: BreakpointState) => {
           state.matches?(this.screenLarge = true):(this.screenLarge = false);
           this._conector.setScreenState(this.screenLarge);

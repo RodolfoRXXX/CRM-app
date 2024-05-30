@@ -299,5 +299,32 @@ html body {
   .m-b-05r {
     margin-bottom: 0.5rem;
   }
+
+  //badge en bootstrap
+
+  .bg-label-success {
+    background-color: #e4f7d6 !important;
+    color: #56ca00 !important;
+  }
+
+  .bg-label-danger {
+    background-color: #ffe2e3 !important;
+    color: #ff4c51 !important;
+  }
+
+    //bagde colors
+
+    .blue-badge {
+      background-color: #e2edff !important;
+      color: #5b4cff !important;
+    }
+    .purple-badge {
+      background-color: #ffe2fe !important;
+      color: #800080 !important;
+    }
+    .blanck-badge {
+      background-color: #ecedee !important;
+      color: #8a8d93 !important;
+    }
   
 }

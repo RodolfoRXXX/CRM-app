@@ -7,6 +7,8 @@ import { ProductListComponent } from './children/product-list/product-list.compo
 import { AddProductComponent } from './children/add-product/add-product.component';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProductRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTableModule,
+    MatSortModule
   ]
 })
 export class ProductModule { }

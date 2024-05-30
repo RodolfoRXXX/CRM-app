@@ -1,6 +1,6 @@
 
 /*============================================================== 
- For Laptop & above all (1650px) 
+ Para pantallas de menos de 1650px
  ============================================================== */
 
 @media (min-width: 1650px) {
@@ -10,7 +10,7 @@
   }
 }
 /*============================================================== 
- For Laptop & below (1370px) 
+  Para pantallas de 1600px o menos
  ============================================================== */
 
 @media (max-width: 1600px) {
@@ -25,8 +25,52 @@
 
 }
 
+/*============================================================== 
+  Para pantallas de 1500px o menos
+ ============================================================== */
+
+ @media (max-width: 1500px) {
+  .max-1500-hidden {
+    display: none!important;
+  }
+
+}
+
+/*============================================================== 
+  Para pantallas de 1400px o menos
+ ============================================================== */
+
+ @media (max-width: 1400px) {
+  .max-1400-hidden {
+    display: none!important;
+  }
+
+}
+
+/*============================================================== 
+  Para pantallas de 1280px o menos
+ ============================================================== */
+
+ @media (max-width: 1280px) {
+  .max-1280-hidden {
+    display: none!important;
+  }
+
+}
+
+/*============================================================== 
+  Para pantallas de 1150px o menos
+ ============================================================== */
+
+ @media (max-width: 1150px) {
+  .max-1150-hidden {
+    display: none!important;
+  }
+
+}
+
 /*-- ============================================================== 
- Small Desktop & above all (1024px) 
+ Para pantallas mayores a 1024px
  ============================================================== */
 
 @media (min-width: 1024px) {
@@ -45,7 +89,12 @@
   }
 }
 
-@media (max-width: 1023px) {
+
+/*-- ============================================================== 
+ Para pantallas menores a 1024px
+ ============================================================== */
+
+@media (max-width: 1024px) {
   .card-group {
     margin: 15px 0;
     .mat-card {
@@ -56,11 +105,15 @@
       }
     }
   }
+
+  .text-product-box {
+    max-width: 200px!important;
+  }
 }
 
 
 /*-- ============================================================== 
- Tablet and above all(968px) 
+ Pantallas mayores a 968px
  ============================================================== */
 
  @media (min-width: 968px) {
@@ -71,7 +124,7 @@
 
 
 /*-- ============================================================== 
- Tablet and below(968px) 
+ Pantallas menores a 968px
  ============================================================== */
 
  @media (max-width: 968px) {
@@ -101,7 +154,7 @@
  }
 
 /*-- ============================================================== 
- Phone and below ipad(767px) 
+ Pantallas menores a 800px
  ============================================================== */
 
  @media (max-width: 800px) {
@@ -112,7 +165,7 @@
  }
 
 /*-- ============================================================== 
- Ipad & above all(768px) 
+ Pantallas mayores a 768px
  ============================================================== */
 
 @media (min-width: 768px) {
@@ -126,10 +179,10 @@
 }
 
 /*-- ============================================================== 
- Phone and below ipad(767px) 
+ Pantallas menores a 768px
  ============================================================== */
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .mat-toolbar-single-row {
     height: 64px !important;
   }
@@ -148,11 +201,19 @@
     width: 480px;
     max-width: 480px;
   }
+
+  .max-768-hidden {
+    display: none!important;
+  }
+
+  .text-product-box {
+    max-width: 250px!important;
+  }
 }
 
 
 /*-- ============================================================== 
- Phone and below ipad(600px) 
+ Pantallas menores a 600px
  ============================================================== */
 
 @media (max-width: 600px) {
@@ -169,20 +230,40 @@
     }
 }
 
+.max-600-hidden {
+  display: none!important;
+}
+
+}
+
+
+/*-- ============================================================== 
+ Pantallas menores a 500px
+ ============================================================== */
+
+ @media (max-width: 500px) {
+
+.max-500-hidden {
+  display: none!important;
+}
+
 }
 
 /*-- ============================================================== 
- Small phones(400px) 
+ Pantallas menores a 400px
  ============================================================== */
 
  @media (max-width: 400px) {
   .user-data-container .work-hour {
-    
     .work-hour-range {
       mat-form-field {
         width: 140px;
       }
+    }
   }
+
+  .max-400-hidden {
+    display: none!important;
   }
 
  }
