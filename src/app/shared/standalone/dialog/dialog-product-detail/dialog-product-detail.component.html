@@ -1,0 +1,142 @@
+<mat-card class="mat-card dialog-detail">
+  <mat-card-content class="mat-card-content">
+    <a mat-icon-button class="close-card" routerLink="#" aria-label="close-button" (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+    </a>
+      <div class="box-detail">
+        <div class="box-image">
+            <img src="../../../../../assets/images/users/obsolete/javier.jpg" alt="">
+        </div>
+        <div class="box-text">
+            <!-- caja de categoría y estado -->
+            <div class="category_state">
+                <!-- caja de categoría -->
+                <div>
+                    <span class="badge rounded-pill blue-badge cap">
+                        Blusas
+                    </span>
+                </div>
+                <!-- caja de estado -->
+                <div class="me-4">
+                    <span class="badge rounded-pill bg-label-success cap">
+                        Activo
+                    </span>
+                </div>
+            </div>
+            <!-- caja de nombre y precio -->
+            <div class="name_price">
+                <!-- caja de nombre -->
+                <h3 class="fw-700 name_box">Prenda de prueba para todos los gustos y placeres</h3>
+                <!-- caja de precio -->
+                <div class="price_box">
+                    <h2 class="fw-700 black-color">$125000.00</h2>
+                </div>
+            </div>
+            <!-- caja de descripción -->
+            <div class="description_box">
+                <p class="fs-08">Descripción</p>
+                <h6>Esta es la descripción de la prenda de prueba 1. Este es un saco buena onda con todos los chiches.</h6>
+            </div>
+            <!-- caja de colores, medidas y stocks -->
+            <div class="options_stock">
+                <!-- Aquí se muestran dos opciones que forman parte del SKU y permiten buscar otros 
+                productos similares al seleccionado pero que sea de otro valor de cada categoría -->
+                <!-- caja de colores y medidas. -->
+                <div class="options_box">
+                    <!-- caja de opciones 1 -->
+                    <div>
+                        <!-- Título de opciones 1 -->
+                        <p class="fs-08">Opción de producto</p>
+                        <!-- listado de opciones 1 -->
+                        <div class="options_1_box">
+                            <span style="background-color: red; border: 2px solid black;" matTooltip="1 unidades" matTooltipPosition="above"></span>
+                            <span style="background-color: brown;" matTooltip="2 unidades" matTooltipPosition="above"></span>
+                            <span style="background-color: yellow;" matTooltip="1 unidades" matTooltipPosition="above"></span>
+                            <span style="background-color: green;" matTooltip="4 unidades" matTooltipPosition="above"></span>
+                            <span style="background-color: blue;" matTooltip="2 unidades" matTooltipPosition="above"></span>
+                        </div>
+                    </div>
+                    <!-- caja de opciones 2 -->
+                    <div class="pb-1">
+                        <!-- Título de opciones 2 -->
+                        <p class="fs-08">Opción de producto</p>
+                        <!-- listado de opciones 2 -->
+                        <div class="options_2_box">
+                            <span class="black-color fw-700" style="border: 2px solid black;" matTooltip="3 unidades" matTooltipPosition="above">S</span>
+                            <span class="soft-grey-color">M</span>
+                            <span class="soft-grey-color">L</span>
+                            <span class="black-color fw-700" matTooltip="2 unidades" matTooltipPosition="above">XL</span>
+                            <span class="soft-grey-color">XXL</span>
+                            <span class="black-color fw-700" matTooltip="4 unidades" matTooltipPosition="above">XXXL</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- caja de stocks -->
+                <div class="stock_box">
+                    <p class="fs-08">Stock físico</p>
+                    <h3 class="text-center fw-700 black-color">20</h3>
+                    <p class="fs-08">Stock disponible</p>
+                    <h4 class="text-center fw-700 black-color">15</h4>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Ver más
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div class="accordion-box">
+                <!-- Caja de proveedor, fecha de compra, precio de compra y ganancia --> 
+                <div class="more_options_admin">
+                    <!-- Caja de proveedor -->
+                    <div class="b-b">
+                        <p class="fs-08 fw-700"><strong>Proveedor:</strong></p>
+                        <p class="ms-4">Shile x export</p>
+                    </div>
+                    <!-- Caja de fecha de compra --> 
+                    <div class="b-b">
+                        <p class="fs-08 fw-700"><strong>Fecha de compra:</strong></p>
+                        <p class="ms-4">10/03/2024</p>
+                    </div>
+                    <!-- Caja de precio de compra --> 
+                    <div class="b-b">
+                        <p class="fs-08 fw-700"><strong>Precio de compra:</strong></p>
+                        <p class="ms-4">$65000.00</p>
+                    </div>
+                    <!-- Caja de ganancia --> 
+                    <div class="b-b pb-1">
+                        <p class="fs-08 fw-700"><strong>Ganancia:</strong></p>
+                        <span class="badge rounded-pill bg-label-success cap ms-4">
+                            <!-- 92.3% <mat-icon>arrow_downward</mat-icon> -->
+                            <span style="font-size: 0.9rem;">92.3%</span> <mat-icon style="font-size: 0.9rem; width: auto; height: auto;">arrow_upward</mat-icon>
+                        </span>
+                    </div>
+                </div>
+                <!-- Caja de SKU, ubicación y fecha última venta --> 
+                <div class="more_options">
+                    <!-- Caja de SKU --> 
+                    <div class="b-b">
+                        <p class="fs-08 fw-700"><strong>SKU:</strong></p>
+                        <p class="ms-4">sku-0001-0001</p>
+                    </div>
+                    <!-- Caja de ubicación --> 
+                    <div class="b-b">
+                        <p class="fs-08 fw-700"><strong>Ubicación:</strong></p>
+                        <p class="ms-4">Depósito - b5</p>
+                    </div>
+                    <!-- Caja de última venta --> 
+                    <div class="b-b">
+                        <p class="fs-08 fw-700"><strong>Última venta:</strong></p>
+                        <p class="ms-4">12/04/2024</p>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>

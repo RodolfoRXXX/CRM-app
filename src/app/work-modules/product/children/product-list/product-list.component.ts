@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Category } from 'src/app/shared/interfaces/category.interface';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
 import { environment } from 'src/enviroments/enviroment';
 
 @Component({
@@ -43,7 +45,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     private _auth: AuthService,
     private _api: ApiService,
     private _conector: ConectorsService,
-    private _paginator: MatPaginatorIntl
+    private _paginator: MatPaginatorIntl,
+    private _dialog: MatDialog
   ) {
     this.load = true;
     this.recharge = false;
@@ -55,6 +58,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this._paginator.nextPageLabel = "Próxima página";
     this._paginator.previousPageLabel = "Anterior página";
   }
+
   ngOnInit(): void {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Lista de productos')
@@ -176,9 +180,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       this.dataSource.sort = this.sort;
   }
 
-  openDialogDetail(id_product: number) {
-    console.log(id_product)
-  }
+  openDialogDetail(id_product: number): void {
+      const dialogRef = this._dialog.open(DialogProductDetailComponent, { data: { id_product: id_product } });
+    }
 
   rechargeData() {
     this._conector.setUpdate(true);

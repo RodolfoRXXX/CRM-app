@@ -178,6 +178,7 @@
   }
 }
 
+
 /*-- ============================================================== 
  Pantallas menores a 768px
  ============================================================== */
@@ -209,6 +210,19 @@
   .text-product-box {
     max-width: 250px!important;
   }
+
+  .mat-card.dialog-detail {
+    .box-detail {
+      flex-direction: column;
+      .box-image {
+        width: 100%!important;
+      }
+      .box-text {
+        width: 100%!important;
+      }
+    }
+  }
+
 }
 
 
