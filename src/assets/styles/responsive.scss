@@ -212,6 +212,7 @@
   }
 
   .mat-card.dialog-detail {
+    max-width: 490px!important;
     .box-detail {
       flex-direction: column;
       .box-image {
@@ -219,6 +220,16 @@
       }
       .box-text {
         width: 100%!important;
+        padding: 0!important;
+        .category_state {
+          div {
+            margin-right: 0;
+            padding: 10px 0 0 0;
+            span {
+              font-size: 1rem;
+            }
+          }
+      }
       }
     }
   }

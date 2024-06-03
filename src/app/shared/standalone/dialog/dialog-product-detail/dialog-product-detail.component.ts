@@ -1,4 +1,4 @@
-import { Component, Inject} from '@angular/core';
+import { Component, Inject, OnInit} from '@angular/core';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { CommonModule } from '@angular/common';
 import { ApiService } from 'src/app/services/api.service';
@@ -16,7 +16,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     CommonModule
   ]
 })
-export class DialogProductDetailComponent {
+export class DialogProductDetailComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<DialogProductDetailComponent>,
@@ -24,8 +24,14 @@ export class DialogProductDetailComponent {
     private _api: ApiService,
     private _auth: AuthService,
   ) {
-    this.setDataUser();
+    //this.setDataUser();
     console.log(this.data)
+  }
+
+  ngOnInit(): void {
+    this._api.postTypeRequest('profile/get-product-detail', { id_product: this.data.id_product }).subscribe( (value:any) => {
+      console.log(value)
+    })
   }
 
   async getDataLocal(): Promise<any> {
