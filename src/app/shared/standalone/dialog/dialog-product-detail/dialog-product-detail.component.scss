@@ -126,10 +126,13 @@
                     width: 100%;
                     .more_options_admin {
                         flex: 1;
-                        margin-right: 30px;
+                        border: 1px solid red;
+                        border-radius: 4px;
+                        padding: 0 15px;
                     }
                     .more_options {
                         flex: 1;
+                        padding: 0 15px;
                     }
                 }
             }
@@ -141,7 +144,7 @@
 ::ng-deep .mat-expansion-panel-content{
     width: 100%!important;
     &>div {
-        padding: 0 10px 25px!important;
+        padding: 0 0 25px!important;
     }
 }
 

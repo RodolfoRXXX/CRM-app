@@ -317,13 +317,41 @@ html body {
 
     //bagde colors
 
-    .blue-badge {
+    .red-badge {
+      background-color: #ffe2e6 !important;
+      color: #ff4c5e !important;
+    }
+    .green-badge {
+      background-color: #e2ffec !important;
+      color: #4cff79 !important;
+    }
+    .yellow-badge {
+      background-color: #ffffe2 !important;
+      color: #f9ff4c !important;
+    }
+    .orange-badge {
+      background-color: #ffe9e2 !important;
+      color: #ff824c !important;
+    }
+    .soft-blue-badge {
       background-color: #e2edff !important;
+      color: #4cf0ff !important;
+    }
+    .blue-badge {
+      background-color: #e2fcff !important;
       color: #5b4cff !important;
+    }
+    .turquoise-badge {
+      background-color: #e2fffa !important;
+      color: #4cffe1 !important;
     }
     .purple-badge {
       background-color: #ffe2fe !important;
       color: #800080 !important;
+    }
+    .black-badge {
+      background-color: #000 !important;
+      color: #fff !important;
     }
     .blanck-badge {
       background-color: #ecedee !important;
