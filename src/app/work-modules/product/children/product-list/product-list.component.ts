@@ -96,7 +96,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   getDataCard(id_enterprise: number) {
-
     let fecha = new Date();
     fecha.setDate(fecha.getDate() - 60);
     // Obtener el año, mes y día de la fecha actual.
@@ -180,8 +179,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       this.dataSource.sort = this.sort;
   }
 
-  openDialogDetail(id_product: number): void {
-      const dialogRef = this._dialog.open(DialogProductDetailComponent, { data: { id_product: id_product } });
+  openDialogDetail(id_enterprise: number, name: string, id_option_1: number, id_option_2: number): void {
+      const dialogRef = this._dialog.open(DialogProductDetailComponent, { data: { id_enterprise: id_enterprise, name: name, id_option_1: id_option_1, id_option_2: id_option_2 } });
     }
 
   rechargeData() {

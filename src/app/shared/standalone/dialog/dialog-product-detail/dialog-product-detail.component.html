@@ -52,18 +52,17 @@
                             <p class="fs-08">Opción de producto</p>
                             <!-- listado de opciones 1 -->
                             <div class="options_1_box">
-                                <span class="material-icons" style="color: red;"  matTooltip="1 unidades" matTooltipPosition="above">
-                                    square
-                                </span>
-                                <span class="material-icons" style="color: blue;"  matTooltip="5 unidades" matTooltipPosition="above">
-                                    square
-                                </span>
-                                <span class="material-icons" style="color: green;"  matTooltip="2 unidades" matTooltipPosition="above">
-                                    square
-                                </span>
-                                <span class="material-icons" style="color: yellow;"  matTooltip="1 unidades" matTooltipPosition="above">
-                                    square
-                                </span>
+                                <ng-container *ngFor="let option1 of options1">
+                                    <span class="material-icons" 
+                                            [style.color]="option1.option" 
+                                            [style]="(this.product.id_option_1 == option1.id_option)?'outline: solid black thin;':''" 
+                                            [matTooltip]="option1.stock.toString() + ' unidades'" 
+                                            matTooltipPosition="above"
+                                            (click)="searchProduct(this.product.category, this.product.name, option1.id_option, this.product.id_option_2)"
+                                    >
+                                        square
+                                    </span>
+                                </ng-container>
                             </div>
                         </div>
                         <!-- caja de opciones 2 -->
@@ -72,12 +71,16 @@
                             <p class="fs-08">Opción de producto</p>
                             <!-- listado de opciones 2 -->
                             <div class="options_2_box">
-                                <span class="black-color fw-700" style="border: 2px solid black;" matTooltip="3 unidades" matTooltipPosition="above">S</span>
-                                <span class="soft-grey-color">M</span>
-                                <span class="soft-grey-color">L</span>
-                                <span class="black-color fw-700" matTooltip="2 unidades" matTooltipPosition="above">XL</span>
-                                <span class="soft-grey-color">XXL</span>
-                                <span class="black-color fw-700" matTooltip="4 unidades" matTooltipPosition="above">XXXL</span>
+                                <ng-container *ngFor="let option2 of options2">
+                                    <span class="soft-grey-color" 
+                                            [ngClass]="{'selected': this.product.id_option_2 == option2.id_option}" 
+                                            [matTooltip]="option2.stock.toString() + 'unidades'" 
+                                            matTooltipPosition="above"
+                                            (click)="searchProduct(this.product.category, this.product.name, this.product.id_option_1, option2.id_option)"
+                                    >
+                                        {{option2.option}}
+                                    </span>
+                                </ng-container>
                             </div>
                         </div>
                     </div>

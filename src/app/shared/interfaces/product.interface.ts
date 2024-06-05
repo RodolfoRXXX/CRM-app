@@ -7,6 +7,8 @@ export interface Product {
     category: number,
     category_item: string,
     category_color: string,
+    id_option_1: number,
+    id_option_2: number,
     sku: string,
     stock_real: number,
     is_stock: string,
