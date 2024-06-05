@@ -28,7 +28,7 @@ export class DialogProductDetailComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogProductDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _api: ApiService,
-    private _auth: AuthService,
+    private _auth: AuthService
   ) {}
 
   ngOnInit(): void {

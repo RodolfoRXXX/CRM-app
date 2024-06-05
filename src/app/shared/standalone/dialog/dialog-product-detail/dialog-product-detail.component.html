@@ -4,7 +4,7 @@
         <mat-icon>close</mat-icon>
     </a>
         <div *ngIf="load">
-            caargando datos...
+            cargando datos...
         </div>
         <div class="box-detail" *ngIf="!load">
             <div class="box-image">
@@ -52,11 +52,18 @@
                             <p class="fs-08">Opción de producto</p>
                             <!-- listado de opciones 1 -->
                             <div class="options_1_box">
-                                <span style="background-color: red; border: 2px solid black;" matTooltip="1 unidades" matTooltipPosition="above"></span>
-                                <span style="background-color: brown;" matTooltip="2 unidades" matTooltipPosition="above"></span>
-                                <span style="background-color: yellow;" matTooltip="1 unidades" matTooltipPosition="above"></span>
-                                <span style="background-color: green;" matTooltip="4 unidades" matTooltipPosition="above"></span>
-                                <span style="background-color: blue;" matTooltip="2 unidades" matTooltipPosition="above"></span>
+                                <span class="material-icons" style="color: red;"  matTooltip="1 unidades" matTooltipPosition="above">
+                                    square
+                                </span>
+                                <span class="material-icons" style="color: blue;"  matTooltip="5 unidades" matTooltipPosition="above">
+                                    square
+                                </span>
+                                <span class="material-icons" style="color: green;"  matTooltip="2 unidades" matTooltipPosition="above">
+                                    square
+                                </span>
+                                <span class="material-icons" style="color: yellow;"  matTooltip="1 unidades" matTooltipPosition="above">
+                                    square
+                                </span>
                             </div>
                         </div>
                         <!-- caja de opciones 2 -->
