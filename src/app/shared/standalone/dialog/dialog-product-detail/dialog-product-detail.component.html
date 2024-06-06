@@ -54,13 +54,14 @@
                             <div class="options_1_box">
                                 <ng-container *ngFor="let option1 of options1">
                                     <span class="material-icons" 
-                                            [style.color]="option1.option" 
+                                            [style.color]="option1.option"
+                                            [style.opacity]="(option1.stock > 0)?'1':'.4'"
                                             [style]="(this.product.id_option_1 == option1.id_option)?'outline: solid black thin;':''" 
                                             [matTooltip]="option1.stock.toString() + ' unidades'" 
                                             matTooltipPosition="above"
-                                            (click)="searchProduct(this.product.category, this.product.name, option1.id_option, this.product.id_option_2)"
+                                            (click)="(option1.stock == 0 || this.product.id_option_1 == option1.id_option)?'':rechargeProduct(this.product.id_enterprise, this.product.name, option1.id_option, this.product.id_option_2)"
                                     >
-                                        square
+                                    {{(option1.stock > 0)?'square':'disabled_by_default'}}
                                     </span>
                                 </ng-container>
                             </div>
@@ -73,10 +74,11 @@
                             <div class="options_2_box">
                                 <ng-container *ngFor="let option2 of options2">
                                     <span class="soft-grey-color" 
-                                            [ngClass]="{'selected': this.product.id_option_2 == option2.id_option}" 
-                                            [matTooltip]="option2.stock.toString() + 'unidades'" 
+                                            [ngClass]="{'selected': this.product.id_option_2 == option2.id_option}"
+                                            [style.opacity]="(option2.stock > 0)?'1':'.4'"
+                                            [matTooltip]="option2.stock.toString() + ' unidades'" 
                                             matTooltipPosition="above"
-                                            (click)="searchProduct(this.product.category, this.product.name, this.product.id_option_1, option2.id_option)"
+                                            (click)="(option2.stock == 0 || this.product.id_option_2 == option2.id_option)?'':rechargeProduct(this.product.id_enterprise, this.product.name, this.product.id_option_1, option2.id_option)"
                                     >
                                         {{option2.option}}
                                     </span>
