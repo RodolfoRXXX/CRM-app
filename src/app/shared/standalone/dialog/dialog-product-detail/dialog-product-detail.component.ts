@@ -3,7 +3,7 @@ import { MaterialModule } from 'src/app/material/material/material.module';
 import { CommonModule } from '@angular/common';
 import { ApiService } from 'src/app/services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Product } from 'src/app/shared/interfaces/product.interface';
+import { empty_product, Product } from 'src/app/shared/interfaces/product.interface';
 import { environment } from 'src/enviroments/enviroment';
 import { OptionProduct } from 'src/app/shared/interfaces/optionProduct.interface';
 
@@ -44,19 +44,25 @@ export class DialogProductDetailComponent implements OnInit {
 
     //Obtener la información del producto
     this._api.postTypeRequest('profile/get-product-detail', { id_enterprise: id_enterprise, name: name, id_option_1: id_option_1, id_option_2: id_option_2 }).subscribe( (value: any) => {
-      this.product = value.data[0];
+      if (value.data) {
+        this.product = value.data[0];
+      } else {
+        this.product = empty_product;
+        this.product.id_enterprise = id_enterprise;
+        this.product.name = name;
+        this.product.id_option_1 = id_option_1;
+        this.product.id_option_2 = id_option_2;
+      }
       this.load = false;
     })
 
     //Obtener el conjunto de los valores de option_1 para ese producto seleccionado
     this._api.postTypeRequest('profile/get-product-detail-option1', { name : name, id_enterprise: id_enterprise}).subscribe( (value: any) => {
-      console.log(value.data)
       this.options1 = value.data;
     })
 
     //Obtener el conjunto de los valores de option_2 para ese producto seleccionado
     this._api.postTypeRequest('profile/get-product-detail-option2', { name : name, id_enterprise: id_enterprise}).subscribe( (value: any) => {
-      console.log(value.data)
       this.options2 = value.data;
     })
   }

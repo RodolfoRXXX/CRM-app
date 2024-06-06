@@ -40,15 +40,15 @@
                                     <div class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-4 pb-sm-0">
                                         <div>
                                             <p class="soft-grey-color font-14 mb-1">Valor de inventario</p>
-                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.value_stock >= 0">${{ this.card_values.value_stock }}</h4>
-                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.value_stock >= 0)">Cargando...</p>
+                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.value_stock != 0">${{ this.card_values.value_stock }}</h4>
+                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.value_stock != 0)">Cargando...</p>
                                             <p class="soft-grey-color font-12 mb-0">
                                                 Valor total del inventario con stock
                                             </p>
                                         </div>
                                         <div class="avatar me-lg-6">
                                             <span class="avatar-initial rounded bg-label-secondary text-heading">
-                                                <mat-icon> attach_money</mat-icon>
+                                                <mat-icon>attach_money</mat-icon>
                                             </span>
                                         </div>
                                     </div>
@@ -79,8 +79,8 @@
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
                                             <p class="soft-grey-color font-14 mb-1">Stock inmovilizado</p>
-                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.immo_stock >= 0">${{ this.card_values.immo_stock }}</h4>
-                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.immo_stock >= 0)">Cargando...</p>
+                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.immo_stock != 0">${{ this.card_values.immo_stock }}</h4>
+                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.immo_stock != 0)">Cargando...</p>
                                             <p class="soft-grey-color font-12 mb-0">
                                                 Ultimo movimiento mayor a 60 días
                                             </p>

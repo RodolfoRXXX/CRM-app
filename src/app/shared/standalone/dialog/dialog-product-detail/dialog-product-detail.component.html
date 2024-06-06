@@ -8,37 +8,37 @@
         </div>
         <div class="box-detail" *ngIf="!load">
             <div class="box-image">
-                <img [src]="baseURL + this.product.image" [alt]="this.product.image" >
+                <img [src]="(baseURL + this.product.image)" [alt]="this.product.image" >
             </div>
             <div class="box-text">
                 <!-- caja de categoría y estado -->
                 <div class="category_state">
                     <!-- caja de estado -->
                     <div class="me-1">
-                        <span class="badge rounded-pill bg-label-success cap">
-                            Activo
+                        <span class="badge rounded-pill cap" [ngClass]="(this.product.state == 'activo')?'bg-label-success':'bg-label-danger'">
+                            {{ this.product.state || 'Inactivo' }}
                         </span>
                     </div>
                     <!-- caja de categoría -->
                     <div>
                         <span class="badge rounded-pill cap" [ngClass]="this.product.category_color || 'blanck-badge'">
-                            {{ this.product.category_item }}
+                            {{ this.product.category_item || 'Sin Categoría' }}
                         </span>
                     </div>
                 </div>
                 <!-- caja de nombre y precio -->
                 <div class="name_price">
                     <!-- caja de nombre -->
-                    <h3 class="fw-700 name_box">{{ this.product.name }}</h3>
+                    <h3 class="fw-700 name_box">{{ this.product.name || '' }}</h3>
                     <!-- caja de precio -->
                     <div class="price_box">
-                        <h2 class="fw-700 black-color">${{ this.product.sale_price }}</h2>
+                        <h2 class="fw-700 black-color">{{ '$' + this.product.sale_price || 0.00 }}</h2>
                     </div>
                 </div>
                 <!-- caja de descripción -->
                 <div class="description_box">
                     <p class="fs-08">Descripción</p>
-                    <h6>{{ this.product.description }}</h6>
+                    <h6 [style.color]="(this.product.description == 'NO EXISTE ESTE PRODUCTO')?'red':''">{{ this.product.description || 'Sin Descripción' }}</h6>
                 </div>
                 <!-- caja de colores, medidas y stocks -->
                 <div class="options_stock">
@@ -89,9 +89,9 @@
                     <!-- caja de stocks -->
                     <div class="stock_box">
                         <p class="fs-08">Stock físico</p>
-                        <h3 class="text-center fw-700 black-color">{{ this.product.stock_real }}</h3>
+                        <h3 class="text-center fw-700 black-color">{{ this.product.stock_real || 0 }}</h3>
                         <p class="fs-08">Stock disponible</p>
-                        <h4 class="text-center fw-700 black-color">{{ this.product.stock_available }}</h4>
+                        <h4 class="text-center fw-700 black-color">{{ this.product.stock_available || 0 }}</h4>
                     </div>
                 </div>
             </div>
@@ -111,22 +111,24 @@
                         <!-- Caja de proveedor -->
                         <div class="b-b">
                             <p class="fs-08 fw-700"><strong>Proveedor:</strong></p>
-                            <p class="ms-4">{{ this.product.provider_name }}</p>
+                            <p class="ms-4 cap">{{ this.product.provider_name || '' }}</p>
                         </div>
                         <!-- Caja de fecha de compra --> 
                         <div class="b-b">
                             <p class="fs-08 fw-700"><strong>Fecha de compra:</strong></p>
-                            <p class="ms-4">{{ this.product.purchase_date | date:'dd/MM/yyyy' }}</p>
+                            <p class="ms-4">{{ this.product.purchase_date | date:'dd/MM/yyyy' || '' }}</p>
                         </div>
                         <!-- Caja de precio de compra --> 
                         <div class="b-b">
                             <p class="fs-08 fw-700"><strong>Precio de compra:</strong></p>
-                            <p class="ms-4">${{ this.product.purchase_price }}</p>
+                            <p class="ms-4">{{ '$' + this.product.purchase_price || '' }}</p>
                         </div>
                         <!-- Caja de ganancia --> 
                         <div class="b-b pb-1">
                             <p class="fs-08 fw-700"><strong>Ganancia:</strong></p>
-                            <span class="badge rounded-pill cap ms-4 fs-09" [ngClass]="((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price < 0)?'bg-label-danger':'bg-label-success'">
+                            <span class="badge rounded-pill cap ms-4 fs-09" 
+                                    [ngClass]="((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price < 0)?'bg-label-danger':'bg-label-success'"
+                                    *ngIf="this.product.sale_price">
                                 <span class="fs-09">{{ ((((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price) >= 0)?((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price)*100:(((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price)*100)*(-1)) | number:'1.2-2'  }}%</span>
                                 <mat-icon class="fs-09" style="width: auto; height: auto;" *ngIf="(this.product.sale_price - this.product.purchase_price)/this.product.purchase_price > 0">arrow_upward</mat-icon>
                                 <mat-icon class="fs-09" style="width: auto; height: auto;" *ngIf="(this.product.sale_price - this.product.purchase_price)/this.product.purchase_price <= 0">arrow_downward</mat-icon>
@@ -138,17 +140,17 @@
                         <!-- Caja de SKU --> 
                         <div class="b-b">
                             <p class="fs-08 fw-700"><strong>SKU:</strong></p>
-                            <p class="ms-4">{{ this.product.sku }}</p>
+                            <p class="ms-4">{{ this.product.sku || '' }}</p>
                         </div>
                         <!-- Caja de ubicación --> 
                         <div class="b-b">
                             <p class="fs-08 fw-700"><strong>Ubicación:</strong></p>
-                            <p class="ms-4">{{ this.product.storage_name }}</p>
+                            <p class="ms-4">{{ this.product.storage_name || '' }}</p>
                         </div>
                         <!-- Caja de última venta --> 
                         <div class="b-b">
                             <p class="fs-08 fw-700"><strong>Última venta:</strong></p>
-                            <p class="ms-4">{{ this.product.sale_date | date:'dd/MM/yyyy' }}</p>
+                            <p class="ms-4">{{ this.product.sale_date | date:'dd/MM/yyyy' || '' }}</p>
                         </div>
                     </div>
                 </div>

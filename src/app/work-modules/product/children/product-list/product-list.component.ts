@@ -114,7 +114,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     } else {
       _mes = mes
     }
-
     // Formatear la fecha como texto según tus preferencias.
     let date_limit = año + '-' + _mes + '-' + _dia;
     this._api.postTypeRequest('profile/get-products-data', { id_enterprise: id_enterprise, date_limit: date_limit }).subscribe( (value:any) => {

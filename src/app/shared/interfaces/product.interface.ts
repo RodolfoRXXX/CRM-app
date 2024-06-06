@@ -23,3 +23,29 @@ export interface Product {
     sale_date: string,
     state: string
 }
+
+export const empty_product: Product = {
+    id: 0,
+    id_enterprise: 0,
+    image: 'no-image.png',
+    name: 'Producto No Existe',
+    description: 'NO EXISTE ESTE PRODUCTO',
+    category: 0,
+    category_item: '',
+    category_color: '',
+    id_option_1: 0,
+    id_option_2: 0,
+    sku: '',
+    stock_real: 0,
+    is_stock: '',
+    stock_available: 0,
+    storage_location: 0,
+    storage_name: '',
+    sale_price: 0.00,
+    purchase_price: 0.00,
+    provider: 0,
+    provider_name: '',
+    purchase_date: '',
+    sale_date: '',
+    state: 'inactivo'
+}
