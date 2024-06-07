@@ -5,29 +5,29 @@
     </a>
         <!-- Loader -->
         <div class="box-detail" *ngIf="load">
-            <div class="box-image" style="width: 288px; height: 288px; background-color: rgb(240, 240, 240);">
+            <div class="box-image soft-grey-background" style="width: 288px; height: 288px;">
             </div>
             <div class="box-text">
                 <!-- caja de categoría y estado -->
                 <div class="category_state">
                     <!-- caja de estado -->
                     <div class="me-1">
-                        <div style="width: 60px; height: 22px; border-radius: 10px; background-color: rgb(240, 240, 240);"></div>
+                        <div class="soft-grey-background" style="width: 60px; height: 22px; border-radius: 10px;"></div>
                     </div>
                     <!-- caja de categoría -->
                     <div>
-                        <div style="width: 60px; height: 22px; border-radius: 10px; background-color: rgb(240, 240, 240);"></div>
+                        <div class="soft-grey-background" style="width: 60px; height: 22px; border-radius: 10px;"></div>
                     </div>
                 </div>
                 <!-- caja de nombre y precio -->
                 <div class="name_price">
                     <!-- caja de nombre -->
-                    <div style="width: 100%; height: 46px; background-color: rgb(240, 240, 240); margin-top: 5px;"></div>
+                    <div class="soft-grey-background" style="width: 100%; height: 46px; margin-top: 5px;"></div>
                 </div>
                 <!-- caja de descripción -->
                 <div class="description_box">
                     <p class="fs-08">Descripción</p>
-                    <div style="width: 100%; height: 20px; background-color: rgb(240, 240, 240);"></div>
+                    <div class="soft-grey-background" style="width: 100%; height: 20px;"></div>
                 </div>
                 <!-- caja de colores, medidas y stocks -->
                 <div class="options_stock">
@@ -40,7 +40,7 @@
                             <!-- Título de opciones 1 -->
                             <p class="fs-08">Opción de producto</p>
                             <!-- listado de opciones 1 -->
-                            <div class="options_1_box" style="width: 100%; height: 25px; background-color: rgb(240, 240, 240);">
+                            <div class="soft-grey-background" class="options_1_box" style="width: 100%; height: 25px;">
                             </div>
                         </div>
                         <!-- caja de opciones 2 -->
@@ -48,16 +48,16 @@
                             <!-- Título de opciones 2 -->
                             <p class="fs-08">Opción de producto</p>
                             <!-- listado de opciones 2 -->
-                            <div class="options_2_box" style="width: 100%; height: 25px; background-color: rgb(240, 240, 240);">
+                            <div class="options_2_box soft-grey-background" style="width: 100%; height: 25px;">
                             </div>
                         </div>
                     </div>
                     <!-- caja de stocks -->
                     <div class="stock_box">
                         <p class="fs-08">Stock físico</p>
-                            <div style="width: 25px; height: 25px; background-color: rgb(240, 240, 240); margin: auto;"></div>
+                            <div class="soft-grey-background" style="width: 25px; height: 25px; margin: auto;"></div>
                         <p class="fs-08">Stock disponible</p>
-                        <div style="width: 25px; height: 25px; background-color: rgb(240, 240, 240); margin: auto;"></div>
+                            <div class="soft-grey-background" style="width: 25px; height: 25px; margin: auto;"></div>
                     </div>
                 </div>
             </div>
@@ -210,6 +210,12 @@
                             <p class="fs-08 fw-700"><strong>Última venta:</strong></p>
                             <p class="ms-4">{{ this.product.sale_date | date:'dd/MM/yyyy' || '' }}</p>
                         </div>
+                        <!-- Bóton de edición del producto -->
+                         <div class="edit-box">
+                            <button mat-flat-button color="primary" (click)="editProduct(this.product.id)">
+                                <mat-icon>edit</mat-icon> Editar Producto
+                            </button>
+                         </div>
                     </div>
                 </div>
             </mat-expansion-panel>

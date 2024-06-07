@@ -41,12 +41,12 @@ const routes: Routes = [
         { 
           path: 'page-not-found', 
           loadChildren: () => import('./layouts/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule) 
-        },
+        },/*
         { 
           path: '**', 
           redirectTo: 'page-not-found', 
           pathMatch: 'full' 
-        }
+        }*/
 ]
 
 @NgModule({

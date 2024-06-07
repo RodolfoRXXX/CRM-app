@@ -136,6 +136,11 @@
                     .more_options {
                         flex: 1;
                         padding: 0 15px;
+                        .edit-box {
+                            display: flex;
+                            justify-content: flex-end;
+                            padding: 10px 0;
+                        }
                     }
                 }
             }

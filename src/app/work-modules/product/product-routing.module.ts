@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductComponent } from './product.component';
 import { ProductListComponent } from './children/product-list/product-list.component';
 import { AddProductComponent } from './children/add-product/add-product.component';
-import { InitResolver } from 'src/app/resolver/init.resolver';
 
 const routes: Routes = [
   { 

@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { empty_product, Product } from 'src/app/shared/interfaces/product.interface';
 import { environment } from 'src/enviroments/enviroment';
 import { OptionProduct } from 'src/app/shared/interfaces/optionProduct.interface';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class DialogProductDetailComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogProductDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _api: ApiService
+    private _api: ApiService,
+    private _router: Router
   ) {
     this.data_product = {id_enterprise: this.data.id_enterprise, name: this.data.name, id_option_1: this.data.id_option_1, id_option_2: this.data.id_option_2};
   }
@@ -70,6 +72,11 @@ export class DialogProductDetailComponent implements OnInit {
   rechargeProduct(id_enterprise: number, name: string, id_option_1: number, id_option_2: number) {
     this.data_product = {id_enterprise: id_enterprise, name: name, id_option_1: id_option_1, id_option_2: id_option_2};
     this.ngOnInit();
+  }
+
+  editProduct(id_product: number) {
+    this.closeDialog()
+    this._router.navigate(['init/main/product/add-product'], { queryParams: { id_product: id_product } });
   }
 
   closeDialog() {
