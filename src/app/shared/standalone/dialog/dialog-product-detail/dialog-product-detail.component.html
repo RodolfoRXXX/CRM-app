@@ -3,12 +3,70 @@
     <a mat-icon-button class="close-card" routerLink="#" aria-label="close-button" (click)="closeDialog()">
         <mat-icon>close</mat-icon>
     </a>
-        <div *ngIf="load">
-            cargando datos...
+        <!-- Loader -->
+        <div class="box-detail" *ngIf="load">
+            <div class="box-image" style="width: 288px; height: 288px; background-color: rgb(240, 240, 240);">
+            </div>
+            <div class="box-text">
+                <!-- caja de categoría y estado -->
+                <div class="category_state">
+                    <!-- caja de estado -->
+                    <div class="me-1">
+                        <div style="width: 60px; height: 22px; border-radius: 10px; background-color: rgb(240, 240, 240);"></div>
+                    </div>
+                    <!-- caja de categoría -->
+                    <div>
+                        <div style="width: 60px; height: 22px; border-radius: 10px; background-color: rgb(240, 240, 240);"></div>
+                    </div>
+                </div>
+                <!-- caja de nombre y precio -->
+                <div class="name_price">
+                    <!-- caja de nombre -->
+                    <div style="width: 100%; height: 46px; background-color: rgb(240, 240, 240); margin-top: 5px;"></div>
+                </div>
+                <!-- caja de descripción -->
+                <div class="description_box">
+                    <p class="fs-08">Descripción</p>
+                    <div style="width: 100%; height: 20px; background-color: rgb(240, 240, 240);"></div>
+                </div>
+                <!-- caja de colores, medidas y stocks -->
+                <div class="options_stock">
+                    <!-- Aquí se muestran dos opciones que forman parte del SKU y permiten buscar otros 
+                    productos similares al seleccionado pero que sea de otro valor de cada categoría -->
+                    <!-- caja de colores y medidas. -->
+                    <div class="options_box">
+                        <!-- caja de opciones 1 -->
+                        <div>
+                            <!-- Título de opciones 1 -->
+                            <p class="fs-08">Opción de producto</p>
+                            <!-- listado de opciones 1 -->
+                            <div class="options_1_box" style="width: 100%; height: 25px; background-color: rgb(240, 240, 240);">
+                            </div>
+                        </div>
+                        <!-- caja de opciones 2 -->
+                        <div class="pb-1">
+                            <!-- Título de opciones 2 -->
+                            <p class="fs-08">Opción de producto</p>
+                            <!-- listado de opciones 2 -->
+                            <div class="options_2_box" style="width: 100%; height: 25px; background-color: rgb(240, 240, 240);">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- caja de stocks -->
+                    <div class="stock_box">
+                        <p class="fs-08">Stock físico</p>
+                            <div style="width: 25px; height: 25px; background-color: rgb(240, 240, 240); margin: auto;"></div>
+                        <p class="fs-08">Stock disponible</p>
+                        <div style="width: 25px; height: 25px; background-color: rgb(240, 240, 240); margin: auto;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Box principal -->
         <div class="box-detail" *ngIf="!load">
             <div class="box-image">
-                <img [src]="(baseURL + this.product.image)" [alt]="this.product.image" >
+                <img [src]="(baseURL + this.product.image)" [alt]="this.product.image">
             </div>
             <div class="box-text">
                 <!-- caja de categoría y estado -->
@@ -89,9 +147,9 @@
                     <!-- caja de stocks -->
                     <div class="stock_box">
                         <p class="fs-08">Stock físico</p>
-                        <h3 class="text-center fw-700 black-color">{{ this.product.stock_real || 0 }}</h3>
+                            <h3 class="text-center fw-700 black-color">{{ this.product.stock_real || 0 }}</h3>
                         <p class="fs-08">Stock disponible</p>
-                        <h4 class="text-center fw-700 black-color">{{ this.product.stock_available || 0 }}</h4>
+                            <h4 class="text-center fw-700 black-color">{{ this.product.stock_available || 0 }}</h4>
                     </div>
                 </div>
             </div>
