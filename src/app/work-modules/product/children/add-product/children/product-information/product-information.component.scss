@@ -1,0 +1,23 @@
+
+
+.card-product.addProduct.infoProduct {
+    .sku-product-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        height: 100%;
+        mat-form-field {
+            width: 100%;
+            margin-right: 24px;
+        }
+        button {
+            height: 100%!important;
+            width: 25%;
+            padding: 15px 0;
+        }
+    }
+    .product-info-btn-box {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

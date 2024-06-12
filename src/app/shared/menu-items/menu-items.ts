@@ -22,7 +22,7 @@ const MENUMANAGEMENT = [
     ] },
     { state: '', name: 'Productos', type: '', icon: 'storage', children: [
         { state: 'product/product-list', name: 'Lista de productos', type: '', icon: '' },
-        { state: 'product/add-product', name: 'Agregar producto nuevo', type: '', icon: '' },
+        { state: 'product/add-product', name: 'Edición de producto', type: '', icon: '' },
         { state: 'categories', name: 'Categorías', type: '', icon: '' },
         { state: 'depo', name: 'Depósito', type: '', icon: '' }
     ] }

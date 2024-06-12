@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { catchError, map, merge, startWith, switchMap, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Category } from 'src/app/shared/interfaces/category.interface';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
@@ -34,7 +33,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   recharge!: boolean;
   empty_products!: boolean;
   chips: any = {category: '', stock: '', state: '', search: ''};
-  card_values: any = {products_with_stock: null, value_stock: null, products_without_stock: null, immo_stock: null}
+  card_values: any = {products_with_stock: null, value_stock: null, products_without_stock: null, immo_stock: null};
+  permissions: string[] = [];
+  add_product_admin = '6';
 
   uriImg = environment.SERVER;
 
@@ -42,7 +43,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private _auth: AuthService,
     private _api: ApiService,
     private _conector: ConectorsService,
     private _paginator: MatPaginatorIntl,
@@ -62,6 +62,12 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Lista de productos')
+    this._conector.getEmployee().subscribe( value => {
+      //la lista de permisos se almacena como un string y luego se lo separa en un array
+      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
+      //que es el valor vacío, por eso la desigualdad es mayor a 1
+      this.permissions = value.list_of_permissions.split(',')
+    })
   }
 
   getDataLocal(): number {

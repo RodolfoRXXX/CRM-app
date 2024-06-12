@@ -9,13 +9,25 @@ import { MaterialModule } from 'src/app/material/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { ProductInformationComponent } from './children/add-product/children/product-information/product-information.component';
+import { ProductImageComponent } from './children/add-product/children/product-image/product-image.component';
+import { ProductProviderDataComponent } from './children/add-product/children/product-provider-data/product-provider-data.component';
+import { ProductStockComponent } from './children/add-product/children/product-stock/product-stock.component';
+import { ProductPriceComponent } from './children/add-product/children/product-price/product-price.component';
+import { ProductStorageComponent } from './children/add-product/children/product-storage/product-storage.component';
 
 
 @NgModule({
   declarations: [
     ProductComponent,
     ProductListComponent,
-    AddProductComponent
+    AddProductComponent,
+    ProductInformationComponent,
+    ProductImageComponent,
+    ProductProviderDataComponent,
+    ProductStockComponent,
+    ProductPriceComponent,
+    ProductStorageComponent
   ],
   imports: [
     CommonModule,

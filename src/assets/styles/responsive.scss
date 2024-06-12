@@ -253,7 +253,15 @@
     table {
         font-size: 12px;
     }
-}
+  }
+
+  .card-product.addProduct.infoProduct {
+    .sku-product-box {
+        button {
+            padding: 3px 0!important;
+        }
+    }
+  }
 
 .max-600-hidden {
   display: none!important;

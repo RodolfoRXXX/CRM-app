@@ -7,6 +7,7 @@ import { empty_product, Product } from 'src/app/shared/interfaces/product.interf
 import { environment } from 'src/enviroments/enviroment';
 import { OptionProduct } from 'src/app/shared/interfaces/optionProduct.interface';
 import { Router } from '@angular/router';
+import { ConectorsService } from 'src/app/services/conectors.service';
 
 
 @Component({
@@ -27,17 +28,27 @@ export class DialogProductDetailComponent implements OnInit {
   data_product: any;
   baseURL = environment.SERVER;
   load: boolean = true;
+  permissions: string[] = [];
+  sens_info_admin = '5';
+  add_product_admin = '6';
 
   constructor(
     public dialogRef: MatDialogRef<DialogProductDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _api: ApiService,
-    private _router: Router
+    private _router: Router,
+    private _conector: ConectorsService
   ) {
     this.data_product = {id_enterprise: this.data.id_enterprise, name: this.data.name, id_option_1: this.data.id_option_1, id_option_2: this.data.id_option_2};
   }
 
   ngOnInit(): void {
+    this._conector.getEmployee().subscribe( value => {
+      //la lista de permisos se almacena como un string y luego se lo separa en un array
+      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
+      //que es el valor vacío, por eso la desigualdad es mayor a 1
+      this.permissions = value.list_of_permissions.split(',')
+    })
     this.searchProduct(this.data_product.id_enterprise, this.data_product.name, this.data_product.id_option_1, this.data_product.id_option_2);
   }
 
