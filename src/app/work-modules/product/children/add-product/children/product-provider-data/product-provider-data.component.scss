@@ -1,4 +1,7 @@
 
-.card-product {
-    
+.card-product.addProduct.infoProvider {
+    .product-info-btn-box {
+        display: flex;
+        justify-content: flex-end;
+    }
 }

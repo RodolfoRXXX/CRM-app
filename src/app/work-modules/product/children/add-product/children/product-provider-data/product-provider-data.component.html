@@ -1,12 +1,59 @@
 <!--Componente que edita los datos del proveedor -->
 
-<mat-card class="card-product">
-    <mat-card-header>
-      <mat-card-title>Actions Buttons</mat-card-title>
-      <mat-card-subtitle>End</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions align="end">
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
-  </mat-card>
+<mat-card class="card-product addProduct infoProvider">
+  <mat-card-header>
+    <mat-card-title>Información del Proveedor</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form>
+      <!-- Nombre del proveedor -->
+      <div>
+        <mat-form-field appearance="outline" class="w-100 mb-0">
+          <mat-label>Nombre del Proveedor</mat-label>
+          <input matInput placeholder="Buscá el proveedor" type="search">
+        </mat-form-field>
+      </div>
+      <!-- Caja de información del proveedor seleccionado -->
+      <div class="w-100 mb-4 p-2 d-flex justify-content-start">
+
+        <div class="d-flex flex-column w-50">
+          <div>
+            <span class="text-muted">Nombre: </span><span class="cap fw-500">Precios de Locos</span>
+          </div>
+          <div>
+            <span class="text-muted">Teléfono: </span><span class="cap fw-500">+562265536598</span>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column w-50">
+          <div>
+            <span class="text-muted">Dirección: </span><span class="cap fw-500">Alvear 869, Santiago de Chile</span>
+          </div>
+          <div>
+            <span class="text-muted">País: </span><span class="cap fw-500">Chile</span>
+          </div>
+        </div>
+      </div>
+      <!-- Fecha de compra y precio de compra -->
+      <div class="row">
+        <mat-form-field appearance="outline" class="col">
+          <mat-label>Fecha de compra</mat-label>
+          <input matInput type="date">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="col">
+          <mat-label>Precio de compra</mat-label>
+          <input matInput>
+        </mat-form-field>
+      </div>
+      <!-- Botones de reseteo y confirmación -->
+      <div class="product-info-btn-box">
+        <button mat-stroked-button color="warn" class="me-3">
+          Reset
+        </button>
+        <button mat-stroked-button color="primary">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

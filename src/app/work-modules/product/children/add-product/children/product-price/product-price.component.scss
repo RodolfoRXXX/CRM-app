@@ -1,4 +1,15 @@
 
-.card-product {
-    
+.card-product.addProduct.productPrice {
+    .box-reprice {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 16px;
+        mat-form-field {
+            width: 95px !important;
+        }
+    }
+    .product-info-btn-box {
+        display: flex;
+        justify-content: flex-end;
+    }
 }

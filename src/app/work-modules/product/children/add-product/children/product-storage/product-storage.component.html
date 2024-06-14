@@ -1,12 +1,43 @@
 <!--Componente que edita la ubicación -->
 
-<mat-card class="card-product">
-    <mat-card-header>
-      <mat-card-title>Actions Buttons</mat-card-title>
-      <mat-card-subtitle>End</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions align="end">
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
-  </mat-card>
+<mat-card class="card-product addProduct productLocation">
+  <mat-card-header>
+    <mat-card-title>Ubicación del producto</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form>
+      
+      <!-- Nombre del proveedor -->
+      <div>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Ubicación</mat-label>
+          <mat-select>
+            <mat-option value="one">First option</mat-option>
+            <mat-option value="two">Second option</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- Caja de información del proveedor seleccionado -->
+      <div class="w-100 mb-4 p-2 d-flex justify-content-start">
+        <div class="d-flex flex-column">
+          <div>
+            <span class="text-muted">Ubicación: </span><span class="cap fw-500">Depósito 1</span>
+          </div>
+          <div>
+            <span class="text-muted">Dirección: </span><span class="cap fw-500">Alvear 786, CABA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de reseteo y confirmación -->
+      <div class="product-info-btn-box">
+        <button mat-stroked-button color="warn" class="me-3">
+          Reset
+        </button>
+        <button mat-stroked-button color="primary">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,12 +1,47 @@
 <!--Componente que edita el precio del producto -->
 
-<mat-card class="card-product">
-    <mat-card-header>
-      <mat-card-title>Actions Buttons</mat-card-title>
-      <mat-card-subtitle>End</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
-  </mat-card>
+<mat-card class="card-product addProduct productPrice">
+  <mat-card-header>
+    <mat-card-title>Precio del producto</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form>
+      
+      <!-- Caja precio venta -->
+      <div class="d-flex justify-content-between align-items-center b-all p-2 mb-4" style="border-radius: 4px;">
+        <p class="d-block mb-0 text-muted">Precio de venta: </p>
+        <h3 class="mb-0 fw-700 pe-2">$<span>250.01</span></h3>
+      </div>
+      
+      <!-- Caja de modificación del precio en base a precio de compra -->
+      <div class="box-reprice">
+
+        <!-- Caja precio de compra -->
+        <div class="d-flex flex-column b-all p-2 me-3" style="border-radius: 4px;">
+          <p class="text-muted fs-09 mb-1">Precio de compra</p>
+          <div class="d-flex justify-content-center">
+            <h4 class="mb-0">$<span>105.21</span></h4>
+          </div>
+        </div>
+
+        <!-- Valor por el cual se multiplica el precio de compra -->
+        <div>
+          <mat-form-field appearance="outline" class="mb-0">
+            <mat-label>Factor</mat-label>
+            <input matInput type="number">
+          </mat-form-field>
+        </div>
+
+      </div>
+      <!-- Botones de reseteo y confirmación -->
+      <div class="product-info-btn-box">
+        <button mat-stroked-button color="warn" class="me-3">
+          Reset
+        </button>
+        <button mat-stroked-button color="primary">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
