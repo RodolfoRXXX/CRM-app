@@ -193,10 +193,10 @@
                                         </div>
                                         <div class="text-product text-product-box">
                                             <span class="name-product">
-                                                {{ element.name }}
+                                                {{ element.name || 'No existe este producto' }}
                                             </span>
                                             <small class="description-product max-600-hidden">
-                                                {{ element.description }}
+                                                {{ element.description || 'NO EXISTE ESTE PRODUCTO' }}
                                             </small>
                                         </div>
                                     </div>
