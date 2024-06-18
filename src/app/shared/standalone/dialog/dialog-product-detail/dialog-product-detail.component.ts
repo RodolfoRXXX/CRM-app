@@ -58,11 +58,14 @@ export class DialogProductDetailComponent implements OnInit {
     //Obtener la información del producto
     this._api.postTypeRequest('profile/get-product-detail', { id_enterprise: id_enterprise, name: name, id_option_1: id_option_1, id_option_2: id_option_2 }).subscribe( (value: any) => {
       if (value.data) {
+        //Si existe el producto lo carga
         this.product = value.data[0];
       } else {
+        //Si NO existe el producto carga un objeto vacío
         this.product = empty_product;
         this.product.id_enterprise = id_enterprise;
         this.product.name = name;
+        this.product.description = 'NO EXISTE ESTE ARTICULO';
         this.product.id_option_1 = id_option_1;
         this.product.id_option_2 = id_option_2;
       }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { merge, startWith, map, switchMap, catchError, of as observableOf, firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
@@ -36,7 +37,8 @@ export class ProductInformationComponent implements OnInit {
   constructor(
     private _conector: ConectorsService,
     private _api: ApiService,
-    private _notify : NotificationService
+    private _notify : NotificationService,
+    private _router: Router
   ) {
     this.loading = false;
     this.inputBoxName = false;
@@ -160,6 +162,7 @@ export class ProductInformationComponent implements OnInit {
   //Función que devuelve el sku
   getSku(): string {
     return ((this.dataForm.controls['name'].value).trim().toLowerCase()).slice(0, 3) + '-' +
+            (this.dataForm.controls['name'].value).trim().toLowerCase().slice(-3) + '-' +
               this.dataForm.controls['category'].value + '-' +
               this.dataForm.controls['id_option_1'].value + '-' +
               this.dataForm.controls['id_option_2'].value;
@@ -248,47 +251,87 @@ export class ProductInformationComponent implements OnInit {
   }
 
   //Elimina todo lo que el reset básico no limpia
-  deleteAll() {
+  resetAll() {
     this.sku = '';
     this.exist_sku = '';
+    this.setDataForm(this.product)
+  }
+
+  //Navegar a la misma ruta para recargar el componente
+  rechargeComponent(id_product: number = 0) {
+    if(id_product > 0) {
+      this._router.navigate(['init/main/product/add-product'], { queryParams: { id_product: id_product } });
+    } else {
+      window.location.reload();
+    }
   }
 
   //Submit del formulario
   onSubmitUser() {
-    console.log(this.dataForm.status)
     this.loading = true;
     if(this.getSku() !== this.dataForm.controls['sku'].value) {
       //SKU diferente a las opciones elegidas
       this.exist_sku = 'regenerate';
+      this.loading = false;
     } else {
-      //SKU de acuerdo a las opciones elegidas
-      this._api.postTypeRequest('profile/create-product', this.dataForm.value).subscribe({
-        next: (res: any) => {
-          this.loading =  false;
-          if(res.status == 1){
-            //Accedió a la base de datos y no hubo problemas
-            if(res.data.affectedRows == 1){
-              //Modificó datos empresa
-              this._notify.showSuccess('Nuevo producto creado con éxito!');
+      //SKU ok
+      //Acá debe o crear un producto o modificar algún valor
+      //Si el componente se abrió como add-product sin id de referencia de producto debería crear uno
+      //Si el componente se abrió desde el listado de producto para edición, carda un id que es el del producto
+      //La diferencia radica en si el id está cargado o no
+      if(this.dataForm.controls['id'].value > 0) {
+        //Modifica el producto
+        this._api.postTypeRequest('profile/edit-product-information', this.dataForm.value).subscribe({
+          next: (res: any) => {
+            this.loading =  false;
+            if(res.status == 1){
+              //Accedió a la base de datos y no hubo problemas
+              if(res.data.changedRows == 1){
+                //Modificó datos empresa
+                this._notify.showSuccess('Nuevo producto creado con éxito!');
+                this.rechargeComponent();
+              } else{
+                //No hubo modificación
+                this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
+              }
             } else{
-              //No hubo modificación
-              this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
+              //Problemas de conexión con la base de datos(res.status == 0)
+              this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
             }
-            setTimeout(() => {
-              this._conector.setUpdate(true);
-            }, 2000);
-          } else{
-            //Problemas de conexión con la base de datos(res.status == 0)
+          },
+          error: (error: any) => {
+            //Error de conexión, no pudo consultar con la base de datos
+            this.loading =  false;
             this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
           }
-        },
-        error: (error: any) => {
-          //Error de conexión, no pudo consultar con la base de datos
-          this.loading =  false;
-          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
-        }
-      })
-      
+        })
+      } else {
+        //Crea un producto nuevo
+        this._api.postTypeRequest('profile/create-product', this.dataForm.value).subscribe({
+          next: (res: any) => {
+            this.loading =  false;
+            if(res.status == 1){
+              //Accedió a la base de datos y no hubo problemas
+              if(res.data.affectedRows == 1){
+                //Modificó datos empresa
+                this._notify.showSuccess('Nuevo producto creado con éxito!');
+                this.rechargeComponent(res.data.insertId);
+              } else{
+                //No hubo modificación
+                this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
+              }
+            } else{
+              //Problemas de conexión con la base de datos(res.status == 0)
+              this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+            }
+          },
+          error: (error: any) => {
+            //Error de conexión, no pudo consultar con la base de datos
+            this.loading =  false;
+            this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+          }
+        })
+      }
     }
   }
 

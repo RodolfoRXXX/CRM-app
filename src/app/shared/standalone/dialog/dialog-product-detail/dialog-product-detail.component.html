@@ -211,7 +211,7 @@
                             <p class="ms-4">{{ this.product.sale_date | date:'dd/MM/yyyy' || '' }}</p>
                         </div>
                         <!-- Bóton de edición del producto -->
-                         <div class="edit-box" *ngIf="this.permissions.includes(add_product_admin)">
+                         <div class="edit-box" *ngIf="this.permissions.includes(add_product_admin) && this.product.id > 0">
                             <button mat-flat-button color="primary" (click)="editProduct(this.product.id)">
                                 <mat-icon>edit</mat-icon> Editar Producto
                             </button>

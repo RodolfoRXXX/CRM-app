@@ -110,7 +110,7 @@
         </div>
         <!-- Botones de reseteo y confirmación -->
         <div class="product-info-btn-box">
-          <button mat-stroked-button color="warn" class="me-3" type="reset" (click)="deleteAll()">
+          <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
             Reset
           </button>
           <button mat-stroked-button color="primary" type="submit" [disabled]="(this.dataForm.status == 'INVALID') || loading">
