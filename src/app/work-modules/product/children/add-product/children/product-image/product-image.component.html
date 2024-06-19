@@ -7,38 +7,44 @@
     <mat-card-content>
       <form>
         <!-- Caja donde colocar o buscar la imagen deseada -->
-        <div class="img-dropzone"
+        <div class="box-file-upload">
+          <div class="img-selected">
+
+            <!-- label de cargando... -->
+            <h5 class="text-muted" *ngIf="!imageSrc">
+              cargando...
+            </h5>
+            
+            <!-- caja de imagen -->
+            <img *ngIf="imageSrc" [src]="imageSrc" alt="Imagen seleccionada" />
+
+            <!-- Error de la imagen -->
+            <div class="error-box" *ngIf="false">
+                <h5>El formato de la imagen no es correcto</h5>
+            </div>
+          </div>
+          <div class="img-dropzone"
             (dragover)="onDragOver($event)"
             (dragleave)="onDragLeave($event)"
             (drop)="onDrop($event)"
             [class.dragover]="isDragOver">
 
           <!-- caja para arrojar la imagen o cargarla -->
-          <ng-container *ngIf="!imageSrc">
-            <div class="d-flex justify-content-center">
-              <div class="avatar">
-                <span class="material-icons soft-grey-badge">
-                  file_upload
-                </span>
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="avatar">
+              <span class="material-icons soft-grey-badge">
+                file_upload
+              </span>
             </div>
-            <p class="text-file">Arrastra y suelta tus imágenes aquí</p>
-            <small class="text-muted subtext-file">o</small>
-            <button mat-stroked-button color="accent">Busca en tu equipo</button>
-          </ng-container>
-
-          <!-- label de cargando... -->
-          <ng-container *ngIf="load">
-            <span class="text-muted" style="font-size: 14px!important;">cargando...</span>
-          </ng-container>
-
-          <!-- Imagen cargada funcional o no -->
-          <ng-container>
-            <img *ngIf="imageSrc" [src]="imageSrc" alt="Imagen seleccionada" />
-          </ng-container>
+          </div>
+          <p class="text-file">Arrastra y suelta tus imágenes aquí</p>
+          <small class="text-muted subtext-file">o</small>
+          <button mat-stroked-button color="accent">Busca en tu equipo</button>
 
           <input type="file" id="user-image" accept="image/*" style="display: hidden;">
         </div>
+        </div>
+        
         <!-- Botones de reseteo y confirmación -->
         <div class="product-img-btn-box">
           <button mat-stroked-button color="warn" class="me-3">

@@ -140,7 +140,8 @@ export class ProductInformationComponent implements OnInit {
       (this.dataForm.controls['name'].value && !this.dataForm.controls['name']!.errors) &&
       (this.dataForm.controls['category'].value && !this.dataForm.controls['category']!.errors) &&
       (this.dataForm.controls['id_option_1'].value && !this.dataForm.controls['id_option_1']!.errors) &&
-      (this.dataForm.controls['id_option_2'].value && !this.dataForm.controls['id_option_2']!.errors)
+      (this.dataForm.controls['id_option_2'].value && !this.dataForm.controls['id_option_2']!.errors) && 
+      (this.getSku() !== this.dataForm.controls['sku'].value)
     ) {
       this.loading = true;
       this.sku = this.getSku();
