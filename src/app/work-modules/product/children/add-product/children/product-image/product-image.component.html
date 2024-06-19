@@ -5,22 +5,22 @@
       <mat-card-title>Imagen del Producto</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form>
+      <form [formGroup]="dataForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
         <!-- Caja donde colocar o buscar la imagen deseada -->
         <div class="box-file-upload">
           <div class="img-selected">
 
             <!-- label de cargando... -->
-            <h5 class="text-muted" *ngIf="!imageSrc">
+            <h5 class="text-muted" *ngIf="load_image">
               cargando...
             </h5>
             
             <!-- caja de imagen -->
-            <img *ngIf="imageSrc" [src]="imageSrc" alt="Imagen seleccionada" />
+            <img *ngIf="imageSrc && !load_image" [src]="imageSrc" alt="Imagen seleccionada" />
 
             <!-- Error de la imagen -->
-            <div class="error-box" *ngIf="false">
-                <h5>El formato de la imagen no es correcto</h5>
+            <div class="error-box" *ngIf="error_image">
+                <h5>{{ error_image }}</h5>
             </div>
           </div>
           <div class="img-dropzone"
@@ -29,20 +29,23 @@
             (drop)="onDrop($event)"
             [class.dragover]="isDragOver">
 
-          <!-- caja para arrojar la imagen o cargarla -->
-          <div class="d-flex justify-content-center">
-            <div class="avatar">
-              <span class="material-icons soft-grey-badge">
-                file_upload
-              </span>
+            <!-- caja para arrojar la imagen o cargarla -->
+            <div class="d-flex justify-content-center">
+              <div class="avatar">
+                <span class="material-icons soft-grey-badge">
+                  file_upload
+                </span>
+              </div>
             </div>
-          </div>
-          <p class="text-file">Arrastra y suelta tus imágenes aquí</p>
-          <small class="text-muted subtext-file">o</small>
-          <button mat-stroked-button color="accent">Busca en tu equipo</button>
+            <p class="text-file">Arrastra y suelta tus imágenes aquí</p>
+            <small class="text-muted subtext-file">o</small>
 
-          <input type="file" id="user-image" accept="image/*" style="display: hidden;">
-        </div>
+            <label for="user-image" class="btn btn-outline-success">
+              <p class="fs-08 mb-0">Carga desde tu pc</p>
+            </label>
+
+            <input type="file" id="user-image" accept="image/*" style="display: hidden;" (change)="capture_img($event)">
+          </div>
         </div>
         
         <!-- Botones de reseteo y confirmación -->
@@ -56,4 +59,7 @@
         </div>
       </form>
     </mat-card-content>
+    <mat-card-footer class="login-footer">
+      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
 </mat-card>

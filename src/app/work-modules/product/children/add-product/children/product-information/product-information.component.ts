@@ -49,7 +49,6 @@ export class ProductInformationComponent implements OnInit {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Edición de producto')
     this.setInitial()
-    this.createDataForm();
   }
   async getData(): Promise<any> {
     const data = await firstValueFrom(this._conector.getEmployee());

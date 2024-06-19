@@ -27,7 +27,7 @@ export interface Product {
 export const empty_product: Product = {
     id: 0,
     id_enterprise: 0,
-    image: 'no-image.png',
+    image: '',
     name: '',
     description: '',
     category: 0,

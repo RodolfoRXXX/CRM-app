@@ -1,5 +1,8 @@
 
 .card-product.addProduct.imgProduct {
+    mat-card-content {
+        padding-bottom: 15px;
+    }
     form {
         width: 100%;
         .box-file-upload {
@@ -34,6 +37,9 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    h5 {
+                        text-align: center;
+                    }
                 }
             }
             .img-dropzone {

@@ -65,7 +65,7 @@
 
         <!-- Box principal -->
         <div class="box-detail" *ngIf="!load">
-            <div class="box-image">
+            <div class="box-image" *ngIf="this.product.image">
                 <img [src]="(baseURL + this.product.image)" [alt]="this.product.image">
             </div>
             <div class="box-text">

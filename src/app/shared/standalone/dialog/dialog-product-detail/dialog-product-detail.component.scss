@@ -24,7 +24,7 @@
             display: flex;
             justify-content: space-between;
             .box-image {
-                width: 40%;
+                min-width: 288px;
                 height: 100%;
                 img {
                     width: 100%;
@@ -37,7 +37,7 @@
                 flex-direction: column;
                 justify-content: space-between;
                 padding: 0 0 0 25px;
-                width: 60%;
+                width: 100%;
                 .category_state {
                     display: flex;
                     justify-content: flex-start;
