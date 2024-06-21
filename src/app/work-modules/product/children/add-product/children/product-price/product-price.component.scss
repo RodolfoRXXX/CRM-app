@@ -1,5 +1,8 @@
 
 .card-product.addProduct.productPrice {
+    mat-card-content {
+        padding-bottom: 15px;
+    }
     .box-reprice {
         display: flex;
         justify-content: space-around;

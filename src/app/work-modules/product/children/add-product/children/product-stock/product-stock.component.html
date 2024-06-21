@@ -5,12 +5,16 @@
     <mat-card-title>Stock del producto</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form>
+    <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
       <!-- Nombre del proveedor -->
       <div>
         <mat-form-field appearance="outline" class="w-100 mb-0">
           <mat-label>Stock físico</mat-label>
-          <input matInput placeholder="Editá el stock" type="number">
+          <input matInput placeholder="Editá el stock" 
+                  type="number"
+                  formControlName="stock_real"
+                  required>
+          <mat-error *ngIf="dataForm.get('stock_real')?.hasError('required')" class="fs-09">{{ getErrorStock() }}</mat-error>
         </mat-form-field>
       </div>
       <!-- Caja de información del proveedor seleccionado -->
@@ -20,7 +24,7 @@
         <div class="d-flex flex-column b-all p-2" style="border-radius: 4px;">
           <p class="text-muted fs-09 mb-1">Stock físico</p>
           <div class="d-flex justify-content-center">
-            <h3 class="mb-0 fw-500">10</h3>
+            <h3 class="mb-0 fw-500">{{ this.dataForm.get('stock_real')?.value || 0 }}</h3>
           </div>
         </div>
 
@@ -28,20 +32,23 @@
         <div class="d-flex flex-column b-all p-2" style="border-radius: 4px;">
           <p class="text-muted fs-09 mb-1">Stock disponible</p>
           <div class="d-flex justify-content-center">
-            <h3 class="mb-0">5</h3>
+            <h3 class="mb-0">{{ this.dataForm.get('stock_available')?.value || 0 }}</h3>
           </div>
         </div>
 
       </div>
       <!-- Botones de reseteo y confirmación -->
       <div class="product-info-btn-box">
-        <button mat-stroked-button color="warn" class="me-3">
+        <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
           Reset
         </button>
-        <button mat-stroked-button color="primary">
+        <button mat-stroked-button color="primary" type="submit" [disabled]="dataForm.invalid || loading || dataForm.untouched || dataForm.pristine">
           Guardar
         </button>
       </div>
     </form>
   </mat-card-content>
+  <mat-card-footer class="login-footer">
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  </mat-card-footer>
 </mat-card>

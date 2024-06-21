@@ -19,7 +19,7 @@ import { Product } from 'src/app/shared/interfaces/product.interface';
 })
 export class ProductInformationComponent implements OnInit {
 
-  @Input() product!: Product;; 
+  @Input() product!: Product;
 
   id_enterprise!: number;
   sku!: string;
@@ -46,8 +46,6 @@ export class ProductInformationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Edición de producto')
     this.setInitial()
   }
   async getData(): Promise<any> {
@@ -173,24 +171,24 @@ export class ProductInformationComponent implements OnInit {
     this.dataForm = new FormGroup({
         id: new FormControl(''),
         id_enterprise: new FormControl(''),
-        name : new FormControl('', [
+        name: new FormControl('', [
           Validators.required,
           Validators.minLength(4),
           Validators.maxLength(100)
         ]),
-        category : new FormControl('', [
+        category: new FormControl('', [
           Validators.required,
         ]),
-        id_option_1 : new FormControl('', [
+        id_option_1: new FormControl('', [
           Validators.required,
         ]),
-        id_option_2 : new FormControl('', [
+        id_option_2: new FormControl('', [
           Validators.required,
         ]),
-        sku : new FormControl('', [
+        sku: new FormControl('', [
           Validators.required,
         ]),
-        description : new FormControl('', [
+        description: new FormControl('', [
           Validators.required,
           Validators.minLength(4),
           Validators.maxLength(250)

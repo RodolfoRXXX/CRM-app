@@ -1,6 +1,8 @@
 
 .card-product.addProduct.productLocation {
-    
+    mat-card-content {
+        padding-bottom: 15px;
+    }
     .product-info-btn-box {
         display: flex;
         justify-content: flex-end;

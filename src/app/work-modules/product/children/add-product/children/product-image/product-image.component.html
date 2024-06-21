@@ -50,10 +50,10 @@
         
         <!-- Botones de reseteo y confirmación -->
         <div class="product-img-btn-box">
-          <button mat-stroked-button color="warn" class="me-3">
+          <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
             Reset
           </button>
-          <button mat-stroked-button color="primary">
+          <button mat-stroked-button color="primary" [disabled]="(this.dataForm.status == 'INVALID') || loading || this.dataForm.untouched || this.dataForm.pristine">
             Guardar
           </button>
         </div>

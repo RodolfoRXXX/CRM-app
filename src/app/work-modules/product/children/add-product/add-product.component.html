@@ -19,14 +19,14 @@
                 <!-- Primera columna -->
                 <div class="col-12 col-lg-8">
                     <app-product-information [product]="product"></app-product-information>
-                    <app-product-image [product]="product"></app-product-image>
-                    <app-product-provider-data></app-product-provider-data>
+                    <app-product-image [product]="product" *ngIf="product.id > 0"></app-product-image>
+                    <app-product-provider-data [product]="product" *ngIf="product.id > 0"></app-product-provider-data>
                 </div>
                 <!-- Segunda columna -->
                 <div class="col-12 col-lg-4">
-                    <app-product-stock></app-product-stock>
-                    <app-product-price></app-product-price>
-                    <app-product-storage></app-product-storage>
+                    <app-product-stock [product]="product" *ngIf="product.id > 0"></app-product-stock>
+                    <app-product-price [product]="product" *ngIf="product.id > 0"></app-product-price>
+                    <app-product-storage [product]="product" *ngIf="product.id > 0"></app-product-storage>
                 </div>
             </div>
         </div>

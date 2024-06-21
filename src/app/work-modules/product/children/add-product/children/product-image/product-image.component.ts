@@ -1,6 +1,9 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 import { ImageService } from 'src/app/services/image.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { Product } from 'src/app/shared/interfaces/product.interface';
 import { environment } from 'src/enviroments/enviroment';
 
@@ -23,6 +26,9 @@ export class ProductImageComponent implements OnInit {
 
   constructor(
     private _image: ImageService,
+    private _api: ApiService,
+    private _notify: NotificationService,
+    private _router: Router
   ) {
     this.loading = false;
     this.createDataForm();
@@ -40,10 +46,13 @@ export class ProductImageComponent implements OnInit {
   // Formulario edición de imagen de producto
   createDataForm(): void {
     this.dataForm = new FormGroup({
-      id: new FormControl(''),
+      id: new FormControl('', [
+        Validators.required
+      ]),
       image: new FormControl('', [
         Validators.required,
-      ])
+      ]),
+      blanck: new FormControl(true)
     });
   }
 
@@ -51,7 +60,9 @@ export class ProductImageComponent implements OnInit {
   setDataForm(product: Product): void {
     if (product) {
       this.dataForm.patchValue({
-        id: product.id > 0 ? product.id : ''
+        id: product.id > 0 ? product.id : '',
+        image: '',
+        blanck: (product.image == 'no-image.png')
       });
   
       if (product.image) {
@@ -139,7 +150,6 @@ export class ProductImageComponent implements OnInit {
       reader.readAsDataURL(file);
     }, 2000);
   }
-
   capture_img(event: any) {
     this.load_image = true;
     this.imageSrc = '';
@@ -148,8 +158,50 @@ export class ProductImageComponent implements OnInit {
     this.readImageFile(file);
   }
 
+  //Elimina todo lo que el reset básico no limpia
+  resetAll() {
+    this.setDataForm(this.product)
+  }
+
+  //Navegar a la misma ruta para recargar el componente
+  rechargeComponent(id_product: number = 0) {
+    if(id_product > 0) {
+      this._router.navigate(['init/main/product/add-product'], { queryParams: { id_product: id_product } });
+    } else {
+      window.location.reload();
+    }
+  }
+
+  //Submit para guardar la imagen del producto
   onSubmit() {
-    console.log(this.dataForm.value)
+    if(this.dataForm.controls['id'].value > 0) {
+      this.loading = true;
+      this._api.postTypeRequest('profile/edit-product-image', this.dataForm.value).subscribe({
+        next: (res: any) => {
+          this.loading =  false;
+          console.log(res)
+          if(res.status == 1){
+            //Accedió a la base de datos y no hubo problemas
+            if(res.changedRows == 1){
+              //Modificó la imagen
+              this._notify.showSuccess('La imagen del producto se ha modificado con éxito!');
+              this.rechargeComponent();
+            } else{
+              //No hubo modificación
+              this._notify.showError('No se detectaron cambios. Ingresá una imagen diferente a la actual.')
+            }
+          } else{
+              //Problemas de conexión con la base de datos(res.status == 0)
+              this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+          }
+        },
+        error: (error) => {
+          //Error de conexión, no pudo consultar con la base de datos
+          this.loading =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+        }
+      })
+    }
   }
 
 }

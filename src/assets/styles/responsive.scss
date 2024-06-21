@@ -280,6 +280,12 @@
   display: none!important;
 }
 
+.card-product.addProduct.imgProduct {
+  .img-dropzone {
+    padding: 1.5rem!important;
+  }
+}
+
 }
 
 /*-- ============================================================== 
@@ -297,6 +303,12 @@
 
   .max-400-hidden {
     display: none!important;
+  }
+
+  .card-product.addProduct.imgProduct {
+    .img-dropzone {
+      padding: 0.75rem!important;
+    }
   }
 
  }
