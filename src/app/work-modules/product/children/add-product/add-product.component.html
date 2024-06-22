@@ -9,8 +9,11 @@
                     <p class="mb-0">Creá y editá tus productos aquí</p>
                 </div>
                 <div class="d-flex align-content-center flex-wrap gap-4">
-                    <button mat-flat-button color="primary">
+                    <button mat-flat-button color="primary" *ngIf="!activeState" (click)="changeState('activo')" [disabled]="loading || !product.id">
                         <span>Activar</span> Producto
+                    </button>
+                    <button mat-stroked-button color="warn" *ngIf="activeState" (click)="changeState('inactivo')" [disabled]="loading">
+                        <span>Desactivar</span> Producto
                     </button>
                 </div>
             </div>
@@ -20,12 +23,12 @@
                 <div class="col-12 col-lg-8">
                     <app-product-information [product]="product"></app-product-information>
                     <app-product-image [product]="product" *ngIf="product.id > 0"></app-product-image>
-                    <app-product-provider-data [product]="product" *ngIf="product.id > 0"></app-product-provider-data>
+                    <app-product-provider-data [product]="product" *ngIf="(product.id > 0) && this.permissions.includes(sens_info_admin)"></app-product-provider-data>
                 </div>
                 <!-- Segunda columna -->
                 <div class="col-12 col-lg-4">
                     <app-product-stock [product]="product" *ngIf="product.id > 0"></app-product-stock>
-                    <app-product-price [product]="product" *ngIf="product.id > 0"></app-product-price>
+                    <app-product-price [product]="product" [permissions]="permissions" *ngIf="product.id > 0"></app-product-price>
                     <app-product-storage [product]="product" *ngIf="product.id > 0"></app-product-storage>
                 </div>
             </div>

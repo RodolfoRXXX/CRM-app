@@ -152,7 +152,9 @@ export class ProductInformationComponent implements OnInit {
           this.dataForm.patchValue({
             sku: this.sku
           })
+          this.dataForm.controls['sku'].markAsDirty
         }
+        console.log(this.dataForm.value)
         this.loading = false;
       })
     }

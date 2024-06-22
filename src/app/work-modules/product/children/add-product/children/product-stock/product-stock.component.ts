@@ -88,7 +88,6 @@ export class ProductStockComponent implements OnInit {
   }
   
   onSubmit() {
-    console.log(this.dataForm.value)
     if(this.dataForm.controls['id'].value > 0) {
       this.loading = true;
       this.dataForm.patchValue({is_stock: (this.dataForm.controls['stock_real'].value > 0)?'con stock':'sin stock'})

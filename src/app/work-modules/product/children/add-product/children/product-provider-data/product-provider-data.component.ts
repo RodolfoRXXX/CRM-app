@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { Employee, empty_employee } from 'src/app/shared/interfaces/employee.interface';
 import { Product } from 'src/app/shared/interfaces/product.interface';
 import { Provider } from 'src/app/shared/interfaces/provider.interface';
 

@@ -16,9 +16,11 @@ import { Product } from 'src/app/shared/interfaces/product.interface';
 export class ProductPriceComponent implements OnInit {
 
   @Input() product!: Product;
+  @Input() permissions: string[] = [];
 
   dataForm!: FormGroup;
   employee!: Employee;
+  sens_info_admin = '5';
   loading: boolean = false;
 
   constructor(

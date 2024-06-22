@@ -14,7 +14,7 @@
       </div>
       
       <!-- Caja de modificación del precio en base a precio de compra -->
-      <div class="box-reprice">
+      <div class="box-reprice" *ngIf="this.permissions.includes(sens_info_admin)">
 
         <!-- Caja precio de compra -->
         <div class="d-flex flex-column b-all p-2 me-3" style="border-radius: 4px;">
@@ -37,7 +37,7 @@
 
       </div>
       <!-- Botones de reseteo y confirmación -->
-      <div class="product-info-btn-box">
+      <div class="product-info-btn-box" *ngIf="this.permissions.includes(sens_info_admin)">
         <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
           Reset
         </button>
