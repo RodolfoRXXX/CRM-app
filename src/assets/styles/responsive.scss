@@ -286,6 +286,16 @@
   }
 }
 
+.mat-card.dialog-detail {
+  .mat-card-content {
+      .box-detail {
+          .box-text {
+              min-width: 310px!important;
+          }
+        }
+      }
+}
+
 }
 
 /*-- ============================================================== 

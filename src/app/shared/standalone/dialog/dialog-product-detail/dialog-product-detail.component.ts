@@ -23,8 +23,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 export class DialogProductDetailComponent implements OnInit {
 
   product!: Product;
-  options1!: OptionProduct[];
-  options2!: OptionProduct[];
+  variants: any[] = [];
   data_product: any;
   baseURL = environment.SERVER;
   load: boolean = true;
@@ -72,15 +71,18 @@ export class DialogProductDetailComponent implements OnInit {
       this.load = false;
     })
 
-    //Obtener el conjunto de los valores de option_1 para ese producto seleccionado
-    this._api.postTypeRequest('profile/get-product-detail-option1', { name : name, id_enterprise: id_enterprise}).subscribe( (value: any) => {
-      this.options1 = value.data;
+    //Obtener las variantes del producto
+    this._api.postTypeRequest('profile/get-product-variants', { id_enterprise: id_enterprise, name: name }).subscribe( (value: any) => {
+      if (value.data) {
+        //Si existen las variantes las carga
+        this.variants = value.data
+      }
     })
+  }
 
-    //Obtener el conjunto de los valores de option_2 para ese producto seleccionado
-    this._api.postTypeRequest('profile/get-product-detail-option2', { name : name, id_enterprise: id_enterprise}).subscribe( (value: any) => {
-      this.options2 = value.data;
-    })
+  //Toma el item de la variante seleccionada desde el select
+  changeVariant(event: Product) {
+    this.rechargeProduct(event.id_enterprise, event.name, event.id_option_1, event.id_option_2)
   }
 
   rechargeProduct(id_enterprise: number, name: string, id_option_1: number, id_option_2: number) {
