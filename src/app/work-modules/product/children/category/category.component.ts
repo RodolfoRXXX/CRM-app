@@ -60,12 +60,17 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }),
         map(data => {
           this.load = false;
+          
           return data;
         })
       )
       .subscribe((data: any) => {
         if (data) {
+          data.data.forEach((item: any) => {
+            item.color_badge = JSON.parse(item.color_badge)
+          });
           this.dataSource.data = data.data;
+          console.log(this.dataSource.data)
         }
       });
   }
@@ -75,7 +80,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   }
 
   editCategory(id_category: number) {
-    console.log(id_category)
     this._router.navigate(['init/main/product/add-category'], { queryParams: { id_category: id_category } });
   }
 }

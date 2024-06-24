@@ -52,8 +52,7 @@ export class AddCategoryComponent implements OnInit {
       if(value.data) {
         //Se encontró el producto y lo paso al componente hijo
         this.category = value.data[0];
-        //this.setDataForm(this.category);
-        console.log(this.category)
+        this.setDataForm(this.category);
       }
     })
   }
@@ -85,7 +84,8 @@ export class AddCategoryComponent implements OnInit {
       id: (category.id > 0)?category.id:'',
       id_enterprise: (category.id_enterprise > 0)?category.id_enterprise:'',
       name: (category.name != '')?category.name:'',
-      color_badge: (category.color_badge != '')?category.color_badge:''
+      color_badge: (category.color_badge != '')?category.color_badge:'',
+      color: (category.color_badge != '')?JSON.parse(category.color_badge).color:''
     })
   }
 
@@ -112,18 +112,15 @@ export class AddCategoryComponent implements OnInit {
   hexToRgba(hex: string, alpha: number = 0.2): string {
     // Eliminar el '#' inicial si está presente
     hex = hex.replace(/^#/, '');
-  
     // Convertir valores cortos (e.g., #03F) a completos (e.g., #0033FF)
     if (hex.length === 3) {
       hex = hex.split('').map(char => char + char).join('');
     }
-  
     // Extraer los valores RGB
     const bigint = parseInt(hex, 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
     const b = bigint & 255;
-  
     // Devolver el valor rgba
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
@@ -135,18 +132,18 @@ export class AddCategoryComponent implements OnInit {
       bgColor: this.hexToRgba(this.dataForm.controls['color'].value)
     }
     this.dataForm.patchValue({color_badge: JSON.stringify(this.color_badge)})
-    console.log(this.dataForm.value)
 
     if(this.dataForm.controls['id'].value > 0) {
       //Modifica el producto
       this._api.postTypeRequest('profile/edit-category', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
+          console.log(res)
           if(res.status == 1){
             //Accedió a la base de datos y no hubo problemas
             if(res.data.changedRows == 1){
               //Modificó datos empresa
-              this._notify.showSuccess('Nuevo producto creado con éxito!');
+              this._notify.showSuccess('La categoría se modificó con éxito!');
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
@@ -161,7 +158,7 @@ export class AddCategoryComponent implements OnInit {
           this.loading =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
-      })
+      })      
     } else {
       //Crea una categoría nueva  DEBE VERIFICAR QUE LA CATEGORIA A AGREGAR NO EXISTA!!!
       this._api.postTypeRequest('profile/create-category', this.dataForm.value).subscribe({
@@ -192,12 +189,11 @@ export class AddCategoryComponent implements OnInit {
   }
 
   //PENDIENTES
-  /* 1 - CREAR EL SUBMIT PARA EDITAR CATEGORIA
-     2 - RECIBIR LA CATEGORIA Y COLOCAR SUS VALORES EN EL FORMULARIO
+  /* 
      3 - VERIFICAR QUE LA CATEGORIA NO EXISTA ANTES DE CREAR UNA NUEVA
      4 - MODIFICAR TODOS LOS COMPONENTES QUE RECIBAN DE LA TABLA DE CATEGORIAS PARA QUE PUEDAN MOSTRAR SUS VALORES ADECUADAMENTE
      PORQUE ANTES DEVOLVIA UN STRING DE CLASE Y AHORA DEVUELVE UN OBJETO JSON CON EL COLOR DEL TEXTO Y EL COLOR DEL BACKGROUND
      5 - VERIFICAR QUE EN ALGUNOS COMPONENTES SE DUPLICA EL ACCESO A LA INFORMACION DEL EMPLOYEE
-     */
+  */
 
 }
