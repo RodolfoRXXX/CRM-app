@@ -70,7 +70,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             item.color_badge = JSON.parse(item.color_badge)
           });
           this.dataSource.data = data.data;
-          console.log(this.dataSource.data)
         }
       });
   }

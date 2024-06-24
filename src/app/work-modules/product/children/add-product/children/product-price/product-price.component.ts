@@ -1,11 +1,9 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Product } from 'src/app/shared/interfaces/product.interface';
 
 @Component({
@@ -13,13 +11,12 @@ import { Product } from 'src/app/shared/interfaces/product.interface';
   templateUrl: './product-price.component.html',
   styleUrls: ['./product-price.component.scss']
 })
-export class ProductPriceComponent implements OnInit {
+export class ProductPriceComponent {
 
   @Input() product!: Product;
   @Input() permissions: string[] = [];
 
   dataForm!: FormGroup;
-  employee!: Employee;
   sens_info_admin = '5';
   loading: boolean = false;
 
@@ -31,23 +28,6 @@ export class ProductPriceComponent implements OnInit {
     private _router: Router
   ) {
     this.createDataForm();
-  }
-
-  ngOnInit(): void {
-    this.setInitial();
-  }
-
-  async getData(): Promise<Employee> {
-    return await firstValueFrom(this._conector.getEmployee());
-  }
-
-  async setInitial(): Promise<void> {
-    try {
-      const employee = await this.getData();
-      this.employee = employee;
-    } catch (error) {
-      console.error('Error executing functions', error);
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -77,7 +57,6 @@ export class ProductPriceComponent implements OnInit {
     this.dataForm.patchValue({
       sale_price: (this.dataForm.get('purchase_price')?.value)*(parseFloat(inputElement.valueOf()))
     })
-    console.log(this.dataForm.value)
   }
 
   resetAll(): void {
@@ -90,7 +69,6 @@ export class ProductPriceComponent implements OnInit {
   }
   
   onSubmit() {
-    console.log(this.dataForm.value)
     if(this.dataForm.controls['id'].value > 0) {
       this.loading = true;
       this._api.postTypeRequest('profile/edit-product-price', this.dataForm.value).subscribe({

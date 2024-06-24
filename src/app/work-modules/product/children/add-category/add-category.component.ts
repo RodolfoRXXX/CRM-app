@@ -60,9 +60,7 @@ export class AddCategoryComponent implements OnInit {
   //Formulario creación/edición de la categoría
   createDataForm(): void {
     this.dataForm = new FormGroup({
-        id: new FormControl('', [
-          Validators.required
-        ]),
+        id: new FormControl(''),
         id_enterprise: new FormControl('', [
           Validators.required
         ]),
@@ -71,10 +69,10 @@ export class AddCategoryComponent implements OnInit {
           Validators.minLength(4),
           Validators.maxLength(20)
         ]),
-        color_badge: new FormControl('', [
+        color_badge: new FormControl(''),
+        color: new FormControl('', [
           Validators.required,
-        ]),
-        color: new FormControl('')
+        ])
     });
   }
 
@@ -105,7 +103,13 @@ export class AddCategoryComponent implements OnInit {
 
   //Elimina todo lo que el reset básico no limpia
   resetAll() {
-    this.setDataForm(this.category)
+    if(this.category) {
+      this.setDataForm(this.category)
+    } else {
+      this.dataForm.reset()
+      this.dataForm.patchValue({id_enterprise: this.id_enterprise})
+    }
+    
   }
 
   //Función que pasa un color de hexadecimal a RGBA
@@ -132,18 +136,19 @@ export class AddCategoryComponent implements OnInit {
       bgColor: this.hexToRgba(this.dataForm.controls['color'].value)
     }
     this.dataForm.patchValue({color_badge: JSON.stringify(this.color_badge)})
-
     if(this.dataForm.controls['id'].value > 0) {
       //Modifica el producto
       this._api.postTypeRequest('profile/edit-category', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
-          console.log(res)
           if(res.status == 1){
             //Accedió a la base de datos y no hubo problemas
             if(res.data.changedRows == 1){
               //Modificó datos empresa
               this._notify.showSuccess('La categoría se modificó con éxito!');
+              setTimeout(() => {
+                this._router.navigate(['init/main/product/category']);
+              }, 2000);
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
@@ -164,15 +169,17 @@ export class AddCategoryComponent implements OnInit {
       this._api.postTypeRequest('profile/create-category', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
-          console.log(res)
           if(res.status == 1){
             //Accedió a la base de datos y no hubo problemas
             if(res.data.affectedRows == 1){
               //Modificó datos empresa
               this._notify.showSuccess('Nueva categoría creada con éxito!');
+              setTimeout(() => {
+                this._router.navigate(['init/main/product/category']);
+              }, 2000);
             } else{
-              //No hubo modificación
-              this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
+              //Ya existe dicha categoría
+              this._notify.showWarn('La categoría que intentas crear ya existe.')
             }
           } else{
             //Problemas de conexión con la base de datos(res.status == 0)
@@ -187,13 +194,5 @@ export class AddCategoryComponent implements OnInit {
       })
     }
   }
-
-  //PENDIENTES
-  /* 
-     3 - VERIFICAR QUE LA CATEGORIA NO EXISTA ANTES DE CREAR UNA NUEVA
-     4 - MODIFICAR TODOS LOS COMPONENTES QUE RECIBAN DE LA TABLA DE CATEGORIAS PARA QUE PUEDAN MOSTRAR SUS VALORES ADECUADAMENTE
-     PORQUE ANTES DEVOLVIA UN STRING DE CLASE Y AHORA DEVUELVE UN OBJETO JSON CON EL COLOR DEL TEXTO Y EL COLOR DEL BACKGROUND
-     5 - VERIFICAR QUE EN ALGUNOS COMPONENTES SE DUPLICA EL ACCESO A LA INFORMACION DEL EMPLOYEE
-  */
 
 }

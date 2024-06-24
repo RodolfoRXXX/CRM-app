@@ -179,7 +179,6 @@ export class ProductImageComponent implements OnInit {
       this._api.postTypeRequest('profile/edit-product-image', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
-          console.log(res)
           if(res.status == 1){
             //Accedió a la base de datos y no hubo problemas
             if(res.changedRows == 1){

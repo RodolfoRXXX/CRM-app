@@ -5,7 +5,6 @@ import { ApiService } from 'src/app/services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { empty_product, Product } from 'src/app/shared/interfaces/product.interface';
 import { environment } from 'src/enviroments/enviroment';
-import { OptionProduct } from 'src/app/shared/interfaces/optionProduct.interface';
 import { Router } from '@angular/router';
 import { ConectorsService } from 'src/app/services/conectors.service';
 

@@ -208,7 +208,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1280-hidden"> CATEGORIA </th>
                                 <td mat-cell *matCellDef="let element" class="text-center max-1280-hidden">
                                     <!-- código que muestra el nombre de la categoría del producto -->
-                                    <span class="badge rounded-pill cap" [ngClass]="element.category_color || 'blanck-badge'">
+                                    <span class="badge rounded-pill cap" [style.color]="element.category_color.color" [style.background-color]="element.category_color.bgColor">
                                         {{ element.category_item }}
                                     </span>
                                 </td>

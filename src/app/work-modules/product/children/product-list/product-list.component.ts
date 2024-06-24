@@ -60,19 +60,15 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Lista de productos')
-
-    //VER SI ES NECESARIO YA QUE SE DUPLICA EL ACCESO
-    this._conector.getEmployee().subscribe( value => {
-      //la lista de permisos se almacena como un string y luego se lo separa en un array
-      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
-      //que es el valor vacío, por eso la desigualdad es mayor a 1
-      this.permissions = value.list_of_permissions.split(',')
-    })
   }
 
   getDataLocal(): number {
     this._conector.getEmployee().subscribe( (item:Employee) => {
       this.employee = item
+      //la lista de permisos se almacena como un string y luego se lo separa en un array
+      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
+      //que es el valor vacío, por eso la desigualdad es mayor a 1
+      this.permissions = item.list_of_permissions.split(',')
     })
     return this.employee.id_enterprise;
   }
@@ -180,7 +176,14 @@ export class ProductListComponent implements OnInit, AfterViewInit {
           return data;
         })
       )
-      .subscribe((data: any) => (this.dataSource.data = data.data));
+      .subscribe((data: any) => {
+        if (data) {
+          data.data.forEach((item: any) => {
+            item.category_color = JSON.parse(item.category_color)
+          });
+          this.dataSource.data = data.data;
+        }
+      });
       this.dataSource.sort = this.sort;
   }
 

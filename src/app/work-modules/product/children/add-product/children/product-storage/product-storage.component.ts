@@ -1,6 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
@@ -22,7 +21,6 @@ export class ProductStorageComponent {
 
   dataForm!: FormGroup;
   id_enterprise!: number;
-  employee!: Employee;
   storages: Storage[] = [];
   loading: boolean = false;
 
@@ -30,8 +28,7 @@ export class ProductStorageComponent {
     private fb: FormBuilder,
     private _conector: ConectorsService,
     private _api: ApiService,
-    private _notify: NotificationService,
-    private _router: Router
+    private _notify: NotificationService
   ) {
     this.createDataForm();
   }
@@ -48,7 +45,6 @@ export class ProductStorageComponent {
     try {
       const employee = await this.getData();
       this.id_enterprise = employee.id_enterprise;
-      this.employee = employee;
       await this.getStorages(employee.id_enterprise);
     } catch (error) {
       console.error('Error executing functions', error);

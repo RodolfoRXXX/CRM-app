@@ -1,12 +1,11 @@
 import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { Employee, empty_employee } from 'src/app/shared/interfaces/employee.interface';
+import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Product } from 'src/app/shared/interfaces/product.interface';
 import { Provider } from 'src/app/shared/interfaces/provider.interface';
 
@@ -24,7 +23,6 @@ export class ProductProviderDataComponent implements OnInit {
 
   dataForm!: FormGroup;
   id_enterprise!: number;
-  employee!: Employee;
   providers: Provider[] = [];
   filteredProviders!: Observable<Provider[]>;
   loading: boolean = false;
@@ -33,8 +31,7 @@ export class ProductProviderDataComponent implements OnInit {
     private fb: FormBuilder,
     private _conector: ConectorsService,
     private _api: ApiService,
-    private _notify: NotificationService,
-    private _router: Router
+    private _notify: NotificationService
   ) {
     this.createDataForm();
   }
@@ -51,7 +48,6 @@ export class ProductProviderDataComponent implements OnInit {
     try {
       const employee = await this.getData();
       this.id_enterprise = employee.id_enterprise;
-      this.employee = employee;
       await this.getProviders(employee.id_enterprise);
     } catch (error) {
       console.error('Error executing functions', error);

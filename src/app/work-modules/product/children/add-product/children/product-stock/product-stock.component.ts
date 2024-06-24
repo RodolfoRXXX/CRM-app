@@ -1,11 +1,7 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
-import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Product } from 'src/app/shared/interfaces/product.interface';
 
 @Component({
@@ -13,39 +9,19 @@ import { Product } from 'src/app/shared/interfaces/product.interface';
   templateUrl: './product-stock.component.html',
   styleUrls: ['./product-stock.component.scss']
 })
-export class ProductStockComponent implements OnInit {
+export class ProductStockComponent {
 
   @Input() product!: Product;
 
   dataForm!: FormGroup;
-  employee!: Employee;
   loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private _conector: ConectorsService,
     private _api: ApiService,
-    private _notify: NotificationService,
-    private _router: Router
+    private _notify: NotificationService
   ) {
     this.createDataForm();
-  }
-
-  ngOnInit(): void {
-    this.setInitial();
-  }
-
-  async getData(): Promise<Employee> {
-    return await firstValueFrom(this._conector.getEmployee());
-  }
-
-  async setInitial(): Promise<void> {
-    try {
-      const employee = await this.getData();
-      this.employee = employee;
-    } catch (error) {
-      console.error('Error executing functions', error);
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
