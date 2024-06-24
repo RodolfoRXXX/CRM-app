@@ -15,6 +15,8 @@ import { ProductProviderDataComponent } from './children/add-product/children/pr
 import { ProductStockComponent } from './children/add-product/children/product-stock/product-stock.component';
 import { ProductPriceComponent } from './children/add-product/children/product-price/product-price.component';
 import { ProductStorageComponent } from './children/add-product/children/product-storage/product-storage.component';
+import { CategoryComponent } from './children/category/category.component';
+import { AddCategoryComponent } from './children/add-category/add-category.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { ProductStorageComponent } from './children/add-product/children/product
     ProductProviderDataComponent,
     ProductStockComponent,
     ProductPriceComponent,
-    ProductStorageComponent
+    ProductStorageComponent,
+    CategoryComponent,
+    AddCategoryComponent
   ],
   imports: [
     CommonModule,

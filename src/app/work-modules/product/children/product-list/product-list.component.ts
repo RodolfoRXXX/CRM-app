@@ -18,8 +18,6 @@ import { environment } from 'src/enviroments/enviroment';
 })
 export class ProductListComponent implements OnInit, AfterViewInit {
 
-  title!: string;
-  sector!: string;
   employee!: Employee;
   categories!: Category[];
   displayedColumns: string[] = ['detail', 'product', 'category', 'stock_real', 'state_stock', 'sale_price', 'sku', 'state'];
@@ -62,6 +60,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Lista de productos')
+
+    //VER SI ES NECESARIO YA QUE SE DUPLICA EL ACCESO
     this._conector.getEmployee().subscribe( value => {
       //la lista de permisos se almacena como un string y luego se lo separa en un array
       //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,

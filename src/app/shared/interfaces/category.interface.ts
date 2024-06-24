@@ -1,6 +1,6 @@
 export interface Category {
     id: number;
-    id_enterprise: string;
+    id_enterprise: number;
     name: string;
     color_badge: string;    
 }

@@ -1,0 +1,43 @@
+<!--Componente que edita las categorías -->
+
+<mat-card class="card-product addCategory create-edit">
+    <mat-card-header>
+      <mat-card-title>Editá tus categorías</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form  [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+        <!-- Categoría, medida y color del producto -->
+        <div class="row">
+            <mat-form-field appearance="outline" class="col-12 col-sm-8">
+                <mat-label>Nombre de la categoría</mat-label>
+                <input matInput
+                        formControlName="name"
+                        placeholder="Ingresá una categoría"
+                        type="text"
+                        required>
+                <mat-error *ngIf="this.dataForm.controls['name']!.errors" class="fs-09">{{getErrorName()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-12 col-sm-4">
+                <mat-label>Color</mat-label>
+                <input matInput
+                            formControlName="color"
+                            type="color"
+                            required>
+                <mat-error *ngIf="this.dataForm.controls['color']!.errors" class="fs-09">{{getErrorColor()}}</mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Botones de reseteo y confirmación -->
+        <div class="product-info-btn-box">
+          <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
+            Reset
+          </button>
+          <button mat-stroked-button color="primary" type="submit">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-footer class="login-footer">
+      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>
