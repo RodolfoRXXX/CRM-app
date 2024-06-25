@@ -11,19 +11,22 @@ const MENUSETTINGS = [
 ];
 
 const MENUMANAGEMENT = [
-    { state: 'dashboard', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: '', name: 'Gestión de pedidos', type: '', icon: 'assignment', children: [
+    { state: 'dashboard', name: 'Tablero', type: '', icon: 'dashboard', children: [
+
+    ] },
+    { state: '', name: 'Gestión de pedidos', type: '', icon: 'receipt', children: [
         { state: 'operation', name: 'Lista de pedidos', type: '', icon: '' }
     ] },
-    { state: 'indicators-management', name: 'Facturación', type: '', icon: 'assessment', children: [
-        { state: 'indicator1', name: 'Indicador 1', type: '', icon: '' },
-        { state: 'indicator2', name: 'Indicador 2', type: '', icon: '' },
-        { state: 'indicator3', name: 'Indicador 3', type: '', icon: '' }
-    ] },
-    { state: '', name: 'Productos', type: '', icon: 'storage', children: [
+    { state: '', name: 'Productos', type: '', icon: 'assignment', children: [
         { state: 'product/product-list', name: 'Lista de productos', type: '', icon: '' },
         { state: 'product/add-product', name: 'Edición de producto', type: '', icon: '' },
         { state: 'product/category', name: 'Categorías', type: '', icon: '' }
+    ] },
+    { state: '', name: 'Proveedores', type: '5', icon: 'group', children: [
+        { state: 'provider/provider-list', name: 'Lista de proveedores', type: '', icon: '' }
+    ] },
+    { state: '', name: 'Depósito', type: '', icon: 'storage', children: [
+        { state: 'storage/storage-list', name: 'Lista de depósitos', type: '', icon: '' }
     ] }
 ];
 

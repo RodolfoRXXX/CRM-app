@@ -17,12 +17,16 @@ const routes: Routes = [
           component: DashboardComponent
         },
         {
-          path: 'operation',
-          loadChildren: () => import('../../../../work-modules/operation/operation.module').then(m => m.OperationModule)
-        },
-        {
           path: 'product',
           loadChildren: () => import('../../../../work-modules/product/product.module').then(m => m.ProductModule)
+        },
+        {
+          path: 'provider',
+          loadChildren: () => import('../../../../work-modules/provider/provider.module').then(m => m.ProviderModule)
+        },
+        {
+          path: 'storage',
+          loadChildren: () => import('../../../../work-modules/storage/storage.module').then(m => m.StorageModule)
         },
         { 
           path: '**',

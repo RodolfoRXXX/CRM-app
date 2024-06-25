@@ -87,7 +87,7 @@
                 Gestión
             </p>
             <ng-container *ngFor="let menu of menuItems.getMenuManagement(); index as item">
-                <mat-list-item class="submenu" [routerLinkActive]="(menu.children.length == 0)?'selected':''">
+                <mat-list-item class="submenu" *ngIf="((permissions.includes(menu.type))||(is_employee && menu.type == 'employee')||(menu.type == ''))?true:false" [routerLinkActive]="(menu.children.length == 0)?'selected':''">
                     <div *ngIf="menu.children.length">
                         <mat-accordion>
                             <mat-expansion-panel (closed)="(this.isActive == item)?this.isOpen = 0:''" (opened)="this.isOpen = item; this.isActive = item" [expanded]="isOpen == item">
