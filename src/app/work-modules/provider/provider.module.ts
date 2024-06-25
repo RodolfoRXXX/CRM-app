@@ -7,12 +7,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { ProviderListComponent } from './children/provider-list/provider-list.component';
+import { ProviderDetailComponent } from './children/provider-detail/provider-detail.component';
+import { ProviderEditComponent } from './children/provider-edit/provider-edit.component';
 
 
 @NgModule({
   declarations: [
     ProviderComponent,
-    ProviderListComponent
+    ProviderListComponent,
+    ProviderDetailComponent,
+    ProviderEditComponent
   ],
   imports: [
     CommonModule,
