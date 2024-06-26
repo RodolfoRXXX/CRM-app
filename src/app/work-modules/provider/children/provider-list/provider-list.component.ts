@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { combineLatest, of as observableOf } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
@@ -17,12 +18,12 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
 
   employee!: Employee;
   resultsLength!: number;
-  displayedColumns: string[] = ['detail', 'provider', 'address', 'phone', 'country', 'edit'];
+  displayedColumns: string[] = ['detail', 'provider', 'phone', 'whatsapp', 'email', 'address', 'country', 'edit'];
   dataSource = new MatTableDataSource<any>();
   load = true;
   recharge = false;
   chips: any = { search: '' };
-  card_values: any = { products_with_stock: null, value_stock: null, products_without_stock: null, immo_stock: null };
+  card_values: any = { new_providers: null, debt: null, pending: null, returns: null };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -30,7 +31,8 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
   constructor(
     private _api: ApiService,
     private _conector: ConectorsService,
-    private _paginator: MatPaginatorIntl
+    private _paginator: MatPaginatorIntl,
+    private _router: Router
   ) {
     this._paginator.itemsPerPageLabel = "Registros por página";
     this._paginator.firstPageLabel = "Primera página";
@@ -85,11 +87,11 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
     const month = fecha.getMonth() + 1;
     const day = fecha.getDate();
     const formattedDate = `${year}-${(month < 10 ? '0' : '') + month}-${(day < 10 ? '0' : '') + day}`;
-    this._api.postTypeRequest('profile/get-products-data', { id_enterprise: id_enterprise, date_limit: formattedDate }).subscribe((value: any) => {
-      this.card_values.products_with_stock = value.data[0]?.data || 0;
-      this.card_values.value_stock = value.data[1]?.data || 0;
-      this.card_values.products_without_stock = value.data[2]?.data || 0;
-      this.card_values.immo_stock = value.data[3]?.data || 0;
+    this._api.postTypeRequest('profile/get-provider-data', { id_enterprise: id_enterprise, date_limit: formattedDate }).subscribe((value: any) => {
+      this.card_values.new_providers = value.data[0]?.data || 0;
+      this.card_values.debt = value.data[1]?.data || 0;
+      this.card_values.pending = value.data[2]?.data || 0;
+      this.card_values.returns = value.data[3]?.data || 0;
     });
   }
 
@@ -115,10 +117,16 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
 
   detailProvider(id_provider: Number) {
     console.log(id_provider)
+    this._router.navigate(['init/main/provider/provider-detail'], { queryParams: { id_provider: id_provider } });
   }
 
   editProvider(id_provider: number) {
-    console.log(id_provider)
+    this._router.navigate(['init/main/provider/provider-edit'], { queryParams: { id_provider: id_provider } });
+  }
+
+  sendWhatsapp(whatsapp: String) {
+    let whatsappUrl = `https://wa.me/${whatsapp}`;
+    window.open(whatsappUrl, '_blank');
   }
 
 }

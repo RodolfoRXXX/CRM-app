@@ -1,8 +1,11 @@
 export interface Provider {
     id: number;
-    id_enterprise: string;
+    id_enterprise: number;
     name: string;
     phone: string;
+    whatsapp: string,
+    email: string,
     address: string;
-    country: string    
+    country: string;
+    created: string    
 }

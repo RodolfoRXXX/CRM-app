@@ -23,7 +23,8 @@ const MENUMANAGEMENT = [
         { state: 'product/category', name: 'Categorías', type: '', icon: '' }
     ] },
     { state: '', name: 'Proveedores', type: '5', icon: 'group', children: [
-        { state: 'provider/provider-list', name: 'Lista de proveedores', type: '', icon: '' }
+        { state: 'provider/provider-list', name: 'Lista de proveedores', type: '', icon: '' },
+        { state: 'provider/provider-edit', name: 'Edición de proveedor', type: '', icon: '' }
     ] },
     { state: '', name: 'Depósito', type: '', icon: 'storage', children: [
         { state: 'storage/storage-list', name: 'Lista de depósitos', type: '', icon: '' }
