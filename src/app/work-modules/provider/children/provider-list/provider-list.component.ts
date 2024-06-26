@@ -75,8 +75,6 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
       if (providersResponse) {
         this.dataSource.data = providersResponse.data;
       }
-      console.log(this.resultsLength)
-      console.log(this.dataSource.data)
     });
   }
 
@@ -99,7 +97,6 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
     const filters = Object.values(this.chips).filter(value => value !== '');
     this.dataSource.filter = filters.join(' ').trim().toLowerCase();
   }
-
   add(value: Event | string, key: string) {
     const chipStr = (typeof value === 'string') ? value : (value.target as HTMLInputElement).value;
     if (chipStr.trim().length > 0) {
@@ -107,7 +104,6 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
       this.applyFilter();
     }
   }
-
   delete(key: any) {
     this.chips[key] = '';
     this.applyFilter();

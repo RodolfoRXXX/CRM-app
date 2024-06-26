@@ -7,188 +7,123 @@
         <!-- Content wrapper -->
         <div class="content-wrapper">
             <!-- Content -->
-            <div class="container-xxl flex-grow-1 container-p-y">    
-
-                <!-- Product List Widget -->
-                <mat-card class="card mb-6">
-                    <mat-card-content class="mat-card-content">
-                        <div>
-                            <div class="row gy-4 gy-sm-1">
-                                <!-- product with stock -->
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
-                                        <div>
-                                            <p class="soft-grey-color font-14 mb-1">Productos con stock</p>
-                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.products_with_stock >= 0">{{ this.card_values.products_with_stock }}</h4>
+            <div class="container-xxl flex-grow-1 container-p-y">
+                
+                <div class="row g-6 mb-3">
+                    <div class="col-sm-6 col-xl-3 mb-2">
+                        <div class="card" style="border-bottom: 3px solid rgb(228, 81, 81);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="me-1">
+                                        <p class="text-heading mb-1">Session</p>
+                                        <div class="d-flex align-items-center">
+                                            <h4 class="mb-1 me-2" *ngIf="this.card_values.products_with_stock >= 0">{{ this.card_values.products_with_stock }}</h4>
                                             <p class="fs-08 mb-1" *ngIf="!(this.card_values.products_with_stock >= 0)">Cargando...</p>
-                                            <p class="soft-grey-color font-12 mb-0">
-                                                Cantidad de productos con stock
-                                            </p>
+                                            <p class="text-success mb-1">(+29%)</p>
                                         </div>
-                                        <div class="avatar me-sm-6">
-                                            <span class="avatar-initial rounded text-heading">
-                                                <span class="material-symbols-outlined">
-                                                    inventory
-                                                </span>
-                                            </span>
-                                        </div>
+                                        <small class="mb-0">Total users</small>
                                     </div>
-                                    <hr class="d-none d-sm-block d-lg-none me-6">
-                                </div>
-                                <!-- Inventory value -->
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-4 pb-sm-0">
-                                        <div>
-                                            <p class="soft-grey-color font-14 mb-1">Valor de inventario</p>
-                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.value_stock != 0">${{ this.card_values.value_stock }}</h4>
-                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.value_stock != 0)">Cargando...</p>
-                                            <p class="soft-grey-color font-12 mb-0">
-                                                Valor total del inventario con stock
-                                            </p>
-                                        </div>
-                                        <div class="avatar me-lg-6">
-                                            <span class="avatar-initial rounded bg-label-secondary text-heading">
-                                                <mat-icon>attach_money</mat-icon>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <hr class="d-none d-sm-block d-lg-none">
-                                </div>
-                                <!-- Product without stock -->
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="d-flex justify-content-between align-items-start border-end pb-4 pb-sm-0 card-widget-3">
-                                        <div>
-                                            <p class="soft-grey-color font-14 mb-1">Productos sin stock</p>
-                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.products_without_stock >= 0">{{ this.card_values.products_without_stock }}</h4>
-                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.products_without_stock >= 0)">Cargando...</p>
-                                            <p class="soft-grey-color font-12 mb-0">
-                                                Ultimo movimiento menor a 60 días
-                                            </p>
-                                        </div>
-                                        <div class="avatar me-sm-6">
-                                            <span class="avatar-initial rounded bg-label-secondary text-heading">
-                                                <span class="material-symbols-outlined">
-                                                    assignment_late
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Quiet stock -->
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div>
-                                            <p class="soft-grey-color font-14 mb-1">Stock inmovilizado</p>
-                                            <h4 class="fw-500 mb-1" *ngIf="this.card_values.immo_stock != 0">${{ this.card_values.immo_stock }}</h4>
-                                            <p class="fs-08 mb-1" *ngIf="!(this.card_values.immo_stock != 0)">Cargando...</p>
-                                            <p class="soft-grey-color font-12 mb-0">
-                                                Ultimo movimiento mayor a 60 días
-                                            </p>
-                                        </div>
-                                        <div class="avatar">
-                                            <span class="avatar-initial rounded bg-label-secondary text-heading">
-                                                <span class="material-symbols-outlined">
-                                                    inventory_2
-                                                </span>
-                                            </span>
-                                        </div>
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded text-heading" style="background-color: rgb(228, 81, 81);">
+                                            <span class="material-symbols-outlined">inventory</span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </mat-card-content>
-                </mat-card>
-
-                <div class="">
-                    <mat-card class="card col">
-                        <mat-card-content class="mat-card-content">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
-                                    <div>
-                                        <p class="soft-grey-color font-14 mb-1">Productos con stock</p>
-                                        <h4 class="fw-500 mb-1" *ngIf="this.card_values.products_with_stock >= 0">{{ this.card_values.products_with_stock }}</h4>
-                                        <p class="fs-08 mb-1" *ngIf="!(this.card_values.products_with_stock >= 0)">Cargando...</p>
-                                        <p class="soft-grey-color font-12 mb-0">
-                                            Cantidad de productos con stock
-                                        </p>
+                    </div>
+                    <div class="col-sm-6 col-xl-3 mb-2">
+                        <div class="card" style="border-bottom: 3px solid rgb(108, 248, 108);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="me-1">
+                                        <p class="text-heading mb-1">Session</p>
+                                        <div class="d-flex align-items-center">
+                                            <h4 class="mb-1 me-2">21.459</h4>
+                                            <p class="text-success mb-1">(+29%)</p>
+                                        </div>
+                                        <small class="mb-0">Total users</small>
                                     </div>
-                                    <div class="avatar me-sm-6">
-                                        <span class="avatar-initial rounded text-heading">
-                                            <span class="material-symbols-outlined">
-                                                inventory
-                                            </span>
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded text-heading" style="background-color: rgb(108, 248, 108);">
+                                            <span class="material-symbols-outlined">inventory</span>
                                         </span>
                                     </div>
                                 </div>
-                                <hr class="d-none d-sm-block d-lg-none me-6">
                             </div>
-                        </mat-card-content>
-                    </mat-card>
-                    <mat-card class="card col">
-                        <mat-card-content class="mat-card-content">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
-                                    <div>
-                                        <p class="soft-grey-color font-14 mb-1">Productos con stock</p>
-                                        <h4 class="fw-500 mb-1" *ngIf="this.card_values.products_with_stock >= 0">{{ this.card_values.products_with_stock }}</h4>
-                                        <p class="fs-08 mb-1" *ngIf="!(this.card_values.products_with_stock >= 0)">Cargando...</p>
-                                        <p class="soft-grey-color font-12 mb-0">
-                                            Cantidad de productos con stock
-                                        </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3 mb-2">
+                        <div class="card" style="border-bottom: 3px solid rgb(86, 86, 235);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="me-1">
+                                        <p class="text-heading mb-1">Session</p>
+                                        <div class="d-flex align-items-center">
+                                            <h4 class="mb-1 me-2">21.459</h4>
+                                            <p class="text-success mb-1">(+29%)</p>
+                                        </div>
+                                        <small class="mb-0">Total users</small>
                                     </div>
-                                    <div class="avatar me-sm-6">
-                                        <span class="avatar-initial rounded text-heading">
-                                            <span class="material-symbols-outlined">
-                                                inventory
-                                            </span>
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded text-heading" style="background-color: rgb(86, 86, 235);">
+                                            <span class="material-symbols-outlined">inventory</span>
                                         </span>
                                     </div>
                                 </div>
-                                <hr class="d-none d-sm-block d-lg-none me-6">
                             </div>
-                        </mat-card-content>
-                    </mat-card>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3 mb-2">
+                        <div class="card" style="border-bottom: 3px solid rgb(231, 234, 33);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="me-1">
+                                        <p class="text-heading mb-1">Session</p>
+                                        <div class="d-flex align-items-center">
+                                            <h4 class="mb-1 me-2">21.459</h4>
+                                            <p class="text-success mb-1">(+29%)</p>
+                                        </div>
+                                        <small class="mb-0">Total users</small>
+                                    </div>
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded text-heading" style="background-color: rgb(231, 234, 33);">
+                                            <span class="material-symbols-outlined">inventory</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
     
                 <!-- Product List Table -->
                 <mat-card class="card mb-6">
                     <mat-card-content class="mat-card-content">
-                        <!-- Filters -->
-                        <mat-accordion>
-                            <mat-expansion-panel>
-                              <mat-expansion-panel-header>
-                                <mat-panel-title class="fw-500">
-                                  Filtro
-                                </mat-panel-title>
-                                <mat-panel-description style="overflow: auto;">
-                                    <mat-chip-set aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
-                                            <mat-chip *ngIf="item.value" style="background-color: rgb(174, 213, 129)!important; margin: 0 6px">
-                                                {{ item.value }}
-                                                <button matChipRemove (click)="delete(item.key)">
-                                                  <mat-icon>cancel</mat-icon>
-                                                </button>
-                                            </mat-chip>
-                                      </mat-chip-set>
-                                </mat-panel-description>
-                              </mat-expansion-panel-header>
-                            <div class="row">
-                                <mat-form-field>
-                                    <mat-label>Filtrar</mat-label>
-                                    <input [ngModel]="chips.search" matInput #search (change)="add($event, 'search')" placeholder="Buscar un producto" #input>
-                                </mat-form-field>
-                            </div>
-                            </mat-expansion-panel>
-                        </mat-accordion>
                         <!-- Loader -->
                         <div class="product-loader" *ngIf="load">
                             <p>Cargando...</p>
                         </div>
-                        <!-- Table of products -->
+                        <!-- Table of providers -->
                         <div class="box-list" *ngIf="!recharge && resultsLength">
-                            <div class="row justify-content-end">
-                                <div class="btn-addprovider col-md-4">
+                            <mat-form-field class="w-100">
+                                <mat-label>Filtrar</mat-label>
+                                <input [ngModel]="chips.search" matInput #search (change)="add($event, 'search')" placeholder="Buscar un producto" #input>
+                            </mat-form-field>
+                            <div class="row justify-content-between">
+                                <div class="col-6 d-flex align-items-center">
+                                    <mat-chip-set class="d-flex justify-content-start align-items-center ms-3" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
+                                        <mat-chip *ngIf="item.value" style="background-color: rgb(174, 213, 129)!important; margin: 0 6px">
+                                            {{ item.value }}
+                                            <button matChipRemove (click)="delete(item.key)">
+                                              <mat-icon>cancel</mat-icon>
+                                            </button>
+                                        </mat-chip>
+                                    </mat-chip-set>
+                                </div>
+                                <div class="btn-addprovider col-6">
                                     <a mat-flat-button color="primary" routerLink="../edit-provider">
-                                        + Agregar Proveedor
+                                        + <span class="max-500-hidden">Agregar</span> Proveedor
                                     </a>
                                 </div>
                             </div>
@@ -224,8 +159,8 @@
                             
                                 <!-- phone Column -->
                                 <ng-container matColumnDef="phone">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-400-hidden"> TELEFONO </th>
-                                <td mat-cell *matCellDef="let element" class="max-400-hidden">
+                                <th mat-header-cell *matHeaderCellDef class="max-768-hidden"> TELEFONO </th>
+                                <td mat-cell *matCellDef="let element" class="max-768-hidden">
                                     <!-- código que muestra el teléfono del proveedor -->
                                     {{ element.phone }}
                                 </td>
@@ -233,8 +168,8 @@
                 
                                 <!-- country column -->
                                 <ng-container matColumnDef="country">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PAIS </th>
-                                    <td mat-cell *matCellDef="let element">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-600-hidden"> PAIS </th>
+                                    <td mat-cell *matCellDef="let element" class="max-600-hidden">
                                         <!-- código que muestra el país del proveedor -->
                                         {{ element.country }}
                                     </td>
@@ -266,7 +201,7 @@
                             <!-- Botón para recargar los datos -->
                             <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
                         </div>
-                        <!-- No products -->
+                        <!-- No providers -->
                         <div class="provider-recharge" *ngIf="!resultsLength">
                             <!-- Botón para recargar los datos -->
                             <p>No hay proveedores</p>

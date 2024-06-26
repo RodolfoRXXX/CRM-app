@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/material/material/material.module';
 import { ProviderListComponent } from './children/provider-list/provider-list.component';
 import { ProviderDetailComponent } from './children/provider-detail/provider-detail.component';
 import { ProviderEditComponent } from './children/provider-edit/provider-edit.component';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ProviderEditComponent } from './children/provider-edit/provider-edit.co
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule
   ]
 })
 export class ProviderModule { }
