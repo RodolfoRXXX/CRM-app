@@ -1,4 +1,8 @@
 
+.detailProvider {
+    margin: 0 12px;
+}
+
 .avatar {
     position: relative;
     width: 2.5rem;
@@ -27,3 +31,30 @@
     }
 }
 
+.box-list {
+    padding: 20px;
+}
+
+.provider-loader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    p {
+        align-items: center;
+        margin: 30px 0;
+    }
+}
+
+.provider-recharge {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    padding: 20px 0 10px;
+    p {
+        align-items: center;
+        margin-bottom: 10px;
+    }
+}
