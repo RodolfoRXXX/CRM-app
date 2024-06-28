@@ -1,7 +1,7 @@
 
 <div class="detailProvider row">
     <!-- Caja que contiene imagen, indicadores básicos y detalles -->
-    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0" *ngIf="!load">
         <div class="card mb-6">
             <div class="card-body pt-12">
                 <!-- caja de la imagen -->
@@ -9,8 +9,8 @@
                     <div class="d-flex align-items-center flex-column">
                         <img src="../../../../../assets/images/users/obsolete/blanck_enterprise_obsolete.png" alt="Provider image" class="img-fluid rounded mb-4" width="120" height="120">
                         <div class="text-center mb-6">
-                            <h4 class="mb-0">A Todo Moda</h4>
-                            <span class="fs-09 text-muted">Proveedor ID #<span>35</span></span>
+                            <h4 class="mb-0">{{ provider.name || 'Sin información' }}</h4>
+                            <span class="fs-09 text-muted">Proveedor ID #<span>{{ provider.id || '' }}</span></span>
                         </div>
                     </div>
                 </div>
@@ -19,12 +19,12 @@
                     <div class="d-flex align-items-center gap-3">
                         <div class="avatar">
                             <span class="avatar-initial rounded text-heading primary-badge">
-                                <span class="material-symbols-outlined">shopping_cart</span>
+                                <span class="material-symbols-outlined">inventory</span>
                             </span>
                         </div>
                         <div>
-                            <h5 class="mb-0">184</h5>
-                            <span class="text-muted fs-08">Ordenes</span>
+                            <h5 class="mb-0">{{ card_values.total_art || 0 }}</h5>
+                            <span class="text-muted fs-08">Artículos</span>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-3">
@@ -34,40 +34,40 @@
                             </span>
                         </div>
                         <div>
-                            <h5 class="mb-0">$12564</h5>
+                            <h5 class="mb-0">${{ card_values.total_inv || 0 }}</h5>
                             <span class="text-muted fs-08">Invertido</span>
                         </div>
                     </div>
                 </div>
                 <!-- caja con información básica -->
                 <div>
-                    <h5 class="border-bottom text-capitalize pb-4 mt-4 mb-4">detalles</h5>
+                    <h5 class="border-bottom text-capitalize pb-3 mt-4 mb-3">detalles</h5>
                     <ul class="list-unstyled mb-4">
                         <li class="mb-2">
                             <span class="h6 me-1">Email: </span>
-                            <span>info@atodomoda.com</span>
+                            <span>{{ provider.email || 'Sin información' }}</span>
                         </li>
                         <li class="mb-2">
                             <span class="h6 me-1">Teléfono: </span>
-                            <span>3413447086</span>
+                            <span>{{ provider.phone || 'Sin información' }}</span>
                         </li>
                         <li class="mb-2">
                             <span class="h6 me-1">Whatsapp: </span>
-                            <span>3413447086</span>
+                            <span>{{ provider.whatsapp || 'Sin información' }}</span>
                         </li>
                         <li class="mb-2">
                             <span class="h6 me-1">Dirección: </span>
-                            <span>Azcuénaga 1876</span>
+                            <span>{{ provider.address || 'Sin información' }}</span>
                         </li>
                         <li class="mb-2">
                             <span class="h6 me-1">País: </span>
-                            <span>Argentina</span>
+                            <span>{{ provider.country || 'Sin información' }}</span>
                         </li>
                     </ul>
                 </div>
                 <!-- Caja con botón para editar información -->
                  <div class="d-flex justify-content-center">
-                    <button mat-flat-button color="primary" class="w-100">
+                    <button mat-flat-button color="primary" class="w-100" (click)="editProvider(provider.id)">
                         <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
                         Editar detalles
                     </button>
@@ -81,21 +81,15 @@
          <div class="nav-align-tab mb-4">
             <ul class="nav nav-pills flex-column flex-md-row mb-6 row-gap-2">
                 <li class="nav-item me-3">
-                    <button mat-flat-button (click)="toggleButtonStyle()" color="primary">
+                    <button mat-flat-button color="primary">
                         <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
                         Descripción
-                    </button>
-                </li>
-                <li class="nav-item me-3">
-                    <button mat-button color="primary">
-                        <mat-icon style="position: relative; bottom: 2px;">list</mat-icon>
-                        Pedidos
                     </button>
                 </li>
             </ul>
          </div>
          <!-- Conjunto de cards con información -->
-          <div class="row text-nowrap">
+          <div class="row text-nowrap" *ngIf="!load">
             <!-- cards individuales -->
             <div class="col-md-6 mb-4">
                 <div class="card h-100">
@@ -103,17 +97,16 @@
                         <div class="card-icon mb-2">
                             <div class="avatar">
                                 <span class="avatar-initial rounded text-heading primary-badge">
-                                    <span class="material-symbols-outlined">shopping_cart</span>
+                                    <span class="material-symbols-outlined">inventory</span>
                                 </span>
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5 class="card-title mb-2">Account Balance</h5>
+                            <h5 class="card-title mb-2">Total artículos</h5>
                             <div class="d-flex align-items-baseline gap-1">
-                                <h5 class="text-primary mb-0">$2345</h5>
-                                <p class="mb-0">Credit left</p>
+                                <h5 class="text-primary mb-1 ms-1">{{ card_values.total_art || 0 }}</h5>
                             </div>
-                            <p class="mb-0 text-truncate">Account balance for next purchase</p>
+                            <p class="mb-0 text-truncate">Artículos comprados al proveedor</p>
                         </div>
                     </div>
                 </div>
@@ -124,17 +117,16 @@
                         <div class="card-icon mb-2">
                             <div class="avatar">
                                 <span class="avatar-initial rounded text-heading primary-badge">
-                                    <span class="material-symbols-outlined">shopping_cart</span>
+                                    <span class="material-symbols-outlined">paid</span>
                                 </span>
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5 class="card-title mb-2">Account Balance</h5>
+                            <h5 class="card-title mb-2">Total invertido</h5>
                             <div class="d-flex align-items-baseline gap-1">
-                                <h5 class="text-primary mb-0">$2345</h5>
-                                <p class="mb-0">Credit left</p>
+                                <h5 class="text-primary mb-1 ms-1">${{ card_values.total_inv || 0 }}</h5>
                             </div>
-                            <p class="mb-0 text-truncate">Account balance for next purchase</p>
+                            <p class="mb-0 text-truncate">Valor total del inventario del proveedor</p>
                         </div>
                     </div>
                 </div>
@@ -145,17 +137,16 @@
                         <div class="card-icon mb-2">
                             <div class="avatar">
                                 <span class="avatar-initial rounded text-heading primary-badge">
-                                    <span class="material-symbols-outlined">shopping_cart</span>
+                                    <span class="material-symbols-outlined">outlined_flag</span>
                                 </span>
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5 class="card-title mb-2">Account Balance</h5>
+                            <h5 class="card-title mb-2">Fecha creación</h5>
                             <div class="d-flex align-items-baseline gap-1">
-                                <h5 class="text-primary mb-0">$2345</h5>
-                                <p class="mb-0">Credit left</p>
+                                <h5 class="text-primary mb-1 ms-1">{{ provider.created || '' | date:'dd/MM/yyyy' }}</h5>
                             </div>
-                            <p class="mb-0 text-truncate">Account balance for next purchase</p>
+                            <p class="mb-0 text-truncate">Fecha inicio con el proveedor</p>
                         </div>
                     </div>
                 </div>
@@ -166,94 +157,20 @@
                         <div class="card-icon mb-2">
                             <div class="avatar">
                                 <span class="avatar-initial rounded text-heading primary-badge">
-                                    <span class="material-symbols-outlined">shopping_cart</span>
+                                    <span class="material-symbols-outlined">event</span>
                                 </span>
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5 class="card-title mb-2">Account Balance</h5>
+                            <h5 class="card-title mb-2">Ultima compra</h5>
                             <div class="d-flex align-items-baseline gap-1">
-                                <h5 class="text-primary mb-0">$2345</h5>
-                                <p class="mb-0">Credit left</p>
+                                <h5 class="text-primary mb-1 ms-1">{{ (card_values.last_shop)?(card_values.last_shop | date:'dd/MM/yyyy'):'Sin información' }}</h5>
                             </div>
-                            <p class="mb-0 text-truncate">Account balance for next purchase</p>
+                            <p class="mb-0 text-truncate">Fecha última compra al proveedor</p>
                         </div>
                     </div>
                 </div>
             </div>
           </div>
-          <!-- Tabla de pedidos -->
-            <div class="card mb-4">
-                <!-- Loader -->
-                <div class="provider-loader" *ngIf="load">
-                    <p>Cargando...</p>
-                </div>
-                <!-- Table of providers -->
-                <div class="box-list" *ngIf="!recharge && resultsLength">
-                    <div class="d-flex justify-content-between border-bottom">
-                        <h4 class="mb-0 mt-2 fw-700">Listado de pedidos</h4>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Filtrar</mat-label>
-                            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
-                        </mat-form-field>
-                    </div>
-                    <table mat-table [dataSource]="dataSource" matSort>
-                    
-                        <!-- order Column -->
-                        <ng-container matColumnDef="order">
-                        <th mat-header-cell *matHeaderCellDef> PEDIDO </th>
-                        <td mat-cell *matCellDef="let element">
-                            #45268
-                        </td>
-                        </ng-container>
-                    
-                        <!-- date Column -->
-                        <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA </th>
-                        <td mat-cell *matCellDef="let element"> 
-                            12/02/2024
-                        </td>
-                        </ng-container>
-
-                        <!-- status Column -->
-                        <ng-container matColumnDef="status">
-                            <th mat-header-cell *matHeaderCellDef class="max-1280-hidden"> ESTADO </th>
-                            <td mat-cell *matCellDef="let element" class="max-1280-hidden">
-                                Activo
-                            </td>
-                        </ng-container>
-
-                        <!-- ammount Column -->
-                        <ng-container matColumnDef="ammount">
-                            <th mat-header-cell *matHeaderCellDef class="max-768-hidden"> MONTO </th>
-                            <td mat-cell *matCellDef="let element" class="max-768-hidden">
-                                $12568.25
-                            </td>
-                        </ng-container>
-                    
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
-        
-                        <!-- Row shown when there is no matching data. -->
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                        </tr>
-                    </table>
-                    <mat-paginator [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              
-                </div>
-                <!-- Recharge button -->
-                <div class="provider-recharge" *ngIf="recharge">
-                    <!-- Botón para recargar los datos -->
-                    <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
-                </div>
-                <!-- No providers -->
-                <div class="provider-recharge" *ngIf="!resultsLength">
-                    <!-- Botón para recargar los datos -->
-                    <p>No hay proveedores</p>
-                    <a mat-flat-button color="primary" routerLink="../edit-provider">
-                        + Agregar Proveedor
-                    </a>
-                </div>
-            </div>
     </div>
 </div>
