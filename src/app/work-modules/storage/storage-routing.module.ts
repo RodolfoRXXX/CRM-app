@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { StorageComponent } from './storage.component';
 import { StorageListComponent } from './children/storage-list/storage-list.component';
+import { StorageEditComponent } from './children/storage-edit/storage-edit.component';
 
 const routes: Routes = [
   { path: '', component: StorageComponent,
@@ -14,6 +15,10 @@ const routes: Routes = [
       {
         path: 'storage-list',
         component: StorageListComponent
+      },
+      {
+        path: 'storage-edit',
+        component: StorageEditComponent
       },
       { 
         path: '**',

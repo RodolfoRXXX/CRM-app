@@ -27,7 +27,8 @@ const MENUMANAGEMENT = [
         { state: 'provider/provider-edit', name: 'Edición de proveedor', type: '', icon: '' }
     ] },
     { state: '', name: 'Depósito', type: '', icon: 'storage', children: [
-        { state: 'storage/storage-list', name: 'Lista de depósitos', type: '', icon: '' }
+        { state: 'storage/storage-list', name: 'Lista de depósitos', type: '', icon: '' },
+        { state: 'storage/storage-edit', name: 'Edición de depósitos', type: '1', icon: '' }
     ] }
 ];
 

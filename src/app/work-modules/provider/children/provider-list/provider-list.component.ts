@@ -119,7 +119,6 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
   }
 
   detailProvider(id_provider: Number) {
-    console.log(id_provider)
     this._router.navigate(['init/main/provider/provider-detail'], { queryParams: { id_provider: id_provider } });
   }
 
@@ -128,7 +127,7 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
   }
 
   openDialogWhatsapp(whatsapp: String): void {
-    const dialogRef = this._dialog.open(DialogConfirmOperationComponent, { data: { text: `Estas por entrar a una conversación con ${whatsapp}` } });
+    const dialogRef = this._dialog.open(DialogConfirmOperationComponent, { data: { text: `Estás por entrar a una conversación con ${whatsapp}` } });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         //Aquí abre una conversación de whatsapp con la aplicación original

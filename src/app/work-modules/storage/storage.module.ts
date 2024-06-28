@@ -7,12 +7,14 @@ import { StorageListComponent } from './children/storage-list/storage-list.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MaterialModule } from 'src/app/material/material/material.module';
+import { StorageEditComponent } from './children/storage-edit/storage-edit.component';
 
 
 @NgModule({
   declarations: [
     StorageComponent,
-    StorageListComponent
+    StorageListComponent,
+    StorageEditComponent
   ],
   imports: [
     CommonModule,

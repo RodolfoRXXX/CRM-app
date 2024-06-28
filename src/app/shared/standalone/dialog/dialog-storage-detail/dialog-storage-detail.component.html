@@ -1,0 +1,77 @@
+ 
+<div class="card storageDetail">
+    <div class="card-body">
+        <a mat-icon-button class="close-card" routerLink="#" aria-label="close-button" (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </a>
+        <!-- caja de la imagen -->
+        <div>
+            <div class="d-flex align-items-center flex-column">
+                <img src="../../../../../assets/images/users/obsolete/blanck_storage.png" alt="Provider image" class="img-fluid rounded mb-4" width="120" height="120">
+                <div class="text-center mb-6">
+                    <h4 class="mb-0">{{ (!load)?storage['name'] || 'Sin información':'Sin información' }}</h4>
+                    <span class="fs-09 text-muted">Depósito ID #<span>{{ (!load)?storage['id'] || '':'' }}</span></span>
+                </div>
+            </div>
+        </div>
+        <!-- caja con indicadores básicos y el nombre -->
+        <div class="d-flex justify-content-around flex-wrap mb-6 gap-0 gap-md-3 gap-lg-4 mt-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar">
+                    <span class="avatar-initial rounded text-heading primary-badge">
+                        <span class="material-symbols-outlined">inventory</span>
+                    </span>
+                </div>
+                <div>
+                    <h5 class="mb-0">{{ info_values.total_art }}</h5>
+                    <span class="text-muted fs-08">Artículos</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar">
+                    <span class="avatar-initial rounded text-heading primary-badge">
+                        <span class="material-symbols-outlined">paid</span>
+                    </span>
+                </div>
+                <div>
+                    <h5 class="mb-0">${{ info_values.total_inv }}</h5>
+                    <span class="text-muted fs-08">Capital</span>
+                </div>
+            </div>
+        </div>
+        <!-- caja con información básica -->
+        <div>
+            <h5 class="border-bottom text-capitalize pb-3 mt-4 mb-3">detalles</h5>
+            <ul class="list-unstyled mb-4 ps-3">
+                <li class="mb-2">
+                    <span class="h6 me-1">Teléfono: </span>
+                    <span>{{ (!load)?storage['phone'] || 'Sin información ':'Sin información' }}</span>
+                </li>
+                <li class="mb-2">
+                    <span class="h6 me-1">Dirección: </span>
+                    <span>{{ (!load)?storage['address'] || 'Sin información ':'Sin información' }}</span>
+                </li>
+                <li class="mb-2">
+                    <span class="h6 me-1">Ciudad: </span>
+                    <span>{{ (!load)?storage['city'] || 'Sin información ':'Sin información' }}</span>
+                </li>
+                <li class="mb-2">
+                    <span class="h6 me-1">Provincia: </span>
+                    <span>{{ (!load)?storage['city'] || 'Sin información ':'Sin información' }}</span>
+                </li>
+                <li class="mb-2">
+                    <span class="h6 me-1">País: </span>
+                    <span>{{ (!load)?storage['country'] || 'Sin información ':'Sin información' }}</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Caja con botón para editar información -->
+        <div class="d-flex justify-content-center">
+        <button mat-flat-button color="primary" class="w-100" (click)="editStorage(storage['id'])" [disabled]="!this.permissions.includes(add_product_admin)">
+            <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
+            Editar detalles
+        </button>
+        </div>
+    </div>
+</div>
