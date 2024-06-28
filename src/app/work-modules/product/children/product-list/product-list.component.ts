@@ -189,7 +189,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   openDialogDetail(id_enterprise: number, name: string, id_option_1: number, id_option_2: number): void {
       const dialogRef = this._dialog.open(DialogProductDetailComponent, { data: { id_enterprise: id_enterprise, name: name, id_option_1: id_option_1, id_option_2: id_option_2 } });
-    }
+  }
 
   rechargeData() {
     this._conector.setUpdate(true);

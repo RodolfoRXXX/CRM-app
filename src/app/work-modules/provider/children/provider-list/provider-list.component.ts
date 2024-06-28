@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +9,7 @@ import { catchError } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { DialogConfirmOperationComponent } from 'src/app/shared/standalone/dialog/dialog-confirm-operation/dialog-confirm-operation.component';
 
 @Component({
   selector: 'app-provider-list',
@@ -32,7 +34,8 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
     private _api: ApiService,
     private _conector: ConectorsService,
     private _paginator: MatPaginatorIntl,
-    private _router: Router
+    private _router: Router,
+    private _dialog: MatDialog
   ) {
     this._paginator.itemsPerPageLabel = "Registros por página";
     this._paginator.firstPageLabel = "Primera página";
@@ -124,9 +127,15 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
     this._router.navigate(['init/main/provider/provider-edit'], { queryParams: { id_provider: id_provider } });
   }
 
-  sendWhatsapp(whatsapp: String) {
-    let whatsappUrl = `https://wa.me/${whatsapp}`;
-    window.open(whatsappUrl, '_blank');
+  openDialogWhatsapp(whatsapp: String): void {
+    const dialogRef = this._dialog.open(DialogConfirmOperationComponent, { data: { text: `Estas por entrar a una conversación con ${whatsapp}` } });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        //Aquí abre una conversación de whatsapp con la aplicación original
+        //en un futuro abrirá uina conversación por whatsapp desde esta aplicación, cuando esté integrada
+        window.open(`https://wa.me/${whatsapp}`, '_blank');
+      }
+    });
   }
 
 }

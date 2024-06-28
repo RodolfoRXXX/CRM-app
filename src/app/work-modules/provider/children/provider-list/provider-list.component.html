@@ -159,7 +159,11 @@
                                     <th mat-header-cell *matHeaderCellDef class="max-768-hidden"> WHATSAPP </th>
                                     <td mat-cell *matCellDef="let element" class="max-768-hidden">
                                         <!-- código que muestra el whatsapp del proveedor -->
-                                        <button mat-icon-button color="primary" (click)="sendWhatsapp(element.whatsapp)">
+                                        <button mat-icon-button 
+                                                color="primary" 
+                                                (click)="openDialogWhatsapp(element.whatsapp)"
+                                                matTooltip="Enviar un mensaje"
+                                                [disabled]="element.whatsapp == ''">
                                             <mat-icon style="position: relative; bottom: 2px;">phone_iphone</mat-icon>
                                         </button>
                                     </td>

@@ -1,0 +1,16 @@
+<mat-card id="sdialog" class="mat-card card-image">
+  <mat-card-content class="mat-card-content">
+    <a mat-icon-button class="close-card" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
+        <mat-icon>close</mat-icon>
+    </a>
+      <mat-card-subtitle class="mat-card-subtitle text-center">
+          <h3>{{ text }}</h3>
+      </mat-card-subtitle>
+      <div>
+        <div class="user-data-input m-t-10 text-center">
+            <button mat-button color="warn" class="me-3" type="button" (click)="closeDialog(false)"> Cancelar </button>
+            <button mat-stroked-button color="primary" type="button" (click)="closeDialog(true)">Confirmar</button>
+        </div>
+      </div>
+  </mat-card-content>
+</mat-card>
