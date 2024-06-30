@@ -17,13 +17,13 @@
                             <p>Cargando...</p>
                         </div>
                         <!-- Table of providers -->
-                        <div class="box-list" *ngIf="!recharge && resultsLength">
+                        <div class="box-list" *ngIf="!empty_storage">
                             <mat-form-field class="w-100">
                                 <mat-label>Filtrar</mat-label>
                                 <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un depósito" #input>
                             </mat-form-field>
                             <div class="d-flex justify-content-end">
-                                <a mat-flat-button color="primary" routerLink="../storage-edit">
+                                <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
                                     + Agregar Depósito
                                 </a>
                             </div>
@@ -131,10 +131,10 @@
                             <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
                         </div>
                         <!-- No data -->
-                        <div class="recharge" *ngIf="!resultsLength">
+                        <div class="recharge" *ngIf="empty_storage">
                             <!-- Botón para recargar los datos -->
                             <p>No hay depósitos</p>
-                            <a mat-flat-button color="primary" routerLink="../storage-edit">
+                            <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
                                 + Agregar depósito
                             </a>
                         </div>

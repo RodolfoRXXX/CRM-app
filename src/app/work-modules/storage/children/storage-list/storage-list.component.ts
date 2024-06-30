@@ -21,8 +21,11 @@ export class StorageListComponent {
   resultsLength!: number;
   displayedColumns: string[] = ['detail', 'id', 'name', 'phone', 'address', 'city', 'state', 'country', 'status', 'edit'];
   dataSource = new MatTableDataSource<any>();
+  permissions: string[] = [];
+  empty_storage: boolean = false;
   load = true;
   recharge = false;
+  admin : string = '6';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -49,6 +52,7 @@ export class StorageListComponent {
   getDataLocal(): void {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
+      this.permissions = item.list_of_permissions.split(',')
       this.loadProviders();
     });
   }
@@ -68,14 +72,16 @@ export class StorageListComponent {
         this.recharge = true;
         return observableOf(null);
       })
-    ).subscribe(([countResponse, providersResponse]: any) => {
+    ).subscribe(([countResponse, storageResponse]: any) => {
       this.recharge = false;
       this.load = false;
       if (countResponse) {
         this.resultsLength = countResponse.data[0].total;
       }
-      if (providersResponse) {
-        this.dataSource.data = providersResponse.data;
+      if (storageResponse.data) {
+        this.dataSource.data = storageResponse.data;
+      } else {
+        this.empty_storage = true;
       }
     });
   }

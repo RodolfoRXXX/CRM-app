@@ -15,7 +15,7 @@
                   <p>Cargando...</p>
                 </div>
                 <!-- Table of products -->
-                <div class="box-list" *ngIf="!recharge && dataSource.data.length">
+                <div class="box-list" *ngIf="!empty_categories">
                   <div class="row justify-content-end">
                     <div class="btn-addProduct col-md-4">
                       <a mat-flat-button color="primary" routerLink="../add-category" *ngIf="permissions.includes(add_product_admin)">
@@ -73,7 +73,7 @@
                   <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
                 </div>
                 <!-- No products -->
-                <div class="product-recharge" *ngIf="!dataSource.data.length">
+                <div class="product-recharge" *ngIf="empty_categories">
                   <p>No hay categorías</p>
                   <a mat-flat-button color="primary" routerLink="../add-category" *ngIf="permissions.includes(add_product_admin)">
                     + Agregar Categoría

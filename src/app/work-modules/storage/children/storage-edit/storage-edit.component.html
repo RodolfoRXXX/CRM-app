@@ -1,1 +1,102 @@
-<p>storage-edit works!</p>
+<!--Componente que edita los campos del depósito elegido -->
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+      <div>
+          <!-- Títulos -->
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 gap-4 gap-md-0">
+              <div class="d-flex flex-column justify-content-center">
+                  <h4 class="mb-1">Edición de depósito</h4>
+                  <p class="mb-0">Creá y editá tus depósitos aquí</p>
+              </div>
+              <div class="d-flex align-content-center flex-wrap gap-4">
+                  <button mat-flat-button color="primary" *ngIf="!activeStatus" (click)="changeState(1)" [disabled]="loading || !id_storage">
+                      <span>Activar</span> Depósito
+                  </button>
+                  <button mat-stroked-button color="warn" *ngIf="activeStatus" (click)="changeState(0)" [disabled]="loading">
+                      <span>Desactivar</span> Depósito
+                  </button>
+              </div>
+          </div>
+
+          <mat-card class="card-product editStorage">
+              <mat-card-header>
+                <mat-card-title>Información del Depósito</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <form  [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+                  <!-- Storage name -->
+                  <div>
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Nombre del Depósito</mat-label>
+                      <input matInput
+                            formControlName="name" 
+                            required>
+                      <mat-error *ngIf="this.dataForm.controls['name']!.errors" class="fs-09">{{getErrorName()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <!-- Phone and address -->
+                  <div class="row">
+                    <!-- Phone -->
+                    <mat-form-field appearance="outline" class="col-12 col-md-6">
+                      <mat-label>Teléfono</mat-label>
+                      <input matInput
+                              type="number"
+                              formControlName="phone">
+                      <mat-error *ngIf="this.dataForm.controls['phone']!.errors" class="fs-09">{{getErrorPhone()}}</mat-error>
+                    </mat-form-field>
+                    <!-- Dirección -->
+                    <mat-form-field appearance="outline" class="col-12 col-md-6">
+                      <mat-label>Dirección</mat-label>
+                      <input matInput
+                              type="text"
+                              formControlName="address" 
+                              required>
+                      <mat-error *ngIf="this.dataForm.controls['address']!.errors" class="fs-09">{{getErrorAddress()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <!-- City, state and country -->
+                  <div class="row">
+                    <!-- City -->
+                    <mat-form-field appearance="outline" class="col-12 col-sm-4">
+                      <mat-label>Ciudad</mat-label>
+                      <input matInput
+                              type="text"
+                              formControlName="city">
+                      <mat-error *ngIf="this.dataForm.controls['city']!.errors" class="fs-09">{{getErrorCity()}}</mat-error>
+                    </mat-form-field>
+                    <!-- State -->
+                    <mat-form-field appearance="outline" class="col-12 col-sm-4">
+                      <mat-label>Provincia</mat-label>
+                      <input matInput
+                              type="text"
+                              formControlName="state">
+                      <mat-error *ngIf="this.dataForm.controls['state']!.errors" class="fs-09">{{getErrorState()}}</mat-error>
+                    </mat-form-field>
+                    <!-- Country -->
+                    <mat-form-field appearance="outline" class="col-12 col-sm-4">
+                      <mat-label>País</mat-label>
+                      <input matInput
+                              type="text"
+                              formControlName="country" 
+                              required>
+                      <mat-error *ngIf="this.dataForm.controls['country']!.errors" class="fs-09">{{getErrorCountry()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <!-- Botones de reseteo y confirmación -->
+                  <div class="box-submit">
+                    <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
+                      Reset
+                    </button>
+                    <button mat-stroked-button color="primary" type="submit"[disabled]="dataForm.invalid || loading || dataForm.untouched || dataForm.pristine">
+                      Guardar
+                    </button>
+                  </div>
+                </form>
+              </mat-card-content>
+              <mat-card-footer class="login-footer">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+              </mat-card-footer>
+          </mat-card>
+      </div>
+    </div>
+  </div>

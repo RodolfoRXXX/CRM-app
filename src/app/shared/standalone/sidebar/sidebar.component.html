@@ -97,14 +97,16 @@
                                         <span>{{ menu.name }}</span>
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <mat-list-item *ngFor="let submenu of menu.children" routerLinkActive="selected" (isActiveChange)="_isLinkActive($event, item)">
-                                    <div class="mat-list-item-content">
-                                        <a class="fw-400" routerLink="{{ submenu.state }}" (click)="setLink(item)">
-                                            <span>{{ submenu.name }}</span> 
-                                            <span fxFlex></span>
-                                        </a> 
-                                    </div>
-                                </mat-list-item>
+                                <ng-container *ngFor="let submenu of menu.children">
+                                    <mat-list-item *ngIf="((permissions.includes(submenu.type))||(submenu.type == ''))" routerLinkActive="selected" (isActiveChange)="_isLinkActive($event, item)">
+                                        <div class="mat-list-item-content">
+                                            <a class="fw-400" routerLink="{{ submenu.state }}" (click)="setLink(item)">
+                                                <span>{{ submenu.name }}</span> 
+                                                <span fxFlex></span>
+                                            </a> 
+                                        </div>
+                                    </mat-list-item>
+                                </ng-container>                     
                             </mat-expansion-panel>
                         </mat-accordion>
                     </div>

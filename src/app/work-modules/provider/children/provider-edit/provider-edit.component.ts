@@ -33,7 +33,7 @@ export class ProviderEditComponent implements OnInit {
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Edición de proveedores')
+    this._conector.setUpdateTitle('Edición de proveedor')
     this.route.queryParams.subscribe(params => {
       this.id_provider = params['id_provider'];
       if(this.id_provider) {
@@ -209,7 +209,7 @@ export class ProviderEditComponent implements OnInit {
               }, 2000);
             } else{
               //Ya existe dicho proveedor
-              this._notify.showWarn('La categoría que intentas crear ya existe.')
+              this._notify.showWarn('El proveedor que intentas crear ya existe.')
             }
           } else{
             //Problemas de conexión con la base de datos(res.status == 0)

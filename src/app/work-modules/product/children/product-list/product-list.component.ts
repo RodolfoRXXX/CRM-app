@@ -119,10 +119,10 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     // Formatear la fecha como texto según tus preferencias.
     let date_limit = año + '-' + _mes + '-' + _dia;
     this._api.postTypeRequest('profile/get-products-data', { id_enterprise: id_enterprise, date_limit: date_limit }).subscribe( (value:any) => {
-      (value.data[0].data)?this.card_values.products_with_stock = value.data[0].data:this.card_values.products_with_stock = 0;
-      (value.data[1].data)?this.card_values.value_stock = value.data[1].data:this.card_values.value_stock = 0;
-      (value.data[2].data)?this.card_values.products_without_stock = value.data[2].data:this.card_values.products_without_stock = 0;
-      (value.data[3].data)?this.card_values.immo_stock = value.data[3].data:this.card_values.immo_stock = 0;
+      (value.data[0] && value.data[0].data != null)?this.card_values.products_with_stock = value.data[0].data:this.card_values.products_with_stock = 0;
+      (value.data[1] && value.data[1].data != null)?this.card_values.value_stock = value.data[1].data:this.card_values.value_stock = 0;
+      (value.data[2] && value.data[2].data != null)?this.card_values.products_without_stock = value.data[2].data:this.card_values.products_without_stock = 0;
+      (value.data[3] && value.data[3].data != null)?this.card_values.immo_stock = value.data[3].data:this.card_values.immo_stock = 0;
     })
   }
 
@@ -168,20 +168,18 @@ export class ProductListComponent implements OnInit, AfterViewInit {
                         .pipe(catchError(async () => {observableOf(null); this.recharge = true;}));
         }),
         map(data => {
-          this.load = false;
-          if (data === null) {
-            this.empty_products = true;
-            return [];
-          }
           return data;
         })
       )
       .subscribe((data: any) => {
-        if (data) {
+        this.load = false;
+        if (data.data) {
           data.data.forEach((item: any) => {
             item.category_color = JSON.parse(item.category_color)
           });
           this.dataSource.data = data.data;
+        } else {
+          this.empty_products = true;
         }
       });
       this.dataSource.sort = this.sort;

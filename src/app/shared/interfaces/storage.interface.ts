@@ -1,6 +1,6 @@
 export interface Storage {
     id: number;
-    id_enterprise: string;
+    id_enterprise: number;
     name: string;
     phone: string;
     address: string;

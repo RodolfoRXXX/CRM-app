@@ -19,7 +19,7 @@ const MENUMANAGEMENT = [
     ] },
     { state: '', name: 'Productos', type: '', icon: 'assignment', children: [
         { state: 'product/product-list', name: 'Lista de productos', type: '', icon: '' },
-        { state: 'product/add-product', name: 'Edición de producto', type: '', icon: '' },
+        { state: 'product/add-product', name: 'Edición de producto', type: '6', icon: '' },
         { state: 'product/category', name: 'Categorías', type: '', icon: '' }
     ] },
     { state: '', name: 'Proveedores', type: '5', icon: 'group', children: [

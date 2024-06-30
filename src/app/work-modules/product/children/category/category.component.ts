@@ -19,6 +19,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   recharge = false;
   displayedColumns: string[] = ['id', 'category', 'stock', 'price', 'edit'];
   dataSource = new MatTableDataSource();
+  empty_categories: boolean = false;
   add_product_admin = '6';
 
   constructor(
@@ -65,11 +66,13 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe((data: any) => {
-        if (data) {
+        if (data.data) {
           data.data.forEach((item: any) => {
             item.color_badge = JSON.parse(item.color_badge)
           });
           this.dataSource.data = data.data;
+        } else {
+          this.empty_categories = true;
         }
       });
   }

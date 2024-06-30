@@ -80,13 +80,13 @@ export class ProductInformationComponent implements OnInit {
         this.categories = value.data
       })
     }
-    //Color
+    //Opción 1
     getOption1(id_enterprise: number): void {
       this._api.postTypeRequest('profile/get-option1', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
         this.option1 = value.data
       })
     }
-    //Medida
+    //Opción 2
     getOption2(id_enterprise: number): void {
       this._api.postTypeRequest('profile/get-option2', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
         this.option2 = value.data
