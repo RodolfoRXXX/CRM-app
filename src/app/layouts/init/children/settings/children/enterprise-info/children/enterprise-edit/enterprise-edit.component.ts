@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
@@ -8,10 +8,11 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { environment } from 'src/enviroments/enviroment';
 
 @Component({
-  selector: 'app-enterprise-data',
-  templateUrl: './enterprise-data.component.html'
+  selector: 'app-enterprise-edit',
+  templateUrl: './enterprise-edit.component.html',
+  styleUrls: ['./enterprise-edit.component.scss']
 })
-export class EnterpriseDataComponent implements OnInit {
+export class EnterpriseEditComponent implements OnInit {
 
   picDataForm!: FormGroup;
   userDataForm!: FormGroup;
@@ -41,7 +42,7 @@ export class EnterpriseDataComponent implements OnInit {
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Mi empresa')
+    this._conector.setUpdateTitle('Detalle de mi empresa')
 
     //Carga el detector de tamaño del dispositivo
     this._conector.getScreenState().subscribe( screen => {

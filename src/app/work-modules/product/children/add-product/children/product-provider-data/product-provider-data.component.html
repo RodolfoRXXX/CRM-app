@@ -4,7 +4,7 @@
   <mat-card-header>
     <mat-card-title>Información del Proveedor</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content *ngIf="providers">
     <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
       <!-- Nombre del proveedor -->
       <div>
@@ -71,6 +71,15 @@
         </button>
       </div>
     </form>
+  </mat-card-content>
+  <!-- Caja que se muestra si no hay proveedores creados -->
+  <mat-card-content *ngIf="!providers">
+    <div class="d-flex text-center align-items-center p-4">
+      <p>No hay proveedores creados</p>
+      <a mat-flat-button color="primary" routerLink="../../provider/provider-edit">
+          + Agregar Proveedor
+      </a>
+    </div>
   </mat-card-content>
   <mat-card-footer class="login-footer">
     <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>

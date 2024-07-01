@@ -31,6 +31,7 @@ export class ProductInformationComponent implements OnInit {
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['name'];
   inputBoxName!:boolean;
+  load: boolean = true;
   loading!: boolean;
   exist_sku!: string;
 
@@ -70,6 +71,7 @@ export class ProductInformationComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['product']) {
       this.setDataForm(changes['product'].currentValue)
+      this.load = false;
     }
   }
 
@@ -267,7 +269,7 @@ export class ProductInformationComponent implements OnInit {
   }
 
   //Submit del formulario
-  onSubmitUser() {
+  onSubmit() {
     this.loading = true;
     if(this.getSku() !== this.dataForm.controls['sku'].value) {
       //SKU diferente a las opciones elegidas

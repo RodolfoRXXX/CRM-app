@@ -4,7 +4,48 @@
         <div class="profile-text"><span> {{ name }} - {{ enterprise }} </span></div>
     </div>
     <mat-nav-list>
+        <!-- Listado de menues de Configuración -->
         <ng-container *ngIf="setMenu == 'settings'">
+            <p class="mat-nav-list-title">
+                Configuración
+            </p>
+            <ng-container *ngFor="let menu of menuItems.getMenuSettings(); index as item">
+                <mat-list-item class="submenu" *ngIf="((permissions.includes(menu.type))||(is_employee && menu.type == 'employee')||(menu.type == ''))?true:false" [routerLinkActive]="(menu.children.length == 0)?'selected':''">
+                    <div *ngIf="menu.children.length">
+                        <mat-accordion>
+                            <mat-expansion-panel (closed)="(this.isActive == item)?this.isOpen = 0:''" (opened)="this.isOpen = item; this.isActive = item" [expanded]="isOpen == item">
+                                <mat-expansion-panel-header [class.panelExpanded]="(isOpen == item) || (linkActive == item)">
+                                    <mat-panel-title>
+                                        <mat-icon>{{ menu.icon }}</mat-icon> 
+                                        <span>{{ menu.name }}</span>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ng-container *ngFor="let submenu of menu.children">
+                                    <mat-list-item *ngIf="((permissions.includes(submenu.type))||(submenu.type == ''))" routerLinkActive="selected" (isActiveChange)="_isLinkActive($event, item)">
+                                        <div class="mat-list-item-content">
+                                            <a class="fw-400" routerLink="{{ submenu.state }}" (click)="setLink(item)">
+                                                <span>{{ submenu.name }}</span> 
+                                                <span fxFlex></span>
+                                            </a> 
+                                        </div>
+                                    </mat-list-item>
+                                </ng-container>                     
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                    <div *ngIf="menu.children.length == 0" class="mat-list-item-content">
+                        <a class="fw-400" routerLink="{{ menu.state }}" (click)="setLink(0)">
+                            <mat-icon>{{ menu.icon }}</mat-icon> 
+                            <span>{{ menu.name }}</span> 
+                            <span fxFlex></span>
+                        </a> 
+                    </div>
+                </mat-list-item>
+            </ng-container>
+        </ng-container>
+
+<!--
+        <ng-container *ngIf="setMenu == 'setting'">
             <p class="mat-nav-list-title">
                 Configuración
             </p>
@@ -21,7 +62,7 @@
             </ng-container>
             <mat-divider></mat-divider>
         </ng-container>
-<!--
+
         <ng-container *ngIf="setMenu == 'init'">
             <p class="mat-nav-list-title">
                 Gestión
@@ -82,6 +123,7 @@
         </ng-container>
 -->
         
+        <!-- Listado de menues de Gestión -->
         <ng-container *ngIf="setMenu == 'init'">
             <p class="mat-nav-list-title">
                 Gestión
@@ -120,7 +162,6 @@
                 </mat-list-item>
             </ng-container>
         </ng-container>
-        
 
     </mat-nav-list>
 </div>

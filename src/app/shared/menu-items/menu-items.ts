@@ -4,7 +4,10 @@ import { Menu } from '../interfaces/menu.interface';
 const MENUSETTINGS = [
     { state: 'index', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
     { state: 'user-data', name: 'Mi cuenta', type: 'employee', icon: 'fingerprint', children: [] },
-    { state: 'enterprise-data', name: 'Mi empresa', type: '1', icon: 'business', children: [] },
+    { state: '', name: 'Mi empresa', type: '1', icon: 'business', children: [
+        { state: 'enterprise-info/enterprise-detail', name: 'Detalle de la empresa', type: '', icon: '' },
+        { state: 'enterprise-info/enterprise-edit', name: 'Editar empresa', type: '', icon: '' }
+    ] },
     { state: 'billing', name: 'Facturación', type: '2', icon: 'attach_money', children: [] },
     { state: 'security', name: 'Seguridad', type: '', icon: 'vpn_key', children: [] },
     { state: 'roles', name: 'Roles y permisos', type: '3', icon: 'security', children: [] },

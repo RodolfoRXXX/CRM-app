@@ -12,7 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
-import { EnterpriseDataComponent } from './children/enterprise-data/enterprise-data.component';
 import { SecurityComponent } from 'src/app/layouts/init/children/settings/children/security/security.component';
 import { RolesComponent } from 'src/app/layouts/init/children/settings/children/roles/roles.component';
 
@@ -23,7 +22,6 @@ import { RolesComponent } from 'src/app/layouts/init/children/settings/children/
         BillingComponent,
         UserDataComponent,
         IndexComponent,
-        EnterpriseDataComponent,
         SecurityComponent,
         RolesComponent
     ],
