@@ -72,15 +72,10 @@
   border-bottom-right-radius: 4px;
 }
 
-//card usadas en add-product de la sección work-modules
+//card de la sección work-modules
 
-.card-product {
-  background-clip: padding-box;
-  box-shadow: 0 .25rem .625rem rgba(46, 38, 61, .2);
+.card {
   background-clip: padding-box;
   box-shadow: 0 .25rem .625rem rgba(46, 38, 61, .2);
   margin-bottom: 24px;
-  form {
-    padding-top: 15px!important;
-  }
 }

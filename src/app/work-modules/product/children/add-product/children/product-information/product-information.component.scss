@@ -3,6 +3,7 @@
 .card-product.addProduct.infoProduct {
     mat-card-content {
         padding-bottom: 15px;
+        padding-top: 15px;
     }
     .box-info-product {
         position: relative;
@@ -58,7 +59,7 @@
             padding: 15px 0;
         }
     }
-    .product-info-btn-box {
+    .submit-btn-box {
         display: flex;
         justify-content: flex-end;
     }

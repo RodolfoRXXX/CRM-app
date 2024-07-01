@@ -1,6 +1,6 @@
 <!--Componente que edita el precio del producto -->
 
-<mat-card class="card-product addProduct productPrice">
+<mat-card class="card card-product addProduct productPrice">
   <mat-card-header>
     <mat-card-title>Precio del producto</mat-card-title>
   </mat-card-header>
@@ -37,7 +37,7 @@
 
       </div>
       <!-- Botones de reseteo y confirmación -->
-      <div class="product-info-btn-box" *ngIf="this.permissions.includes(sens_info_admin)">
+      <div class="submit-btn-box" *ngIf="this.permissions.includes(sens_info_admin)">
         <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
           Reset
         </button>

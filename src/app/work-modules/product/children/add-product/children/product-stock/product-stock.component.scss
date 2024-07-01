@@ -2,8 +2,9 @@
 .card-product.addProduct.productStock {
     mat-card-content {
         padding-bottom: 15px;
+        padding-top: 15px;
     }
-    .product-info-btn-box {
+    .submit-btn-box {
         display: flex;
         justify-content: flex-end;
     }

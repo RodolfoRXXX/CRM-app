@@ -1,153 +1,137 @@
-  
-  <!-- Layout wrapper -->
-  <div class="layout-wrapper layout-content-navbar">
-    <div class="layout-container"> 
-      <!-- Layout container -->
-      <div class="layout-page">
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-            <!-- Content -->
-            <div class="container-xxl flex-grow-1 container-p-y">
-    
-                <!-- Product List Table -->
-                <mat-card class="card mb-6">
-                    <mat-card-content class="mat-card-content">
-                        <!-- Loader -->
-                        <div class="loader" *ngIf="load">
-                            <p>Cargando...</p>
-                        </div>
-                        <!-- Table of providers -->
-                        <div class="box-list" *ngIf="!empty_storage">
-                            <mat-form-field class="w-100">
-                                <mat-label>Filtrar</mat-label>
-                                <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un depósito" #input>
-                            </mat-form-field>
-                            <div class="d-flex justify-content-end">
-                                <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
-                                    + Agregar Depósito
-                                </a>
-                            </div>
-                            <table mat-table [dataSource]="dataSource" class="mt-1" matSort>
-                            
-                                <!-- detail Column -->
-                                <ng-container matColumnDef="detail">
-                                    <th mat-header-cell *matHeaderCellDef></th>
-                                    <td mat-cell *matCellDef="let element">
-                                        <button mat-icon-button color="primary" (click)="openDialogDetail(element.id)">
-                                            <mat-icon style="position: relative; bottom: 2px;">add_circle_outline</mat-icon>
-                                        </button>
-                                    </td>
-                                </ng-container>
+<!-- List of storages -->
 
-                                <!-- ID Column -->
-                                <ng-container matColumnDef="id">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-768-hidden"> ID </th>
-                                <td mat-cell *matCellDef="let element" class="max-768-hidden">
-                                    #{{ element.id }}
-                                </td>
-                                </ng-container>
-
-                                <!-- name Column -->
-                                <ng-container matColumnDef="name">
-                                    <th mat-header-cell *matHeaderCellDef> NOMBRE </th>
-                                    <td mat-cell *matCellDef="let element">
-                                        {{ element.name }}
-                                    </td>
-                                </ng-container>
-
-                                <!-- phone Column -->
-                                <ng-container matColumnDef="phone">
-                                    <th mat-header-cell *matHeaderCellDef class="max-1150-hidden"> TELEFONO </th>
-                                    <td mat-cell *matCellDef="let element" class="max-1150-hidden">
-                                        {{ element.phone }}
-                                    </td>
-                                </ng-container>
-                            
-                                <!-- address Column -->
-                                <ng-container matColumnDef="address">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-600-hidden"> DIRECCION </th>
-                                <td mat-cell *matCellDef="let element" class="max-600-hidden">
-                                    {{ element.address }}
-                                </td>
-                                </ng-container>
-
-                                <!-- city column -->
-                                <ng-container matColumnDef="city">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1280-hidden"> CIUDAD </th>
-                                    <td mat-cell *matCellDef="let element" class="max-1280-hidden">
-                                        {{ element.city }}
-                                    </td>
-                                </ng-container>
-
-                                <!-- state column -->
-                                <ng-container matColumnDef="state">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1400-hidden"> PROVINCIA </th>
-                                    <td mat-cell *matCellDef="let element" class="max-1400-hidden">
-                                        {{ element.state }}
-                                    </td>
-                                </ng-container>
-                
-                                <!-- country column -->
-                                <ng-container matColumnDef="country">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1280-hidden"> PAIS </th>
-                                    <td mat-cell *matCellDef="let element" class="max-1280-hidden">
-                                        {{ element.country }}
-                                    </td>
-                                </ng-container>
-
-                                <!-- status column -->
-                                <ng-container matColumnDef="status">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-                                    <td mat-cell *matCellDef="let element">
-                                        <span class="badge rounded-pill cap" [ngClass]="(element.status > 0)?'bg-label-success':'bg-label-danger'">
-                                            {{ (element.status > 0)?'Activo':'Inactivo' }}
-                                        </span>
-                                    </td>
-                                </ng-container>
-
-                                <!-- edit Column -->
-                                <ng-container matColumnDef="edit">
-                                    <th mat-header-cell *matHeaderCellDef class="max-500-hidden"> EDITAR </th>
-                                    <td mat-cell *matCellDef="let element" class="max-500-hidden">
-                                        <button mat-icon-button color="primary" (click)="editStorage(element.id)">
-                                            <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
-                                        </button>
-                                    </td>
-                                </ng-container>
-                            
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
-                
-                                <!-- Row shown when there is no matching data. -->
-                                <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{input.value}}"</td>
-                                </tr>
-                            </table>
-                            <mat-paginator class="m-t-15" [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              
-                        </div>
-                        <!-- Recharge button -->
-                        <div class="recharge" *ngIf="recharge">
-                            <!-- Botón para recargar los datos -->
-                            <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
-                        </div>
-                        <!-- No data -->
-                        <div class="recharge" *ngIf="empty_storage">
-                            <!-- Botón para recargar los datos -->
-                            <p>No hay depósitos</p>
-                            <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
-                                + Agregar depósito
-                            </a>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Storage List Table -->
+    <mat-card class="card mb-2">
+        <mat-card-content class="mat-card-content">
+            <!-- Loader -->
+            <div class="loader" *ngIf="load">
+                <p>Cargando...</p>
             </div>
-            <!-- / Content -->
-        </div>
-        <!-- Content wrapper -->
-      </div>
-      <!-- / Layout page -->
-    </div>
-    <!-- / Layout container -->
-  </div>
-  <!-- / Layout wrapper -->
+            <!-- Table of storages -->
+            <div class="box-list" *ngIf="!empty_storage">
+                <mat-form-field class="w-100">
+                    <mat-label>Filtrar</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un depósito" #input>
+                </mat-form-field>
+                <div class="d-flex justify-content-end">
+                    <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
+                        + Agregar Depósito
+                    </a>
+                </div>
+                <table mat-table [dataSource]="dataSource" class="mt-1" matSort>
+                
+                    <!-- detail Column -->
+                    <ng-container matColumnDef="detail">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="primary" (click)="openDialogDetail(element.id)">
+                                <mat-icon style="position: relative; bottom: 2px;">add_circle_outline</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-768-hidden"> ID </th>
+                    <td mat-cell *matCellDef="let element" class="max-768-hidden">
+                        #{{ element.id }}
+                    </td>
+                    </ng-container>
+
+                    <!-- name Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> NOMBRE </th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.name }}
+                        </td>
+                    </ng-container>
+
+                    <!-- phone Column -->
+                    <ng-container matColumnDef="phone">
+                        <th mat-header-cell *matHeaderCellDef class="max-1150-hidden"> TELEFONO </th>
+                        <td mat-cell *matCellDef="let element" class="max-1150-hidden">
+                            {{ element.phone }}
+                        </td>
+                    </ng-container>
+                
+                    <!-- address Column -->
+                    <ng-container matColumnDef="address">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-600-hidden"> DIRECCION </th>
+                    <td mat-cell *matCellDef="let element" class="max-600-hidden">
+                        {{ element.address }}
+                    </td>
+                    </ng-container>
+
+                    <!-- city column -->
+                    <ng-container matColumnDef="city">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1280-hidden"> CIUDAD </th>
+                        <td mat-cell *matCellDef="let element" class="max-1280-hidden">
+                            {{ element.city }}
+                        </td>
+                    </ng-container>
+
+                    <!-- state column -->
+                    <ng-container matColumnDef="state">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1400-hidden"> PROVINCIA </th>
+                        <td mat-cell *matCellDef="let element" class="max-1400-hidden">
+                            {{ element.state }}
+                        </td>
+                    </ng-container>
+    
+                    <!-- country column -->
+                    <ng-container matColumnDef="country">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1280-hidden"> PAIS </th>
+                        <td mat-cell *matCellDef="let element" class="max-1280-hidden">
+                            {{ element.country }}
+                        </td>
+                    </ng-container>
+
+                    <!-- status column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="badge rounded-pill cap" [ngClass]="(element.status > 0)?'bg-label-success':'bg-label-danger'">
+                                {{ (element.status > 0)?'Activo':'Inactivo' }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- edit Column -->
+                    <ng-container matColumnDef="edit">
+                        <th mat-header-cell *matHeaderCellDef class="max-500-hidden"> EDITAR </th>
+                        <td mat-cell *matCellDef="let element" class="max-500-hidden">
+                            <button mat-icon-button color="primary" (click)="editStorage(element.id)">
+                                <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
+    
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{input.value}}"</td>
+                    </tr>
+                </table>
+                <mat-paginator class="m-t-15" [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              
+            </div>
+            <!-- Recharge button -->
+            <div class="recharge" *ngIf="recharge">
+                <!-- Botón para recargar los datos -->
+                <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
+            </div>
+            <!-- No data -->
+            <div class="recharge" *ngIf="empty_storage">
+                <!-- Botón para recargar los datos -->
+                <p>No hay depósitos</p>
+                <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
+                    + Agregar depósito
+                </a>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<!-- / Content -->

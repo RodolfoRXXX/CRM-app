@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { ImageService } from 'src/app/services/image.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
 import { environment } from 'src/enviroments/enviroment';
 
 @Component({
@@ -14,6 +15,7 @@ import { environment } from 'src/enviroments/enviroment';
 })
 export class EnterpriseEditComponent implements OnInit {
 
+  enterprise!: Enterprise;
   picDataForm!: FormGroup;
   userDataForm!: FormGroup;
   disable_pic!: boolean;
@@ -73,7 +75,8 @@ export class EnterpriseEditComponent implements OnInit {
                       blanck: false
                     })
                   }
-                  this.setFormValue(res.data[0]);
+                  this.enterprise = res.data[0]
+                  this.setFormValue(this.enterprise);
                 } else {
                   this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
                 }
@@ -221,48 +224,73 @@ export class EnterpriseEditComponent implements OnInit {
     }, 2500);
   }
 
-  getError() {
+  getErrorName() {
     //name
     if(this.userDataForm.controls['name'].hasError('required')) return 'Tenés que ingresar un valor';
     if(this.userDataForm.controls['name'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['name'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
-
+    return ''
+  }
+  getErrorCuit(){
     //cuit
     if(this.userDataForm.controls['cuit'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['cuit'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
-
+    return ''
+  }
+  getErrorAddress() {
     //address
     if(this.userDataForm.controls['address'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['address'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
-
+    return ''
+  }
+  getErrorCp() {
     //código postal
     if(this.userDataForm.controls['cp'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['cp'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
-
+    return ''
+  }
+  getErrorPhone1() {
     //phone
     if(this.userDataForm.controls['phone_1'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['phone_1'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-
+    return ''
+  }
+  getErrorPhone2() {
     //phone2
     if(this.userDataForm.controls['phone_2'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['phone_2'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-
+    return ''
+  }
+  getErrorCity() {
     //city
     if(this.userDataForm.controls['city'].hasError('required')) return 'Tenés que ingresar un valor';
     if(this.userDataForm.controls['city'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['city'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-
+    return ''
+  }
+  getErrorState() {
     //state
     if(this.userDataForm.controls['state'].hasError('required')) return 'Tenés que ingresar un valor';
     if(this.userDataForm.controls['state'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['state'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-
+    return ''
+  }
+  getErrorCountry() {
     //country
     if(this.userDataForm.controls['country'].hasError('required')) return 'Tenés que ingresar un valor';
     if(this.userDataForm.controls['country'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.userDataForm.controls['country'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-    
     return ''
+  }
+
+  //Elimina todo lo que el reset básico no limpia
+  resetAll() {
+    if(this.enterprise) {
+      this.setFormValue(this.enterprise)
+    } else {
+      this.userDataForm.reset()
+      this.userDataForm.patchValue({id: this.enterprise['id']})
+    }
   }
 
   onSubmitPic() {

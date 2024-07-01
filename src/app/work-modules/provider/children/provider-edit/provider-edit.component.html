@@ -1,6 +1,16 @@
-<!--Componente que edita los campos del proveedor elegido -->
+<!-- Edit provider -->
 
-<mat-card class="card-product editProvider">
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+  <!-- Títulos -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-4 gap-md-0">
+    <div class="d-flex flex-column justify-content-center">
+        <h4 class="mb-1">Edición de proveedor</h4>
+        <p class="mb-0">Creá y editá tus proveedores aquí</p>
+    </div>
+  </div>
+  <!-- List Table -->
+  <mat-card class="card card-product editProvider">
     <mat-card-header>
       <mat-card-title>Información del Proveedor</mat-card-title>
     </mat-card-header>
@@ -66,7 +76,7 @@
           </mat-form-field>
         </div>
         <!-- Botones de reseteo y confirmación -->
-        <div class="product-info-btn-box">
+        <div class="submit-btn-box">
           <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
             Reset
           </button>
@@ -79,4 +89,5 @@
     <mat-card-footer class="login-footer">
       <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
     </mat-card-footer>
-</mat-card>
+  </mat-card>
+</div>  

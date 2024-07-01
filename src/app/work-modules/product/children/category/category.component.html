@@ -1,94 +1,82 @@
-<!-- Layout wrapper -->
-<div class="layout-wrapper layout-content-navbar">
-    <div class="layout-container">
-      <!-- Layout container -->
-      <div class="layout-page">
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-          <!-- Content -->
-          <div class="container-xxl flex-grow-1 container-p-y">
-            <!-- Product List Table -->
-            <mat-card class="card mb-6">
-              <mat-card-content class="mat-card-content">
-                <!-- Loader -->
-                <div class="product-loader" *ngIf="load">
-                  <p>Cargando...</p>
-                </div>
-                <!-- Table of products -->
-                <div class="box-list" *ngIf="!empty_categories">
-                  <div class="row justify-content-end">
-                    <div class="btn-addProduct col-md-4">
-                      <a mat-flat-button color="primary" routerLink="../add-category" *ngIf="permissions.includes(add_product_admin)">
-                        + Agregar Categoría
-                      </a>
-                    </div>
-                  </div>
-                  <table mat-table [dataSource]="dataSource" class="mt-1">
-                    <!-- id Column -->
-                    <ng-container matColumnDef="id">
-                      <th mat-header-cell *matHeaderCellDef>ID</th>
-                      <td mat-cell *matCellDef="let element">
-                        {{ element.id }}
-                      </td>
-                    </ng-container>
-                    <!-- category Column -->
-                    <ng-container matColumnDef="category">
-                      <th mat-header-cell *matHeaderCellDef>CATEGORIA</th>
-                      <td mat-cell *matCellDef="let element">
-                        <span class="badge rounded-pill cap" [style.color]="element.color_badge.color" [style.background-color]="element.color_badge.bgColor">
-                            {{ element.name }}
-                        </span>
-                      </td>
-                    </ng-container>
-                    <!-- stock Column -->
-                    <ng-container matColumnDef="stock">
-                      <th mat-header-cell *matHeaderCellDef class="max-500-hidden">STOCK POR CATEGORIA</th>
-                      <td mat-cell *matCellDef="let element" class="max-500-hidden">
-                        {{ element.total_stock_real || 0 }}
-                      </td>
-                    </ng-container>
-                    <!-- price Column -->
-                    <ng-container matColumnDef="price">
-                      <th mat-header-cell *matHeaderCellDef class="max-600-hidden">COSTO POR CATEGORIA</th>
-                      <td mat-cell *matCellDef="let element" class="max-600-hidden">
-                        ${{ element.total_sale_price || 0 | number:'1.2-2' }}
-                      </td>
-                    </ng-container>
-                    <!-- edit Column -->
-                    <ng-container matColumnDef="edit">
-                      <th mat-header-cell *matHeaderCellDef>EDITAR</th>
-                      <td mat-cell *matCellDef="let element">
-                        <button mat-icon-button aria-label="Edit category" (click)="editCategory(element.id)">
-                          <mat-icon>edit</mat-icon>
-                        </button>
-                      </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
-                </div>
-                <!-- Recharge button -->
-                <div class="product-recharge" *ngIf="recharge">
-                  <!-- Botón para recargar los datos -->
-                  <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
-                </div>
-                <!-- No products -->
-                <div class="product-recharge" *ngIf="empty_categories">
-                  <p>No hay categorías</p>
-                  <a mat-flat-button color="primary" routerLink="../add-category" *ngIf="permissions.includes(add_product_admin)">
-                    + Agregar Categoría
-                  </a>
-                </div>
-              </mat-card-content>
-            </mat-card>
-          </div>
-          <!-- / Content -->
-        </div>
-        <!-- Content wrapper -->
+<!-- List of categories -->
+
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+  <!-- Product List Table -->
+  <mat-card class="card mb-6">
+    <mat-card-content class="mat-card-content">
+      <!-- Loader -->
+      <div class="loader" *ngIf="load">
+        <p>Cargando...</p>
       </div>
-      <!-- / Layout page -->
-    </div>
-    <!-- / Layout container -->
-  </div>
-  <!-- / Layout wrapper -->
+      <!-- Table of products -->
+      <div class="box-list" *ngIf="!empty_categories">
+        <div class="row justify-content-end">
+          <div class="btn-addProduct col-md-4">
+            <a mat-flat-button color="primary" routerLink="../add-category" *ngIf="permissions.includes(add_product_admin)">
+              + Agregar Categoría
+            </a>
+          </div>
+        </div>
+        <table mat-table [dataSource]="dataSource" class="mt-1">
+          <!-- id Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.id }}
+            </td>
+          </ng-container>
+          <!-- category Column -->
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>CATEGORIA</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="badge rounded-pill cap" [style.color]="element.color_badge.color" [style.background-color]="element.color_badge.bgColor">
+                  {{ element.name }}
+              </span>
+            </td>
+          </ng-container>
+          <!-- stock Column -->
+          <ng-container matColumnDef="stock">
+            <th mat-header-cell *matHeaderCellDef class="max-500-hidden">STOCK POR CATEGORIA</th>
+            <td mat-cell *matCellDef="let element" class="max-500-hidden">
+              {{ element.total_stock_real || 0 }}
+            </td>
+          </ng-container>
+          <!-- price Column -->
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef class="max-600-hidden">COSTO POR CATEGORIA</th>
+            <td mat-cell *matCellDef="let element" class="max-600-hidden">
+              ${{ element.total_sale_price || 0 | number:'1.2-2' }}
+            </td>
+          </ng-container>
+          <!-- edit Column -->
+          <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef>EDITAR</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button aria-label="Edit category" (click)="editCategory(element.id)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <!-- Recharge button -->
+      <div class="recharge" *ngIf="recharge">
+        <!-- Botón para recargar los datos -->
+        <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
+      </div>
+      <!-- No categories -->
+      <div class="recharge" *ngIf="empty_categories">
+        <p>No hay categorías</p>
+        <a mat-flat-button color="primary" routerLink="../add-category" *ngIf="permissions.includes(add_product_admin)">
+          + Agregar Categoría
+        </a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<!-- / Content -->
+
   

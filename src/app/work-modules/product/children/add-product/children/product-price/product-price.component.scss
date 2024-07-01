@@ -2,6 +2,7 @@
 .card-product.addProduct.productPrice {
     mat-card-content {
         padding-bottom: 15px;
+        padding-top: 15px;
     }
     .box-reprice {
         display: flex;
@@ -11,7 +12,7 @@
             width: 95px !important;
         }
     }
-    .product-info-btn-box {
+    .submit-btn-box {
         display: flex;
         justify-content: flex-end;
     }

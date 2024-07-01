@@ -10,14 +10,40 @@ import { RolesComponent } from 'src/app/layouts/init/children/settings/children/
 const routes: Routes = [
   { path: '', component: SettingsComponent,
     children: [
-      { path: '', redirectTo: 'index', pathMatch: 'full' },
-      { path: 'index', component: IndexComponent },
-      { path: 'user-data', component: UserDataComponent },
-      { path: 'enterprise-info', loadChildren: () => import('./children/enterprise-info/enterprise-info.module').then(m => m.EnterpriseInfoModule) },
-      { path: 'billing', component: BillingComponent },
-      { path: 'security', component: SecurityComponent },
-      { path: 'roles', component: RolesComponent },
-      { path: '**', redirectTo: 'index', pathMatch: 'full' }
+      { 
+        path: '',
+        redirectTo: 'index',
+        pathMatch: 'full' 
+      },
+      { 
+        path: 'index',
+        component: IndexComponent
+      },
+      { 
+        path: 'user-data',
+        component: UserDataComponent 
+      },
+      { 
+        path: 'enterprise-info',
+        loadChildren: () => import('./children/enterprise-info/enterprise-info.module').then(m => m.EnterpriseInfoModule)
+      },
+      { 
+        path: 'billing',
+        component: BillingComponent 
+      },
+      { 
+        path: 'security',
+        component: SecurityComponent 
+      },
+      { 
+        path: 'roles',
+        component: RolesComponent 
+      },
+      { 
+        path: '**',
+        redirectTo: 'index',
+        pathMatch: 'full' 
+      }
     ]
   }
 ];

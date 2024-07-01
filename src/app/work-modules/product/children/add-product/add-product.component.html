@@ -1,37 +1,34 @@
+<!-- Edit product -->
 
-<div class="content-wrapper">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div>
-            <!-- Títulos -->
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 gap-4 gap-md-0">
-                <div class="d-flex flex-column justify-content-center">
-                    <h4 class="mb-1">Edición de producto</h4>
-                    <p class="mb-0">Creá y editá tus productos aquí</p>
-                </div>
-                <div class="d-flex align-content-center flex-wrap gap-4">
-                    <button mat-flat-button color="primary" *ngIf="!activeState" (click)="changeState('activo')" [disabled]="loading || !product.id">
-                        <span>Activar</span> Producto
-                    </button>
-                    <button mat-stroked-button color="warn" *ngIf="activeState" (click)="changeState('inactivo')" [disabled]="loading">
-                        <span>Desactivar</span> Producto
-                    </button>
-                </div>
-            </div>
-            <!-- Información -->
-            <div class="row pt-4">
-                <!-- Primera columna -->
-                <div class="col-12 col-lg-8">
-                    <app-product-information [product]="product"></app-product-information>
-                    <app-product-image [product]="product" *ngIf="product.id > 0"></app-product-image>
-                    <app-product-provider-data [product]="product" *ngIf="(product.id > 0) && this.permissions.includes(sens_info_admin)"></app-product-provider-data>
-                </div>
-                <!-- Segunda columna -->
-                <div class="col-12 col-lg-4">
-                    <app-product-stock [product]="product" *ngIf="product.id > 0"></app-product-stock>
-                    <app-product-price [product]="product" [permissions]="permissions" *ngIf="product.id > 0"></app-product-price>
-                    <app-product-storage [product]="product" *ngIf="product.id > 0"></app-product-storage>
-                </div>
-            </div>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Títulos -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-4 gap-md-0">
+        <div class="d-flex flex-column justify-content-center">
+            <h4 class="mb-1">Edición de producto</h4>
+            <p class="mb-0">Creá y editá tus productos aquí</p>
+        </div>
+        <div class="d-flex align-content-center flex-wrap gap-4">
+            <button mat-flat-button color="primary" *ngIf="!activeState" (click)="changeState('activo')" [disabled]="loading || !product.id">
+                <span>Activar</span> Producto
+            </button>
+            <button mat-stroked-button color="warn" *ngIf="activeState" (click)="changeState('inactivo')" [disabled]="loading">
+                <span>Desactivar</span> Producto
+            </button>
+        </div>
+    </div>
+    <!-- Información -->
+    <div class="row">
+        <!-- Primera columna -->
+        <div class="col-12 col-lg-8">
+            <app-product-information [product]="product"></app-product-information>
+            <app-product-image [product]="product" *ngIf="product.id > 0"></app-product-image>
+            <app-product-provider-data [product]="product" *ngIf="(product.id > 0) && this.permissions.includes(sens_info_admin)"></app-product-provider-data>
+        </div>
+        <!-- Segunda columna -->
+        <div class="col-12 col-lg-4">
+            <app-product-stock [product]="product" *ngIf="product.id > 0"></app-product-stock>
+            <app-product-price [product]="product" [permissions]="permissions" *ngIf="product.id > 0"></app-product-price>
+            <app-product-storage [product]="product" *ngIf="product.id > 0"></app-product-storage>
         </div>
     </div>
 </div>
