@@ -44,7 +44,7 @@ export class EnterpriseEditComponent implements OnInit {
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
-    this._conector.setUpdateTitle('Detalle de mi empresa')
+    this._conector.setUpdateTitle('Edición de mi empresa')
 
     //Carga el detector de tamaño del dispositivo
     this._conector.getScreenState().subscribe( screen => {

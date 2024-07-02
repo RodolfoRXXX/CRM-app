@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SettingsComponent } from './settings.component';
 import { BillingComponent } from './children/billing/billing.component';
-import { UserDataComponent } from './children/user-data/user-data.component';
 import { IndexComponent } from './children/index/index.component';
 import { SecurityComponent } from 'src/app/layouts/init/children/settings/children/security/security.component';
 import { RolesComponent } from 'src/app/layouts/init/children/settings/children/roles/roles.component';
@@ -20,8 +19,8 @@ const routes: Routes = [
         component: IndexComponent
       },
       { 
-        path: 'user-data',
-        component: UserDataComponent 
+        path: 'profile', 
+        loadChildren: () => import('./children/profile/profile.module').then(m => m.ProfileModule) 
       },
       { 
         path: 'enterprise-info',

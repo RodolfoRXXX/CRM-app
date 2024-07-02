@@ -1,0 +1,221 @@
+<!-- Edit working hours -->
+
+<!-- Card edit working hours -->
+<mat-card class="card card-product editProfile">
+    <mat-card-header>
+        <mat-card-title>Horario de trabajo</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+            <form [formGroup]="workDataForm" (ngSubmit)="onSubmitWork()">
+                <div class="user-data-container">
+                    <div formGroupName="work_hour">
+                        <div class="user-data-input mt-2">
+                            <p class="">Ingresá tus horarios laborales</p>
+                        </div>
+                        <!-- Monday -->
+                        <div class="work-hour border-bottom mb-1" formGroupName="monday">
+                            <div class="work-hour-day">
+                                <mat-checkbox (change)="enableRange($event, 'monday_in')">Lunes</mat-checkbox>
+                            </div>
+                            <div class="work-hour-range">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Entrada</mat-label>
+                                    <mat-select formControlName="monday_in" (valueChange)="enableRange($event, 'monday_out')">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Salida</mat-label>
+                                    <mat-select formControlName="monday_out">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="this.workDataForm.get('work_hour.monday.monday_out')!.errors">{{err_out()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- Tuesday -->
+                        <div class="work-hour border-bottom mb-1">
+                            <div class="work-hour-day">
+                                <mat-checkbox (change)="enableRange($event, 'tuesday_in')">Martes</mat-checkbox>
+                            </div>
+                            <div class="work-hour-range"  formGroupName="tuesday">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Entrada</mat-label>
+                                    <mat-select formControlName="tuesday_in" (valueChange)="enableRange($event, 'tuesday_out')">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Salida</mat-label>
+                                    <mat-select formControlName="tuesday_out">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="this.workDataForm.get('work_hour.tuesday.tuesday_out')!.errors">{{err_out()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- Wednesday -->
+                        <div class="work-hour border-bottom mb-1">
+                            <div class="work-hour-day">
+                                <mat-checkbox (change)="enableRange($event, 'wednesday_in')">Miércoles</mat-checkbox>
+                            </div>
+                            <div class="work-hour-range" formGroupName="wednesday">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Entrada</mat-label>
+                                    <mat-select formControlName="wednesday_in" (valueChange)="enableRange($event, 'wednesday_out')">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Salida</mat-label>
+                                    <mat-select formControlName="wednesday_out">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="this.workDataForm.get('work_hour.wednesday.wednesday_out')!.errors">{{err_out()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- Thursday -->
+                        <div class="work-hour border-bottom mb-1">
+                            <div class="work-hour-day">
+                                <mat-checkbox (change)="enableRange($event, 'thursday_in')">Jueves</mat-checkbox>
+                            </div>
+                            <div class="work-hour-range" formGroupName="thursday">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Entrada</mat-label>
+                                    <mat-select formControlName="thursday_in" (valueChange)="enableRange($event, 'thursday_out')">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Salida</mat-label>
+                                    <mat-select formControlName="thursday_out">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="this.workDataForm.get('work_hour.thursday.thursday_out')!.errors">{{err_out()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- Friday -->
+                        <div class="work-hour border-bottom mb-1">
+                            <div class="work-hour-day">
+                                <mat-checkbox (change)="enableRange($event, 'friday_in')">Viernes</mat-checkbox>
+                            </div>
+                            <div class="work-hour-range" formGroupName="friday">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Entrada</mat-label>
+                                    <mat-select formControlName="friday_in" (valueChange)="enableRange($event, 'friday_out')">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Salida</mat-label>
+                                    <mat-select formControlName="friday_out">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="this.workDataForm.get('work_hour.friday.friday_out')!.errors">{{err_out()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- Saturday -->
+                        <div class="work-hour border-bottom mb-1">
+                            <div class="work-hour-day">
+                                <mat-checkbox (change)="enableRange($event, 'saturday_in')">Sábado</mat-checkbox>
+                            </div>
+                            <div class="work-hour-range" formGroupName="saturday">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Entrada</mat-label>
+                                    <mat-select formControlName="saturday_in" (valueChange)="enableRange($event, 'saturday_out')">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Salida</mat-label>
+                                    <mat-select formControlName="saturday_out">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="this.workDataForm.get('work_hour.saturday.saturday_out')!.errors">{{err_out()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- Friday -->
+                        <div class="work-hour border-bottom mb-1">
+                            <div class="work-hour-day">
+                                <mat-checkbox (change)="enableRange($event, 'sunday_in')">Domingo</mat-checkbox>
+                            </div>
+                            <div class="work-hour-range" formGroupName="sunday">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Entrada</mat-label>
+                                    <mat-select formControlName="sunday_in" (valueChange)="enableRange($event, 'sunday_out')">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Salida</mat-label>
+                                    <mat-select formControlName="sunday_out">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour.value">
+                                            {{hour.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="this.workDataForm.get('work_hour.sunday.sunday_out')!.errors">{{err_out()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-data-input mt-2">
+                        <p class="m-b-0">Ingresá tu contacto de emergencia</p>
+                    </div>
+                    <div class="mid-user-data-container p-t-0 p-b-10">
+                        <div class="mid-user-data-input">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Nombre del contacto</mat-label>
+                                <input matInput placeholder="Nombre completo"
+                                        formControlName="name_er">
+                                <mat-error *ngIf="this.workDataForm.controls['name_er']!.errors">{{getErrorNameEr()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="mid-user-data-input">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Teléfono del contacto</mat-label>
+                                <input matInput placeholder="341xxxxxxx"
+                                        formControlName="phone_er">
+                                <mat-error *ngIf="this.workDataForm.controls['phone_er']!.errors">{{getErrorPhoneEr()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="user-data-input">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="workDataForm.invalid || workDataForm.untouched || workDataForm.pristine || this.disable_submit_work">Actualizar Datos Laborales</button>
+                    </div>
+                </div>
+            </form>
+    </mat-card-content>
+    <mat-card-footer class="login-footer">
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

@@ -20,7 +20,7 @@ import { MaterialModule } from 'src/app/material/material/material.module';
     EnterpriseInfoRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ]
 })
 export class EnterpriseInfoModule { }

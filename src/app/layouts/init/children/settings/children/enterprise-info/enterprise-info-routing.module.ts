@@ -28,7 +28,7 @@ const routes: Routes = [
         redirectTo: 'enterprise-detail',
         pathMatch: 'full' }
     ]
-   }
+  }
 ];
 
 @NgModule({

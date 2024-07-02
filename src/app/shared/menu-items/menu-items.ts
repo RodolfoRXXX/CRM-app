@@ -3,9 +3,12 @@ import { Menu } from '../interfaces/menu.interface';
 
 const MENUSETTINGS = [
     { state: 'index', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: 'user-data', name: 'Mi cuenta', type: 'employee', icon: 'fingerprint', children: [] },
+    { state: '', name: 'Mi cuenta', type: 'employee', icon: 'fingerprint', children: [
+        { state: 'profile/profile-detail', name: 'Detalle de mi perfíl', type: '', icon: '' },
+        { state: 'profile/profile-edit', name: 'Editar perfíl', type: '', icon: '' }
+    ] },
     { state: '', name: 'Mi empresa', type: '1', icon: 'business', children: [
-        { state: 'enterprise-info/enterprise-detail', name: 'Detalle de la empresa', type: '', icon: '' },
+        { state: 'enterprise-info/enterprise-detail', name: 'Detalle de mi empresa', type: '', icon: '' },
         { state: 'enterprise-info/enterprise-edit', name: 'Editar empresa', type: '', icon: '' }
     ] },
     { state: 'billing', name: 'Facturación', type: '2', icon: 'attach_money', children: [] },

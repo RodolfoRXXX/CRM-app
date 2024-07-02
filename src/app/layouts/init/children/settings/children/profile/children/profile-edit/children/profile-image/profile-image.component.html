@@ -1,0 +1,45 @@
+<!-- Edit user image -->
+
+<!-- Card edit data -->
+<mat-card class="card card-product editProfile">
+    <mat-card-header>
+        <mat-card-title>Imagen de usuario</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="box-edit-image">
+            <div class="box-image">
+                <div class="spinner-load-image" *ngIf="load">
+                    <mat-spinner></mat-spinner>
+                </div>
+                <label class="label-image" for="user-image"><p><mat-icon>add_a_photo</mat-icon> <br>Cargá tu imagen aquí</p></label>
+                <img class="user-image" [src]="base_image">
+            </div>
+            <form [formGroup]="dataForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+                <div class="user-data-container pt-0">
+                    <div class="user-data-input">
+                        <input type="file" id="user-image" accept="image/*" (change)="capture_img($event)">
+                    </div>
+                    <div class="image-data-input">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="dataForm.invalid || this.load || this.disable_pic">
+                            <span *ngIf="screenLarge">Guardar nueva imagen</span>
+                            <span *ngIf="!screenLarge"><mat-icon>add_a_photo</mat-icon></span>
+                        </button>
+                        <button mat-stroked-button color="warn" type="reset">
+                            <span *ngIf="screenLarge">Reset</span>
+                            <span *ngIf="!screenLarge"><mat-icon>refresh</mat-icon></span>
+                        </button>
+                    </div>
+                    <div class="text-data-input">
+                        <p>La imagen debe ser mayor a 50KB y no superar los 10MB. Los formatos aceptados son JPG, JPEG y PNG.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="box-image-error mb-3">
+            <p class="error-image" *ngIf="(this.dataForm.controls['thumbnail']!.errors && this.dataForm.controls['thumbnail']!.value) || (error_image)">{{ error_image }}</p>
+        </div>
+    </mat-card-content>
+    <mat-card-footer class="login-footer">
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

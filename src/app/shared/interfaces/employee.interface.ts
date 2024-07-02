@@ -5,6 +5,9 @@ export interface Employee {
     name: string,
     email: string,
     address: string,
+    city: string,
+    state: string,
+    country: string,
     date: string,
     phone: string,
     mobile: string,
@@ -12,9 +15,10 @@ export interface Employee {
     working_hours: string,
     name_er: string,
     phone_er: string,
-    state: number,
+    status: number,
     name_role: string,
     list_of_permissions: string,
+    created: string
 }
 
 export const empty_employee: Employee = {
@@ -24,6 +28,9 @@ export const empty_employee: Employee = {
     name: '',
     email: '',
     address: '',
+    city: '',
+    state: '',
+    country: '',
     date: '',
     phone: '',
     mobile: '',
@@ -31,7 +38,8 @@ export const empty_employee: Employee = {
     working_hours: '',
     name_er: '',
     phone_er: '',
-    state: 0,
+    status: 0,
     name_role: '',
     list_of_permissions: '',
+    created: ''
 }

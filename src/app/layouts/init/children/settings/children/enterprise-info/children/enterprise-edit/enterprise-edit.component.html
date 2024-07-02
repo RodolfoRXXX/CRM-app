@@ -1,145 +1,141 @@
-<mat-card class="mat-card">
-    <mat-card-content class="mat-card-content">
-        <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button">
-            <mat-icon>keyboard_backspace</mat-icon>
-        </a>
-        <mat-card-title class="mat-card-title">
-            Detalles de la empresa
-        </mat-card-title>
-        <mat-card-subtitle class="mat-card-subtitle">
-            Completá con la información de la empresa
-        </mat-card-subtitle>
-        <div class="box-edit-image">
-            <div class="box-image">
-                <div class="spinner-load-image" *ngIf="load">
-                    <mat-spinner></mat-spinner>
+<!-- Edit enterprise -->
+
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Títulos -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-4 gap-md-0">
+        <div class="d-flex flex-column justify-content-center">
+            <h4 class="mb-1">Edición de Mi Empresa</h4>
+            <p class="mb-0">Editá la información de tu empresa aquí</p>
+        </div>
+    </div>
+    <!-- Card edit -->
+    <mat-card class="card card-product editEnterprise">
+        <mat-card-header>
+            <mat-card-title>Información de Mi Empresa</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="box-edit-image">
+                <div class="box-image">
+                    <div class="spinner-load-image" *ngIf="load">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <label class="label-image" for="user-image"><p><mat-icon>add_a_photo</mat-icon> <br>Cargá tu imagen aquí</p></label>
+                    <img class="user-image" [src]="base_image">
                 </div>
-                <label class="label-image" for="user-image"><p><mat-icon>add_a_photo</mat-icon> <br>Cargá tu imagen aquí</p></label>
-                <img class="user-image" [src]="base_image">
+                <form [formGroup]="picDataForm" enctype="multipart/form-data" (ngSubmit)="onSubmitPic()">
+                    <div class="user-data-container pt-0">
+                        <div class="user-data-input">
+                            <input type="file" id="user-image" accept="image/*" (change)="capture_img($event)">
+                        </div>
+                        <div class="image-data-input">
+                            <button mat-raised-button color="primary" type="submit" [disabled]="picDataForm.invalid || this.load || this.disable_pic">
+                                <span *ngIf="screenLarge">Guardar nueva imagen</span>
+                                <span *ngIf="!screenLarge"><mat-icon>add_a_photo</mat-icon></span>
+                            </button>
+                            <button mat-stroked-button color="warn" type="reset" (click)="setDataUser()">
+                                <span *ngIf="screenLarge">Reset</span>
+                                <span *ngIf="!screenLarge"><mat-icon>refresh</mat-icon></span>
+                            </button>
+                        </div>
+                        <div class="text-data-input">
+                            <p>La imagen debe ser mayor a 50KB y no superar los 10MB. Los formatos aceptados son JPG, JPEG y PNG.</p>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <form [formGroup]="picDataForm" enctype="multipart/form-data" (ngSubmit)="onSubmitPic()">
-                <div class="user-data-container pt-0">
-                    <div class="user-data-input">
-                        <input type="file" id="user-image" accept="image/*" (change)="capture_img($event)">
-                    </div>
-                    <div class="image-data-input">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="picDataForm.invalid || this.load || this.disable_pic">
-                            <span *ngIf="screenLarge">Guardar nueva imagen</span>
-                            <span *ngIf="!screenLarge"><mat-icon>add_a_photo</mat-icon></span>
-                        </button>
-                        <button mat-stroked-button color="warn" type="reset" (click)="setDataUser()">
-                            <span *ngIf="screenLarge">Reset</span>
-                            <span *ngIf="!screenLarge"><mat-icon>refresh</mat-icon></span>
-                        </button>
-                    </div>
-                    <div class="text-data-input">
-                        <p>La imagen debe ser mayor a 50KB y no superar los 10MB. Los formatos aceptados son JPG, JPEG y PNG.</p>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="box-image-error">
-            <p class="error-image" *ngIf="(this.picDataForm.controls['thumbnail']!.errors && this.picDataForm.controls['thumbnail']!.value) || (error_image)">{{ error_image }}</p>
-        </div>
-        <div>
-            <!-- Este es el bueno -->
-            <form class="form-user-data" [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
-                <div class="mid-user-data-container">
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Razón social</mat-label>
-                            <input matInput
-                                    formControlName="name" 
-                                    required>
-                            <mat-error class="fs-08" *ngIf="this.userDataForm.controls['name']!.errors">{{getErrorName()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>CUIT(sin guiones)</mat-label>
+            <div class="box-image-error mb-3">
+                <p class="error-image" *ngIf="(this.picDataForm.controls['thumbnail']!.errors && this.picDataForm.controls['thumbnail']!.value) || (error_image)">{{ error_image }}</p>
+            </div>
+            <form [formGroup]="userDataForm" (ngSubmit)="onSubmitUser()">
+                <!-- name and cuit -->
+                <div class="row">
+                    <!-- Name -->
+                    <mat-form-field appearance="outline" class="col-12 col-sm-8">
+                        <mat-label>Razón Social</mat-label>
+                        <input matInput
+                                type="text"
+                                formControlName="name">
+                        <mat-error class="fs-08" *ngIf="this.userDataForm.controls['name']!.errors">{{getErrorName()}}</mat-error>
+                    </mat-form-field>
+                    <!-- Cuit -->
+                    <mat-form-field appearance="outline" class="col-12 col-sm-4">
+                        <mat-label>CUIT(sin guiones)</mat-label>
                             <input matInput placeholder="00-12345678-9"
                                     formControlName="cuit" 
                                     >
-                            <mat-error class="fs-08" *ngIf="this.userDataForm.controls['cuit']!.errors">{{getErrorCuit()}}</mat-error>
-                        </mat-form-field>
-                    </div>
+                        <mat-error class="fs-08" *ngIf="this.userDataForm.controls['cuit']!.errors">{{getErrorCuit()}}</mat-error>
+                    </mat-form-field>
                 </div>
-
-                <div class="mid-user-data-container">
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Dirección</mat-label>
+                <!-- Address and Cp -->
+                <div class="row">
+                    <!-- Address -->
+                    <mat-form-field appearance="outline" class="col-12 col-md-6">
+                        <mat-label>Dirección</mat-label>
                             <input matInput placeholder="Calle sin nombre 123"
                                     formControlName="address" 
                                     >
-                            <mat-error class="fs-08" *ngIf="this.userDataForm.controls['address']!.errors">{{getErrorAddress()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Código postal</mat-label>
+                        <mat-error class="fs-08" *ngIf="this.userDataForm.controls['address']!.errors">{{getErrorAddress()}}</mat-error>
+                    </mat-form-field>
+                    <!-- Postal Code -->
+                    <mat-form-field appearance="outline" class="col-12 col-md-6">
+                        <mat-label>Código postal</mat-label>
                             <input matInput placeholder="Código postal"
                                     formControlName="cp" 
                                     >
-                            <mat-error class="fs-08" *ngIf="this.userDataForm.controls['cp']!.errors">{{getErrorCp()}}</mat-error>
-                        </mat-form-field>
-                    </div>
+                        <mat-error class="fs-08" *ngIf="this.userDataForm.controls['cp']!.errors">{{getErrorCp()}}</mat-error>
+                    </mat-form-field>
                 </div>
-
-                <div class="mid-user-data-container">
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Teléfono 1</mat-label>
+                <!-- Phone 1 and phone 2 -->
+                <div class="row">
+                    <!-- Phone 1 -->
+                    <mat-form-field appearance="outline" class="col-12 col-sm-6">
+                        <mat-label>Teléfono 1</mat-label>
                             <span matPrefix>+341 &nbsp;</span>
                             <input matInput placeholder="123-4567"
                                     formControlName="phone_1" 
                                     >
                             <mat-error class="fs-08" *ngIf="this.userDataForm.controls['phone_1']!.errors">{{getErrorPhone1()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Teléfono 2</mat-label>
+                    </mat-form-field>
+                    <!-- Phone 2 -->
+                    <mat-form-field appearance="outline" class="col-12 col-sm-6">
+                        <mat-label>Teléfono 2</mat-label>
                             <span matPrefix>+341 &nbsp;</span>
                             <input matInput placeholder="123-4567"
                                     formControlName="phone_2" 
                                     >
                             <mat-error class="fs-08" *ngIf="this.userDataForm.controls['phone_2']!.errors">{{getErrorPhone2()}}</mat-error>
-                        </mat-form-field>
-                    </div>
+                    </mat-form-field>
                 </div>
-
-                <div class="mid-user-data-container">
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Ciudad</mat-label>
+                <!-- City, state and country -->
+                <div class="row">
+                    <!-- City -->
+                    <mat-form-field appearance="outline" class="col-12 col-md-4">
+                        <mat-label>Ciudad</mat-label>
                             <input matInput
                                     formControlName="city" 
                                     required>
-                            <mat-error class="fs-08" *ngIf="this.userDataForm.controls['city']!.errors">{{getErrorCity()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Provincia</mat-label>
+                        <mat-error class="fs-08" *ngIf="this.userDataForm.controls['city']!.errors">{{getErrorCity()}}</mat-error>
+                    </mat-form-field>
+                    <!-- State -->
+                    <mat-form-field appearance="outline" class="col-12 col-md-4">
+                        <mat-label>Provincia</mat-label>
                             <input matInput
                                     formControlName="state" 
                                     required>
-                            <mat-error class="fs-08" *ngIf="this.userDataForm.controls['state']!.errors">{{getErrorState()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="mid-user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>País</mat-label>
+                        <mat-error class="fs-08" *ngIf="this.userDataForm.controls['state']!.errors">{{getErrorState()}}</mat-error>
+                    </mat-form-field>
+                    <!-- Country -->
+                    <mat-form-field appearance="outline" class="col-12 col-md-4">
+                        <mat-label>País</mat-label>
                             <input matInput
                                     formControlName="country" 
                                     required>
-                            <mat-error class="fs-08" *ngIf="this.userDataForm.controls['country']!.errors">{{getErrorCountry()}}</mat-error>
-                        </mat-form-field>
-                    </div>
+                        <mat-error class="fs-08" *ngIf="this.userDataForm.controls['country']!.errors">{{getErrorCountry()}}</mat-error>
+                    </mat-form-field>
                 </div>
-
-                <div class="d-flex justify-content-end">
+                <!-- Botones de reseteo y confirmación -->
+                <div class="submit-btn-box">
                     <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
                         Reset
                     </button>
@@ -148,9 +144,9 @@
                     </button>
                 </div>
             </form>
-        </div>
-    </mat-card-content>
-    <mat-card-footer class="login-footer">
-        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    </mat-card-footer>
-</mat-card>
+        </mat-card-content>
+        <mat-card-footer class="login-footer">
+            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</div>
