@@ -53,7 +53,7 @@
           <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
             Reset
           </button>
-          <button mat-stroked-button color="primary" [disabled]="(this.dataForm.status == 'INVALID') || loading || this.dataForm.untouched || this.dataForm.pristine">
+          <button mat-stroked-button color="primary" [disabled]="(this.dataForm.status == 'INVALID') || loading">
             Guardar
           </button>
         </div>

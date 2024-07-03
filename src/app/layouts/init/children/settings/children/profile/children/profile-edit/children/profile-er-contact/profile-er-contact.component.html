@@ -1,37 +1,36 @@
 <!-- Edit ER contact -->
 
 <!-- Card edit -->
-<mat-card class="card card-product editProfile">
+<mat-card class="card card-user editContactEr">
     <mat-card-header>
         <mat-card-title>Contactos de emergencia</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-            <form [formGroup]="workDataForm" (ngSubmit)="onSubmitWork()">
-                <div class="user-data-container">
-                    <div class="user-data-input mt-2">
-                        <p class="m-b-0">Ingresá tu contacto de emergencia</p>
-                    </div>
-                    <div class="mid-user-data-container p-t-0 p-b-10">
-                        <div class="mid-user-data-input">
-                            <mat-form-field appearance="fill">
-                                <mat-label>Nombre del contacto</mat-label>
-                                <input matInput placeholder="Nombre completo"
-                                        formControlName="name_er">
-                                <mat-error *ngIf="this.workDataForm.controls['name_er']!.errors">{{getErrorNameEr()}}</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="mid-user-data-input">
-                            <mat-form-field appearance="fill">
-                                <mat-label>Teléfono del contacto</mat-label>
-                                <input matInput placeholder="341xxxxxxx"
-                                        formControlName="phone_er">
-                                <mat-error *ngIf="this.workDataForm.controls['phone_er']!.errors">{{getErrorPhoneEr()}}</mat-error>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="user-data-input">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="workDataForm.invalid || workDataForm.untouched || workDataForm.pristine || this.disable_submit_work">Actualizar Datos Laborales</button>
-                    </div>
+            <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+                <!-- Contact name -->
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Nombre del contacto</mat-label>
+                    <input matInput
+                            formControlName="name_er"
+                            required>
+                    <mat-error *ngIf="this.dataForm.controls['name_er']!.errors">{{getErrorNameEr()}}</mat-error>
+                </mat-form-field>
+                <!-- Contact phone -->
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Teléfono del contacto</mat-label>
+                    <input matInput
+                            formControlName="phone_er"
+                            required>
+                    <mat-error *ngIf="this.dataForm.controls['phone_er']!.errors">{{getErrorPhoneEr()}}</mat-error>
+                </mat-form-field>
+                <!-- Botones de reseteo y confirmación -->
+                <div class="submit-btn-box">
+                    <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
+                        Reset
+                    </button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="dataForm.invalid || dataForm.untouched || dataForm.pristine">
+                        Actualizar datos
+                    </button>
                 </div>
             </form>
     </mat-card-content>

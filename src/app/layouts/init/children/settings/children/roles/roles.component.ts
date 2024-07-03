@@ -52,6 +52,7 @@ export class RolesComponent implements OnInit {
 
   getDataLocal(): Promise<any> {
     const data = JSON.parse(this._auth.getDataFromLocalStorage());
+    console.log(this._auth.getDataFromLocalStorage())
     return data.id_enterprise;
   }
 

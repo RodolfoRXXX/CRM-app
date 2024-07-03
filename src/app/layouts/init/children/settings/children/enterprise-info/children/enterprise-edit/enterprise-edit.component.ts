@@ -69,12 +69,8 @@ export class EnterpriseEditComponent implements OnInit {
                   this.base_image = environment.SERVER + res.data[0].thumbnail;
                   this.picDataForm.patchValue({
                     id: res.data[0].id,
+                    prev_thumb: res.data[0].thumbnail
                   })
-                  if(res.data[0].thumbnail != 'blanck_enterprise.png') {
-                    this.picDataForm.patchValue({
-                      blanck: false
-                    })
-                  }
                   this.enterprise = res.data[0]
                   this.setFormValue(this.enterprise);
                 } else {
@@ -95,29 +91,22 @@ export class EnterpriseEditComponent implements OnInit {
         .finally( () => this.error_image = '')
   }
 
-  setFormValue(data: any) {
-    this.userDataForm.controls['id'].setValue(data.id);
-    this.userDataForm.controls['name'].setValue(data.name);
-    this.userDataForm.controls['cuit'].setValue(data.cuit);
-    this.userDataForm.controls['address'].setValue(data.address);
-    this.userDataForm.controls['cp'].setValue(data.cp);
-    this.userDataForm.controls['phone_1'].setValue(data.phone_1);
-    this.userDataForm.controls['phone_2'].setValue(data.phone_2);
-    this.userDataForm.controls['city'].setValue(data.city);
-    this.userDataForm.controls['state'].setValue(data.state);
-    this.userDataForm.controls['country'].setValue(data.country);
-  }
-
+  //Crea el formulario de la imagen de la empresa
   createPicForm(): void {
     this.picDataForm = new FormGroup({
-        id: new FormControl(''),
+        id: new FormControl('', [
+          Validators.required
+        ]),
         thumbnail : new FormControl('', [
           Validators.required
         ]),
-        blanck: new FormControl(true)
+        prev_thumb: new FormControl('', [
+          Validators.required
+        ])
     });
   }
 
+  //Crea el formulario de datos de la empresa
   createUserForm(): void {
     this.userDataForm = new FormGroup({
         id: new FormControl(''),
@@ -162,6 +151,19 @@ export class EnterpriseEditComponent implements OnInit {
           Validators.maxLength(15)
         ]),
     });
+  }
+  //Setea el formulario de datos de la empresa
+  setFormValue(data: any) {
+    this.userDataForm.controls['id'].setValue(data.id);
+    this.userDataForm.controls['name'].setValue(data.name);
+    this.userDataForm.controls['cuit'].setValue(data.cuit);
+    this.userDataForm.controls['address'].setValue(data.address);
+    this.userDataForm.controls['cp'].setValue(data.cp);
+    this.userDataForm.controls['phone_1'].setValue(data.phone_1);
+    this.userDataForm.controls['phone_2'].setValue(data.phone_2);
+    this.userDataForm.controls['city'].setValue(data.city);
+    this.userDataForm.controls['state'].setValue(data.state);
+    this.userDataForm.controls['country'].setValue(data.country);
   }
 
   capture_img(event: any) {
@@ -224,64 +226,65 @@ export class EnterpriseEditComponent implements OnInit {
     }, 2500);
   }
 
-  getErrorName() {
-    //name
-    if(this.userDataForm.controls['name'].hasError('required')) return 'Tenés que ingresar un valor';
-    if(this.userDataForm.controls['name'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['name'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
-    return ''
-  }
-  getErrorCuit(){
-    //cuit
-    if(this.userDataForm.controls['cuit'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['cuit'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
-    return ''
-  }
-  getErrorAddress() {
-    //address
-    if(this.userDataForm.controls['address'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['address'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
-    return ''
-  }
-  getErrorCp() {
-    //código postal
-    if(this.userDataForm.controls['cp'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['cp'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
-    return ''
-  }
-  getErrorPhone1() {
-    //phone
-    if(this.userDataForm.controls['phone_1'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['phone_1'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-    return ''
-  }
-  getErrorPhone2() {
-    //phone2
-    if(this.userDataForm.controls['phone_2'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['phone_2'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-    return ''
-  }
-  getErrorCity() {
-    //city
-    if(this.userDataForm.controls['city'].hasError('required')) return 'Tenés que ingresar un valor';
-    if(this.userDataForm.controls['city'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['city'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-    return ''
-  }
-  getErrorState() {
-    //state
-    if(this.userDataForm.controls['state'].hasError('required')) return 'Tenés que ingresar un valor';
-    if(this.userDataForm.controls['state'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['state'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-    return ''
-  }
-  getErrorCountry() {
-    //country
-    if(this.userDataForm.controls['country'].hasError('required')) return 'Tenés que ingresar un valor';
-    if(this.userDataForm.controls['country'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
-    if(this.userDataForm.controls['country'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
-    return ''
-  }
+  //Mensajes de error
+    getErrorName() {
+      //name
+      if(this.userDataForm.controls['name'].hasError('required')) return 'Tenés que ingresar un valor';
+      if(this.userDataForm.controls['name'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['name'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
+      return ''
+    }
+    getErrorCuit(){
+      //cuit
+      if(this.userDataForm.controls['cuit'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['cuit'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
+      return ''
+    }
+    getErrorAddress() {
+      //address
+      if(this.userDataForm.controls['address'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['address'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
+      return ''
+    }
+    getErrorCp() {
+      //código postal
+      if(this.userDataForm.controls['cp'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['cp'].hasError('maxlength')) return 'Este valor debe tener menos de 30 caracteres';
+      return ''
+    }
+    getErrorPhone1() {
+      //phone
+      if(this.userDataForm.controls['phone_1'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['phone_1'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
+      return ''
+    }
+    getErrorPhone2() {
+      //phone2
+      if(this.userDataForm.controls['phone_2'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['phone_2'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
+      return ''
+    }
+    getErrorCity() {
+      //city
+      if(this.userDataForm.controls['city'].hasError('required')) return 'Tenés que ingresar un valor';
+      if(this.userDataForm.controls['city'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['city'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
+      return ''
+    }
+    getErrorState() {
+      //state
+      if(this.userDataForm.controls['state'].hasError('required')) return 'Tenés que ingresar un valor';
+      if(this.userDataForm.controls['state'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['state'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
+      return ''
+    }
+    getErrorCountry() {
+      //country
+      if(this.userDataForm.controls['country'].hasError('required')) return 'Tenés que ingresar un valor';
+      if(this.userDataForm.controls['country'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
+      if(this.userDataForm.controls['country'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres';
+      return ''
+    }
 
   //Elimina todo lo que el reset básico no limpia
   resetAll() {
@@ -296,7 +299,7 @@ export class EnterpriseEditComponent implements OnInit {
   onSubmitPic() {
     this.disable_pic = true;
     this.load = true;
-    this._api.postTypeRequest('profile/load-logo-image', this.picDataForm.value).subscribe({
+    this._api.postTypeRequest('profile/update-logo-image', this.picDataForm.value).subscribe({
       next: (res: any) => {
         this.load =  false;
         if(res.status == 1){

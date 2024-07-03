@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -12,7 +12,7 @@ import { environment } from 'src/enviroments/enviroment';
   templateUrl: './product-image.component.html',
   styleUrls: ['./product-image.component.scss']
 })
-export class ProductImageComponent implements OnInit {
+export class ProductImageComponent {
 
   @Input() product!: Product;
 
@@ -33,8 +33,6 @@ export class ProductImageComponent implements OnInit {
     this.loading = false;
     this.createDataForm();
   }
-
-  ngOnInit(): void {}
   
   // Toma los cambios del Input de entrada y actualiza la data
   ngOnChanges(changes: SimpleChanges) {
@@ -52,7 +50,9 @@ export class ProductImageComponent implements OnInit {
       image: new FormControl('', [
         Validators.required,
       ]),
-      blanck: new FormControl(true)
+      prev_thumb: new FormControl('', [
+        Validators.required
+      ])
     });
   }
 
@@ -60,9 +60,9 @@ export class ProductImageComponent implements OnInit {
   setDataForm(product: Product): void {
     if (product) {
       this.dataForm.patchValue({
-        id: product.id > 0 ? product.id : '',
+        id: (product.id > 0)?product.id:'',
         image: '',
-        blanck: (product.image == 'no-image.png')
+        prev_thumb: (product.image != '')?product.image:''      
       });
   
       if (product.image) {

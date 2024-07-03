@@ -1,44 +1,65 @@
 <!-- Edit user image -->
 
 <!-- Card edit data -->
-<mat-card class="card card-product editProfile">
+<mat-card class="card card-user editImage">
     <mat-card-header>
         <mat-card-title>Imagen de usuario</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <div class="box-edit-image">
-            <div class="box-image">
-                <div class="spinner-load-image" *ngIf="load">
-                    <mat-spinner></mat-spinner>
-                </div>
-                <label class="label-image" for="user-image"><p><mat-icon>add_a_photo</mat-icon> <br>Cargá tu imagen aquí</p></label>
-                <img class="user-image" [src]="base_image">
+        <form [formGroup]="dataForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+          <!-- Caja donde colocar o buscar la imagen deseada -->
+          <div class="box-file-upload">
+            <div class="img-selected">
+  
+              <!-- label de cargando... -->
+              <h5 class="text-muted" *ngIf="load_image">
+                cargando...
+              </h5>
+              
+              <!-- caja de imagen -->
+              <img *ngIf="imageSrc && !load_image" [src]="imageSrc" alt="Imagen seleccionada" />
+  
+              <!-- Error de la imagen -->
+              <div class="error-box" *ngIf="error_image">
+                  <h5>{{ error_image }}</h5>
+              </div>
             </div>
-            <form [formGroup]="dataForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
-                <div class="user-data-container pt-0">
-                    <div class="user-data-input">
-                        <input type="file" id="user-image" accept="image/*" (change)="capture_img($event)">
-                    </div>
-                    <div class="image-data-input">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="dataForm.invalid || this.load || this.disable_pic">
-                            <span *ngIf="screenLarge">Guardar nueva imagen</span>
-                            <span *ngIf="!screenLarge"><mat-icon>add_a_photo</mat-icon></span>
-                        </button>
-                        <button mat-stroked-button color="warn" type="reset">
-                            <span *ngIf="screenLarge">Reset</span>
-                            <span *ngIf="!screenLarge"><mat-icon>refresh</mat-icon></span>
-                        </button>
-                    </div>
-                    <div class="text-data-input">
-                        <p>La imagen debe ser mayor a 50KB y no superar los 10MB. Los formatos aceptados son JPG, JPEG y PNG.</p>
-                    </div>
+            <div class="img-dropzone"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              (drop)="onDrop($event)"
+              [class.dragover]="isDragOver">
+  
+              <!-- caja para arrojar la imagen o cargarla -->
+              <div class="d-flex justify-content-center">
+                <div class="avatar">
+                  <span class="material-icons soft-grey-badge">
+                    file_upload
+                  </span>
                 </div>
-            </form>
-        </div>
-        <div class="box-image-error mb-3">
-            <p class="error-image" *ngIf="(this.dataForm.controls['thumbnail']!.errors && this.dataForm.controls['thumbnail']!.value) || (error_image)">{{ error_image }}</p>
-        </div>
-    </mat-card-content>
+              </div>
+              <p class="text-file">Arrastra y suelta tus imágenes aquí</p>
+              <small class="text-muted subtext-file">o</small>
+  
+              <label for="user-image" class="btn btn-outline-success">
+                <p class="fs-08 mb-0">Carga desde tu pc</p>
+              </label>
+  
+              <input type="file" id="user-image" accept="image/*" style="display: hidden;" (change)="capture_img($event)">
+            </div>
+          </div>
+          
+          <!-- Botones de reseteo y confirmación -->
+          <div class="submit-btn-box">
+            <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
+              Reset
+            </button>
+            <button mat-stroked-button color="primary" [disabled]="(this.dataForm.status == 'INVALID') || loading">
+              Guardar
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
     <mat-card-footer class="login-footer">
         <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
     </mat-card-footer>

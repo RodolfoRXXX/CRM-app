@@ -5,7 +5,6 @@ import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings.component';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { BillingComponent } from './children/billing/billing.component';
-import { UserDataComponent } from './children/user-data/user-data.component';
 import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.component';
 import { IndexComponent } from './children/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +19,6 @@ import { RolesComponent } from 'src/app/layouts/init/children/settings/children/
     declarations: [
         SettingsComponent,
         BillingComponent,
-        UserDataComponent,
         IndexComponent,
         SecurityComponent,
         RolesComponent

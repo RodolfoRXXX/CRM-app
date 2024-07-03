@@ -57,7 +57,6 @@ export class ProductStorageComponent {
         .subscribe({
           next: (response: any) => {
             this.storages = response.data;
-            console.log(this.storages)
             this.setSelectedStorage(this.product.storage_location)
             resolve();
           },
