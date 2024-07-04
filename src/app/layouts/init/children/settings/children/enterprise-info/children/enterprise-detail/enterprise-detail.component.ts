@@ -29,7 +29,6 @@ export class EnterpriseDetailComponent implements OnInit {
   ngOnInit(): void {
     this._conector.setUpdateTitle('Detalles de mi empresa');
     this.fetchEnterprise();
-
   }
 
   fetchEnterprise(): void {

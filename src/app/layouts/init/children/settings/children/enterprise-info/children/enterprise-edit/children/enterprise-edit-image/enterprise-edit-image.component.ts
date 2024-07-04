@@ -4,17 +4,17 @@ import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ImageService } from 'src/app/services/image.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { User } from 'src/app/shared/interfaces/user.interface';
+import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
 import { environment } from 'src/enviroments/enviroment';
 
 @Component({
-  selector: 'app-profile-image',
-  templateUrl: './profile-image.component.html',
-  styleUrls: ['./profile-image.component.scss']
+  selector: 'app-enterprise-edit-image',
+  templateUrl: './enterprise-edit-image.component.html',
+  styleUrls: ['./enterprise-edit-image.component.scss']
 })
-export class ProfileImageComponent {
+export class EnterpriseEditImageComponent {
 
-  @Input() user!: User;
+  @Input() enterprise!: Enterprise;
 
   isDragOver = false;
   imageSrc: string | ArrayBuffer | null = null;
@@ -35,8 +35,8 @@ export class ProfileImageComponent {
   
   // Toma los cambios del Input de entrada y actualiza la data
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['user']) {
-      this.setDataForm(changes['user'].currentValue)
+    if (changes['enterprise']) {
+      this.setDataForm(changes['enterprise'].currentValue)
     }
   }
   
@@ -56,16 +56,16 @@ export class ProfileImageComponent {
   }
 
   // Setea los valores del formulario
-  setDataForm(user: User): void {
-    if (user) {
+  setDataForm(enterprise: Enterprise): void {
+    if (enterprise) {
       this.dataForm.patchValue({
-        id: (user.id > 0)?user.id:'',
+        id: (enterprise.id > 0)?enterprise.id:'',
         thumbnail: '',
-        prev_thumb: (user.thumbnail != '')?user.thumbnail:''
+        prev_thumb: (enterprise.thumbnail != '')?enterprise.thumbnail:''
       });
   
-      if (user.thumbnail) {
-        this.imageSrc = this.uriImg + user.thumbnail;
+      if (enterprise.thumbnail) {
+        this.imageSrc = this.uriImg + enterprise.thumbnail;
       } else {
         this.imageSrc = ''; // Limpia la imagen si no hay una disponible
       }
@@ -98,7 +98,7 @@ export class ProfileImageComponent {
     const reader = new FileReader();
     setTimeout(() => {
       if ((file.type == 'image/jpg') || (file.type == 'image/jpeg') || (file.type == 'image/png')){
-        if ((file.size > 10240) && (file.size < 10485760)) {
+        if (file.size < 10485760) {
           this._image.extraerBase64(file).then( (imagen:any) => {
             try {
               if(imagen.base){
@@ -121,12 +121,6 @@ export class ProfileImageComponent {
         } else if(file.size > 10485760) {
           //error de peso mayor
           this.error_image = 'La imagen no debe superar los 10MB';
-          this.dataForm.patchValue({
-            thumbnail: ''
-          })
-        } else {
-          //error de peso menor
-          this.error_image = 'La imagen debe superar los 50KB';
           this.dataForm.patchValue({
             thumbnail: ''
           })
@@ -159,23 +153,23 @@ export class ProfileImageComponent {
 
   //Elimina todo lo que el reset básico no limpia
   resetAll() {
-    this.setDataForm(this.user);
+    this.setDataForm(this.enterprise)
     this.error_image = '';
   }
 
-  //Submit para guardar la imagen del producto
+  //Submit para guardar la imagen
   onSubmit() {
     if(this.dataForm.controls['id'].value > 0) {
       this.loading = true;
-      this._api.postTypeRequest('profile/update-user-image', this.dataForm.value).subscribe({
+      this._api.postTypeRequest('profile/update-enterprise-image', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
           if(res.status == 1){
             //Accedió a la base de datos y no hubo problemas
             if(res.changedRows == 1){
               //Modificó la imagen
-              this._notify.showSuccess('La imagen del producto se ha modificado con éxito!');
-              this._auth.setDataInLocalStorage(res.data[0].id, res.token, res.data[0].state, res.data[0], this._auth.getRememberOption());
+              this._notify.showSuccess('La imagen de la empresa se ha modificado con éxito!');
+              this._auth.setEnterpriseThumbnail(res.data);
               setTimeout(() => {
                 window.location.reload();
               }, 2000);

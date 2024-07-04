@@ -1,0 +1,10 @@
+.card-user.editInformation {
+    mat-card-content {
+        padding-bottom: 15px;
+        padding-top: 15px;
+    }
+    .submit-btn-box {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

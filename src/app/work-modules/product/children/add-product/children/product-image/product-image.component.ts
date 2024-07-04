@@ -161,6 +161,7 @@ export class ProductImageComponent {
   //Elimina todo lo que el reset básico no limpia
   resetAll() {
     this.setDataForm(this.product)
+    this.error_image = '';
   }
 
   //Navegar a la misma ruta para recargar el componente

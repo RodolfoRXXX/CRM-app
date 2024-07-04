@@ -37,7 +37,6 @@ export class ProfileDetailComponent implements OnInit {
       this.getUser(),
       this.getEmployee()
     ]).subscribe(results => {
-      console.log(results)
       // Results[0] will be user data
       // Results[1] will be employee data
       this.user = results[0];

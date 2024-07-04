@@ -97,7 +97,10 @@ export class AuthService {
   setRole(role: any): void {
     localStorage.setItem('role', role);
   }
-
+  //Setear el objeto enterprise_thumbnail del usuario logueado y guardarlo en el localStorage
+  setEnterpriseThumbnail(thumbnail: any): void {
+    localStorage.setItem('enterprise_thumbnail', thumbnail);
+  }
 
 // ----------------- SET ----------------
   //Devuelvo las credenciales de acceso
