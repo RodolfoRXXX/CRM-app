@@ -12,17 +12,17 @@ import { DialogCreateRoleComponent } from 'src/app/shared/standalone/dialog/dial
 
 @Component({
   selector: 'app-roles',
-  templateUrl: './roles.component.html'
+  templateUrl: './roles.component.html',
+  styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent implements OnInit {
 
-  displayedColumns!: string[];
+  displayedColumns: string[] = ['user', 'email', 'role', 'verified', 'status', 'view'];
   dataSource = new MatTableDataSource();
-  resultsLength!: number;
-  load!: boolean;
-  recharge!: boolean;
+  resultsLength: number = 0;
+  load: boolean = true;
+  recharge: boolean = false;
   source!: any;
-  is_large!: boolean;
   card_users!: any;
 
   constructor(
@@ -31,9 +31,6 @@ export class RolesComponent implements OnInit {
     private _conector: ConectorsService,
     public _dialog: MatDialog
   ) {
-    this.resultsLength = 0;
-    this.load = true;
-    this.recharge = false;
     this.getDataUsers();
     this.source = environment.SERVER;
   }
@@ -41,13 +38,6 @@ export class RolesComponent implements OnInit {
   ngOnInit(): void {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Roles y Permisos')
-
-    //Carga el detector de tamaño del dispositivo
-    this._conector.getScreenState().subscribe( is_large => {
-      this.is_large = is_large
-      this.displayedColumns = (is_large)?['user', 'email', 'role', 'verified', 'status', 'view']:['user', 'role', 'verified', 'status', 'view'];
-    } )
-
   }
 
   getDataLocal(): Promise<any> {
@@ -64,7 +54,7 @@ export class RolesComponent implements OnInit {
           this.recharge = false;
           this.load = true;
           return this._api.postTypeRequest('profile/get-enterprise-roles', { id_enterprise: id_enterprise })
-                          .pipe(catchError(async () => {observableOf(null);}));
+                          .pipe(catchError(async () => {observableOf(null); this.recharge = true; }));
         } ),
         map( (roles:any) => {
           roles.data.forEach((element:any) => {
@@ -75,7 +65,7 @@ export class RolesComponent implements OnInit {
         map(() => this.getDataLocal()),
         switchMap( (id_enterprise) => {
           return this._api.postTypeRequest('profile/get-enterprise-users', { id_enterprise: id_enterprise })
-                          .pipe(catchError(async () => {observableOf(null);}));
+                          .pipe(catchError(async () => {observableOf(null); this.recharge = true; }));
         } ),
         map( (data:any) => {
           this.load = false;
@@ -95,6 +85,7 @@ export class RolesComponent implements OnInit {
                   (this.card_users[this.card_users.findIndex( (value:any) => value.name_role == element.role )].user).push(element)
                 }
               });
+              console.log(data.data)
           return data
         } ),
       ).subscribe( (data:any) => this.dataSource.data = data.data )
@@ -106,7 +97,7 @@ export class RolesComponent implements OnInit {
   }
 
   rechargeData() {
-    this._conector.setUpdate(true);
+    this.getDataUsers();
   }
 
   openEditRoleDialog(id_role: any, role:string, icon_role: string, task:string): void {
