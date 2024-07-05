@@ -11,7 +11,8 @@ import { Md5 } from 'ts-md5';
 
 @Component({
   selector: 'app-security',
-  templateUrl: './security.component.html'
+  templateUrl: './security.component.html',
+  styleUrls: ['./security.component.scss']
 })
 export class SecurityComponent implements OnInit {
 
@@ -21,20 +22,21 @@ export class SecurityComponent implements OnInit {
   setEmailDataForm!: FormGroup;
   emailFirst!: FormControl;
   formMsg!: FormGroup;
+  id_user!: number;
 
   act_name!: string;
 
-  hide_1!: boolean;
-  hide_2!: boolean;
+  hide_1: boolean = true;
+  hide_2: boolean = true;
   emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
 
-  loading_username!: boolean;
-  loading_set_password!: boolean;
-  loading_set_email!: boolean;
+  loading_username: boolean = false;
+  loading_set_password: boolean = false;
+  loading_set_email: boolean = false;
   
-  disable_username!: boolean;
-  disable_set_password!: boolean;
-  disable_set_email!: boolean;
+  disable_username: boolean = false;
+  disable_set_password: boolean = false;
+  disable_set_email: boolean = false;
 
   constructor(
     private _auth: AuthService,
@@ -44,8 +46,6 @@ export class SecurityComponent implements OnInit {
     private _router: Router,
     public _dialog: MatDialog
   ) {
-    this.hide_1 = true;
-    this.hide_2 = true;
     this.passwordFirst = new FormControl('', [
       Validators.required,
       Validators.minLength(4),
@@ -58,13 +58,6 @@ export class SecurityComponent implements OnInit {
       (control: AbstractControl):ValidationErrors|null => {
       return !this.emailReg.test(control.value) ? {error_format: {value: control.value}} : null;}
     ]);
-
-    this.loading_username = false;
-    this.loading_set_password = false;
-    this.disable_username = false;
-    this.disable_set_password = false;
-    this.loading_set_email = false;
-    this.disable_set_email = false;
 
     this.createUsernameForm();
     this.createSetPasswordForm();
@@ -120,7 +113,6 @@ export class SecurityComponent implements OnInit {
       this.formMsg.patchValue({
         email: data.email
       })
-
       //Setea los valores de la card de cambio de contraseña
       this.setPasswordDataForm.patchValue({
         id: data.id
@@ -131,6 +123,7 @@ export class SecurityComponent implements OnInit {
       this.formMsg.patchValue({
         email: data.email
       })
+      this.id_user = data.id;
   }
 
   hide1Password(ev: any): void {
@@ -144,7 +137,9 @@ export class SecurityComponent implements OnInit {
 
   createUsernameForm(): void {
     this.usernameDataForm = new FormGroup({
-        id: new FormControl(''),
+        id: new FormControl('', [
+          Validators.required
+        ]),
         name : new FormControl('', [
           Validators.required,
           Validators.minLength(4),
@@ -155,7 +150,9 @@ export class SecurityComponent implements OnInit {
 
   createSetPasswordForm(): void {
     this.setPasswordDataForm = new FormGroup({
-        id: new FormControl(''),
+        id: new FormControl('', [
+          Validators.required
+        ]),
         password : new FormControl('', [
           Validators.required,
           Validators.minLength(4),
@@ -166,7 +163,9 @@ export class SecurityComponent implements OnInit {
 
   createSetEmailForm(): void {
     this.setEmailDataForm = new FormGroup({
-        id: new FormControl(''),
+        id: new FormControl('', [
+          Validators.required
+        ]),
         email : new FormControl('', [
           Validators.required,
           Validators.minLength(4),
@@ -187,49 +186,62 @@ export class SecurityComponent implements OnInit {
     });
   }
 
-  getUserNameErrorMessage() {
-    if(this.usernameDataForm.controls['username'].hasError('required')) {
-      return 'Tenés que ingresar un valor'}
-    if(this.usernameDataForm.controls['username'].hasError('minlength')) {
-      return 'Este valor debe tener más de 4 caracteres'}
-    if(this.usernameDataForm.controls['username'].hasError('maxlength')) {
-      return 'Este valor debe tener menos de 25 caracteres'}
-    return ''
+  //Botones de reset
+  resetUsername() {
+    this.usernameDataForm.patchValue({name: this.act_name})
   }
-  getPasswordErrorMessageFirst() {
-    if(this.passwordFirst.hasError('required')) {
-      return 'Tenés que ingresar un valor'}
-    if(this.passwordFirst.hasError('minlength')) {
-      return 'Min. 4 caracteres'}
-    if(this.passwordFirst.hasError('maxlength')) {
-      return 'Max. 10 caracteres'}
-    return ''
+  resetPassword() {
+    this.setPasswordDataForm.patchValue({id: this.id_user})
   }
-  getPasswordErrorMessage() {
-    if(this.setPasswordDataForm.controls['password'].hasError('no_equal')) {
-      return 'Las contraseñas no coinciden'}
-    return ''
+  resetEmail() {
+    this.setEmailDataForm.patchValue({id: this.id_user})
+    this.emailFirst.reset
   }
-  getEmailFirstErrorMessage() {
-    if(this.emailFirst.hasError('required')) {
-      return 'Tenés que ingresar un valor'}
-    if(this.emailFirst.hasError('minlength')) {
-      return 'Min. 4 caracteres'}
-    if(this.emailFirst.hasError('maxlength')) {
-      return 'Max. 35 caracteres'}
-    if(this.emailFirst.hasError('error_format')) {
-      return 'No es un correo válido'}
-    return ''
-  }
-  getEmailErrorMessage() {
-    if(this.setEmailDataForm.controls['email'].hasError('required')) {
-      return 'Tenés que ingresar un valor'}
-    if(this.setEmailDataForm.controls['email'].hasError('no_equal')) {
-      return 'Los correos electrónicos no coinciden'}
-    if(this.setEmailDataForm.controls['email'].hasError('error_format')) {
-      return 'No es un correo válido'}
-    return ''
-  }
+
+  //Mensajes de error
+    getUserNameErrorMessage() {
+      if(this.usernameDataForm.controls['name'].hasError('required')) {
+        return 'Tenés que ingresar un valor'}
+      if(this.usernameDataForm.controls['name'].hasError('minlength')) {
+        return 'Este valor debe tener más de 4 caracteres'}
+      if(this.usernameDataForm.controls['name'].hasError('maxlength')) {
+        return 'Este valor debe tener menos de 25 caracteres'}
+      return ''
+    }
+    getPasswordErrorMessageFirst() {
+      if(this.passwordFirst.hasError('required')) {
+        return 'Tenés que ingresar un valor'}
+      if(this.passwordFirst.hasError('minlength')) {
+        return 'Min. 4 caracteres'}
+      if(this.passwordFirst.hasError('maxlength')) {
+        return 'Max. 10 caracteres'}
+      return ''
+    }
+    getPasswordErrorMessage() {
+      if(this.setPasswordDataForm.controls['password'].hasError('no_equal')) {
+        return 'Las contraseñas no coinciden'}
+      return ''
+    }
+    getEmailFirstErrorMessage() {
+      if(this.emailFirst.hasError('required')) {
+        return 'Tenés que ingresar un valor'}
+      if(this.emailFirst.hasError('minlength')) {
+        return 'Min. 4 caracteres'}
+      if(this.emailFirst.hasError('maxlength')) {
+        return 'Max. 35 caracteres'}
+      if(this.emailFirst.hasError('error_format')) {
+        return 'No es un correo válido'}
+      return ''
+    }
+    getEmailErrorMessage() {
+      if(this.setEmailDataForm.controls['email'].hasError('required')) {
+        return 'Tenés que ingresar un valor'}
+      if(this.setEmailDataForm.controls['email'].hasError('no_equal')) {
+        return 'Los correos electrónicos no coinciden'}
+      if(this.setEmailDataForm.controls['email'].hasError('error_format')) {
+        return 'No es un correo válido'}
+      return ''
+    }
 
   onSubmitUsername() {
     this.disable_username = true;

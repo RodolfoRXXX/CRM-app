@@ -1,148 +1,158 @@
+<!-- settings of account -->
 
 <!-- Card de cambio de nombre de usuario -->
-<mat-card class="mat-card">
-    <mat-card-content class="mat-card-content">
-        <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button">
-            <mat-icon>keyboard_backspace</mat-icon>
-        </a>
-        <mat-card-title class="mat-card-title">
-            Nombre de usuario
-        </mat-card-title>
-        <mat-card-subtitle class="mat-card-subtitle">
-            Editá tu nombre de usuario
-        </mat-card-subtitle>
-        <div>
-            <form [formGroup]="usernameDataForm" (ngSubmit)="onSubmitUsername()">
-                <div class="user-data-container pt-0">
-                    <div class="user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Nombre de usuario</mat-label>
-                            <input matInput
-                                    formControlName="name"
-                                    required>
-                            <mat-error *ngIf="this.usernameDataForm.controls['name']!.errors">{{getUserNameErrorMessage()}}</mat-error>
-                        </mat-form-field>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <mat-card class="card card-security">
+        <mat-card-content class="mat-card-content">
+            <mat-card-title class="mat-card-title">
+                Nombre de usuario
+            </mat-card-title>
+            <mat-card-subtitle class="mat-card-subtitle">
+                Editá tu nombre de usuario
+            </mat-card-subtitle>
+            <div>
+                <form [formGroup]="usernameDataForm" (ngSubmit)="onSubmitUsername()">
+                    <div class="user-data-container pt-0">
+                        <div class="user-data-input">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre de usuario</mat-label>
+                                <input matInput
+                                        formControlName="name"
+                                        required>
+                                <mat-error class="fs-09" *ngIf="this.usernameDataForm.controls['name']!.errors">{{getUserNameErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <button mat-stroked-button class="me-3" color="warn" type="button" (click)="resetUsername()">Reset</button>
+                            <button mat-stroked-button color="primary" type="submit" [disabled]="usernameDataForm.invalid || this.usernameDataForm.controls['name'].value == act_name || this.disable_username">Guardar</button>
+                        </div>
                     </div>
-                    <div class="user-data-input">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="usernameDataForm.invalid || this.usernameDataForm.controls['name'].value == act_name || this.disable_username">Guardar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </mat-card-content>
-    <mat-card-footer class="login-footer">
-        <mat-progress-bar mode="indeterminate" *ngIf="loading_username"></mat-progress-bar>
-    </mat-card-footer>
-</mat-card>
+                </form>
+            </div>
+        </mat-card-content>
+        <mat-card-footer class="login-footer">
+            <mat-progress-bar mode="indeterminate" *ngIf="loading_username"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</div>
 
 <!-- Card de cambio de contraseña de acceso -->
-<mat-card class="mat-card">
-    <mat-card-content class="mat-card-content">
-        <mat-card-title class="mat-card-title">
-            Contraseña
-        </mat-card-title>
-        <mat-card-subtitle class="mat-card-subtitle">
-            Editá tu contraseña de acceso
-        </mat-card-subtitle>
-        <div>
-            <div class="user-password-container">
-                <form [formGroup]="setPasswordDataForm" (ngSubmit)="onSubmitSetPassword()">
-                    <div class="user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Nueva contraseña</mat-label>
-                            <input matInput [type]="hide_1 ? 'password' : 'text'"
-                                    [formControl]="passwordFirst"
-                                    type="password" 
-                                    required>
-                                    <button mat-icon-button matSuffix (click)="hide1Password($event)" >
-                                        <mat-icon>{{hide_1 ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                    </button>
-                                    <mat-error *ngIf="this.passwordFirst.errors">{{getPasswordErrorMessageFirst()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Reingresa nueva contraseña</mat-label>
-                            <input matInput [type]="hide_2 ? 'password' : 'text'"
-                                    formControlName="password"
-                                    type="password" 
-                                    required>
-                                    <button mat-icon-button matSuffix (click)="hide2Password($event)" >
-                                        <mat-icon>{{hide_2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                    </button>
-                            <mat-error *ngIf="this.setPasswordDataForm.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="user-data-input">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="setPasswordDataForm.invalid || !this.setPasswordDataForm.controls['password'].value.length || this.disable_set_password">Guardar</button>
-                    </div>
-                </form>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <mat-card class="card card-security">
+        <mat-card-content class="mat-card-content">
+            <mat-card-title class="mat-card-title">
+                Contraseña
+            </mat-card-title>
+            <mat-card-subtitle class="mat-card-subtitle">
+                Editá tu contraseña de acceso
+            </mat-card-subtitle>
+            <div>
+                <div class="user-password-container">
+                    <form [formGroup]="setPasswordDataForm" (ngSubmit)="onSubmitSetPassword()">
+                        <div class="user-data-input">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nueva contraseña</mat-label>
+                                <input matInput [type]="hide_1 ? 'password' : 'text'"
+                                        [formControl]="passwordFirst"
+                                        type="password" 
+                                        required>
+                                        <button mat-icon-button matSuffix (click)="hide1Password($event)" >
+                                            <mat-icon>{{hide_1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                        <mat-error class="fs-09" *ngIf="this.passwordFirst.errors">{{getPasswordErrorMessageFirst()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="user-data-input">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Reingresa nueva contraseña</mat-label>
+                                <input matInput [type]="hide_2 ? 'password' : 'text'"
+                                        formControlName="password"
+                                        type="password" 
+                                        required>
+                                        <button mat-icon-button matSuffix (click)="hide2Password($event)" >
+                                            <mat-icon>{{hide_2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                <mat-error class="fs-09" *ngIf="this.setPasswordDataForm.controls['password']!.errors">{{getPasswordErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <button mat-stroked-button color="warn" class="me-3" type="reset" (click)="resetPassword()">Reset</button>
+                            <button mat-stroked-button color="primary" type="submit" [disabled]="setPasswordDataForm.invalid || !this.setPasswordDataForm.controls['password'].value.length || this.disable_set_password">Guardar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </mat-card-content>
-    <mat-card-footer class="login-footer">
-        <mat-progress-bar mode="indeterminate" *ngIf="loading_set_password"></mat-progress-bar>
-    </mat-card-footer>
-</mat-card>
+        </mat-card-content>
+        <mat-card-footer class="login-footer">
+            <mat-progress-bar mode="indeterminate" *ngIf="loading_set_password"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</div>
 
 <!-- Card de cambio de correo electrónico -->
-<mat-card class="mat-card">
-    <mat-card-content class="mat-card-content">
-        <mat-card-title class="mat-card-title">
-            Email de acceso
-        </mat-card-title>
-        <mat-card-subtitle class="mat-card-subtitle">
-            Editá tu cuenta de correo electrónico de acceso
-        </mat-card-subtitle>
-        <div>
-            <div class="user-password-container">
-                <form [formGroup]="setEmailDataForm" (ngSubmit)="onSubmitSetEmail()">
-                    <div class="user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Nueva correo electrónico</mat-label>
-                            <input matInput
-                                    [formControl]="emailFirst"
-                                    type="email" 
-                                    required>
-                            <mat-error *ngIf="this.emailFirst.errors">{{getEmailFirstErrorMessage()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="user-data-input">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Reingresa nueva correo electrónico</mat-label>
-                            <input matInput
-                                    formControlName="email"
-                                    type="email" 
-                                    required>
-                            <mat-error *ngIf="this.setEmailDataForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="user-data-input">
-                        <button #submit mat-raised-button color="primary" type="submit" [disabled]="setEmailDataForm.invalid || !this.setEmailDataForm.controls['email'].value.length || this.disable_set_email">Guardar</button>
-                    </div>
-                </form>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <mat-card class="card card-security">
+        <mat-card-content class="mat-card-content">
+            <mat-card-title class="mat-card-title">
+                Email de acceso
+            </mat-card-title>
+            <mat-card-subtitle class="mat-card-subtitle">
+                Editá tu cuenta de correo electrónico de acceso
+            </mat-card-subtitle>
+            <div>
+                <div class="user-password-container">
+                    <form [formGroup]="setEmailDataForm" (ngSubmit)="onSubmitSetEmail()">
+                        <div class="user-data-input">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nueva correo electrónico</mat-label>
+                                <input matInput
+                                        [formControl]="emailFirst"
+                                        type="email" 
+                                        required>
+                                <mat-error class="fs-09" *ngIf="this.emailFirst.errors">{{getEmailFirstErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="user-data-input">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Reingresa nueva correo electrónico</mat-label>
+                                <input matInput
+                                        formControlName="email"
+                                        type="email" 
+                                        required>
+                                <mat-error class="fs-09" *ngIf="this.setEmailDataForm.controls['email']!.errors">{{getEmailErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <button mat-stroked-button color="warn" class="me-3" type="reset" (click)="resetEmail()">Reset</button>
+                            <button #submit mat-stroked-button color="primary" type="submit" [disabled]="setEmailDataForm.invalid || !this.setEmailDataForm.controls['email'].value.length || this.disable_set_email">Guardar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </mat-card-content>
-    <mat-card-footer class="login-footer">
-        <mat-progress-bar mode="indeterminate" *ngIf="loading_set_email"></mat-progress-bar>
-    </mat-card-footer>
-</mat-card>
+        </mat-card-content>
+        <mat-card-footer class="login-footer">
+            <mat-progress-bar mode="indeterminate" *ngIf="loading_set_email"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</div>
 
 <!-- Card para eliminar cuenta del usuario existente -->
-<mat-card class="mat-card">
-    <mat-card-content class="mat-card-content">
-        <mat-card-title class="mat-card-title">
-            Eliminar cuenta
-        </mat-card-title>
-        <mat-card-subtitle class="mat-card-subtitle">
-            Seguí los pasos para dar de baja tu cuenta en Bamboo
-        </mat-card-subtitle>
-        <div>
-            
-        </div>
-    </mat-card-content>
-    <mat-card-footer class="login-footer">
-        <mat-progress-bar mode="indeterminate" *ngIf="false"></mat-progress-bar>
-    </mat-card-footer>
-</mat-card>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <mat-card class="card card-security">
+        <mat-card-content class="mat-card-content">
+            <mat-card-title class="mat-card-title">
+                Eliminar cuenta
+            </mat-card-title>
+            <mat-card-subtitle class="mat-card-subtitle">
+                Seguí los pasos para dar de baja tu cuenta en Bamboo
+            </mat-card-subtitle>
+            <div>
+                
+            </div>
+        </mat-card-content>
+        <mat-card-footer class="login-footer">
+            <mat-progress-bar mode="indeterminate" *ngIf="false"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</div>
+
