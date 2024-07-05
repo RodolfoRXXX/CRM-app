@@ -381,3 +381,7 @@ html body {
 .flex-grow-1 {
   flex-grow: 1 !important;
 }
+
+.active {
+  background-color: $themecolor!important;
+}

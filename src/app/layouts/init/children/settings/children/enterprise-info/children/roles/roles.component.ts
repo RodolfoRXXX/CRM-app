@@ -85,7 +85,6 @@ export class RolesComponent implements OnInit {
                   (this.card_users[this.card_users.findIndex( (value:any) => value.name_role == element.role )].user).push(element)
                 }
               });
-              console.log(data.data)
           return data
         } ),
       ).subscribe( (data:any) => this.dataSource.data = data.data )

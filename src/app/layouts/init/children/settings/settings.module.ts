@@ -12,7 +12,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { SecurityComponent } from 'src/app/layouts/init/children/settings/children/security/security.component';
-import { RolesComponent } from 'src/app/layouts/init/children/settings/children/roles/roles.component';
+import { RolesComponent } from 'src/app/layouts/init/children/settings/children/enterprise-info/children/roles/roles.component';
 
 
 @NgModule({

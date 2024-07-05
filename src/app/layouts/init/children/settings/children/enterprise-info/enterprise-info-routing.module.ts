@@ -4,6 +4,7 @@ import { EnterpriseInfoComponent } from './enterprise-info.component';
 import { EnterpriseDetailComponent } from './children/enterprise-detail/enterprise-detail.component';
 import { EnterpriseEditComponent } from './children/enterprise-edit/enterprise-edit.component';
 import { EnterpriseInfoResolver } from 'src/app/resolver/enterprise-info.resolver';
+import { RolesComponent } from './children/roles/roles.component';
 
 const routes: Routes = [
   { path: '', component: EnterpriseInfoComponent, 
@@ -22,6 +23,10 @@ const routes: Routes = [
         path: 'enterprise-edit',
         component: EnterpriseEditComponent,
         resolve: { enterprise: EnterpriseInfoResolver }
+      },
+      {
+        path: 'roles',
+        component: RolesComponent
       },
       { 
         path: '**',

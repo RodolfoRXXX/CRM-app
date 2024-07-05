@@ -16,6 +16,10 @@ export class EnterpriseDetailComponent implements OnInit {
   enterprise!: Enterprise;
   load: boolean = true;
   card_values: any = { total_employees: null, total_stock: null, notpaid_orders: null, total_sales: null };
+  tabs : any = [
+    {name: 'Descripción', icon: 'edit', state: 'active'},
+    {name: 'Edición de campos', icon: 'build', state: ''}
+  ]
   baseURL = environment.SERVER;
 
   constructor(
@@ -50,6 +54,13 @@ export class EnterpriseDetailComponent implements OnInit {
     setTimeout(() => {
       this._router.navigate(['init/settings/index']);
     }, 1500);
+  }
+
+  setTab(tab: number) {
+    this.tabs.forEach( (element: any, index: number) => {
+      element.state = '';
+      (index == tab)?element.state = 'active':'';
+    });
   }
 
   //Esta función busca: PENDIENTE!!!
