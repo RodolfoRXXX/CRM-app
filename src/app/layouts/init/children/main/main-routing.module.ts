@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
 import { DashboardComponent } from './children/dashboard/dashboard.component';
+import { is_visdp } from 'src/app/guards/operation.guard';
 
 const routes: Routes = [
   { 
@@ -22,7 +23,8 @@ const routes: Routes = [
         },
         {
           path: 'provider',
-          loadChildren: () => import('../../../../work-modules/provider/provider.module').then(m => m.ProviderModule)
+          loadChildren: () => import('../../../../work-modules/provider/provider.module').then(m => m.ProviderModule),
+          canActivate: [is_visdp]
         },
         {
           path: 'storage',

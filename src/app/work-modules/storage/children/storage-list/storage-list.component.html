@@ -16,7 +16,7 @@
                     <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un depósito" #input>
                 </mat-form-field>
                 <div class="d-flex justify-content-end">
-                    <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
+                    <a mat-flat-button color="primary" routerLink="../storage-edit" [disabled]="!this.permissions.includes(admin)">
                         + Agregar Depósito
                     </a>
                 </div>
@@ -36,7 +36,7 @@
                     <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-768-hidden"> ID </th>
                     <td mat-cell *matCellDef="let element" class="max-768-hidden">
-                        #{{ element.id }}
+                        <span class="text-muted"># {{ element.id }}</span>
                     </td>
                     </ng-container>
 
@@ -102,7 +102,7 @@
                     <ng-container matColumnDef="edit">
                         <th mat-header-cell *matHeaderCellDef class="max-500-hidden"> EDITAR </th>
                         <td mat-cell *matCellDef="let element" class="max-500-hidden">
-                            <button mat-icon-button color="primary" (click)="editStorage(element.id)">
+                            <button mat-icon-button color="primary" (click)="editStorage(element.id)" [disabled]="!this.permissions.includes(admin)">
                                 <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
                             </button>
                         </td>
@@ -127,7 +127,7 @@
             <div class="recharge" *ngIf="empty_storage">
                 <!-- Botón para recargar los datos -->
                 <p>No hay depósitos</p>
-                <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
+                <a mat-flat-button color="primary" routerLink="../storage-edit" [disabled]="!this.permissions.includes(admin)">
                     + Agregar depósito
                 </a>
             </div>

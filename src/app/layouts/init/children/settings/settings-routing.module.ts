@@ -5,6 +5,8 @@ import { BillingComponent } from './children/billing/billing.component';
 import { IndexComponent } from './children/index/index.component';
 import { SecurityComponent } from 'src/app/layouts/init/children/settings/children/security/security.component';
 import { RolesComponent } from 'src/app/layouts/init/children/settings/children/roles/roles.component';
+import { is_eddle_settings, is_epyr_settings, is_vedc_settings } from 'src/app/guards/settings.guard';
+import { is_employee } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: SettingsComponent,
@@ -20,15 +22,18 @@ const routes: Routes = [
       },
       { 
         path: 'profile', 
-        loadChildren: () => import('./children/profile/profile.module').then(m => m.ProfileModule) 
+        loadChildren: () => import('./children/profile/profile.module').then(m => m.ProfileModule),
+        canActivate: [is_employee] 
       },
       { 
         path: 'enterprise-info',
-        loadChildren: () => import('./children/enterprise-info/enterprise-info.module').then(m => m.EnterpriseInfoModule)
+        loadChildren: () => import('./children/enterprise-info/enterprise-info.module').then(m => m.EnterpriseInfoModule),
+        canActivate: [is_eddle_settings]
       },
       { 
         path: 'billing',
-        component: BillingComponent 
+        component: BillingComponent,
+        canActivate: [is_vedc_settings]
       },
       { 
         path: 'security',
@@ -36,7 +41,8 @@ const routes: Routes = [
       },
       { 
         path: 'roles',
-        component: RolesComponent 
+        component: RolesComponent,
+        canActivate: [is_epyr_settings]
       },
       { 
         path: '**',

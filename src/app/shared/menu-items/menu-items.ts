@@ -17,9 +17,7 @@ const MENUSETTINGS = [
 ];
 
 const MENUMANAGEMENT = [
-    { state: 'dashboard', name: 'Tablero', type: '', icon: 'dashboard', children: [
-
-    ] },
+    { state: 'dashboard', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
     { state: '', name: 'Gestión de pedidos', type: '', icon: 'receipt', children: [
         { state: 'operation', name: 'Lista de pedidos', type: '', icon: '' }
     ] },

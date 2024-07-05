@@ -5,6 +5,7 @@ import { ProductListComponent } from './children/product-list/product-list.compo
 import { AddProductComponent } from './children/add-product/add-product.component';
 import { CategoryComponent } from './children/category/category.component';
 import { AddCategoryComponent } from './children/add-category/add-category.component';
+import { is_epdc } from 'src/app/guards/operation.guard';
 
 const routes: Routes = [
   { 
@@ -21,7 +22,8 @@ const routes: Routes = [
       },
       {
         path: 'add-product',
-        component: AddProductComponent
+        component: AddProductComponent,
+        canActivate: [is_epdc]
       },
       {
         path: 'category',
@@ -29,7 +31,8 @@ const routes: Routes = [
       },
       {
         path: 'add-category',
-        component: AddCategoryComponent
+        component: AddCategoryComponent,
+        canActivate: [is_epdc]
       },
       { 
         path: '**',
