@@ -1,6 +1,7 @@
 export interface Enterprise {
     id: number;
     thumbnail: string;
+    name_option2: string;
     name: string;
     email: string;
     phone_1: number;

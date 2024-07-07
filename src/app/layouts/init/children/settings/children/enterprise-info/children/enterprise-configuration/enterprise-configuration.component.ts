@@ -5,10 +5,10 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
 
 @Component({
-  selector: 'app-enterprise-edit',
-  templateUrl: './enterprise-edit.component.html'
+  selector: 'app-enterprise-configuration',
+  templateUrl: './enterprise-configuration.component.html'
 })
-export class EnterpriseEditComponent implements OnInit {
+export class EnterpriseConfigurationComponent implements OnInit {
 
   enterprise!: Enterprise;
 
@@ -22,7 +22,7 @@ export class EnterpriseEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._conector.setUpdateTitle('Editar mi empresa');
+    this._conector.setUpdateTitle('Configuración');
     this.fetchEnterprise();
   }
 

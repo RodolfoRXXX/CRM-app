@@ -9,6 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { EnterpriseEditInfoComponent } from './children/enterprise-edit/children/enterprise-edit-info/enterprise-edit-info.component';
 import { EnterpriseEditImageComponent } from './children/enterprise-edit/children/enterprise-edit-image/enterprise-edit-image.component';
+import { EnterpriseConfigurationComponent } from './children/enterprise-configuration/enterprise-configuration.component';
+import { Option1Component } from './children/enterprise-configuration/children/option1/option1.component';
+import { Option2Component } from './children/enterprise-configuration/children/option2/option2.component';
 
 
 @NgModule({
@@ -17,7 +20,10 @@ import { EnterpriseEditImageComponent } from './children/enterprise-edit/childre
     EnterpriseDetailComponent,
     EnterpriseEditComponent,
     EnterpriseEditInfoComponent,
-    EnterpriseEditImageComponent
+    EnterpriseEditImageComponent,
+    EnterpriseConfigurationComponent,
+    Option1Component,
+    Option2Component
   ],
   imports: [
     CommonModule,

@@ -3,7 +3,7 @@ import { MaterialModule } from 'src/app/material/material/material.module';
 import { CommonModule } from '@angular/common';
 import { ApiService } from 'src/app/services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { empty_product, Product } from 'src/app/shared/interfaces/product.interface';
+import { Product } from 'src/app/shared/interfaces/product.interface';
 import { environment } from 'src/enviroments/enviroment';
 import { Router } from '@angular/router';
 import { ConectorsService } from 'src/app/services/conectors.service';
@@ -59,13 +59,8 @@ export class DialogProductDetailComponent implements OnInit {
         //Si existe el producto lo carga
         this.product = value.data[0];
       } else {
-        //Si NO existe el producto carga un objeto vacío
-        this.product = empty_product;
-        this.product.id_enterprise = id_enterprise;
-        this.product.name = name;
-        this.product.description = 'NO EXISTE ESTE ARTICULO';
-        this.product.id_option_1 = id_option_1;
-        this.product.id_option_2 = id_option_2;
+        //Si NO existe el producto centonces cierra el dialog como error
+        this.closeDialog();
       }
       this.load = false;
     })

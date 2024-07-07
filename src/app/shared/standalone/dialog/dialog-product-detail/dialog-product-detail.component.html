@@ -108,7 +108,7 @@
                         <p class="fs-08">Producto elegido</p>
                         <div class="mb-2 d-flex justify-content-around align-items-start">
                             <div class="d-flex">
-                                <span class="fs-07 me-2">Opción 1: </span>
+                                <span class="fs-07 me-2">Color: </span>
                                 <span class="material-icons" [style.color]="product.option_1_name">
                                     square
                                 </span>
@@ -124,9 +124,13 @@
                             <mat-label>Ver otras variantes</mat-label>
                             <mat-select (valueChange)="changeVariant($event)" [disabled]="(variants.length == 1) && (product.id === variants[0].id)">
                               <ng-container *ngFor="let item of variants">
-                                <mat-option [style.background-color]="item.option_1_name" [value]="item" *ngIf="product.id !== item.id">
+                                <mat-option [value]="item" *ngIf="product.id !== item.id">
+                                    <span class="fs-06">Color: </span> <span class="fw-700 me-1 ms-1" style="font-size: 1.1rem;">
+                                        <span class="material-icons" [style.color]="product.option_1_name" style="position: relative; top: 4px;">
+                                            square
+                                        </span>
+                                    </span>
                                    <span class="fs-06">Opción 2: </span> <span class="fw-700 me-3 ms-1" style="font-size: 1.1rem;">{{ item.option_2_name }}</span>
-                                   <span class="fs-06">Stock: </span> <span class="fw-700 ms-1" style="font-size: 1.1rem;">{{ item.stock_real }}</span>
                                 </mat-option>
                               </ng-container>
                             </mat-select>

@@ -8,9 +8,10 @@ const MENUSETTINGS = [
         { state: 'profile/profile-edit', name: 'Editar perfíl', type: '', icon: '' }
     ] },
     { state: '', name: 'Mi empresa', type: '1', icon: 'business', children: [
-        { state: 'enterprise-info/enterprise-detail', name: 'Detalle de mi empresa', type: '', icon: '' },
-        { state: 'enterprise-info/enterprise-edit', name: 'Editar empresa', type: '', icon: '' },
-        { state: 'enterprise-info/roles', name: 'Roles y permisos', type: '', icon: '' }
+        { state: 'enterprise-info/enterprise-detail', name: 'Detalle', type: '', icon: '' },
+        { state: 'enterprise-info/enterprise-edit', name: 'Edición de datos', type: '', icon: '' },
+        { state: 'enterprise-info/roles', name: 'Roles y permisos', type: '', icon: '' },
+        { state: 'enterprise-info/configuration', name: 'Configuración', type: '', icon: '' }
     ] },
     { state: 'billing', name: 'Facturación', type: '2', icon: 'attach_money', children: [] },
     { state: 'security', name: 'Seguridad', type: '', icon: 'vpn_key', children: [] },
