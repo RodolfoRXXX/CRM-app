@@ -1,7 +1,9 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from 'src/app/services/api.service';
 import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
+import { DialogEditClassificationComponent } from 'src/app/shared/standalone/dialog/dialoge-edit-classification/dialog-edit-classification.component';
 
 @Component({
   selector: 'app-option1',
@@ -17,7 +19,8 @@ export class Option1Component {
   dataSource = new MatTableDataSource();
 
   constructor(
-    private _api: ApiService
+    private _api: ApiService,
+    private _dialog: MatDialog
   ) {}
 
   //Toma los cambios del Input de entrada y actualiza el formulario
@@ -39,19 +42,21 @@ export class Option1Component {
     })
   }
 
-  //Editar un valor
-  editOption(id_option: number) {
+  //Editar o crear un valor
+  editOption(id_option: number, name: string, table: string) {
     console.log(id_option)
+    const dialogRef = this._dialog.open(DialogEditClassificationComponent, { data: { id_option: id_option, name: name, table: table } });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        //que hace cuando la edición o creación de un nuevo se registro se realizó
+        console.log(result)
+      }
+    });
   }
 
   //Recargar los datos
   rechargeData() {
     this.setTable(this.enterprise.id);
-  }
-
-  //Agregar nuevo valor
-  addNewValue() {
-
   }
 
 }

@@ -7,6 +7,7 @@ import { Product } from 'src/app/shared/interfaces/product.interface';
 import { environment } from 'src/enviroments/enviroment';
 import { Router } from '@angular/router';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class DialogProductDetailComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogProductDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _api: ApiService,
+    public _auth: AuthService,
     private _router: Router,
     private _conector: ConectorsService
   ) {
@@ -47,6 +49,7 @@ export class DialogProductDetailComponent implements OnInit {
       //que es el valor vacío, por eso la desigualdad es mayor a 1
       this.permissions = value.list_of_permissions.split(',')
     })
+    this._auth.getOptionName1()
     this.searchProduct(this.data_product.id_enterprise, this.data_product.name, this.data_product.id_option_1, this.data_product.id_option_2);
   }
 

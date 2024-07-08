@@ -1,0 +1,39 @@
+<mat-card id="sdialog" class="mat-card card-image">
+  <mat-card-content class="mat-card-content">
+    <a mat-icon-button class="close-card" aria-label="close-button" (click)="closeDialog(false)">
+        <mat-icon>close</mat-icon>
+    </a>
+      <mat-card-title class="mat-card-title text-center mt-2">
+            <mat-chip>
+                <mat-icon style="position: relative; bottom: -4px;">create</mat-icon>
+                <span class="cap" style="position: relative; bottom: 3px; left: 4px;">
+                    {{ is_new?'Crear':'Editar' }} un valor
+                </span>
+            </mat-chip>
+      </mat-card-title>
+      <mat-card-subtitle class="mat-card-subtitle text-center">
+          Edita los valores de este campo de clasificación
+      </mat-card-subtitle>
+      <div>
+        <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+            <div>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Valor</mat-label>
+                    <input matInput
+                        [type]="(data.table == 'table_option_1')?'color':'text'"
+                        formControlName="name" 
+                        required>
+                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['name']!.errors">{{getNameError()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="m-t-10 text-center">
+                <button mat-stroked-button color="warn" class="me-3" type="reset" (click)="closeDialog(false)">Cancelar</button>
+                <button mat-stroked-button color="primary" type="submit" [disabled]="this.dataForm.invalid || this.dataForm.untouched || this.dataForm.pristine">Guardar</button>
+            </div>
+        </form>
+      </div>
+  </mat-card-content>
+  <mat-card-footer class="login-footer">
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>
