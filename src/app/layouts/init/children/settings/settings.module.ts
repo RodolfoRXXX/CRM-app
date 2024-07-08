@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings.component';
 import { MaterialModule } from 'src/app/material/material/material.module';
-import { BillingComponent } from './children/billing/billing.component';
 import { SidebarComponent } from 'src/app/shared/standalone/sidebar/sidebar.component';
 import { IndexComponent } from './children/index/index.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,15 +12,16 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { SecurityComponent } from 'src/app/layouts/init/children/settings/children/security/security.component';
 import { RolesComponent } from 'src/app/layouts/init/children/settings/children/enterprise-info/children/roles/roles.component';
+import { PricingComponent } from './children/enterprise-info/children/pricing/pricing.component';
 
 
 @NgModule({
     declarations: [
         SettingsComponent,
-        BillingComponent,
         IndexComponent,
         SecurityComponent,
-        RolesComponent
+        RolesComponent,
+        PricingComponent
     ],
     imports: [
       CommonModule,

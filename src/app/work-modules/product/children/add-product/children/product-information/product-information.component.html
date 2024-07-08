@@ -55,7 +55,7 @@
               <mat-error *ngIf="this.dataForm.controls['category']!.errors" class="fs-09">{{getErrorCategory()}}</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="col">
-              <mat-label>Color</mat-label>
+              <mat-label class="cap">{{ this._auth.getOptionName1() || 'Color' }}</mat-label>
               <mat-select formControlName="id_option_1" 
                           required>
                 <ng-container *ngFor="let item of option1">
@@ -69,7 +69,7 @@
               <mat-error *ngIf="this.dataForm.controls['id_option_1']!.errors" class="fs-09">{{getErrorOption1()}}</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="col">
-              <mat-label>Medida</mat-label>
+              <mat-label class="cap">{{ this._auth.getOptionName2() || 'Opción 2' }}</mat-label>
               <mat-select formControlName="id_option_2" 
                           required>
                 <ng-container *ngFor="let item of option2">

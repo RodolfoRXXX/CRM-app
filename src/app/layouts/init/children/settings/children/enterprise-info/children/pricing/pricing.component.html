@@ -1,0 +1,73 @@
+<!-- Payment plans -->
+
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y row">
+  <mat-card class="card">
+      <mat-card-content class="mat-card-content">
+          <a mat-icon-button class="close-card" routerLink="../index" aria-label="close-button">
+              <mat-icon>keyboard_backspace</mat-icon>
+          </a>
+          <mat-card-title class="mat-card-title">
+              Facturación
+          </mat-card-title>
+          <div class="billing-loader" *ngIf="load">
+              <mat-spinner *ngIf="load"></mat-spinner>
+          </div>
+          <div class="box-table" *ngIf="!recharge">
+              <mat-form-field  class="bill-filter-input">
+                  <mat-label>Filtrar</mat-label>
+                  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. texto" #input>
+              </mat-form-field>
+              <table mat-table [dataSource]="dataSource">
+                
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef> No. </th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                  </ng-container>
+                
+                  <!-- date Column -->
+                  <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                  </ng-container>
+                
+                  <!-- amount Column -->
+                  <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef> Monto </th>
+                    <td mat-cell *matCellDef="let element">$ 25000 </td>
+                  </ng-container>
+                
+                  <!-- state Column -->
+                  <ng-container matColumnDef="state">
+                    <th mat-header-cell *matHeaderCellDef> Estado </th>
+                    <td mat-cell *matCellDef="let element">
+                      <mat-chip class="cap" [style]="{'background-color':element.state == 'pagado'?'rgb(129, 205, 82)':'rgb(255, 87, 51)'}"><span class="hide-968">{{element.state}}</span><mat-icon class="hide show-968">{{ element.state == 'pagado'?'attach_money':'money_off' }}</mat-icon></mat-chip>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="bill">
+                      <th mat-header-cell *matHeaderCellDef> Factura </th>
+                      <td mat-cell *matCellDef="let element"><a href="#"> <mat-icon>picture_as_pdf</mat-icon> </a></td>
+                    </ng-container>
+                
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
+
+                  <!-- Row shown when there is no matching data. -->
+                  <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{input.value}}"</td>
+                  </tr>
+              </table>
+              <mat-paginator class="m-t-15" [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              
+          </div>
+          <div class="billing-recharge" *ngIf="recharge">
+              <!-- Botón para recargar los datos -->
+              <button mat-raised-button (click)="rechargeData()">Recargar los datos</button>
+          </div>
+      </mat-card-content>
+      <mat-card-footer class="login-footer">
+          <mat-progress-bar mode="indeterminate" *ngIf="false"></mat-progress-bar>
+      </mat-card-footer>
+  </mat-card>
+</div>

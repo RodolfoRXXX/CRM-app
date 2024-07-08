@@ -8,10 +8,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 
 @Component({
-  selector: 'app-billing',
-  templateUrl: './billing.component.html'
+  selector: 'app-pricing',
+  templateUrl: './pricing.component.html'
 })
-export class BillingComponent implements OnInit, AfterViewInit {
+export class PricingComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['position', 'date', 'amount', 'state', 'bill'];
   dataSource = new MatTableDataSource();

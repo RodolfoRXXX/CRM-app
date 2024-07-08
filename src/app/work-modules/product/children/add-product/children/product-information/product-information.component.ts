@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { merge, startWith, map, switchMap, catchError, of as observableOf, firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Category } from 'src/app/shared/interfaces/category.interface';
@@ -38,6 +39,7 @@ export class ProductInformationComponent implements OnInit {
   constructor(
     private _conector: ConectorsService,
     private _api: ApiService,
+    public _auth: AuthService,
     private _notify : NotificationService,
     private _router: Router
   ) {
@@ -73,101 +75,6 @@ export class ProductInformationComponent implements OnInit {
       this.setDataForm(changes['product'].currentValue)
       this.load = false;
     }
-  }
-
-  //Carga los select
-    //Categorías
-    getCategories(id_enterprise: number): void {
-      this._api.postTypeRequest('profile/get-categories', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-        this.categories = value.data
-      })
-    }
-    //Opción 1
-    getOption1(id_enterprise: number): void {
-      this._api.postTypeRequest('profile/get-option1', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-        this.option1 = value.data
-      })
-    }
-    //Opción 2
-    getOption2(id_enterprise: number): void {
-      this._api.postTypeRequest('profile/get-option2', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-        this.option2 = value.data
-      })
-    }
-
-  //Carga todas las opciones de producto
-  searchAll() {
-    merge()
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          return this._api.postTypeRequest('profile/get-products-listOfName', { id_enterprise: this.id_enterprise})
-                        .pipe(catchError(async () => {observableOf(null)}));
-        }),
-        map(data => {
-          return data;
-        })
-      )
-      .subscribe((data: any) => {
-        this.dataSource.data = data.data
-      });
-      this.inputBoxName = true;
-  }
-  //Filtra el listado de productos de acuerdo a lo ingresado en el input
-  applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  //Cuando se clickea fuera del input de nombre esta función oculta el table con los productos
-  onBlur() {
-    setTimeout(() => {
-      this.inputBoxName = false;
-    }, 100);
-    
-  }
-  //Función que toma la fila clickeada del table eligiendo esa opción
-  onRowClicked(row: any) {
-    this.dataForm.patchValue({
-      name: row.name,
-      category: row.category
-    })
-  }
-
-  //Función que verifica el SKU
-  checkSKU(): void {
-    if(
-      (this.dataForm.controls['name'].value && !this.dataForm.controls['name']!.errors) &&
-      (this.dataForm.controls['category'].value && !this.dataForm.controls['category']!.errors) &&
-      (this.dataForm.controls['id_option_1'].value && !this.dataForm.controls['id_option_1']!.errors) &&
-      (this.dataForm.controls['id_option_2'].value && !this.dataForm.controls['id_option_2']!.errors) && 
-      (this.getSku() !== this.dataForm.controls['sku'].value)
-    ) {
-      this.loading = true;
-      this.sku = this.getSku();
-      this._api.postTypeRequest('profile/test-sku', { id_enterprise: this.id_enterprise, sku: this.sku }).subscribe( (value:any) => {
-        if(value.data) {
-          //Ya existe ese SKU, no se puede crear el producto
-          this.exist_sku = 'yes'
-        } else {
-          //No existe ese SKU, se puede continuar
-          this.exist_sku = 'not'
-          this.dataForm.patchValue({
-            sku: this.sku
-          })
-          this.dataForm.controls['sku'].markAsDirty
-        }
-        console.log(this.dataForm.value)
-        this.loading = false;
-      })
-    }
-  }
-  //Función que devuelve el sku
-  getSku(): string {
-    return ((this.dataForm.controls['name'].value).trim().toLowerCase()).slice(0, 3) + '-' +
-            (this.dataForm.controls['name'].value).trim().toLowerCase().slice(-3) + '-' +
-              this.dataForm.controls['category'].value + '-' +
-              this.dataForm.controls['id_option_1'].value + '-' +
-              this.dataForm.controls['id_option_2'].value;
   }
 
   //Formulario creación/edición de producto
@@ -213,6 +120,122 @@ export class ProductInformationComponent implements OnInit {
       description: (product.description != '')?product.description:'',
     })
     this.sku = (product.sku != '')?product.sku:'';
+  }
+
+  //Carga los select
+    //Categorías
+    getCategories(id_enterprise: number): void {
+      this._api.postTypeRequest('profile/get-categories', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
+        this.categories = value.data
+      })
+    }
+    //Opción 1
+    getOption1(id_enterprise: number): void {
+      this._api.postTypeRequest('profile/get-option1', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
+        this.option1 = value.data
+      })
+    }
+    //Opción 2
+    getOption2(id_enterprise: number): void {
+      this._api.postTypeRequest('profile/get-option2', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
+        this.option2 = value.data
+      })
+    }
+
+  //Carga todas las opciones de producto
+  searchAll() {
+    merge()
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          return this._api.postTypeRequest('profile/get-products-listOfName', { id_enterprise: this.id_enterprise})
+                        .pipe(catchError(async () => {observableOf(null)}));
+        }),
+        map((response: any) => {
+          if (response && response.data) {
+            // Filtramos y eliminamos elementos duplicados basados en 'name' y 'category'
+            const uniqueData = this.filterUniqueData(response.data);
+            return uniqueData;
+          } else {
+            return []; // Retornamos un array vacío si no hay datos o response.data no existe
+          }
+        })
+      )
+      .subscribe((uniqueData: any[]) => {
+          // Asignamos los datos únicos al dataSource (suponiendo que dataSource es un MatTableDataSource o similar)
+          this.dataSource.data = uniqueData;
+          this.inputBoxName = true;
+        });
+  }
+  private filterUniqueData(data: any[]): any[] {
+    const uniqueMap = new Map<string, any>();
+    data.forEach(item => {
+      const key = `${item.name}_${item.category}`; // Construimos una clave única
+      if (!uniqueMap.has(key)) {
+        uniqueMap.set(key, item); // Agregamos el objeto al Map si no existe la clave
+      }
+    });
+    return Array.from(uniqueMap.values()); // Convertimos el Map de nuevo a un array de valores únicos
+  }
+  //Filtra el listado de productos de acuerdo a lo ingresado en el input
+  applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  //Cuando se clickea fuera del input de nombre esta función oculta el table con los productos
+  onBlur() {
+    setTimeout(() => {
+      this.inputBoxName = false;
+    }, 100);
+    
+  }
+  //Función que toma la fila clickeada del table eligiendo esa opción
+  onRowClicked(row: any) {
+    this.dataForm.patchValue({
+      name: row.name,
+      category: row.category
+    })
+  }
+
+  //Función que verifica el SKU
+  checkSKU(): void {
+    if(
+      (this.dataForm.controls['name'].value && !this.dataForm.controls['name']!.errors) &&
+      (this.dataForm.controls['category'].value && !this.dataForm.controls['category']!.errors) &&
+      (this.dataForm.controls['id_option_1'].value && !this.dataForm.controls['id_option_1']!.errors) &&
+      (this.dataForm.controls['id_option_2'].value && !this.dataForm.controls['id_option_2']!.errors) && 
+      (this.getSku() !== this.dataForm.controls['sku'].value)
+    ) {
+      this.loading = true;
+      this.sku = this.getSku();
+      this._api.postTypeRequest('profile/test-sku', { id_enterprise: this.id_enterprise, sku: this.sku }).subscribe( (value:any) => {
+        if(value.data) {
+          //Ya existe ese SKU, no se puede crear el producto
+          this.exist_sku = 'yes';
+          this._notify.showSuccess('Redirigiendo al producto...');
+          setTimeout(() => {
+            this.rechargeComponent(value.data[0].id);
+            this.exist_sku = '';
+          }, 2500);
+        } else {
+          //No existe ese SKU, se puede continuar
+          this.exist_sku = 'not'
+          this.dataForm.patchValue({
+            sku: this.sku
+          })
+          this.dataForm.controls['sku'].markAsDirty
+        }
+        this.loading = false;
+      })
+    }
+  }
+  //Función que devuelve el sku
+  getSku(): string {
+    return ((this.dataForm.controls['name'].value).trim().toLowerCase()).slice(0, 3) + '-' +
+            (this.dataForm.controls['name'].value).trim().toLowerCase().slice(-3) + '-' +
+              this.dataForm.controls['category'].value + '-' +
+              this.dataForm.controls['id_option_1'].value + '-' +
+              this.dataForm.controls['id_option_2'].value;
   }
 
   //Capturador de errores del valor de formulario
@@ -264,7 +287,7 @@ export class ProductInformationComponent implements OnInit {
     if(id_product > 0) {
       this._router.navigate(['init/main/product/add-product'], { queryParams: { id_product: id_product } });
     } else {
-      window.location.reload();
+      this._router.navigate(['init/main/product/product-list']);
     }
   }
 
@@ -290,8 +313,10 @@ export class ProductInformationComponent implements OnInit {
               //Accedió a la base de datos y no hubo problemas
               if(res.data.changedRows == 1){
                 //Modificó datos empresa
-                this._notify.showSuccess('Nuevo producto creado con éxito!');
-                this.rechargeComponent();
+                this._notify.showSuccess('Producto actualizado con éxito!');
+                setTimeout(() => {
+                  this.rechargeComponent();
+                }, 1500);
               } else{
                 //No hubo modificación
                 this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')

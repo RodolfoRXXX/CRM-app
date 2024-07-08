@@ -6,6 +6,7 @@ import { EnterpriseEditComponent } from './children/enterprise-edit/enterprise-e
 import { EnterpriseInfoResolver } from 'src/app/resolver/enterprise-info.resolver';
 import { RolesComponent } from './children/roles/roles.component';
 import { EnterpriseConfigurationComponent } from './children/enterprise-configuration/enterprise-configuration.component';
+import { PricingComponent } from './children/pricing/pricing.component';
 
 const routes: Routes = [
   { path: '', component: EnterpriseInfoComponent, 
@@ -28,6 +29,10 @@ const routes: Routes = [
       {
         path: 'roles',
         component: RolesComponent
+      },
+      { 
+        path: 'pricing',
+        component: PricingComponent
       },
       {
         path: 'configuration',
