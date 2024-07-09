@@ -16,12 +16,16 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class DialogConfirmOperationComponent {
 
   text!: string;
+  icon_name!: string;
+  icon_color!: string;
 
   constructor(
     public dialogRef: MatDialogRef<DialogConfirmOperationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.text = data.text
+    this.icon_name = data.icon_name
+    this.icon_color = data.icon_color
   }
 
   closeDialog(state: boolean) {

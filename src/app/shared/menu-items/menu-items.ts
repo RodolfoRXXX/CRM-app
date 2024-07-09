@@ -11,12 +11,12 @@ const MENUSETTINGS = [
         { state: 'enterprise-info/enterprise-detail', name: 'Detalle', type: '', icon: '' },
         { state: 'enterprise-info/enterprise-edit', name: 'Edición de datos', type: '', icon: '' },
         { state: 'enterprise-info/roles', name: 'Roles y permisos', type: '', icon: '' },
-        { state: 'enterprise-info/configuration', name: 'Configuración', type: '', icon: '' },
-        { state: 'enterprise-info/pricing', name: 'Planes de pago', type: '', icon: '' }
+        { state: 'enterprise-info/configuration', name: 'Configuración', type: '', icon: '' }
     ] },
     { state: 'security', name: 'Seguridad', type: '', icon: 'vpn_key', children: [] },
-    { state: '', name: 'Configuración', type: '1', icon: 'settings', children: [
-        { state: 'configuration/configuration-detail', name: 'Detalles', type: '', icon: '' }
+    { state: '', name: 'Configuración', type: '', icon: 'settings', children: [
+        { state: 'configuration/configuration-detail', name: 'Detalles', type: '', icon: '' },
+        { state: 'configuration/pricing', name: 'Planes de pago', type: '1', icon: '' }
     ] },
 ];
 

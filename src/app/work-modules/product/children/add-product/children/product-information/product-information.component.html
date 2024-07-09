@@ -70,7 +70,7 @@
             </mat-form-field>
             <mat-form-field appearance="outline" class="col">
               <mat-label class="cap">{{ this._auth.getOptionName2() || 'Opción 2' }}</mat-label>
-              <mat-select formControlName="id_option_2" 
+              <mat-select formControlName="id_option_2"
                           required>
                 <ng-container *ngFor="let item of option2">
                   <mat-option [value]="item.id"> {{ item.name }} </mat-option>

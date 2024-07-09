@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { merge, startWith, map, switchMap, catchError, of as observableOf, firstValueFrom } from 'rxjs';
@@ -12,6 +13,7 @@ import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Option1 } from 'src/app/shared/interfaces/option1.interface';
 import { Option2 } from 'src/app/shared/interfaces/option2.interface';
 import { Product } from 'src/app/shared/interfaces/product.interface';
+import { DialogConfirmOperationComponent } from 'src/app/shared/standalone/dialog/dialog-confirm-operation/dialog-confirm-operation.component';
 
 @Component({
   selector: 'app-product-information',
@@ -41,7 +43,8 @@ export class ProductInformationComponent implements OnInit {
     private _api: ApiService,
     public _auth: AuthService,
     private _notify : NotificationService,
-    private _router: Router
+    private _router: Router,
+    private _dialog: MatDialog
   ) {
     this.loading = false;
     this.inputBoxName = false;
@@ -212,11 +215,7 @@ export class ProductInformationComponent implements OnInit {
         if(value.data) {
           //Ya existe ese SKU, no se puede crear el producto
           this.exist_sku = 'yes';
-          this._notify.showSuccess('Redirigiendo al producto...');
-          setTimeout(() => {
-            this.rechargeComponent(value.data[0].id);
-            this.exist_sku = '';
-          }, 2500);
+          this.openExistentProduct(value.data);
         } else {
           //No existe ese SKU, se puede continuar
           this.exist_sku = 'not'
@@ -236,6 +235,25 @@ export class ProductInformationComponent implements OnInit {
               this.dataForm.controls['category'].value + '-' +
               this.dataForm.controls['id_option_1'].value + '-' +
               this.dataForm.controls['id_option_2'].value;
+  }
+
+  //Función que abre un dialog de pregunta para redirigir al producto que ya existe
+  openExistentProduct(product: Product[]): void {
+    const dialogRef = this._dialog.open(DialogConfirmOperationComponent,
+      { data: { 
+                text: `Este producto ya existe. Ir al producto ya creado?`,
+                icon_name: 'info_outline',
+                icon_color: 'rgb(231, 234, 33)'
+              }
+      }
+    );
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        //Aquí redirige al producto existente si la respuesta del usuario fue afirmativa
+        this.rechargeComponent(product[0].id);
+        this.exist_sku = '';
+      }
+    });
   }
 
   //Capturador de errores del valor de formulario

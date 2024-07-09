@@ -12,7 +12,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { SecurityComponent } from 'src/app/layouts/init/children/settings/children/security/security.component';
 import { RolesComponent } from 'src/app/layouts/init/children/settings/children/enterprise-info/children/roles/roles.component';
-import { PricingComponent } from './children/enterprise-info/children/pricing/pricing.component';
 
 
 @NgModule({
@@ -20,8 +19,7 @@ import { PricingComponent } from './children/enterprise-info/children/pricing/pr
         SettingsComponent,
         IndexComponent,
         SecurityComponent,
-        RolesComponent,
-        PricingComponent
+        RolesComponent
     ],
     imports: [
       CommonModule,

@@ -127,7 +127,14 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
   }
 
   openDialogWhatsapp(whatsapp: String): void {
-    const dialogRef = this._dialog.open(DialogConfirmOperationComponent, { data: { text: `Estás por entrar a una conversación con ${whatsapp}` } });
+    const dialogRef = this._dialog.open(DialogConfirmOperationComponent,
+      { data: { 
+                text: `Estás por entrar a una conversación con ${whatsapp}`,
+                icon_name: 'info_outline',
+                icon_color: 'rgb(231, 234, 33)'
+              }
+      }
+    );
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         //Aquí abre una conversación de whatsapp con la aplicación original
