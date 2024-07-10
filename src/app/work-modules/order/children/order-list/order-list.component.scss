@@ -2,53 +2,53 @@
 
 .box-list {
     padding-top: 10px;
-    .btn-addProduct {
+    .btn-add {
         margin: 5px 0;
         display: flex;
         justify-content: flex-end;
     }
 }
 
-.card-header {
-    border-color: rgba(46, 38, 61, .075);
-    div.card-datatable {
-        padding-bottom: 1rem;
-    }
-    .table-responsive {
-        overflow-x: auto;
-    }
-}
-
-.mat-mdc-table .mdc-data-table__header-row {
-    font-size: 0.8rem;
-}
-
-.product-column {
+.costumer-column {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    .image-product {
-        border-radius: 0.25rem;
+    .image-costumer {
+        border-radius: 50%;
         background-color: #ecedee !important;
         color: #8a8d93 !important;
+        position: relative;
+        span {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(228, 224, 224);
+            color: #767575;
+            border-radius: 50%;
+        }
     }
-    .text-product {
+    .text-costumer {
         display: flex;
         flex-direction: column;
-        .name-product {
+        .name-costumer {
             --bs-text-opacity: 1;
-            color: #433c50 !important;
+            color: #878290 !important;
             white-space: nowrap !important;
             font-weight: 500 !important;
         }
-        .description-product {
+        .email-costumer {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 0.8rem;
         }
     }
-    .text-product-box {
+    .text-costumer-box {
         min-width: 150px;
         max-width: 300px;
     }

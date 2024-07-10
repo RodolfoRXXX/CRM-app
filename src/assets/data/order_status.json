@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "status": "Entregado",
+        "bgColor": "#e4f7d6",
+        "color": "#56ca00"
+    },
+    {
+        "id": 2,
+        "status": "No entregado",
+        "bgColor": "#daf3ff",
+        "color": "#16b1ff"
+    },
+    {
+        "id": 3,
+        "status": "Entregado parcialmente",
+        "bgColor": "#ede4ff ",
+        "color": "#8c57ff"
+    },
+    {
+        "id": 4,
+        "status": "Cancelado",
+        "bgColor": "#ffcdd2",
+        "color": "#FF5733"
+    },
+    {
+        "id": 5,
+        "status": "Devolución",
+        "bgColor": "#fff3d6",
+        "color": "#ffb400"
+    }
+  ]

@@ -112,8 +112,8 @@
                     <mat-form-field class="col-md-4" appearance="outline">
                         <mat-label>Categoría</mat-label>
                         <mat-select [(ngModel)]="chips.category" (valueChange)="add($event, 'category')">
-                            <ng-container *ngFor="let category of categories">
-                                <mat-option [value]="category.name">{{ category.name }}</mat-option>
+                            <ng-container >
+                                <mat-option [value]="">{{ '' }}</mat-option>
                             </ng-container>
                         </mat-select>
                     </mat-form-field>
@@ -147,102 +147,76 @@
                 <p>Cargando...</p>
             </div>
             <!-- Table of products -->
-            <div class="box-list" *ngIf="!empty_products">
+            <div class="box-list" *ngIf="true">
                 <div class="row justify-content-end">
-                    <div class="btn-addProduct col-md-4">
-                        <a mat-flat-button color="primary" routerLink="../add-product" *ngIf="this.permissions.includes(add_product_admin)">
+                    <div class="btn-add col-md-4">
+                        <a mat-flat-button color="primary" routerLink="../order-detail">
                             + Crear pedido
                         </a>
                     </div>
                 </div>
                 <table mat-table [dataSource]="dataSource" class="mt-1" matSort>
                 
-                    <!-- detail Column -->
-                    <ng-container matColumnDef="detail">
-                    <th mat-header-cell *matHeaderCellDef>Pedido</th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0" style="color: rgb(72, 72, 222);">#{{ element.id }}</p>
-                    </td>
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>PEDIDO</th>
+                        <td mat-cell *matCellDef="let element">
+                            <p class="mb-0" style="color: rgb(72, 72, 222);">#{{ element.id }}</p>
+                        </td>
                     </ng-container>
                 
-                    <!-- product Column -->
-                    <ng-container matColumnDef="product">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> PRODUCTO </th>
-                    <td mat-cell *matCellDef="let element"> 
-                        <!-- código de la columna producto que incluye foto, nombre y descripción -->
-                        <div class="product-column" matTooltip="{{ element.description }}" matTooltipPosition="above">
-                            <div class="me-2 max-500-hidden">
-                                <div class="avatar image-product">
-                                    <img [src]="uriImg + element.image">
+                    <!-- date Column -->
+                    <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-500-hidden"> FECHA </th>
+                        <td mat-cell *matCellDef="let element" class="max-500-hidden"> 
+                            <p class="mb-0">{{ element.date | date:'dd/MM/yyyy' }}</p>
+                        </td>
+                    </ng-container>
+                        
+                    <!-- costumer Column -->
+                    <ng-container matColumnDef="customer">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> CLIENTE </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="costumer-column">
+                                <div class="me-2">
+                                    <div class="avatar image-costumer">
+                                        <img class="rounded-circle" [src]="uriImg + element.customer_thumbnail" *ngIf="element.customer_thumbnail != 'no-image.png'">
+                                        <span *ngIf="element.customer_thumbnail == 'no-image.png'">
+                                            <p class="mb-0">
+                                                {{ element.customer_name.split('')[0].substring(0, 1) + element.customer_name.split(' ')[1].substring(0, 1) }}
+                                            </p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="text-costumer text-costumer-box max-600-hidden">
+                                    <span class="name-costumer">
+                                        {{ element.customer_name || 'Sin información' }}
+                                    </span>
+                                    <small class="email-costumer">
+                                        {{ element.customer_email || 'Sin informción' }}
+                                    </small>
                                 </div>
                             </div>
-                            <div class="text-product text-product-box">
-                                <span class="name-product">
-                                    {{ element.name || 'No existe este producto' }}
-                                </span>
-                                <small class="description-product max-600-hidden">
-                                    {{ element.description || 'NO EXISTE ESTE PRODUCTO' }}
-                                </small>
-                            </div>
-                        </div>
-                    </td>
-                    </ng-container>
-                
-                    <!-- category Column -->
-                    <ng-container matColumnDef="category">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1280-hidden"> CATEGORIA </th>
-                    <td mat-cell *matCellDef="let element" class="text-center max-1280-hidden">
-                        <!-- código que muestra el nombre de la categoría del producto -->
-                        <span class="badge rounded-pill cap" [style.color]="element.category_color.color" [style.background-color]="element.category_color.bgColor">
-                            {{ element.category_item }}
-                        </span>
-                    </td>
-                    </ng-container>
-                
-                    <!-- stock_real Column -->
-                    <ng-container matColumnDef="stock_real">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-400-hidden"> STOCK </th>
-                    <td mat-cell *matCellDef="let element" class="max-400-hidden">
-                        <!-- código que muestra el valor en numero del stock -->
-                        <p class="text-center mb-0">{{ element.stock_real }}</p>
-                    </td>
+                        </td>
                     </ng-container>
     
-                    <!-- state_stock column -->
-                    <ng-container matColumnDef="state_stock">
-                        <th mat-header-cell *matHeaderCellDef class="max-1400-hidden"> STOCK? </th>
-                        <td mat-cell *matCellDef="let element" class="text-center max-1400-hidden">
-                            <!-- ícono mostrando si hay o no stock para el filtro con/sin stock -->
-                            <mat-icon [color]="element.is_stock == 'con stock'?'accent':'warn'">{{ element.is_stock == 'con stock'?'check_circle':'cancel' }}</mat-icon>
-                        </td>
-                    </ng-container>
-
-                    <!-- sale_price Column -->
-                    <ng-container matColumnDef="sale_price">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-768-hidden"> PRECIO </th>
-                        <td mat-cell *matCellDef="let element" class="max-768-hidden">
-                            <!-- muestra el precio de venta -->
-                            <p class="text-center mb-0">$ {{ element.sale_price }}</p>
-                        </td>
-                    </ng-container>
-
-                    <!-- sku Column -->
-                    <ng-container matColumnDef="sku">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1500-hidden"> SKU </th>
-                        <td mat-cell *matCellDef="let element" class="max-1500-hidden">
-                            <!-- muestra el SKU del producto -->
-                            <p class="mb-0 fs-09">{{ element.sku }}</p>
-                        </td>
-                    </ng-container>
-
-                    <!-- state Column -->
-                    <ng-container matColumnDef="state">
-                        <th mat-header-cell *matHeaderCellDef class="max-1150-hidden"> ESTADO </th>
-                        <td mat-cell *matCellDef="let element" class="text-center max-1150-hidden">
-                            <!-- código que muestra el estado del producto -->
-                            <span class="badge rounded-pill cap" [ngClass]="element.state == 'activo'?'bg-label-success':'bg-label-danger'">
-                                {{ element.state }}
+                    <!-- status column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1024-hidden"> ESTADO </th>
+                        <td mat-cell *matCellDef="let element" class="max-1024-hidden">
+                            <span class="badge rounded-pill cap" [style.color]="element.color" [style.background-color]="element.bgColor">
+                                {{ element.status }}
                             </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- detail Column -->
+                    <ng-container matColumnDef="detail">
+                        <th mat-header-cell *matHeaderCellDef> DETALLE </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="primary" (click)="openDetail(element.id)">
+                                <mat-icon style="position: relative; bottom: 2px;">add_circle_outline</mat-icon>
+                            </button>
                         </td>
                     </ng-container>
                 
@@ -262,11 +236,11 @@
                 <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
             </div>
             <!-- No products -->
-            <div class="recharge" *ngIf="empty_products">
-                <!-- Botón para agregar un producto -->
-                <p>No hay productos</p>
-                <a mat-flat-button color="primary" routerLink="../add-product" *ngIf="this.permissions.includes(add_product_admin)">
-                    + Agregar Producto
+            <div class="recharge" *ngIf="false">
+                <!-- Botón para agregar un pedido -->
+                <p>No hay pedidos</p>
+                <a mat-flat-button color="primary" routerLink="../order-detail">
+                    + Crear pedido
                 </a>
             </div>
         </mat-card-content>
