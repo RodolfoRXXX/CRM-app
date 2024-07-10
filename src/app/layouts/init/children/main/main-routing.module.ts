@@ -18,6 +18,10 @@ const routes: Routes = [
           component: DashboardComponent
         },
         {
+          path: 'order',
+          loadChildren: () => import('../../../../work-modules/order/order.module').then(m => m.OrderModule)
+        },
+        {
           path: 'product',
           loadChildren: () => import('../../../../work-modules/product/product.module').then(m => m.ProductModule)
         },

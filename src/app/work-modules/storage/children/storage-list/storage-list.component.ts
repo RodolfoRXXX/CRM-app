@@ -53,7 +53,7 @@ export class StorageListComponent {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
       this.permissions = item.list_of_permissions.split(',')
-      this.loadProviders();
+      this.loadStorages();
     });
   }
 
@@ -62,7 +62,7 @@ export class StorageListComponent {
     this.dataSource.sort = this.sort;
   }
 
-  loadProviders() {
+  loadStorages() {
     this.load = true;
     combineLatest([
       this._api.postTypeRequest('profile/get-count-storages', { id_enterprise: this.employee.id_enterprise }),
@@ -92,7 +92,7 @@ export class StorageListComponent {
   }
 
   rechargeData() {
-    this.loadProviders();
+    this.loadStorages();
   }
 
   openDialogDetail(id_storage: number): void {

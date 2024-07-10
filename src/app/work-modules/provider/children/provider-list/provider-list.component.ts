@@ -24,7 +24,6 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<any>();
   load = true;
   recharge = false;
-  chips: any = { search: '' };
   card_values: any = { new_providers: null, debt: null, pending: null, returns: null };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -98,20 +97,9 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  applyFilter() {
-    const filters = Object.values(this.chips).filter(value => value !== '');
-    this.dataSource.filter = filters.join(' ').trim().toLowerCase();
-  }
-  add(value: Event | string, key: string) {
-    const chipStr = (typeof value === 'string') ? value : (value.target as HTMLInputElement).value;
-    if (chipStr.trim().length > 0) {
-      this.chips[key] = chipStr.trim().toLowerCase();
-      this.applyFilter();
-    }
-  }
-  delete(key: any) {
-    this.chips[key] = '';
-    this.applyFilter();
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   rechargeData() {

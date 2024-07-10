@@ -97,26 +97,14 @@
             </div>
             <!-- Table of providers -->
             <div class="box-list" *ngIf="!recharge && resultsLength">
-                <mat-form-field class="w-100">
-                    <mat-label>Filtrar</mat-label>
-                    <input [ngModel]="chips.search" matInput #search (change)="add($event, 'search')" placeholder="Buscar un producto" #input>
-                </mat-form-field>
-                <div class="row justify-content-between">
-                    <div class="col-6 d-flex align-items-center">
-                        <mat-chip-set class="d-flex justify-content-start align-items-center ms-3" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
-                            <mat-chip *ngIf="item.value" style="background-color: rgb(174, 213, 129)!important; margin: 0 6px">
-                                {{ item.value }}
-                                <button matChipRemove (click)="delete(item.key)">
-                                    <mat-icon>cancel</mat-icon>
-                                </button>
-                            </mat-chip>
-                        </mat-chip-set>
-                    </div>
-                    <div class="btn-addprovider col-6">
-                        <a mat-flat-button color="primary" routerLink="../provider-edit">
-                            + <span class="max-500-hidden">Agregar</span> Proveedor
-                        </a>
-                    </div>
+                <div class="d-flex justify-content-between">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Filtrar</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un proveedor" #input>
+                    </mat-form-field>
+                    <a mat-flat-button color="primary" routerLink="../provider-edit">
+                        + <span class="max-500-hidden">Agregar</span> Proveedor
+                    </a>
                 </div>
                 <table mat-table [dataSource]="dataSource" class="mt-1" matSort>
                 
@@ -206,7 +194,7 @@
     
                     <!-- Row shown when there is no matching data. -->
                     <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{ chips.search}}"</td>
+                        <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{input.value}}"</td>
                     </tr>
                 </table>
                 <mat-paginator class="m-t-15" [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              

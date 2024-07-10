@@ -10,35 +10,35 @@ import { is_epdc } from 'src/app/guards/operation.guard';
 const routes: Routes = [
   { 
     path: '', component: ProductComponent,
-    children: [
-      { 
-        path: '', 
-        redirectTo: 'product-list', 
-        pathMatch: 'full' 
-      },
-      {
-        path: 'product-list',
-        component: ProductListComponent
-      },
-      {
-        path: 'add-product',
-        component: AddProductComponent,
-        canActivate: [is_epdc]
-      },
-      {
-        path: 'category',
-        component: CategoryComponent
-      },
-      {
-        path: 'add-category',
-        component: AddCategoryComponent,
-        canActivate: [is_epdc]
-      },
-      { 
-        path: '**',
-        redirectTo: 'product-list',
-        pathMatch: 'full' }
-    ]
+      children: [
+        { 
+          path: '', 
+          redirectTo: 'product-list', 
+          pathMatch: 'full' 
+        },
+        {
+          path: 'product-list',
+          component: ProductListComponent
+        },
+        {
+          path: 'add-product',
+          component: AddProductComponent,
+          canActivate: [is_epdc]
+        },
+        {
+          path: 'category',
+          component: CategoryComponent
+        },
+        {
+          path: 'add-category',
+          component: AddCategoryComponent,
+          canActivate: [is_epdc]
+        },
+        { 
+          path: '**',
+          redirectTo: 'product-list',
+          pathMatch: 'full' }
+      ]
   }
 
 ];
