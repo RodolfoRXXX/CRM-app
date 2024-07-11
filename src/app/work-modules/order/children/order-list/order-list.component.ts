@@ -27,8 +27,8 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   load_card4 = false;
   load = true;
   recharge = false;
-  chips: any = { category: '', stock: '', state: '', search: '' };
-  card_values: any = { products_with_stock: null, value_stock: null, products_without_stock: null, immo_stock: null };
+  chips: any = { search: '', status: '' };
+  card_values: any = { d1: null, d2: null, d4: null, d5: null };
   permissions: string[] = [];
   add_product_admin = '6';
   uriImg = environment.SERVER;
@@ -53,8 +53,6 @@ export class OrderListComponent implements OnInit, AfterViewInit {
     this._getJson.getData('order_status.json').subscribe( (data: any) => {
       this.order_status = data
     } )
-
-    //console.log(this.order_status?.find(status => status.id === 1))
   }
 
   private initPaginatorLabels(): void {
@@ -89,12 +87,12 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   }
 
   private getDataCard(id_enterprise: number): void {
-    const date_limit = this.calculateDateLimit(60);
-    this.api.postTypeRequest('profile/get-products-data', { id_enterprise, date_limit }).subscribe((value: any) => {
-      this.card_values.products_with_stock = value.data[0]?.data || 0;
-      this.card_values.value_stock = value.data[1]?.data || 0;
-      this.card_values.products_without_stock = value.data[2]?.data || 0;
-      this.card_values.immo_stock = value.data[3]?.data || 0;
+    const date_limit = this.calculateDateLimit(365);
+    this.api.postTypeRequest('profile/get-orders-data', { id_enterprise, date_limit }).subscribe((value: any) => {
+      this.card_values.d1 = value.data[0]?.d1 || 0;
+      this.card_values.d2 = value.data[0]?.d2 || 0;
+      this.card_values.d4 = value.data[0]?.d4 || 0;
+      this.card_values.d5 = value.data[0]?.d5 || 0;
     });
   }
 
@@ -148,7 +146,6 @@ export class OrderListComponent implements OnInit, AfterViewInit {
             }
           });
           this.dataSource.data = data.data;
-          console.log(this.dataSource.data)
         } 
       });
 

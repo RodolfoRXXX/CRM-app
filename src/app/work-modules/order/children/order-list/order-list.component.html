@@ -10,16 +10,16 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
                         <div class="pt-1">
-                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="this.card_values.products_with_stock != null">{{ this.card_values.products_with_stock }}</h2>
-                            <p class="fs-08 mb-1" *ngIf="(this.card_values.products_with_stock == null)">Cargando...</p>
+                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="this.card_values.d2 != null">{{ this.card_values.d2 }}</h2>
+                            <p class="fs-08 mb-1" *ngIf="(this.card_values.d2 == null)">Cargando...</p>
                             <p class="soft-grey-color font-14 mb-0">
-                                Pendientes de pago
+                                Pendientes de entrega
                             </p>
                         </div>
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded text-heading">
                                 <span class="material-symbols-outlined">
-                                    request_quote
+                                    share_windows
                                 </span>
                             </span>
                         </div>
@@ -29,10 +29,10 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-4 pb-sm-0">
                         <div class="pt-1">
-                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="this.card_values.value_stock != null">${{ this.card_values.value_stock }}</h2>
-                            <p class="fs-08 mb-1" *ngIf="(this.card_values.value_stock == null)">Cargando...</p>
+                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="this.card_values.d1 != null">{{ this.card_values.d1 }}</h2>
+                            <p class="fs-08 mb-1" *ngIf="(this.card_values.d1 == null)">Cargando...</p>
                             <p class="soft-grey-color font-14 mb-0">
-                                Realizados
+                                Entregados
                             </p>
                         </div>
                         <div class="avatar me-2">
@@ -48,8 +48,8 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="d-flex justify-content-between align-items-start border-end pb-4 pb-sm-0 card-widget-3">
                         <div class="pt-1">
-                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="this.card_values.products_without_stock != null">{{ this.card_values.products_without_stock }}</h2>
-                            <p class="fs-08 mb-1" *ngIf="(this.card_values.products_without_stock == null)">Cargando...</p>
+                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="this.card_values.d5 != null">{{ this.card_values.d5 }}</h2>
+                            <p class="fs-08 mb-1" *ngIf="(this.card_values.d5 == null)">Cargando...</p>
                             <p class="soft-grey-color font-14 mb-0">
                                 Devoluciones
                             </p>
@@ -67,8 +67,8 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="pt-1">
-                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="this.card_values.immo_stock != null">${{ this.card_values.immo_stock }}</h2>
-                            <p class="fs-08 mb-1" *ngIf="(this.card_values.immo_stock == null)">Cargando...</p>
+                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="this.card_values.d4 != null">{{ this.card_values.d4 }}</h2>
+                            <p class="fs-08 mb-1" *ngIf="(this.card_values.d4 == null)">Cargando...</p>
                             <p class="soft-grey-color font-14 mb-0">
                                 Cancelaciones
                             </p>
@@ -97,8 +97,8 @@
                         Filtro
                     </mat-panel-title>
                     <mat-panel-description style="overflow: auto;">
-                        <mat-chip-set aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
-                                <mat-chip *ngIf="item.value" style="background-color: rgb(174, 213, 129)!important; margin: 0 6px">
+                        <mat-chip-set class="ms-1" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
+                                <mat-chip class="soft-grey-background me-1" *ngIf="item.value">
                                     {{ item.value }}
                                     <button matChipRemove (click)="delete(item.key)">
                                         <mat-icon>cancel</mat-icon>
@@ -108,36 +108,23 @@
                     </mat-panel-description>
                     </mat-expansion-panel-header>
                 <div class="row">
-                    <!-- Filtro Categorías -->
-                    <mat-form-field class="col-md-4" appearance="outline">
-                        <mat-label>Categoría</mat-label>
-                        <mat-select [(ngModel)]="chips.category" (valueChange)="add($event, 'category')">
-                            <ng-container >
-                                <mat-option [value]="">{{ '' }}</mat-option>
+                    <!-- Filtro por texto -->
+                    <mat-form-field class="col-md-6" appearance="outline">
+                        <mat-label>Filtrar por texto</mat-label>
+                        <input [ngModel]="chips.search" matInput #search (change)="add($event, 'search')" placeholder="Buscar un producto" #input>
+                    </mat-form-field>
+                    <!-- Filtro por Estado -->
+                    <mat-form-field class="col-md-6" appearance="outline">
+                        <mat-label>Estado</mat-label>
+                        <mat-select [(ngModel)]="chips.status" (valueChange)="add($event, 'status')">
+                            <ng-container *ngFor="let order of order_status">
+                                <mat-option [value]="order.status">
+                                    <span class="badge rounded-pill cap" [style.color]="order.color" [style.background-color]="order.bgColor">
+                                        {{ order.status }}
+                                    </span>
+                                </mat-option>
                             </ng-container>
                         </mat-select>
-                    </mat-form-field>
-                    <!-- Filtro Productos con Stock -->
-                    <mat-form-field class="col-md-4" appearance="outline">
-                        <mat-label>Stock</mat-label>
-                        <mat-select  [(ngModel)]="chips.stock" (valueChange)="add($event, 'stock')">
-                            <mat-option value="Con Stock">Con Stock</mat-option>
-                            <mat-option value="Sin stock">Sin Stock</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <!-- Filtro Estado -->
-                    <mat-form-field class="col-md-4" appearance="outline">
-                        <mat-label>Estado</mat-label>
-                        <mat-select [(ngModel)]="chips.state" (valueChange)="add($event, 'state')">
-                            <mat-option value="Activo">Activo</mat-option>
-                            <mat-option value="Inactivo">Inactivo</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="row">
-                    <mat-form-field class="col-md-4" appearance="outline">
-                        <mat-label>Filtrar</mat-label>
-                        <input [ngModel]="chips.search" matInput #search (change)="add($event, 'search')" placeholder="Buscar un producto" #input>
                     </mat-form-field>
                 </div>
                 </mat-expansion-panel>
@@ -146,8 +133,8 @@
             <div class="loader" *ngIf="load">
                 <p>Cargando...</p>
             </div>
-            <!-- Table of products -->
-            <div class="box-list" *ngIf="true">
+            <!-- Table of orders -->
+            <div class="box-list" *ngIf="dataSource.data">
                 <div class="row justify-content-end">
                     <div class="btn-add col-md-4">
                         <a mat-flat-button color="primary" routerLink="../order-detail">
@@ -179,7 +166,7 @@
                         <td mat-cell *matCellDef="let element">
                             <div class="costumer-column">
                                 <div class="me-2">
-                                    <div class="avatar image-costumer">
+                                    <div class="avatar image-costumer" matTooltip="{{ element.customer_name }}" matTooltipPosition="above">
                                         <img class="rounded-circle" [src]="uriImg + element.customer_thumbnail" *ngIf="element.customer_thumbnail != 'no-image.png'">
                                         <span *ngIf="element.customer_thumbnail == 'no-image.png'">
                                             <p class="mb-0">
@@ -236,7 +223,7 @@
                 <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
             </div>
             <!-- No products -->
-            <div class="recharge" *ngIf="false">
+            <div class="recharge" *ngIf="!dataSource.data">
                 <!-- Botón para agregar un pedido -->
                 <p>No hay pedidos</p>
                 <a mat-flat-button color="primary" routerLink="../order-detail">

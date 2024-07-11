@@ -101,8 +101,8 @@
                         Filtro
                     </mat-panel-title>
                     <mat-panel-description style="overflow: auto;">
-                        <mat-chip-set aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
-                                <mat-chip *ngIf="item.value" style="background-color: rgb(174, 213, 129)!important; margin: 0 6px">
+                        <mat-chip-set class="ms-1" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
+                                <mat-chip class="soft-grey-background me-1" *ngIf="item.value">
                                     {{ item.value }}
                                     <button matChipRemove (click)="delete(item.key)">
                                         <mat-icon>cancel</mat-icon>
@@ -117,7 +117,11 @@
                         <mat-label>Categoría</mat-label>
                         <mat-select [(ngModel)]="chips.category" (valueChange)="add($event, 'category')">
                             <ng-container *ngFor="let category of categories">
-                                <mat-option [value]="category.name">{{ category.name }}</mat-option>
+                                <mat-option [value]="category.name">
+                                    <span class="badge rounded-pill cap" [style.color]="category.color_badge.color" [style.background-color]="category.color_badge.bgColor">
+                                        {{ category.name }}
+                                    </span>
+                                </mat-option>
                             </ng-container>
                         </mat-select>
                     </mat-form-field>
@@ -125,16 +129,24 @@
                     <mat-form-field class="col-md-4" appearance="outline">
                         <mat-label>Stock</mat-label>
                         <mat-select  [(ngModel)]="chips.stock" (valueChange)="add($event, 'stock')">
-                            <mat-option value="Con Stock">Con Stock</mat-option>
-                            <mat-option value="Sin stock">Sin Stock</mat-option>
+                            <mat-option value="Sin stock">Sin stock</mat-option>
+                            <mat-option value="Con stock">Con stock</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <!-- Filtro Estado -->
                     <mat-form-field class="col-md-4" appearance="outline">
                         <mat-label>Estado</mat-label>
                         <mat-select [(ngModel)]="chips.state" (valueChange)="add($event, 'state')">
-                            <mat-option value="Activo">Activo</mat-option>
-                            <mat-option value="Inactivo">Inactivo</mat-option>
+                            <mat-option value="Activo">
+                                <span class="badge rounded-pill cap bg-label-success">
+                                    Activo
+                                </span>
+                            </mat-option>
+                            <mat-option value="Inactivo">
+                                <span class="badge rounded-pill cap bg-label-danger">
+                                    Inactivo
+                                </span>
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>

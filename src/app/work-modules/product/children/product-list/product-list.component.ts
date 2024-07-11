@@ -19,7 +19,7 @@ import { environment } from 'src/enviroments/enviroment';
 export class ProductListComponent implements OnInit, AfterViewInit {
 
   employee!: Employee;
-  categories!: Category[];
+  categories!: any[];
   displayedColumns: string[] = ['detail', 'product', 'category', 'stock_real', 'state_stock', 'sale_price', 'sku', 'state'];
   dataSource = new MatTableDataSource();
   resultsLength!: number;
@@ -94,6 +94,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   getCategories(id_enterprise: number): void {
     this._api.postTypeRequest('profile/get-categories', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
       this.categories = value.data
+      this.categories.forEach((item: any) => {
+        item.color_badge = JSON.parse(item.color_badge)
+      });
     })
   }
 
@@ -190,7 +193,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   rechargeData() {
-    this._conector.setUpdate(true);
+    this.ngAfterViewInit();
   }
 
 }
