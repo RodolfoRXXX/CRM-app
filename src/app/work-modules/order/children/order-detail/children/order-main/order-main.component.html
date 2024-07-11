@@ -1,0 +1,112 @@
+<!--Componente que edita los artículos del remito -->
+
+<mat-card class="card card-data">
+    <mat-card-header>
+      <mat-card-title>Detalle del remito</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- cargando... -->
+      <div class="d-flex justify-content-center p-2" *ngIf="load">
+        <h4>Cargando...</h4>
+      </div>
+      <!-- Table of orders -->
+      <div class="box-list" *ngIf="dataSource.data">
+          <table mat-table [dataSource]="dataSource" class="mt-1" matSort>
+          
+              <!-- ID Column -->
+              <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-muted fs-08 fw-400">ID</th>
+                  <td mat-cell *matCellDef="let element">
+                      <p class="mb-0">#{{ element.id }}</p>
+                  </td>
+              </ng-container>
+
+              <!-- product Column -->
+              <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-muted fs-08 fw-400"> PRODUCTO </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="data-column">
+                        <div class="me-2">
+                            <div class="avatar image-data" matTooltip="{{ element.customer_name }}" matTooltipPosition="above">
+                                <img class="rounded-circle" [src]="uriImg + element.customer_thumbnail" *ngIf="element.customer_thumbnail != 'no-image.png'">
+                                <span *ngIf="element.customer_thumbnail == 'no-image.png'">
+                                    <p class="mb-0">
+                                        {{ element.customer_name.split('')[0].substring(0, 1) + element.customer_name.split(' ')[1].substring(0, 1) }}
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-data text-sata-box max-600-hidden">
+                            <span class="name-data">
+                                {{ element.customer_name || 'Sin información' }}
+                            </span>
+                            <small class="description-data">
+                                {{ element.customer_email || 'Sin informción' }}
+                            </small>
+                        </div>
+                    </div>
+                </td>
+              </ng-container>
+          
+              <!-- price Column -->
+              <ng-container matColumnDef="price">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-muted fs-08 fw-400"> PRECIO </th>
+                  <td mat-cell *matCellDef="let element"> 
+                      <p class="mb-0">{{ element.date | date:'dd/MM/yyyy' }}</p>
+                  </td>
+              </ng-container>
+
+              <!-- qty column -->
+              <ng-container matColumnDef="qty">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-muted fs-08 fw-400"> CANTIDAD </th>
+                  <td mat-cell *matCellDef="let element">
+                      <span class="badge rounded-pill cap" [style.color]="element.color" [style.background-color]="element.bgColor">
+                          {{ element.status }}
+                      </span>
+                  </td>
+              </ng-container>
+
+              <!-- total column -->
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-muted fs-08 fw-400"> TOTAL </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="badge rounded-pill cap" [style.color]="element.color" [style.background-color]="element.bgColor">
+                        {{ element.status }}
+                    </span>
+                </td>
+            </ng-container>
+
+              <!-- delete Column -->
+              <ng-container matColumnDef="delete">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let element">
+                      <button mat-icon-button color="primary" (click)="deleteProduct(element.id)">
+                          <mat-icon style="position: relative; bottom: 2px;">delete</mat-icon>
+                      </button>
+                  </td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
+          </table>            
+      </div>
+      <div>
+        <button mat-icon-button color="primary" (click)="addProduct()">
+          <mat-icon style="position: relative; bottom: 2px;">add_circle_outline</mat-icon>
+        </button>
+      </div>
+      <!-- Recharge button -->
+      <div class="recharge" *ngIf="recharge">
+          <!-- Botón para recargar los datos -->
+          <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
+      </div>
+      <!-- No products -->
+      <div class="d-flex justify-content-center align-items-center p-4" *ngIf="!dataSource.data.length">
+        <h4>Todavía no cargaste ningún producto</h4>
+      </div>
+    </mat-card-content>
+    <!-- Caja que muestra un texto de "Cargando..." y luego el listado -->
+    <mat-card-footer class="login-footer">
+      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

@@ -9,13 +9,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MaterialModule } from 'src/app/material/material/material.module';
+import { OrderMainComponent } from './children/order-detail/children/order-main/order-main.component';
+import { OrderCustomerDetailComponent } from './children/order-detail/children/order-customer-detail/order-customer-detail.component';
+import { OrderShippingAddressComponent } from './children/order-detail/children/order-shipping-address/order-shipping-address.component';
+import { OrderBillingAddressComponent } from './children/order-detail/children/order-billing-address/order-billing-address.component';
 
 
 @NgModule({
   declarations: [
     OrderComponent,
     OrderListComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    OrderMainComponent,
+    OrderCustomerDetailComponent,
+    OrderShippingAddressComponent,
+    OrderBillingAddressComponent
   ],
   imports: [
     CommonModule,

@@ -38,9 +38,9 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private api: ApiService,
-    private conector: ConectorsService,
-    private paginatorIntl: MatPaginatorIntl,
+    private _api: ApiService,
+    private _conector: ConectorsService,
+    private _paginatorIntl: MatPaginatorIntl,
     private _getJson: GetJsonDataService,
     private _router: Router
   ) {
@@ -49,22 +49,22 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.conector.setUpdateTitle('Lista de pedidos');
+    this._conector.setUpdateTitle('Lista de pedidos');
     this._getJson.getData('order_status.json').subscribe( (data: any) => {
       this.order_status = data
     } )
   }
 
   private initPaginatorLabels(): void {
-    this.paginatorIntl.itemsPerPageLabel = "Registros por página";
-    this.paginatorIntl.firstPageLabel = "Primera página";
-    this.paginatorIntl.lastPageLabel = "Última página";
-    this.paginatorIntl.nextPageLabel = "Próxima página";
-    this.paginatorIntl.previousPageLabel = "Anterior página";
+    this._paginatorIntl.itemsPerPageLabel = "Registros por página";
+    this._paginatorIntl.firstPageLabel = "Primera página";
+    this._paginatorIntl.lastPageLabel = "Última página";
+    this._paginatorIntl.nextPageLabel = "Próxima página";
+    this._paginatorIntl.previousPageLabel = "Anterior página";
   }
 
   private getDataLocal(): number {
-    this.conector.getEmployee().subscribe((item: Employee) => {
+    this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
       this.permissions = item.list_of_permissions.split(',');
     });
@@ -78,7 +78,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
         map(() => this.getDataLocal()),
         switchMap(id_enterprise => {
           this.getDataCard(id_enterprise);
-          return this.api.postTypeRequest('profile/get-count-orders', { id_enterprise })
+          return this._api.postTypeRequest('profile/get-count-orders', { id_enterprise })
             .pipe(catchError(() => observableOf(null)));
         }),
         map(data => data)
@@ -88,7 +88,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
 
   private getDataCard(id_enterprise: number): void {
     const date_limit = this.calculateDateLimit(365);
-    this.api.postTypeRequest('profile/get-orders-data', { id_enterprise, date_limit }).subscribe((value: any) => {
+    this._api.postTypeRequest('profile/get-orders-data', { id_enterprise, date_limit }).subscribe((value: any) => {
       this.card_values.d1 = value.data[0]?.d1 || 0;
       this.card_values.d2 = value.data[0]?.d2 || 0;
       this.card_values.d4 = value.data[0]?.d4 || 0;
@@ -129,7 +129,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
         switchMap(id_enterprise => {
           this.recharge = false;
           this.load = true;
-          return this.api.postTypeRequest('profile/get-orders', { id_enterprise, page: this.paginator.pageIndex, size: 10 })
+          return this._api.postTypeRequest('profile/get-orders', { id_enterprise, page: this.paginator.pageIndex, size: 10 })
             .pipe(catchError(() => observableOf(null)));
         }),
         map(data => data)
