@@ -1,15 +1,14 @@
-import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { firstValueFrom, merge, startWith, switchMap, catchError, map, of as observableOf} from 'rxjs';
-import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { GetJsonDataService } from 'src/app/services/get-json-data.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Product } from 'src/app/shared/interfaces/product.interface';
+import { DialogOrderEditProductComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-product/dialog-order-edit-product.component';
 import { environment } from 'src/enviroments/enviroment';
 
 @Component({
@@ -17,118 +16,82 @@ import { environment } from 'src/enviroments/enviroment';
   templateUrl: './order-main.component.html',
   styleUrls: ['./order-main.component.scss']
 })
-export class OrderMainComponent {
+export class OrderMainComponent implements OnInit {
 
   @Input() order!: any;
 
   id_enterprise!: number;
   dataForm!: FormGroup;
+  products!: Product[];
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['id', 'product', 'price', 'qty', 'total', 'delete'];
+  displayedColumns: string[] = ['id', 'product', 'qty', 'edit'];
   load: boolean = true;
   loading: boolean = false;
   recharge!: boolean;
   uriImg = environment.SERVER;
   order_status!: any[];
 
-  @ViewChild(MatSort) sort!: MatSort;
-
   constructor(
     private _conector: ConectorsService,
     private _api: ApiService,
     public _auth: AuthService,
-    private _notify : NotificationService,
+    private _notify: NotificationService,
     private _getJson: GetJsonDataService,
+    private _dialog: MatDialog
   ) {
     this.createDataForm();
   }
 
   ngOnInit(): void {
     this._conector.setUpdateTitle('Lista de pedidos');
-    this._getJson.getData('order_status.json').subscribe( (data: any) => {
-      this.order_status = data
-    } )
+    this._getJson.getData('order_status.json').subscribe((data: any) => {
+      this.order_status = data;
+    });
   }
 
-  //Toma los cambios del Input de entrada y actualiza el formulario
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['order']) {
-      console.log(changes['order'].currentValue);
-      this.getProducts()
+      this.getProducts();
     }
   }
 
   private getProducts(): void {
     let products: any[] = [];
-    if(this.order) {
-      const data = JSON.parse(this.order.detail)
-      if(data) {
+    let data: any;
+
+    if (this.order) {
+      data = JSON.parse(this.order.detail);
+
+      if (data) {
         data.forEach((element: any) => {
-          products.push(element.id_product)
+          products.push(element.id_product);
+        });
+
+        this._api.postTypeRequest('profile/get-products-by-order', { detail: products }).subscribe((value: any) => {
+          if (value) {
+            this.load = false;
+            data.forEach((element: any) => {
+              value.data.forEach((product: Product) => {
+                if (element.id_product === product.id) {
+                  Object.assign(element, {
+                    name: product.name,
+                    description: product.description,
+                    image: product.image
+                  });
+                }
+              });
+            });
+
+            this.products = value.data;
+            this.dataSource.data = data;
+          }
         });
       }
     }
-    this._api.postTypeRequest('profile/get-products-by-order', { detail: products }).subscribe(
-      (value: any) => {
-        console.log(value)
-        if(value) {
-          
-        }
-      } 
-    )
   }
 
-  addProduct() {
-    this.dataForm.patchValue({
-      id: 1,
-      detail: JSON.stringify(
-        [
-          {
-            "id_product": 1,
-            "price": 325,
-            "qty": 2,
-            "discount": 10
-          },
-          {
-            "id_product": 2,
-            "price": 235.25,
-            "qty": 1,
-            "discount": 5
-          }
-        ]
-      )
-    })
-
-  }
-
-  ngAfterViewInit(): void {
-    merge()
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.recharge = false;
-          this.load = true;
-          return this._api.postTypeRequest('profile/get-orders', {  })
-            .pipe(catchError(() => observableOf(null)));
-        }),
-        map(data => data)
-      )
-      .subscribe((data: any) => {
-        this.load = false;
-        if (data.data.length) {
-          data.data.forEach((element: any) => {
-            let data = this.order_status?.find(status => status.id === element.status);
-            if(data) {
-              element.status = data.status;
-              element.bgColor = data.bgColor;
-              element.color = data.color;
-            }
-          });
-          this.dataSource.data = data.data;
-        } 
-      });
-
-    this.dataSource.sort = this.sort;
+  editProduct(id_product: number = 0) {
+    const dialogRef = this._dialog.open(DialogOrderEditProductComponent, { data: { id_product: id_product } });
   }
 
   //Formulario creación/edición de producto
@@ -141,17 +104,9 @@ export class OrderMainComponent {
     });
   }
 
-  //Setea los valores del formulario si tuviera que cargarse un conjunto de productos
-  setDataForm(product: Product) {
-    
-  }
 
   rechargeData() {
 
-  }
-
-  deleteProduct(id_product: number) {
-    console.log(id_product)
   }
 
   //Submit del formulario
