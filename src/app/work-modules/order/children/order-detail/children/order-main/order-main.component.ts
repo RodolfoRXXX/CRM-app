@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { GetJsonDataService } from 'src/app/services/get-json-data.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Order } from 'src/app/shared/interfaces/order.interface';
 import { Product } from 'src/app/shared/interfaces/product.interface';
 import { DialogOrderEditProductComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-product/dialog-order-edit-product.component';
 import { environment } from 'src/enviroments/enviroment';
@@ -24,12 +25,13 @@ export class OrderMainComponent implements OnInit {
   dataForm!: FormGroup;
   products!: Product[];
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['id', 'product', 'qty', 'edit'];
+  displayedColumns: string[] = ['sku', 'product', 'qty', 'delete'];
   load: boolean = true;
   loading: boolean = false;
   recharge!: boolean;
   uriImg = environment.SERVER;
   order_status!: any[];
+  edit: boolean = false;
 
   constructor(
     private _conector: ConectorsService,
@@ -53,66 +55,109 @@ export class OrderMainComponent implements OnInit {
     if (changes['order']) {
       this.getProducts();
     }
+    this.setDataForm(this.order)
   }
 
   private getProducts(): void {
-    let products: any[] = [];
-    let data: any;
-
-    if (this.order) {
-      data = JSON.parse(this.order.detail);
-
-      if (data) {
-        data.forEach((element: any) => {
-          products.push(element.id_product);
-        });
-
-        this._api.postTypeRequest('profile/get-products-by-order', { detail: products }).subscribe((value: any) => {
-          if (value) {
-            this.load = false;
-            data.forEach((element: any) => {
-              value.data.forEach((product: Product) => {
-                if (element.id_product === product.id) {
-                  Object.assign(element, {
-                    name: product.name,
-                    description: product.description,
-                    image: product.image
-                  });
-                }
-              });
-            });
-
-            this.products = value.data;
-            this.dataSource.data = data;
-          }
-        });
+    if(this.order) {
+      this.dataForm.patchValue({ 
+      })
+      const data = JSON.parse(this.order.detail);
+      if(data) {
+        this.load = false;
+        this.dataSource.data = data;
       }
     }
   }
 
-  editProduct(id_product: number = 0) {
-    const dialogRef = this._dialog.open(DialogOrderEditProductComponent, { data: { id_product: id_product } });
+  //Actualizan el this.order.detail
+    //Actualizo la cantidad de una fila
+    setQty(element: any, newQty: number) {
+      element.qty = newQty;
+      this.dataForm.patchValue({
+        detail: JSON.stringify(this.dataSource.data)
+      })
+    }
+    //Elimino una linea
+    deleteProduct(id_product: number) {
+      const index = this.dataSource.data.findIndex((element: any) => element.id_product == id_product)
+      if(index !== -1) {
+        this.dataSource.data.splice(index, 1);
+      }
+      this.ngAfterViewInit();
+      this.dataForm.patchValue({
+        detail: JSON.stringify(this.dataSource.data)
+      })
+    }
+    //Abro la ventana de diálogo para agregar lineas
+    addProduct() {
+      const dialogRef = this._dialog.open(DialogOrderEditProductComponent);
+      dialogRef.afterClosed().subscribe(result => {
+        if(result) {
+          //Aquí abre la ventana de diálogo para agregar productos
+          const index = this.dataSource.data.findIndex((element: any) => element.id_product == result.id_product);
+          if(index !== -1) {
+            this.dataSource.data.find( (element: any) => {
+              if(element.id_product == result.id_product) {
+                element.qty++;
+              }
+            } )
+          } else {
+            this.dataSource.data.push(result)
+          }
+          this.ngAfterViewInit();
+          this.dataForm.patchValue({
+            detail: JSON.stringify(this.dataSource.data)
+          })
+        }
+      });
+    }
+
+  //Actualizo el array con los datos
+  ngAfterViewInit() {
+    this.dataSource.data = this.dataSource.data
   }
 
   //Formulario creación/edición de producto
   createDataForm(): void {
     this.dataForm = new FormGroup({
         id: new FormControl(''),
+        id_enterprise: new FormControl(''),
+        date: new FormControl(''),
+        customer: new FormControl(''),
         detail: new FormControl('', [
           Validators.required
-        ])
+        ]),
+        shipment: new FormControl(''),
+        observation: new FormControl(''),
+        status: new FormControl('')
     });
   }
 
+  //Setear el formulario
+  setDataForm(order: Order) {
+    if(order) {
+      this.dataForm.patchValue({
+        id: (order.id)?order.id:0,
+        id_enterprise: (order.id_enterprise)?order.id_enterprise:0,
+        date: (order.date)?order.date:'',
+        customer: (order.customer)?order.customer:0,
+        shipment: (order.shipment)?order.shipment:'',
+        observation: (order.observation)?order.observation:'',
+        status: (order.status)?order.status:''
+      })
+    }
+  }
 
+  //Recargar los datos del remito
   rechargeData() {
-
+    this.getProducts();
   }
 
   //Submit del formulario
   onSubmit() {
-    
-
+    console.log(this.dataForm.value)
+    /*
     if(this.dataForm.controls['id'].value > 0) {
       //Modifica el producto
       this._api.postTypeRequest('profile/update-order-detail', this.dataForm.value).subscribe({
@@ -165,7 +210,7 @@ export class OrderMainComponent implements OnInit {
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
       })
-    }
+    }*/
   }
 
 }

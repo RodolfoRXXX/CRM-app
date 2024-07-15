@@ -232,6 +232,9 @@ html body {
   }
 
   //   font size
+  .fs-11 {
+    font-size: 1.1rem;
+  }
   .fs-09 {
     font-size: 0.9rem;
   }
@@ -325,6 +328,10 @@ html body {
   }
 
     //Background-color classes and badges
+    .bg-white {
+      background-color: #fff;
+    }
+
     .soft-grey-background {
       background-color: rgb(240, 240, 240)
     }

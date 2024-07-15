@@ -39,7 +39,9 @@ export class OrderDetailComponent implements OnInit {
     } )
     this.route.queryParams.subscribe(params => {
       this.id_order = params['id_order'];
-      if(this.id_order) this.getOrder(this.id_order)
+      if(this.id_order) {
+        this.getOrder(this.id_order)
+      }
         this.dataForm.patchValue({id: this.id_order})
     });
   }

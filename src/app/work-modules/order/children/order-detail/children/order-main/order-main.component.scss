@@ -7,25 +7,6 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            .image-data {
-                border-radius: 50%;
-                background-color: #ecedee !important;
-                color: #8a8d93 !important;
-                position: relative;
-                span {
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background-color: rgb(228, 224, 224);
-                    color: #767575;
-                    border-radius: 50%;
-                }
-            }
             .text-data {
                 display: flex;
                 flex-direction: column;
@@ -60,4 +41,8 @@
             }
         }
     }
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+    display: none!important;
 }

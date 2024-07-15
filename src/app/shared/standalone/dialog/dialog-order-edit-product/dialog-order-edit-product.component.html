@@ -2,64 +2,131 @@
 <div class="card options">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h4 class="cap mb-0">Buscar un producto</h4>
-        <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog()">
+        <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
             <mat-icon>close</mat-icon>
         </a>
-    </div>
-        
-        <!-- Caja que coloca el texto elegido -->
-        <mat-form-field class="w-100" appearance="outline" *ngIf="!recharge">
-            <input matInput placeholder="Ingresá un texto" value="">
+    </div>  
+    <!-- Caja que coloca el texto elegido -->
+    <div style="position: relative;" [ngStyle]="{'height': (product?'82px':''), 'z-index': 10}">
+        <mat-form-field class="w-100 bg-white" 
+                        appearance="outline"
+                        [style.position]="(optionBox && product)?'absolute':'relative'">
+            <input matInput 
+                    type="text"
+                    placeholder="Ingresá un texto"
+                    #input
+                    (keyup)="getText($event)"
+                    class="mb-1">
             <!-- Tabla que muestra las posibles opciones -->
-            <div class="box-options">
-
-            </div>
+            <table mat-table [dataSource]="dataSource" *ngIf="optionBox"> 
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element;">
+                    <div class="d-flex flex-column align-items-start">
+                        <div class="fw-500 fs-11">
+                            {{ element.name || 'Sin información' }}
+                        </div>
+                        <div class="d-flex justify-content-between w-100">
+                            <div class="d-flex align-items-center fs-08">
+                                Color: 
+                                <span class="material-icons fs-09 ms-1" [style.color]="element.option_1_name">
+                                    square
+                                </span>
+                            </div>
+                            <div>
+                                <span class="fs-08">{{ this._auth.getOptionName2() || 'Opción 2' }}: </span>
+                                <span class="fw-500">{{ element.option_2_name }}</span>
+                            </div>
+                            <div>
+                                <span class="fs-08">Stock: </span>
+                                <span class="fw-700">{{ (element.stock_available > 0)?element.stock_available:'sin stock' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    </td>
+                </ng-container>
+                
+                <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></tr>
+            </table>
+            <p class="mb-0 fw-500 ms-1" *ngIf="!dataSource.data.length && optionBox">Sin opciones</p>
         </mat-form-field>
-        <!-- Recharge button -->
-        <div class="d-flex justify-content-center w-100 p-2" *ngIf="recharge">
-            <!-- Botón para recargar los datos -->
-            <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
+    </div>
+    <ng-container *ngIf="product">
+        <!-- caja de la imagen -->
+        <div class="d-flex align-items-center flex-column">
+            <img [src]="(product['image'])?(uriImg + product['image']):''" alt="Provider image" class="img-fluid rounded mb-3" width="120" height="120">
+            <div class="text-center mb-3">
+                <h4 class="mb-0">{{ (product['name'])?product['name']:'Sin información' }}</h4>
+                <span class="fs-09 text-muted">{{ (product['description'])?product['description']:'Sin información' }}</span>
+            </div>
         </div>
-        <ng-container *ngIf="!load">
-            <!-- caja de la imagen -->
-            <div class="d-flex align-items-center flex-column">
-                <img [src]="baseImg" alt="Provider image" class="img-fluid rounded mb-4" width="120" height="120">
-                <div class="text-center mb-3">
-                    <h4 class="mb-0">{{ (!load)?product['name'] || 'Sin información':'Sin información' }}</h4>
-                    <span class="fs-09 text-muted">{{ (!load)?product['description'] || 'Sin información':'Sin información' }}</span>
+        <!-- caja con indicadores básicos y el nombre -->
+        <div class="d-flex justify-content-around flex-wrap gap-0 gap-md-3 gap-lg-4">
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar">
+                    <span class="avatar-initial rounded text-heading primary-badge">
+                        <span class="material-symbols-outlined">inventory</span>
+                    </span>
+                </div>
+                <div>
+                    <h5 class="mb-0">{{ (product.stock_available)?product.stock_available:0 }} unds</h5>
+                    <span class="text-muted fs-08">Stock</span>
                 </div>
             </div>
-            <!-- caja con indicadores básicos y el nombre -->
-            <div class="d-flex justify-content-around flex-wrap mb-6 gap-0 gap-md-3 gap-lg-4 mt-1">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="avatar">
-                        <span class="avatar-initial rounded text-heading primary-badge">
-                            <span class="material-symbols-outlined">inventory</span>
-                        </span>
-                    </div>
-                    <div>
-                        <h5 class="mb-0"></h5>
-                        <span class="text-muted fs-08">Artículos</span>
-                    </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar">
+                    <span class="avatar-initial rounded text-heading primary-badge">
+                        <span class="material-symbols-outlined">paid</span>
+                    </span>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="avatar">
-                        <span class="avatar-initial rounded text-heading primary-badge">
-                            <span class="material-symbols-outlined">paid</span>
-                        </span>
-                    </div>
-                    <div>
-                        <h5 class="mb-0"></h5>
-                        <span class="text-muted fs-08">Capital</span>
-                    </div>
+                <div>
+                    <h5 class="mb-0">${{ (product.sale_price)?(product.sale_price | number:'1.2-2'):'0.00' }}</h5>
+                    <span class="text-muted fs-08">Precio</span>
                 </div>
             </div>
-        </ng-container>
-         
-        <!-- Caja con botón para editar información -->
-        <div class="d-flex justify-content-center">
-        <button mat-flat-button color="primary" class="w-100" (click)="confirm(product['id'])">
-            Confirmar
+        </div>
+        <!-- caja con información básica -->
+        <h5 class="border-bottom text-capitalize pb-2 mt-3 mb-2">detalles</h5>
+        <ul class="list-unstyled mb-2 ps-3">
+            <li class="mb-2">
+                <span class="me-1 fs-08">Color: </span>
+                <span>
+                    <span class="h6" *ngIf="!product['option_1_name']">Sin información</span>
+                    <span class="material-icons fs-11" 
+                            [style.color]="product['option_1_name']"
+                            style="position: relative; top: 3px;"
+                            *ngIf="product['option_1_name']">
+                        square
+                    </span>
+                </span>
+            </li>
+            <li class="mb-2">
+                <span class="me-1 fs-08">{{ this._auth.getOptionName2() || 'Opción 2' }}: </span>
+                <span class="h6">{{ (product['option_2_name'])?product['option_2_name']:'Sin información' }}</span>
+            </li>
+            <li class="mb-2">
+                <span class="me-1 fs-08">SKU: </span>
+                <span class="h6">{{ (product['sku'])?product['sku']:'Sin información' }}</span>
+            </li>
+            <li class="mb-2">
+                <span class="me-1 fs-08">Estado: </span>
+                <span class="h6" *ngIf="!product['state']">Sin estado</span>
+                <span class="badge rounded-pill cap fs-09" 
+                    [ngClass]="(product['state'] == 'activo')?'bg-label-success':'bg-label-danger'"
+                    *ngIf="product['state']">
+                    {{ product['state'] }}
+                </span>
+            </li>
+        </ul>
+    </ng-container>
+    <!-- Caja con botón para editar información -->
+    <div class="d-flex justify-content-center">
+        <button mat-flat-button 
+                color="primary" 
+                class="w-100" 
+                [disabled]="!product || (product.state == 'inactivo') || (product.stock_available == 0)" 
+                (click)="confirm(product)">
+            Agregar producto
         </button>
-        </div>
+    </div>
 </div>
