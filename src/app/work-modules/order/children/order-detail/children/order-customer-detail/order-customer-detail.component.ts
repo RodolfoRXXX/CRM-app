@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from 'src/app/services/api.service';
 import { Customer } from 'src/app/shared/interfaces/customer.interface';
@@ -13,6 +13,7 @@ import { environment } from 'src/enviroments/enviroment';
 export class OrderCustomerDetailComponent {
 
   @Input() order!: any;
+  @Output() setCustomer = new EventEmitter<number>();
 
   load: boolean = false;
   loading: boolean = false;
@@ -50,6 +51,7 @@ export class OrderCustomerDetailComponent {
       dialogRef.afterClosed().subscribe(result => {
         if(result) {
           this.customer = result;
+          this.setCustomer.emit(result.id);
         }
       });
   }

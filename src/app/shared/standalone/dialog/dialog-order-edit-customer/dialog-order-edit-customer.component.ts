@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/services/auth.service';
 import { Customer } from 'src/app/shared/interfaces/customer.interface';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   standalone: true,
@@ -32,6 +33,7 @@ export class DialogOrderEditCustomerComponent {
   employee!: Employee;
   customer!: Customer;
   uriImg = environment.SERVER;
+  loading: boolean = false;
   optionBox:boolean = false;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['name'];
@@ -41,7 +43,8 @@ export class DialogOrderEditCustomerComponent {
     public dialogRef: MatDialogRef<DialogOrderEditCustomerComponent>,
     private _api: ApiService,
     private _conector: ConectorsService,
-    public _auth: AuthService
+    public _auth: AuthService,
+    private _notify: NotificationService
   ) {
     this.createDataForm()
   }
@@ -219,7 +222,31 @@ export class DialogOrderEditCustomerComponent {
     }
 
     onSubmit() {
-      console.log(this.dataForm.value)
+      this.loading =  true;
+      this._api.postTypeRequest('profile/create-customer', this.dataForm.value).subscribe({
+        next: (res: any) => {
+          this.loading =  false;
+          if(res.status == 1){
+            //Accedió a la base de datos y no hubo problemas
+            if(res.data.affectedRows == 1){
+              //Modificó datos
+              this.closeDialog(res.client[0]);
+              this._notify.showSuccess('Nuevo cliente creado!');
+            } else{
+              //Ya existe
+              this._notify.showWarn('El cliente ya existe.')
+            }
+          } else{
+            //Problemas de conexión con la base de datos(res.status == 0)
+            this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+          }
+        },
+        error: (error: any) => {
+          //Error de conexión, no pudo consultar con la base de datos
+          this.loading =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+        }
+      })
     }
 
   //Cierra la ventana de diálogo

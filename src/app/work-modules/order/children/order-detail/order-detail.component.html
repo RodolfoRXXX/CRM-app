@@ -22,11 +22,11 @@
     <div class="row">
         <!-- Primera columna -->
         <div class="col-12 col-lg-8">
-            <app-order-main [order]="order"></app-order-main>
+            <app-order-main [order]="order" [id_customer]="id_customer"></app-order-main>
         </div>
         <!-- Segunda columna -->
         <div class="col-12 col-lg-4">
-            <app-order-customer-detail [order]="order"></app-order-customer-detail>
+            <app-order-customer-detail [order]="order" (setCustomer)="setCustomer($event)"></app-order-customer-detail>
             <app-order-shipping-address></app-order-shipping-address>
             <app-order-billing-address></app-order-billing-address>
         </div>

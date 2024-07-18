@@ -97,7 +97,7 @@
           <button mat-stroked-button color="warn" class="me-3" type="button" (click)="rechargeData()">
             Reset
           </button>
-          <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()">
+          <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()" [disabled]="dataForm.invalid || loading">
             Guardar
           </button>
         </div>

@@ -14,6 +14,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class OrderDetailComponent implements OnInit {
 
   id_order!: number;
+  id_customer!: number;
   dataForm!: FormGroup;
   order!: any;
   activeState: boolean = false;
@@ -110,6 +111,10 @@ export class OrderDetailComponent implements OnInit {
         }
       })
     }
-  } 
+  }
+
+  setCustomer(id_customer: number) {
+    this.id_customer = id_customer;
+  }
 
 }

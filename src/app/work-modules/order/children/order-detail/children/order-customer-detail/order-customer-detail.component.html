@@ -50,10 +50,10 @@
         <div class="mt-4 mb-3">
             <h6>Información de contacto</h6>
             <p class="mb-1 d-block">
-                <span class="text-muted fs-09">Email: </span><span class="fw-300 ms-1">{{ (customer)?customer.email:'Sin información' }}</span>
+                <span class="text-muted fs-09">Email: </span><span class="fw-300 ms-1">{{ (customer)?(customer.email?customer.email:'Sin información'):'Sin información' }}</span>
             </p>
             <p class="mb-1 d-block">
-                <span class="text-muted fs-09">Teléfono: </span><span class="fw-300 ms-1">{{ (customer)?customer.mobile:'Sin información' }}</span>
+                <span class="text-muted fs-09">Teléfono: </span><span class="fw-300 ms-1">{{ (customer)?(customer.mobile?customer.mobile:(customer.phone?customer.phone:'Sin información')):'Sin información' }}</span>
             </p>     
         </div>
     </mat-card-content>

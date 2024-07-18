@@ -2,6 +2,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
@@ -20,6 +21,7 @@ import { environment } from 'src/enviroments/enviroment';
 export class OrderMainComponent implements OnInit {
 
   @Input() order!: any;
+  @Input() id_customer!: any;
 
   id_enterprise!: number;
   dataForm!: FormGroup;
@@ -39,7 +41,8 @@ export class OrderMainComponent implements OnInit {
     public _auth: AuthService,
     private _notify: NotificationService,
     private _getJson: GetJsonDataService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _router: Router
   ) {
     this.createDataForm();
   }
@@ -57,11 +60,14 @@ export class OrderMainComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['order'].currentValue !== undefined) {
+    if(changes['order'] && changes['order'].currentValue !== undefined) {
       this.load = true;
       this.getProducts();
     } else {
       this.getDataLocal();
+    }
+    if(changes['id_customer'] && changes['id_customer'].currentValue !== undefined) {
+      this.dataForm.patchValue({customer: this.id_customer})
     }
     this.setDataForm(this.order)
   }
@@ -162,66 +168,85 @@ export class OrderMainComponent implements OnInit {
     this.getProducts();
   }
 
+  //Navegar a la misma ruta para recargar el componente
+  rechargeComponent(id_order: number = 0) {
+    if(id_order > 0) {
+      this._router.navigate(['init/main/order/order-detail'], { queryParams: { id_order: id_order } });
+    }
+  }
+
+  //Calcula la fecha actual
+  private date(): string {
+    const date = new Date();
+    date.setDate(date.getDate());
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   //Submit del formulario
   onSubmit() {
-    this.loading = true;
-    if(this.dataForm.controls['id'].value > 0) {
-      console.log(this.dataForm.value)
-      //Modifica el producto
-      /*
-      this._api.postTypeRequest('profile/update-order-detail', this.dataForm.value).subscribe({
-        next: (res: any) => {
-          this.loading =  false;
-          console.log(res)
-          if(res.status == 1){
-            //Accedió a la base de datos y no hubo problemas
-            if(res.data.changedRows == 1){
-              //Modificó datos empresa
-              this._notify.showSuccess('Remito actualizado!');
-              
-            } else{
-              //No hubo modificación
-              this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
-            }
-          } else{
-            //Problemas de conexión con la base de datos(res.status == 0)
-            this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
-          }
-        },
-        error: (error: any) => {
-          //Error de conexión, no pudo consultar con la base de datos
-          this.loading =  false;
-          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
-        }
-      })*/
+    if(this.dataForm.controls['customer'].value < 1) {
+      this._notify.showWarn('Tenés que agregar un cliente para continuar');
     } else {
-      this.dataForm.patchValue({id_enterprise: this.id_enterprise});
-      console.log(this.dataForm.value)
-      //Crea un producto nuevo
-      /*
-      this._api.postTypeRequest('profile/create-product', this.dataForm.value).subscribe({
-        next: (res: any) => {
-          this.loading =  false;
-          if(res.status == 1){
-            //Accedió a la base de datos y no hubo problemas
-            if(res.data.affectedRows == 1){
-              //Modificó datos empresa
-              this._notify.showSuccess('Nuevo producto creado con éxito!');
+      this.loading = true;
+      if(this.dataForm.controls['id'].value > 0) {
+        //Modifica
+        this._api.postTypeRequest('profile/update-order-detail', this.dataForm.value).subscribe({
+          next: (res: any) => {
+            this.loading =  false;
+            if(res.status == 1){
+              //Accedió a la base de datos y no hubo problemas
+              if(res.data.changedRows == 1){
+                //Modificó datos
+                this._notify.showSuccess('Remito actualizado!');
+              } else{
+                //No hubo modificación
+                this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
+              }
             } else{
-              //No hubo modificación
-              this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
+              //Problemas de conexión con la base de datos(res.status == 0)
+              this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
             }
-          } else{
-            //Problemas de conexión con la base de datos(res.status == 0)
+          },
+          error: (error: any) => {
+            //Error de conexión, no pudo consultar con la base de datos
+            this.loading =  false;
             this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
           }
-        },
-        error: (error: any) => {
-          //Error de conexión, no pudo consultar con la base de datos
-          this.loading =  false;
-          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
-        }
-      })*/
+        })
+      } else {
+        this.dataForm.patchValue({id_enterprise: this.id_enterprise, date: this.date(), status: 2});
+        //Crea
+        this._api.postTypeRequest('profile/update-order-detail', this.dataForm.value).subscribe({
+          next: (res: any) => {
+            this.loading =  false;
+            if(res.status == 1){
+              //Accedió a la base de datos y no hubo problemas
+              if(res.data.affectedRows == 1){
+                //Modificó datos
+                this._notify.showSuccess('Remito creado!');
+                this.rechargeComponent(res.data.insertId);
+              } else{
+                //No hubo modificación
+                this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
+              }
+            } else{
+              //Problemas de conexión con la base de datos(res.status == 0)
+              this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+            }
+          },
+          error: (error: any) => {
+            //Error de conexión, no pudo consultar con la base de datos
+            this.loading =  false;
+            this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+          }
+        })
+      }
+      setTimeout(() => {
+        this.edit = false;
+      }, 1500);
     }
   }
 
