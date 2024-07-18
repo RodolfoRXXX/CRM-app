@@ -1,0 +1,156 @@
+ 
+<div class="card options">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="cap mb-0"><span>{{ isNewCustomer?'Crear':'Buscar' }}</span> un cliente</h4>
+        <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
+            <mat-icon>close</mat-icon>
+        </a>
+    </div>  
+    <!-- Buscar un cliente existente -->
+    <div style="position: relative;" [ngStyle]="{'height': (customer?'82px':''), 'z-index': 10}" *ngIf="!isNewCustomer">
+        <mat-form-field class="w-100 bg-white" 
+                        appearance="outline"
+                        [style.position]="(optionBox && customer)?'absolute':'relative'">
+            <input matInput 
+                    type="text"
+                    placeholder="Ingresá un texto"
+                    #input
+                    (keyup)="getText($event)"
+                    class="mb-1">
+            <!-- Tabla que muestra las posibles opciones -->
+            <table mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length && optionBox"> 
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element;">
+                        <div class="row g-2">
+                            <div class="customer-column col">
+                                <div class="me-2">
+                                    <div class="avatar image-customer">
+                                        <img class="rounded-circle" [src]="uriImg + element.thumbnail" *ngIf="element.thumbnail != 'no-image.png'">
+                                        <span *ngIf="element.thumbnail == 'no-image.png'">
+                                            <p class="mb-0">
+                                                {{ element.name.split('')[0].substring(0, 1) + element.name.split(' ')[1].substring(0, 1) }}
+                                            </p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="text-customer text-customer-box">
+                                    <span class="name-customer">
+                                        {{ element.name || 'Sin información' }}
+                                    </span>
+                                    <small class="email-customer">
+                                        Cliente ID: #{{ element.id || 'Sin informción' }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>             
+                <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></tr>
+            </table>
+            <p class="mb-0 fw-500 text-center" *ngIf="!dataSource.data.length && optionBox">
+                El cliente que buscas no existe
+                <button mat-raised-button color="accent" class="w-100 mt-1" (click)="newCustomer(true)">+ Agregar cliente nuevo</button>
+            </p>
+        </mat-form-field>
+    </div>
+    <!-- Crear un cliente nuevo -->
+    <div *ngIf="isNewCustomer">
+        <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+            <!-- name and cuit -->
+            <div class="row">
+                <!-- Name -->
+                <mat-form-field appearance="outline" class="col-12 col-md-6">
+                    <mat-label>Nombre completo</mat-label>
+                    <input matInput
+                            type="text"
+                            formControlName="name">
+                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['name']!.errors">{{getErrorName()}}</mat-error>
+                </mat-form-field>
+                <!-- cuit -->
+                <mat-form-field appearance="outline" class="col-12 col-md-6">
+                    <mat-label>Cuit</mat-label>
+                    <input matInput 
+                            #message 
+                            maxlength="11"
+                            formControlName="cuit">
+                    <mat-hint class="fs-08" align="end">{{message.value.length}} / 11</mat-hint>
+                </mat-form-field>
+            </div>
+            <!-- Email and Address-->
+            <div class="row">
+                <!-- Email -->
+                <mat-form-field appearance="outline" class="col-12 col-md-6">
+                    <mat-label>Email</mat-label>
+                        <input matInput placeholder="algo@gmail.com"
+                                formControlName="email" 
+                                >
+                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['email']!.errors">{{getErrorEmail()}}</mat-error>
+                </mat-form-field>
+                <!-- Address -->
+                <mat-form-field appearance="outline" class="col-12 col-md-6">
+                    <mat-label>Dirección</mat-label>
+                        <input matInput placeholder="Calle sin nombre 123"
+                                formControlName="address" 
+                                >
+                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['address']!.errors">{{getErrorAddress()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <!-- Phone and Mobile -->
+            <div class="row">
+                <!-- Phone -->
+                <mat-form-field appearance="outline" class="col-12 col-sm-6">
+                    <mat-label>Teléfono</mat-label>
+                        <input matInput placeholder="3415697856"
+                                formControlName="phone" 
+                                >
+                        <mat-error class="fs-08" *ngIf="this.dataForm.controls['phone']!.errors">{{getErrorPhone()}}</mat-error>
+                </mat-form-field>
+                <!-- Mobile -->
+                <mat-form-field appearance="outline" class="col-12 col-sm-6">
+                    <mat-label>Teléfono celular</mat-label>
+                        <input matInput placeholder="3415698746"
+                                formControlName="mobile" 
+                                >
+                        <mat-error class="fs-08" *ngIf="this.dataForm.controls['mobile']!.errors">{{getErrorMobile()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <!-- City, state and country -->
+            <div class="row">
+                <!-- City -->
+                <mat-form-field appearance="outline" class="col-12 col-md-4">
+                    <mat-label>Ciudad</mat-label>
+                        <input matInput
+                                formControlName="city" 
+                                required>
+                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['city']!.errors">{{getErrorCity()}}</mat-error>
+                </mat-form-field>
+                <!-- State -->
+                <mat-form-field appearance="outline" class="col-12 col-md-4">
+                    <mat-label>Provincia</mat-label>
+                        <input matInput
+                                formControlName="state" 
+                                required>
+                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['state']!.errors">{{getErrorState()}}</mat-error>
+                </mat-form-field>
+                <!-- Country -->
+                <mat-form-field appearance="outline" class="col-12 col-md-4">
+                    <mat-label>País</mat-label>
+                        <input matInput
+                                formControlName="country" 
+                                required>
+                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['country']!.errors">{{getErrorCountry()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <!-- Botones de reseteo y confirmación -->
+            <div class="d-flex justify-content-end">
+                <button mat-flat-button color="accent" class="me-3" type="button" (click)="newCustomer(false)">
+                    Buscar un cliente existente
+                </button>
+                <button mat-stroked-button color="primary" type="submit" [disabled]="dataForm.invalid || dataForm.untouched || dataForm.pristine">
+                    Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

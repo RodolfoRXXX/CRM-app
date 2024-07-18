@@ -26,7 +26,7 @@ export class OrderMainComponent implements OnInit {
   products!: Product[];
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['sku', 'product', 'qty', 'delete'];
-  load: boolean = true;
+  load: boolean = false;
   loading: boolean = false;
   recharge!: boolean;
   uriImg = environment.SERVER;
@@ -44,16 +44,24 @@ export class OrderMainComponent implements OnInit {
     this.createDataForm();
   }
 
+  private getDataLocal(): void {
+    this._conector.getEmployee().subscribe((item: any) => {
+      this.id_enterprise = item.id_enterprise;
+    });
+  }
+
   ngOnInit(): void {
-    this._conector.setUpdateTitle('Lista de pedidos');
     this._getJson.getData('order_status.json').subscribe((data: any) => {
       this.order_status = data;
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['order']) {
+    if (changes['order'].currentValue !== undefined) {
+      this.load = true;
       this.getProducts();
+    } else {
+      this.getDataLocal();
     }
     this.setDataForm(this.order)
   }
@@ -156,10 +164,11 @@ export class OrderMainComponent implements OnInit {
 
   //Submit del formulario
   onSubmit() {
-    console.log(this.dataForm.value)
-    /*
+    this.loading = true;
     if(this.dataForm.controls['id'].value > 0) {
+      console.log(this.dataForm.value)
       //Modifica el producto
+      /*
       this._api.postTypeRequest('profile/update-order-detail', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
@@ -168,7 +177,7 @@ export class OrderMainComponent implements OnInit {
             //Accedió a la base de datos y no hubo problemas
             if(res.data.changedRows == 1){
               //Modificó datos empresa
-              this._notify.showSuccess('Producto actualizado con éxito!');
+              this._notify.showSuccess('Remito actualizado!');
               
             } else{
               //No hubo modificación
@@ -184,9 +193,12 @@ export class OrderMainComponent implements OnInit {
           this.loading =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
-      })
+      })*/
     } else {
+      this.dataForm.patchValue({id_enterprise: this.id_enterprise});
+      console.log(this.dataForm.value)
       //Crea un producto nuevo
+      /*
       this._api.postTypeRequest('profile/create-product', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
@@ -209,8 +221,8 @@ export class OrderMainComponent implements OnInit {
           this.loading =  false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
         }
-      })
-    }*/
+      })*/
+    }
   }
 
 }

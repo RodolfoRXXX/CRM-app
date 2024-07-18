@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: true,
-  selector: 'app-dialog-storage-detail',
+  selector: 'app-dialog-order-edit-product',
   templateUrl: './dialog-order-edit-product.component.html',
   styleUrls: ['./dialog-order-edit-product.component.scss'],
   imports: [
