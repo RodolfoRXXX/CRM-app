@@ -1,13 +1,27 @@
- 
+
 <div class="card options">
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h4 class="cap mb-0">Buscar un producto</h4>
+        <div class="position-absolute end-0 me-5 pe-4">
+            <span class="badge rounded-pill cap fs-09" 
+                [ngClass]="(product['state'] == 'activo')?'bg-label-success':'bg-label-danger'"
+                *ngIf="product?product['state']:false">
+                {{ product['state'] }}
+            </span>
+            <span class="h6" *ngIf="product?(!product['state']):false">Sin estado</span>
+        </div>
+        <h4 class="cap mb-0">
+            <span>{{ (!this.data || !product)?'Buscar':'Editar' }}</span> un producto
+        </h4>
         <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
-            <mat-icon>close</mat-icon>
+            <mat-icon style="position: relative; top: -2px;">close</mat-icon>
         </a>
-    </div>  
+    </div>
+    <!-- Cargando -->
+    <div class="d-flex justify-content-center p-2" *ngIf="load">
+        <h4>Cargando...</h4>
+    </div>
     <!-- Caja que coloca el texto elegido -->
-    <div style="position: relative;" [ngStyle]="{'height': (product?'82px':''), 'z-index': 10}">
+    <div style="position: relative;" [ngStyle]="{'height': (product?'82px':''), 'z-index': 10}" *ngIf="!this.data || !product">
         <mat-form-field class="w-100 bg-white" 
                         appearance="outline"
                         [style.position]="(optionBox && product)?'absolute':'relative'">
@@ -91,18 +105,18 @@
             <li class="mb-2">
                 <span class="me-1 fs-08">Color: </span>
                 <span>
-                    <span class="h6" *ngIf="!product['option_1_name']">Sin información</span>
+                    <span class="h6" *ngIf="!product['option_1_name'] && !data.option_1">Sin información</span>
                     <span class="material-icons fs-11" 
-                            [style.color]="product['option_1_name']"
+                            [style.color]="product['option_1_name'] || data.option_1"
                             style="position: relative; top: 3px;"
-                            *ngIf="product['option_1_name']">
+                            *ngIf="product['option_1_name'] || data.option_1">
                         square
                     </span>
                 </span>
             </li>
             <li class="mb-2">
                 <span class="me-1 fs-08">{{ this._auth.getOptionName2() || 'Opción 2' }}: </span>
-                <span class="h6">{{ (product['option_2_name'])?product['option_2_name']:'Sin información' }}</span>
+                <span class="h6">{{ (product['option_2_name'])?product['option_2_name']:(data.option_2?data.option_2:'Sin información') }}</span>
             </li>
             <li class="mb-2">
                 <span class="me-1 fs-08">SKU: </span>
@@ -110,23 +124,34 @@
             </li>
             <li class="mb-2">
                 <span class="me-1 fs-08">Estado: </span>
-                <span class="h6" *ngIf="!product['state']">Sin estado</span>
-                <span class="badge rounded-pill cap fs-09" 
-                    [ngClass]="(product['state'] == 'activo')?'bg-label-success':'bg-label-danger'"
-                    *ngIf="product['state']">
-                    {{ product['state'] }}
+                <span class="badge rounded-pill cap" [style.color]="data.color" [style.background-color]="data.bgColor">
+                    {{ data.status }}
                 </span>
             </li>
         </ul>
     </ng-container>
     <!-- Caja con botón para editar información -->
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-between">
+        <mat-form-field appearance="outline">
+            <mat-label>Cantidad</mat-label>
+            <input type="number" matInput >
+          </mat-form-field>
         <button mat-flat-button 
                 color="primary" 
-                class="w-100" 
+                class="ms-1 me-1"
+                style="width: auto; height: 56px;"
                 [disabled]="!product || (product.state == 'inactivo') || (product.stock_available == 0)" 
                 (click)="confirm(product)">
+                <mat-icon>add</mat-icon>
             Agregar producto
+        </button>
+        <button mat-stroked-button
+                color="warn"
+                style="height: 56px;"
+                [disabled]="false" 
+                (click)="confirm(product)">
+                <mat-icon>delete_outline</mat-icon>
+            Eliminar
         </button>
     </div>
 </div>

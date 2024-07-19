@@ -27,7 +27,7 @@ export class OrderMainComponent implements OnInit {
   dataForm!: FormGroup;
   products!: Product[];
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['sku', 'product', 'qty', 'delete'];
+  displayedColumns: string[] = ['sku', 'product', 'qty', 'status', 'edit'];
   load: boolean = false;
   loading: boolean = false;
   recharge!: boolean;
@@ -45,6 +45,9 @@ export class OrderMainComponent implements OnInit {
     private _router: Router
   ) {
     this.createDataForm();
+    this._getJson.getData('order_status.json').subscribe((data: any) => {
+      this.order_status = data;
+    });
   }
 
   private getDataLocal(): void {
@@ -54,9 +57,6 @@ export class OrderMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._getJson.getData('order_status.json').subscribe((data: any) => {
-      this.order_status = data;
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -78,54 +78,43 @@ export class OrderMainComponent implements OnInit {
       })
       const data = JSON.parse(this.order.detail);
       if(data) {
+        data.forEach((element: any) => {
+          let data = this.order_status?.find(status => status.id === element.status);
+          if(data) {
+            element.status = data.status;
+            element.bgColor = data.bgColor;
+            element.color = data.color;
+          }
+        });
         this.load = false;
         this.dataSource.data = data;
       }
     }
   }
 
-  //Actualizan el this.order.detail
-    //Actualizo la cantidad de una fila
-    setQty(element: any, newQty: number) {
-      element.qty = newQty;
-      this.dataForm.patchValue({
-        detail: JSON.stringify(this.dataSource.data)
-      })
-    }
-    //Elimino una linea
-    deleteProduct(id_product: number) {
-      const index = this.dataSource.data.findIndex((element: any) => element.id_product == id_product)
-      if(index !== -1) {
-        this.dataSource.data.splice(index, 1);
-      }
-      this.ngAfterViewInit();
-      this.dataForm.patchValue({
-        detail: JSON.stringify(this.dataSource.data)
-      })
-    }
-    //Abro la ventana de diálogo para agregar lineas
-    addProduct() {
-      const dialogRef = this._dialog.open(DialogOrderEditProductComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        if(result) {
-          //Aquí abre la ventana de diálogo para agregar productos
-          const index = this.dataSource.data.findIndex((element: any) => element.id_product == result.id_product);
-          if(index !== -1) {
-            this.dataSource.data.find( (element: any) => {
-              if(element.id_product == result.id_product) {
-                element.qty++;
-              }
-            } )
-          } else {
-            this.dataSource.data.push(result)
-          }
-          this.ngAfterViewInit();
-          this.dataForm.patchValue({
-            detail: JSON.stringify(this.dataSource.data)
-          })
+  //Abro la ventana de diálogo para agregar lineas o modificarlas
+  addProduct(item: any = undefined) {
+    const dialogRef = this._dialog.open(DialogOrderEditProductComponent, { data: item });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        //Aquí abre la ventana de diálogo para agregar productos
+        const index = this.dataSource.data.findIndex((element: any) => element.id_product == result.id_product);
+        if(index !== -1) {
+          this.dataSource.data.find( (element: any) => {
+            if(element.id_product == result.id_product) {
+              element.qty++;
+            }
+          } )
+        } else {
+          this.dataSource.data.push(result)
         }
-      });
-    }
+        this.ngAfterViewInit();
+        this.dataForm.patchValue({
+          detail: JSON.stringify(this.dataSource.data)
+        })
+      }
+    });
+  }
 
   //Actualizo el array con los datos
   ngAfterViewInit() {
@@ -142,6 +131,7 @@ export class OrderMainComponent implements OnInit {
         detail: new FormControl('', [
           Validators.required
         ]),
+        stockUpd: new FormControl(''),
         shipment: new FormControl(''),
         observation: new FormControl(''),
         status: new FormControl('')
@@ -193,6 +183,7 @@ export class OrderMainComponent implements OnInit {
       this.loading = true;
       if(this.dataForm.controls['id'].value > 0) {
         //Modifica
+        /*
         this._api.postTypeRequest('profile/update-order-detail', this.dataForm.value).subscribe({
           next: (res: any) => {
             this.loading =  false;
@@ -205,7 +196,7 @@ export class OrderMainComponent implements OnInit {
                 //No hubo modificación
                 this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
               }
-            } else{
+            } else {
               //Problemas de conexión con la base de datos(res.status == 0)
               this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
             }
@@ -215,7 +206,7 @@ export class OrderMainComponent implements OnInit {
             this.loading =  false;
             this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
           }
-        })
+        })*/
       } else {
         this.dataForm.patchValue({id_enterprise: this.id_enterprise, date: this.date(), status: 2});
         //Crea
