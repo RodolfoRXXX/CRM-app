@@ -10,6 +10,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/services/auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -18,7 +19,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./dialog-order-edit-product.component.scss'],
   imports: [
     MaterialModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class DialogOrderEditProductComponent implements OnInit {
@@ -32,6 +35,10 @@ export class DialogOrderEditProductComponent implements OnInit {
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['name'];
   load!: boolean;
+  qty!: number;
+  stkError: boolean = false;
+  editRegister: any = [];
+  id_product!: number;
 
   constructor(
     public dialogRef: MatDialogRef<DialogOrderEditProductComponent>,
@@ -43,7 +50,10 @@ export class DialogOrderEditProductComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data) {
-      console.log(this.data)
+      console.log(this.data.data, this.data.edit)
+      this.qty = this.data.data.qty;
+      this.editRegister = this.data.edit;
+      this.id_product = this.data.data.id_product;
       this.getProduct();
     }
   }
@@ -99,35 +109,85 @@ export class DialogOrderEditProductComponent implements OnInit {
       }
     }
 
-  //Editar valor
+  //Editar valor // no trae los nombres de las opciones COLOR Y MEDIDA !!!ALERTA!!!
     getProduct() {
       this.load = true;
-      this._api.postTypeRequest('profile/get-product-detail-by-id', { id_product: this.data.id_product }).subscribe( (value:any) => {
+      this._api.postTypeRequest('profile/get-product-detail-by-id', { id_product: this.data.data.id_product }).subscribe( (value:any) => {
         this.load = false;
         if(value.data) {
           console.log(value.data)
-          console.log(this.data)
-          this.product = value.data[0]
+          this.product = value.data[0];
+          this.id_product = this.product.id;
         }
       })
     }
 
-  confirm(product: Product): void {
-    if(product) {
-      const item = {
-        id_product: product.id,
-        name: product.name,
-        description: product.description,
-        option_1: product.option_1_name,
-        option_2: product.option_2_name,
-        sku: product.sku,
-        qty: 1,
+  //Edita el valor de cantidad del producto a agregar
+  setQty(qty: number) {
+    console.log(qty)
+    this.qty = qty;
+    this.stkError = false;
+  }
+
+  confirm(state: boolean): void {
+    if(state) {
+      //true: agrega
+      //amount es la cantidad que quiero restar o sumar del stock del producto
+      let amount = this.qty - ((this.data)?this.data.data.qty:0);
+      if(amount > this.product.stock_available) {
+        //no hay stock suficiente
+        this.stkError = true;
+      } else {
+        //hay stock suficiente
+          //completa el array de cambios - La cantidad a retirar del stock es positiva y a agregar es negativa
+          if(this.editRegister.length > 0) {
+            this.editRegister.find( (element:any) => {
+              if(element.id_product == this.id_product) {
+                element.editQty = this.qty - this.data.data.qty
+              } else {
+                this.editRegister.push({ id_product: this.id_product, editQty: (this.data.data)?this.qty - this.data.data.qty:this.qty })
+              }
+              this.setItem(true);
+            })
+          } else {
+            this.editRegister.push({ id_product: this.id_product, editQty: (this.data.data)?this.qty - this.data.data.qty:this.qty })
+            this.setItem(true);
+          }
+      }
+    } else {
+      //false: elimina
+      this.setItem(false);
+    }
+  }
+
+  //arma el item de respuesta
+  setItem(state: boolean) {
+    let item;
+    if(state) {
+      //agrega
+      item = {
+        id_product: (this.data)?this.data.data.id_product:this.product.id,
+        name: this.product?this.product.name:this.data.data.name,
+        description: this.product?this.product.description:this.data.data.description,
+        option_1: this.product?this.product.option_1_name:this.data.data.option_1,  //PROBLEMA
+        option_2: this.product?this.product.option_2_name:this.data.data.option_2,  //PROBLEMA
+        sku: this.product?this.product.sku:this.data.data.sku,
+        qty: this.qty,
         discount: 0
       }
-      this.closeDialog(item);
     } else {
-      this.closeDialog(false);
+      //elimina
+      item = {
+        id_product: this.id_product
+      }
     }
+    const response = {
+      item: item,
+      edit: this.editRegister,
+      delete: !state
+    }
+    console.log(response)
+    //this.closeDialog(response)
   }
 
   closeDialog(response: any): void {

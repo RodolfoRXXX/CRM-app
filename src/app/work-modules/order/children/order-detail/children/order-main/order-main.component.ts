@@ -34,6 +34,7 @@ export class OrderMainComponent implements OnInit {
   uriImg = environment.SERVER;
   order_status!: any[];
   edit: boolean = false;
+  editRegister = [];
 
   constructor(
     private _conector: ConectorsService,
@@ -94,9 +95,11 @@ export class OrderMainComponent implements OnInit {
 
   //Abro la ventana de diálogo para agregar lineas o modificarlas
   addProduct(item: any = undefined) {
-    const dialogRef = this._dialog.open(DialogOrderEditProductComponent, { data: item });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+    const dialogRef = this._dialog.open(DialogOrderEditProductComponent, { data: {data: item, edit: this.editRegister} });
+    dialogRef.afterClosed().subscribe(response => {
+      if(response) {
+        console.log(response)
+        /*
         //Aquí abre la ventana de diálogo para agregar productos
         const index = this.dataSource.data.findIndex((element: any) => element.id_product == result.id_product);
         if(index !== -1) {
@@ -111,7 +114,7 @@ export class OrderMainComponent implements OnInit {
         this.ngAfterViewInit();
         this.dataForm.patchValue({
           detail: JSON.stringify(this.dataSource.data)
-        })
+        })*/
       }
     });
   }
