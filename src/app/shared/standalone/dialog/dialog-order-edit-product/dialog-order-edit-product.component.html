@@ -10,7 +10,7 @@
             <span class="h6" *ngIf="product?(!product['state']):false">Sin estado</span>
         </div>
         <h4 class="cap mb-0">
-            <span>{{ (!this.data.data || !product)?'Buscar':'Editar' }}</span> un producto
+            <span>{{ (data.id_product > 0)?'Editar':'Buscar' }}</span> un producto
         </h4>
         <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
             <mat-icon style="position: relative; top: -2px;">close</mat-icon>
@@ -21,7 +21,7 @@
         <h4>Cargando...</h4>
     </div>
     <!-- Caja que coloca el texto elegido -->
-    <div style="position: relative;" [ngStyle]="{'height': (product?'82px':''), 'z-index': 10}" *ngIf="!this.data.data || !product">
+    <div style="position: relative;" [ngStyle]="{'height': (product?'82px':''), 'z-index': 10}" *ngIf="data.id_product == 0">
         <mat-form-field class="w-100 bg-white" 
                         appearance="outline"
                         [style.position]="(optionBox && product)?'absolute':'relative'">
@@ -65,11 +65,12 @@
             <p class="mb-0 fw-500 ms-1" *ngIf="!dataSource.data.length && optionBox">Sin opciones</p>
         </mat-form-field>
     </div>
+    <!-- Caja con la información del producto -->
     <ng-container *ngIf="product">
         <!-- caja de la imagen -->
         <div class="d-flex align-items-center flex-column">
             <img [src]="(product['image'])?(uriImg + product['image']):''" alt="Provider image" class="img-fluid rounded mb-3" width="120" height="120">
-            <div class="text-center mb-3">
+            <div class="text-center mb-3" style="max-width: 310px;">
                 <h4 class="mb-0">{{ (product['name'])?product['name']:'Sin información' }}</h4>
                 <span class="fs-09 text-muted">{{ (product['description'])?product['description']:'Sin información' }}</span>
             </div>
@@ -83,7 +84,7 @@
                     </span>
                 </div>
                 <div>
-                    <h5 class="mb-0">{{ (product.stock_available)?product.stock_available:0 }} unds</h5>
+                    <h5 class="mb-0" [ngStyle]="{ 'color': ((product.stock_available == 0))?'red':''}">{{ (product.stock_available)?product.stock_available:0 }} unds</h5>
                     <span class="text-muted fs-08">Stock</span>
                 </div>
             </div>
@@ -101,37 +102,31 @@
         </div>
         <!-- caja con información básica -->
         <h5 class="border-bottom text-capitalize pb-2 mt-3 mb-2">detalles</h5>
-        <ul class="list-unstyled mb-2 ps-3">
+        <ul class="list-unstyled mb-2 ps-2">
             <li class="mb-2">
                 <span class="me-1 fs-08">Color: </span>
                 <span>
-                    <span class="h6" *ngIf="!product['option_1_name'] && !data.data.option_1">Sin información</span>
+                    <span class="h6" *ngIf="!product['option_1_name']">Sin información</span>
                     <span class="material-icons fs-11" 
-                            [style.color]="product['option_1_name'] || data.data.option_1"
+                            [style.color]="product['option_1_name']"
                             style="position: relative; top: 3px;"
-                            *ngIf="product['option_1_name'] || data.data.option_1">
+                            *ngIf="product['option_1_name']">
                         square
                     </span>
                 </span>
             </li>
             <li class="mb-2">
                 <span class="me-1 fs-08">{{ this._auth.getOptionName2() || 'Opción 2' }}: </span>
-                <span class="h6">{{ (product['option_2_name'])?product['option_2_name']:(data.data.option_2?data.data.option_2:'Sin información') }}</span>
+                <span class="h6">{{ (product['option_2_name'])?product['option_2_name']:'Sin información' }}</span>
             </li>
             <li class="mb-2">
                 <span class="me-1 fs-08">SKU: </span>
                 <span class="h6">{{ (product['sku'])?product['sku']:'Sin información' }}</span>
             </li>
-            <li class="mb-2">
-                <span class="me-1 fs-08">Estado: </span>
-                <span class="badge rounded-pill cap" [style.color]="data.data.color" [style.background-color]="data.data.bgColor">
-                    {{ data.data.status }}
-                </span>
-            </li>
         </ul>
     </ng-container>
     <!-- Caja con botón para editar información -->
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between" *ngIf="product">
         <div class="posistion-relative">
             <mat-form-field appearance="outline">
                 <mat-label>Cantidad</mat-label>
@@ -139,6 +134,7 @@
                             type="number"
                             [(ngModel)]="qty"
                             (ngModelChange)="setQty($event)"
+                            [disabled]="!product || (product.stock_available == 0)"
                             required>
                     <mat-error class="fs-08" *ngIf="!qty">
                         <span *ngIf="!qty">Ingresá una cantidad</span>
@@ -151,14 +147,14 @@
         <button mat-fab
                 color="primary" 
                 class="ms-1 me-1"
-                [disabled]="!product || (product.state == 'inactivo') || (product.stock_available == 0) || qty == null || qty == 0 || data?.data.qty == this.qty" 
-                (click)="confirm(true)">
+                [disabled]="!product || (product.state == 'inactivo') || (product.stock_available == 0) || qty == null || qty == 0 || data.qty_db == this.qty" 
+                (click)="confirm(state)">
                 <mat-icon>add</mat-icon>
         </button>
         <button mat-fab
                 color="warn"
-                [disabled]="!data.data" 
-                (click)="confirm(false)">
+                [disabled]="data.id_product == 0" 
+                (click)="confirm('delete')">
                 <mat-icon>delete</mat-icon>
         </button>
     </div>

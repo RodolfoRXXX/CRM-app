@@ -63,17 +63,19 @@
               <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400"> ESTADO </th>
                 <td mat-cell *matCellDef="let element">
-                    <span class="badge rounded-pill cap fs-07" [style.color]="element.color" [style.background-color]="element.bgColor">
-                      {{ element.status }}
-                    </span>
+                  <span class="badge rounded-pill cap fs-07"
+                        [style.color]="getStatus(element.status)?.color"
+                        [style.background-color]="getStatus(element.status)?.bgColor">
+                    {{ getStatus(element.status)?.status }}
+                  </span>
                 </td>
               </ng-container>
 
               <!-- edit Column -->
               <ng-container matColumnDef="edit">
                   <th mat-header-cell *matHeaderCellDef></th>
-                  <td mat-cell *matCellDef="let element">
-                      <button mat-icon-button color="primary" (click)="addProduct(element)" [disabled]="!edit">
+                  <td mat-cell *matCellDef="let element; let i = index;">
+                      <button mat-icon-button color="primary" (click)="addProduct(element.id_product, this.dataSource.data[i].qty)" [disabled]="!edit">
                           <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
                       </button>
                   </td>
@@ -93,11 +95,11 @@
         <h4>Todavía no agregaste ningún producto</h4>
       </div>
       <!-- new products -->
-      <div class="d-flex flex-column mt-3" *ngIf="edit">
-        <button class="ms-2" mat-icon-button color="primary" (click)="addProduct()">
-          <mat-icon style="position: relative; bottom: 2px;">add_circle_outline</mat-icon>
+      <div class="d-flex justify-content-between mt-4 mb-3" *ngIf="edit">
+        <button mat-stroked-button color="accent" type="button" (click)="addProduct()">
+          + Agregar producto
         </button>
-        <div class="d-flex justify-content-end pt-3 b-t">
+        <div class="d-flex justify-content-end">
           <button mat-stroked-button color="warn" class="me-3" type="button" (click)="rechargeData()">
             Reset
           </button>
@@ -105,6 +107,11 @@
             Guardar
           </button>
         </div>
+      </div>
+      <!-- footer -->
+      <div class="b-t pt-3 pb-2">
+        <span class="text-muted fs-09">Total de items:  </span>
+        <span class="fw-500">{{ this.dataSource.data.length }}</span>
       </div>
     </mat-card-content>
     <!-- Caja que muestra un texto de "Cargando..." y luego el listado -->

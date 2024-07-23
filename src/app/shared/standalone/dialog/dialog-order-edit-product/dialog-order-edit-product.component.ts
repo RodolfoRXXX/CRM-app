@@ -38,7 +38,7 @@ export class DialogOrderEditProductComponent implements OnInit {
   qty!: number;
   stkError: boolean = false;
   editRegister: any = [];
-  id_product!: number;
+  state!: string;
 
   constructor(
     public dialogRef: MatDialogRef<DialogOrderEditProductComponent>,
@@ -49,13 +49,14 @@ export class DialogOrderEditProductComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(this.data) {
-      console.log(this.data.data, this.data.edit)
-      this.qty = this.data.data.qty;
-      this.editRegister = this.data.edit;
-      this.id_product = this.data.data.id_product;
-      this.getProduct();
+    if(this.data.id_product > 0) {
+      this.qty = this.data.qty_db;
+      this.state = 'edit';
+      this.getProduct(this.data.id_product);
+    } else {
+      this.state = 'new';
     }
+    this.editRegister = this.data.edit;
   }
 
   private getDataLocal(): number {
@@ -109,85 +110,102 @@ export class DialogOrderEditProductComponent implements OnInit {
       }
     }
 
-  //Editar valor // no trae los nombres de las opciones COLOR Y MEDIDA !!!ALERTA!!!
-    getProduct() {
-      this.load = true;
-      this._api.postTypeRequest('profile/get-product-detail-by-id', { id_product: this.data.data.id_product }).subscribe( (value:any) => {
-        this.load = false;
-        if(value.data) {
-          console.log(value.data)
-          this.product = value.data[0];
-          this.id_product = this.product.id;
-        }
-      })
-    }
+//Traigo la información del producto
+  getProduct(id_product: number) {
+    this.load = true;
+    this._api.postTypeRequest('profile/get-product-detail-by-id', { id_product: id_product }).subscribe( (value:any) => {
+      this.load = false;
+      if(value.data) {
+        this.product = value.data[0];
+      }
+    })
+  }
 
   //Edita el valor de cantidad del producto a agregar
   setQty(qty: number) {
-    console.log(qty)
     this.qty = qty;
     this.stkError = false;
   }
 
-  confirm(state: boolean): void {
-    if(state) {
-      //true: agrega
-      //amount es la cantidad que quiero restar o sumar del stock del producto
-      let amount = this.qty - ((this.data)?this.data.data.qty:0);
-      if(amount > this.product.stock_available) {
-        //no hay stock suficiente
-        this.stkError = true;
-      } else {
-        //hay stock suficiente
-          //completa el array de cambios - La cantidad a retirar del stock es positiva y a agregar es negativa
-          if(this.editRegister.length > 0) {
-            this.editRegister.find( (element:any) => {
-              if(element.id_product == this.id_product) {
-                element.editQty = this.qty - this.data.data.qty
-              } else {
-                this.editRegister.push({ id_product: this.id_product, editQty: (this.data.data)?this.qty - this.data.data.qty:this.qty })
-              }
-              this.setItem(true);
-            })
-          } else {
-            this.editRegister.push({ id_product: this.id_product, editQty: (this.data.data)?this.qty - this.data.data.qty:this.qty })
-            this.setItem(true);
-          }
-      }
+  confirm(state: string): void {
+    //busca si el producto a modificar tiene un registro de cambios
+    const findIndex = this.editRegister.findIndex( (element:any) => element.id_product == this.product.id );
+    //guarda la cantidad de producto que hay en el remito y almacenado en la db
+    let exist = ((this.data.id_product > 0)?this.data.qty_db:0);
+    //obtiene la diferencia entre lo que ingresó el usuario y la existencia del producto en el remito
+    let amount = this.qty - exist;
+    //verifica que la cantidad a editar exista en el stock del producto
+    //de acuerdo a para qué se abrió el dialog, es la operatoria que va a realizar el editor de cambios
+    if(amount > this.product.stock_available) {
+      //no hay stock suficiente
+      this.stkError = true;
     } else {
-      //false: elimina
-      this.setItem(false);
+      //habría stock suficiente
+      switch (state) {
+        case 'new':
+          //verifica si hay un producto con cambios pendientes en el registro de cambios, si hay entonces verifica que la suma de la cantidad existente y lo que se va a retirar no supere el stock del producto
+          if(findIndex > -1) {
+            if((this.editRegister[findIndex].editQty + amount) > this.product.stock_available) {
+              //no hay stock suficiente
+              this.stkError = true;
+            } else {
+              this.editRegister[findIndex].editQty += amount
+            }
+          } else {
+            this.editRegister.push({ id_product: this.product.id, editQty: amount })
+          }
+          break;
+        case 'edit':
+          //al editar la cantidad de un producto, el valor a guardar en el registro de cambios, no depende de valores previos en este, solo de la cantidad en el remito y la nueva cantidad
+          (findIndex > -1)?(this.editRegister[findIndex].editQty = amount):(this.editRegister.push({ id_product: this.product.id, editQty: amount }));
+          break;
+        case 'delete':
+          //elimina la cantidad del producto pero considerando solo la cantidad que viene desde la db del remito de dicho producto
+          (findIndex > -1)?this.editRegister[findIndex].editQty -= exist:this.editRegister.push({ id_product: this.product.id, editQty: exist });
+          break;
+      }
     }
+    if(!this.stkError) this.setItem(state);
   }
 
   //arma el item de respuesta
-  setItem(state: boolean) {
+  setItem(state: string) {
     let item;
-    if(state) {
-      //agrega
-      item = {
-        id_product: (this.data)?this.data.data.id_product:this.product.id,
-        name: this.product?this.product.name:this.data.data.name,
-        description: this.product?this.product.description:this.data.data.description,
-        option_1: this.product?this.product.option_1_name:this.data.data.option_1,  //PROBLEMA
-        option_2: this.product?this.product.option_2_name:this.data.data.option_2,  //PROBLEMA
-        sku: this.product?this.product.sku:this.data.data.sku,
-        qty: this.qty,
-        discount: 0
-      }
-    } else {
-      //elimina
-      item = {
-        id_product: this.id_product
-      }
+    switch (state) {
+      case 'new':
+        //agrega un nuevo producto al remito
+        item = {
+          id_product: this.product?this.product.id:this.data.data.id_product,
+          name: this.product?this.product.name:this.data.data.name,
+          description: this.product?this.product.description:this.data.data.description,
+          option_1: this.product?this.product.option_1_name:this.data.data.option_1,
+          option_2: this.product?this.product.option_2_name:this.data.data.option_2,
+          sku: this.product?this.product.sku:this.data.data.sku,
+          qty: this.qty,
+          status: 2,
+          discount: 0
+        }
+        break;
+      case 'edit':
+        //edita la cantidad de un producto ya existente en el remito
+        item = {
+          id_product: this.product.id,
+          qty: this.qty,
+        }
+        break;
+      case 'delete':
+        //elimina el producto del remito
+        item = {
+          id_product: this.product.id
+        }
+        break;
     }
     const response = {
       item: item,
       edit: this.editRegister,
-      delete: !state
+      state: state
     }
-    console.log(response)
-    //this.closeDialog(response)
+    this.closeDialog(response)
   }
 
   closeDialog(response: any): void {

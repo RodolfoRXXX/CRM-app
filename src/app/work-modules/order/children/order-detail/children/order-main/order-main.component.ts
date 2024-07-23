@@ -25,8 +25,7 @@ export class OrderMainComponent implements OnInit {
 
   id_enterprise!: number;
   dataForm!: FormGroup;
-  products!: Product[];
-  dataSource = new MatTableDataSource();
+  dataSource: any = new MatTableDataSource();
   displayedColumns: string[] = ['sku', 'product', 'qty', 'status', 'edit'];
   load: boolean = false;
   loading: boolean = false;
@@ -73,48 +72,54 @@ export class OrderMainComponent implements OnInit {
     this.setDataForm(this.order)
   }
 
+  //función que extrae los productos de una orden existente
   private getProducts(): void {
     if(this.order) {
       this.dataForm.patchValue({ 
       })
       const data = JSON.parse(this.order.detail);
       if(data) {
-        data.forEach((element: any) => {
-          let data = this.order_status?.find(status => status.id === element.status);
-          if(data) {
-            element.status = data.status;
-            element.bgColor = data.bgColor;
-            element.color = data.color;
-          }
-        });
         this.load = false;
         this.dataSource.data = data;
       }
     }
   }
 
+  // Método para encontrar el estado correspondiente
+  getStatus(statusId: number) {
+    return this.order_status.find(value => value.id === statusId);
+  }
+
   //Abro la ventana de diálogo para agregar lineas o modificarlas
-  addProduct(item: any = undefined) {
-    const dialogRef = this._dialog.open(DialogOrderEditProductComponent, { data: {data: item, edit: this.editRegister} });
+  addProduct(id_product: number = 0, qty_db: number = 0) {
+    const dialogRef = this._dialog.open(DialogOrderEditProductComponent, { data: {id_product: id_product, qty_db: qty_db, edit: this.editRegister} });
     dialogRef.afterClosed().subscribe(response => {
       if(response) {
-        console.log(response)
-        /*
-        //Aquí abre la ventana de diálogo para agregar productos
-        const index = this.dataSource.data.findIndex((element: any) => element.id_product == result.id_product);
-        if(index !== -1) {
-          this.dataSource.data.find( (element: any) => {
-            if(element.id_product == result.id_product) {
-              element.qty++;
+        const findItem = this.dataSource.data.findIndex( (element: any) => element.id_product == response.item.id_product );
+        if(findItem > -1) {
+          //existe el producto en el remito
+            //agregar, sumar cantidad o eliminar al producto del remito
+            switch (response.state) {
+              case 'new':
+                this.dataSource.data[findItem].qty += response.item.qty;
+                break;
+              case 'edit':
+                this.dataSource.data[findItem].qty = response.item.qty;
+                break;
+              case 'delete':
+                this.dataSource.data.splice(findItem, 1);
+                break;
             }
-          } )
         } else {
-          this.dataSource.data.push(result)
+          //no existe
+            //agrega un nuevo producto al remito
+            this.dataSource.data.push(response.item);
         }
+        this.editRegister = response.edit;
         this.ngAfterViewInit();
         this.dataForm.patchValue({
           detail: JSON.stringify(this.dataSource.data)
-        })*/
+        })
       }
     });
   }
@@ -159,6 +164,8 @@ export class OrderMainComponent implements OnInit {
   //Recargar los datos del remito
   rechargeData() {
     this.getProducts();
+    this.editRegister = [];
+
   }
 
   //Navegar a la misma ruta para recargar el componente
@@ -213,6 +220,7 @@ export class OrderMainComponent implements OnInit {
       } else {
         this.dataForm.patchValue({id_enterprise: this.id_enterprise, date: this.date(), status: 2});
         //Crea
+        /*
         this._api.postTypeRequest('profile/update-order-detail', this.dataForm.value).subscribe({
           next: (res: any) => {
             this.loading =  false;
@@ -236,10 +244,11 @@ export class OrderMainComponent implements OnInit {
             this.loading =  false;
             this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
           }
-        })
+        })*/
       }
       setTimeout(() => {
         this.edit = false;
+        this.editRegister = [];
       }, 1500);
     }
   }
