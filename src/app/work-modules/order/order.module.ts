@@ -12,7 +12,7 @@ import { MaterialModule } from 'src/app/material/material/material.module';
 import { OrderMainComponent } from './children/order-detail/children/order-main/order-main.component';
 import { OrderCustomerDetailComponent } from './children/order-detail/children/order-customer-detail/order-customer-detail.component';
 import { OrderShippingAddressComponent } from './children/order-detail/children/order-shipping-address/order-shipping-address.component';
-import { OrderBillingAddressComponent } from './children/order-detail/children/order-billing-address/order-billing-address.component';
+import { OrderObservationComponent } from './children/order-detail/children/order-observations/order-observation.component';
 
 
 @NgModule({
@@ -23,7 +23,7 @@ import { OrderBillingAddressComponent } from './children/order-detail/children/o
     OrderMainComponent,
     OrderCustomerDetailComponent,
     OrderShippingAddressComponent,
-    OrderBillingAddressComponent
+    OrderObservationComponent
   ],
   imports: [
     CommonModule,

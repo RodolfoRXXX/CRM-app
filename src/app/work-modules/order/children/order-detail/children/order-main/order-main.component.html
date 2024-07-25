@@ -6,7 +6,6 @@
         <mat-card-title>
           Detalle del remito
         </mat-card-title>
-        <p style="position: relative; right: 0;"><mat-slide-toggle [(ngModel)]="edit">Editar</mat-slide-toggle></p>
       </div>
     </mat-card-header>
     <mat-card-content>
@@ -75,7 +74,7 @@
               <ng-container matColumnDef="edit">
                   <th mat-header-cell *matHeaderCellDef></th>
                   <td mat-cell *matCellDef="let element; let i = index;">
-                      <button mat-icon-button color="primary" (click)="addProduct(element.id_product, this.dataSource.data[i].qty)" [disabled]="!edit">
+                      <button mat-icon-button color="primary" (click)="addProduct(element.id_product, this.dataSource.data[i].qty)">
                           <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
                       </button>
                   </td>
@@ -85,28 +84,15 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
           </table>            
       </div>
-      <!-- Recharge button -->
-      <div class="recharge" *ngIf="recharge">
-          <!-- Botón para recargar los datos -->
-          <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
-      </div>
       <!-- No products -->
       <div class="d-flex justify-content-center align-items-center p-4" *ngIf="!dataSource.data.length">
         <h4>Todavía no agregaste ningún producto</h4>
       </div>
       <!-- new products -->
-      <div class="d-flex justify-content-between mt-4 mb-3" *ngIf="edit">
-        <button mat-stroked-button color="accent" type="button" (click)="addProduct()">
+      <div class="d-flex justify-content-start mt-4 mb-3">
+        <button mat-stroked-button color="primary" type="button" (click)="addProduct()">
           + Agregar producto
         </button>
-        <div class="d-flex justify-content-end">
-          <button mat-stroked-button color="warn" class="me-3" type="button" (click)="rechargeData()">
-            Reset
-          </button>
-          <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()" [disabled]="dataForm.invalid || loading">
-            Guardar
-          </button>
-        </div>
       </div>
       <!-- footer -->
       <div class="b-t pt-3 pb-2">
@@ -114,8 +100,4 @@
         <span class="fw-500">{{ this.dataSource.data.length }}</span>
       </div>
     </mat-card-content>
-    <!-- Caja que muestra un texto de "Cargando..." y luego el listado -->
-    <mat-card-footer class="login-footer">
-      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    </mat-card-footer>
 </mat-card>

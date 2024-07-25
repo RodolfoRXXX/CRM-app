@@ -1,0 +1,87 @@
+ 
+<div class="card shipment">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="cap mb-0">Editar detalle de envío</h4>
+        <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
+            <mat-icon>close</mat-icon>
+        </a>
+    </div>
+    <!-- Editar información de envío -->
+    <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+        <!-- address -->
+        <div class="row">
+            <!-- address -->
+            <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Dirección de entrega</mat-label>
+                <input matInput
+                        type="text"
+                        formControlName="address"
+                        required>
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['address']!.errors">{{getErrorAddress()}}</mat-error>
+            </mat-form-field>
+        </div>
+        <!-- betweenStreets and cp-->
+        <div class="row">
+            <!-- betweenStreets -->
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+                <mat-label>Entre calles</mat-label>
+                    <input matInput placeholder="Azcuénaga y Morrillo"
+                            formControlName="betweenStreets">
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['betweenStreets']!.errors">{{getErrorBetweenStreets()}}</mat-error>
+            </mat-form-field>
+            <!-- CP -->
+            <mat-form-field appearance="outline" class="col-12 col-md-4">
+                <mat-label>Código Postal</mat-label>
+                    <input matInput
+                            formControlName="cp">
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['cp']!.errors">{{getErrorCp()}}</mat-error>
+            </mat-form-field>
+        </div>
+        <!-- City, state and country -->
+        <div class="row">
+            <!-- City -->
+            <mat-form-field appearance="outline" class="col-12 col-md-4">
+                <mat-label>Ciudad</mat-label>
+                    <input matInput
+                            formControlName="city" 
+                            required>
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['city']!.errors">{{getErrorCity()}}</mat-error>
+            </mat-form-field>
+            <!-- State -->
+            <mat-form-field appearance="outline" class="col-12 col-md-4">
+                <mat-label>Provincia</mat-label>
+                    <input matInput
+                            formControlName="state" 
+                            required>
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['state']!.errors">{{getErrorState()}}</mat-error>
+            </mat-form-field>
+            <!-- Country -->
+            <mat-form-field appearance="outline" class="col-12 col-md-4">
+                <mat-label>País</mat-label>
+                    <input matInput
+                            formControlName="country" 
+                            required>
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['country']!.errors">{{getErrorCountry()}}</mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Schedule -->
+        <div class="row">
+            <!-- Schedule -->
+            <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Horarios de entrega</mat-label>
+                    <input matInput placeholder="de 8 a 17hs, etc"
+                            formControlName="schedule">
+                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['schedule']!.errors">{{getErrorSchedule()}}</mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Botones de reseteo y confirmación -->
+        <div class="d-flex justify-content-end">
+            <button mat-stroked-button color="warn" class="me-3" type="button" (click)="reset()">
+                Reset
+            </button>
+            <button mat-stroked-button color="primary" type="submit" [disabled]="dataForm.invalid || dataForm.untouched || dataForm.pristine">
+                Guardar
+            </button>
+        </div>
+    </form>
+</div>

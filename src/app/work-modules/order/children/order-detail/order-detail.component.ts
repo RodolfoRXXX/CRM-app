@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { GetJsonDataService } from 'src/app/services/get-json-data.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Order } from 'src/app/shared/interfaces/order.interface';
 
 @Component({
   selector: 'app-order-detail',
@@ -13,37 +15,72 @@ import { NotificationService } from 'src/app/services/notification.service';
 })
 export class OrderDetailComponent implements OnInit {
 
-  id_order!: number;
-  id_customer!: number;
   dataForm!: FormGroup;
-  order!: any;
-  activeState: boolean = false;
   order_status!: any[];
+
+  id_order!: number;
+  id_enterprise!: number;
+
+  order!: Order;
+  customer!: number;
+  detail!: any;
+  shipment!: string;
+  observation!: string;
+  editRegister = [];
+
   loading: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private _conector: ConectorsService,
     private _api: ApiService,
     private _notify: NotificationService,
-    private _getJson: GetJsonDataService
+    private _getJson: GetJsonDataService,
+    private _auth: AuthService
   ) {
     this.createDataForm();
+    this._getJson.getData('order_status.json').subscribe( (data: any) => {
+      this.order_status = data
+    })
   }
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Edición de remitos')
-    this._getJson.getData('order_status.json').subscribe( (data: any) => {
-      this.order_status = data
-    } )
     this.route.queryParams.subscribe(params => {
-      this.id_order = params['id_order'];
-      if(this.id_order) {
-        this.getOrder(this.id_order)
+      if(params['id_order']) {
+        this.id_order = params['id_order'];
+        this.dataForm.patchValue({ id: this.id_order });
+        this.getOrder(this.id_order);
       }
-        this.dataForm.patchValue({id: this.id_order})
+
+      this.getDataLocal()
+      .then( id_enterprise => {
+        this.id_enterprise = id_enterprise;
+        this.dataForm.patchValue({ id_enterprise: id_enterprise })
+      })
+    });
+  }
+
+  //trae el id_enterprise para el formulario
+  async getDataLocal(): Promise<any> {
+    const data = JSON.parse(this._auth.getDataFromLocalStorage());
+    return data.id_enterprise;
+  }
+
+  //Formulario creación/edición de producto
+  createDataForm(): void {
+    this.dataForm = new FormGroup({
+        id: new FormControl(''),
+        id_enterprise: new FormControl(''),
+        date: new FormControl(''),
+        customer: new FormControl(''),
+        detail: new FormControl('', [
+          Validators.required
+        ]),
+        shipment: new FormControl(''),
+        observation: new FormControl(''),
+        status: new FormControl('')
     });
   }
 
@@ -52,29 +89,42 @@ export class OrderDetailComponent implements OnInit {
     return new Date();
   }
 
+  //trae el remito si existe
   getOrder(id_order: number): void {
     this._api.postTypeRequest('profile/get-order-detail-by-id', { id_order: id_order }).subscribe( (value:any) => {
       if(value.data) {
-        value.data.forEach((element: any) => {
-          let data = this.order_status?.find(status => status.id === element.status);
-          if(data) {
-            element.status = data.status;
-            element.bgColor = data.bgColor;
-            element.color = data.color;
-          }
-        });
-        //Se encontró el remito y lo paso al componente hijo
+        //Se encontró el remito y pasa los datos a los componentes hijos para que lo muestren y editen
         this.order = value.data[0];
-        //this.activeState = (this.product.state === 'activo')?true:false;
+        this.customer = this.order.customer
+        this.detail = this.order.detail
+        this.shipment = this.order.shipment
+        this.observation = this.order.observation
       }
     })
   }
 
-  createDataForm(): void {
-    this.dataForm = this.fb.group({
-      id: ['', Validators.required],
-      state: ['', Validators.required]
-    });
+  // Método para encontrar el estado correspondiente
+  getStatus(statusId: number) {
+    const result = (this.order_status)?this.order_status.find(value => value.id === statusId):'';
+    return result
+  }
+
+  //funciones que responden a los cambios de los componentes hijos y actualizan el formulario
+  setDetail(detail: string) {
+    console.log(detail)
+    //this.dataForm.patchValue({ detail: detail })
+  }
+  setCustomer(customer: number) {
+    console.log(customer)
+    //this.dataForm.patchValue({ customer: customer })
+  }
+  setShipment(shipment: string) {
+    console.log(shipment)
+    //this.dataForm.patchValue({ shipment: shipment })
+  }
+  setObservation(observation: string) {
+    console.log(observation)
+    //this.dataForm.patchValue({ observation: observation })
   }
 
   //Navegar a la misma ruta para recargar el componente
@@ -82,39 +132,8 @@ export class OrderDetailComponent implements OnInit {
     window.location.reload();
   }
 
-  changeState(state: string) {
-    this.dataForm.patchValue({state: state})
-    if(this.dataForm.controls['id'].value > 0) {
-      this.loading = true;
-      this._api.postTypeRequest('profile/edit-product-activation', this.dataForm.value).subscribe({
-        next: (res: any) => {
-          this.loading =  false;
-          if(res.status == 1){
-            //Accedió a la base de datos y no hubo problemas
-            if(res.data.changedRows == 1){
-              //Modificó la imagen
-              this._notify.showSuccess(`El producto está ${state}!`);
-              this.rechargeComponent();
-            } else{
-              //No hubo modificación
-              this._notify.showError('No se detectaron cambios. Volvé a realizar la operación.')
-            }
-          } else{
-              //Problemas de conexión con la base de datos(res.status == 0)
-              this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
-          }
-        },
-        error: (error) => {
-          //Error de conexión, no pudo consultar con la base de datos
-          this.loading =  false;
-          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
-        }
-      })
-    }
-  }
+  onSubmit() {
 
-  setCustomer(id_customer: number) {
-    this.id_customer = id_customer;
   }
 
 }

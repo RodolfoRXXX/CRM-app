@@ -1,0 +1,31 @@
+ 
+<div class="card observation">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="cap mb-0">Editar observaciones</h4>
+        <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
+            <mat-icon>close</mat-icon>
+        </a>
+    </div>
+    <!-- Editar información de envío -->
+    <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+        <!-- address -->
+        <div class="row">
+            <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Observaciones</mat-label>
+                <textarea matInput 
+                            placeholder="Escribí aquí"
+                            formControlName="observation"></textarea>
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['observation']!.errors">{{getErrorObservation()}}</mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Botones de reseteo y confirmación -->
+        <div class="d-flex justify-content-end">
+            <button mat-stroked-button color="warn" class="me-3" type="button" (click)="reset()">
+                Reset
+            </button>
+            <button mat-stroked-button color="primary" type="submit" [disabled]="dataForm.invalid || dataForm.untouched || dataForm.pristine">
+                Guardar
+            </button>
+        </div>
+    </form>
+</div>

@@ -13,52 +13,43 @@
         <div class="d-flex justify-content-center p-2" *ngIf="load">
             <h4>Cargando...</h4>
         </div>
-        <!-- Recharge button -->
-        <div class="recharge" *ngIf="recharge">
-            <!-- Botón para recargar los datos -->
-            <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
-        </div>
         <!-- Box of customer data -->
-        <div class="row g-2 mt-3" *ngIf="customer">
+        <div class="row g-2 mt-3" *ngIf="newCustomer">
             <div class="customer-column col">
                 <div class="me-2">
                     <div class="avatar image-customer">
-                        <img class="rounded-circle" [src]="uriImg + customer.thumbnail" *ngIf="customer.thumbnail != 'no-image.png'">
-                        <span *ngIf="customer.thumbnail == 'no-image.png'">
+                        <img class="rounded-circle" [src]="uriImg + newCustomer.thumbnail" *ngIf="newCustomer.thumbnail != 'no-image.png'">
+                        <span *ngIf="newCustomer.thumbnail == 'no-image.png'">
                             <p class="mb-0">
-                                {{ customer.name.split('')[0].substring(0, 1) + customer.name.split(' ')[1].substring(0, 1) }}
+                                {{ newCustomer.name.split('')[0].substring(0, 1) + newCustomer.name.split(' ')[1].substring(0, 1) }}
                             </p>
                         </span>
                     </div>
                 </div>
                 <div class="text-customer text-customer-box">
                     <span class="name-customer">
-                        {{ customer.name || 'Sin información' }}
+                        {{ newCustomer.name || 'Sin información' }}
                     </span>
                     <small class="email-customer">
-                        Cliente ID: #{{ customer.id || 'Sin informción' }}
+                        Cliente ID: #{{ newCustomer.id || 'Sin informción' }}
                     </small>
                 </div>
             </div>
-            <button class="col-auto" mat-stroked-button color="primary" (click)="editCustomer(customer.id)">Editar</button>
+            <button class="col-auto" mat-stroked-button color="primary" (click)="editCustomer(customer)">Editar</button>
         </div>
         <!-- No customer -->
-        <div class="mt-3" *ngIf="!customer">
+        <div class="mt-3" *ngIf="!newCustomer">
             <button mat-stroked-button color="primary" (click)="editCustomer()"> + Agregar cliente</button>
         </div>
         <!-- Data customer -->
         <div class="mt-4 mb-3">
             <h6>Información de contacto</h6>
             <p class="mb-1 d-block">
-                <span class="text-muted fs-09">Email: </span><span class="fw-300 ms-1">{{ (customer)?(customer.email?customer.email:'Sin información'):'Sin información' }}</span>
+                <span class="text-muted fs-09">Email: </span><span class="fw-300 ms-1">{{ (newCustomer)?(newCustomer.email?newCustomer.email:'Sin información'):'Sin información' }}</span>
             </p>
             <p class="mb-1 d-block">
-                <span class="text-muted fs-09">Teléfono: </span><span class="fw-300 ms-1">{{ (customer)?(customer.mobile?customer.mobile:(customer.phone?customer.phone:'Sin información')):'Sin información' }}</span>
+                <span class="text-muted fs-09">Teléfono: </span><span class="fw-300 ms-1">{{ (newCustomer)?(newCustomer.mobile?newCustomer.mobile:(newCustomer.phone?newCustomer.phone:'Sin información')):'Sin información' }}</span>
             </p>     
         </div>
     </mat-card-content>
-    <!-- Caja que muestra un texto de "Cargando..." y luego el dato -->
-    <mat-card-footer class="login-footer">
-      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    </mat-card-footer>
 </mat-card>

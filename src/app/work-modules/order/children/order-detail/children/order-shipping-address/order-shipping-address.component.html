@@ -1,1 +1,52 @@
-<p>order-shipping-address works!</p>
+<!--Componente que edita la información de envío del remito -->
+
+<mat-card class="card card-data">
+    <mat-card-header>
+        <div class="d-flex justify-content-between w-100">
+            <mat-card-title>
+            Detalles de envío
+            </mat-card-title>
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <!-- Data shipment -->
+        <div class="mt-4 mb-3">
+            <p class="mb-1 d-block">
+                <span class="text-muted fs-09">Dirección: </span><span class="fw-300 ms-1">{{ (dataShipment)?(dataShipment.address?dataShipment.address:'Sin información'):'Sin información' }}</span>
+            </p>
+            <p class="mb-1 d-block">
+                <span class="text-muted fs-09">Entre calles: </span><span class="fw-300 ms-1">{{ (dataShipment)?(dataShipment.betweenStreets?dataShipment.betweenStreets:'Sin información'):'Sin información' }}</span>
+            </p>
+            <p class="mb-1 d-block">
+                <span class="text-muted fs-09">Código postal: </span><span class="fw-300 ms-1">{{ (dataShipment)?(dataShipment.cp?dataShipment.cp:'Sin información'):'Sin información' }}</span>
+            </p>
+            <p class="mb-1 d-block">
+                <span class="text-muted fs-09">Ubicación: </span><span class="fw-300 ms-1">
+                    <span *ngIf="dataShipment?.city || dataShipment?.state || dataShipment?.country">
+                        <span>
+                            {{ dataShipment.city?dataShipment.city:'Sin información' }}
+                        </span>
+                        <span>
+                            {{ dataShipment.state?( ', ' + dataShipment.state):'' }}
+                        </span>
+                        <span>
+                            {{ dataShipment.country?(', ' + dataShipment.country):'' }}
+                        </span>
+                    </span>
+                    <span *ngIf="!dataShipment?.city && !dataShipment?.state && !dataShipment?.country">
+                        Sin información
+                    </span>
+                </span>
+            </p>
+            <p class="mb-1 d-block">
+                <span class="text-muted fs-09">Horarios de entrega: </span><span class="fw-300 ms-1">{{ (dataShipment)?(dataShipment.schedule?dataShipment.schedule:'Sin información'):'Sin información' }}</span>
+            </p>
+        </div>
+        <!-- edit shipment data -->
+        <div class="mt-3">
+            <button mat-stroked-button color="primary" (click)="editShipment()">
+                 Editar datos de envío
+            </button>
+        </div>
+    </mat-card-content>
+</mat-card>

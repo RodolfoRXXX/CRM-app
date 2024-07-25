@@ -12,13 +12,11 @@ import { environment } from 'src/enviroments/enviroment';
 })
 export class OrderCustomerDetailComponent {
 
-  @Input() order!: any;
+  @Input() customer!: number;
   @Output() setCustomer = new EventEmitter<number>();
 
   load: boolean = false;
-  loading: boolean = false;
-  recharge: boolean = false;
-  customer!: Customer;
+  newCustomer!: Customer;
   uriImg = environment.SERVER;
 
   constructor(
@@ -27,30 +25,26 @@ export class OrderCustomerDetailComponent {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['order'].currentValue !== undefined) {
+    if (changes['customer'].currentValue !== undefined) {
       this.load = true;
-      this.getCustomer(changes['order'].currentValue.customer);
+      this.getCustomer(changes['customer'].currentValue);
     }
   }
 
-  getCustomer(id_customer: number) {
-    this._api.postTypeRequest('profile/get-customer-id', { id_customer: id_customer }).subscribe( (value:any) => {
+  getCustomer(customer: number) {
+    this._api.postTypeRequest('profile/get-customer-id', { id_customer: customer }).subscribe( (value:any) => {
       if(value) {
         this.load = false;
-        this.customer = value.data[0];
+        this.newCustomer = value.data[0];
       }
     })
   }
 
-  rechargeData() {
-    this.getCustomer(this.order.customer);
-  }
-
-  editCustomer(id_customer: number = 0) {
-    const dialogRef = this._dialog.open(DialogOrderEditCustomerComponent, { data: { id_customer: id_customer }});
+  editCustomer(customer: number = 0) {
+    const dialogRef = this._dialog.open(DialogOrderEditCustomerComponent, { data: { id_customer: customer }});
       dialogRef.afterClosed().subscribe(result => {
         if(result) {
-          this.customer = result;
+          this.newCustomer = result;
           this.setCustomer.emit(result.id);
         }
       });
