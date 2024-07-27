@@ -19,10 +19,10 @@
                 <span>Eliminar</span> remito
             </button>
             <div class="d-flex justify-content-end">
-                <button mat-stroked-button color="warn" class="me-3" type="button">
+                <button mat-stroked-button color="warn" class="me-3" type="button" (click)="reset()">
                   Reset
                 </button>
-                <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()" [disabled]="dataForm.invalid || loading">
+                <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()" [disabled]="false">
                   Guardar
                 </button>
               </div>

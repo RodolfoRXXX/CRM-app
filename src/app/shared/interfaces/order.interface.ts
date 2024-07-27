@@ -6,5 +6,6 @@ export interface Order {
     detail: string,
     shipment: string,
     observation: string,
+    seller: number,
     status: number
 }

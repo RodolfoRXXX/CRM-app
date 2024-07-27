@@ -34,7 +34,6 @@ export class OrderMainComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
     if(changes['data'] && changes['data'].currentValue.detail !== undefined) {
       this.load = true;
       this.getProducts();
