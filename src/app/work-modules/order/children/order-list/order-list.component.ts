@@ -34,6 +34,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  seller!: number;
 
   constructor(
     private _api: ApiService,
@@ -60,6 +61,9 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   private getDataLocal(): number {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
+      if(item.name_role !== 'administrador') {
+        this.seller = item.id;
+      }
       this.permissions = item.list_of_permissions.split(',');
     });
     return this.employee.id_enterprise;
@@ -72,7 +76,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
         map(() => this.getDataLocal()),
         switchMap(id_enterprise => {
           this.getDataCard(id_enterprise);
-          return this._api.postTypeRequest('profile/get-count-orders', { id_enterprise })
+          return this._api.postTypeRequest('profile/get-count-orders', { id_enterprise, seller: this.seller })
             .pipe(catchError(() => observableOf(null)));
         }),
         map(data => data)
@@ -123,7 +127,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
         switchMap(id_enterprise => {
           this.recharge = false;
           this.load = true;
-          return this._api.postTypeRequest('profile/get-orders', { id_enterprise, page: this.paginator.pageIndex, size: 10 })
+          return this._api.postTypeRequest('profile/get-orders', { id_enterprise, page: this.paginator.pageIndex, size: 10, seller: this.seller })
             .pipe(catchError(() => observableOf(null)));
         }),
         map(data => data)

@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { ConectorsService } from 'src/app/services/conectors.service';
 import { GetJsonDataService } from 'src/app/services/get-json-data.service';
+import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditProductComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-product/dialog-order-edit-product.component';
 import { environment } from 'src/enviroments/enviroment';
 
@@ -23,15 +26,20 @@ export class OrderMainComponent {
   uriImg = environment.SERVER;
   order_status!: any[];
   editRegister = [];
+  employee!: Employee;
 
   constructor(
     public _auth: AuthService,
     private _getJson: GetJsonDataService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _conector: ConectorsService
   ) {
     this._getJson.getData('order_status.json').subscribe((data: any) => {
       this.order_status = data;
     });
+    this.getDataLocal().then( (employee: Employee) => {
+      this.employee = employee;
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,15 +52,25 @@ export class OrderMainComponent {
     }
   }
 
+  //trae el id_enterprise para el formulario
+  async getDataLocal(): Promise<Employee> {
+    try {
+      const data = await firstValueFrom(this._conector.getEmployee());
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   //función que extrae los productos de una orden existente
   private getProducts(): void {
     if(this.data.detail) {
       const data = JSON.parse(this.data.detail);
       if(data) {
-        this.load = false;
         this.dataSource.data = data;
       }
     }
+    this.load = false;
   }
 
   // Método para encontrar el estado correspondiente

@@ -230,10 +230,10 @@ export class ProductInformationComponent implements OnInit {
   }
   //Función que devuelve el sku
   getSku(): string {
-    return ((this.dataForm.controls['name'].value).trim().toLowerCase()).slice(0, 3) + '-' +
+    return ((this.dataForm.controls['name'].value).trim().toLowerCase()).slice(0, 3) +
             (this.dataForm.controls['name'].value).trim().toLowerCase().slice(-3) + '-' +
-              this.dataForm.controls['category'].value + '-' +
-              this.dataForm.controls['id_option_1'].value + '-' +
+              this.dataForm.controls['category'].value +
+              this.dataForm.controls['id_option_1'].value +
               this.dataForm.controls['id_option_2'].value;
   }
 

@@ -37,6 +37,7 @@ export class DialogOrderEditObservationComponent implements OnInit {
   createDataForm() {
     this.dataForm = new FormGroup({
       observation: new FormControl('', [
+        Validators.required,
         Validators.minLength(5),
         Validators.maxLength(250)
       ])
@@ -53,6 +54,7 @@ export class DialogOrderEditObservationComponent implements OnInit {
     //Mensajes de error
     getErrorObservation() {
       //observation
+      if(this.dataForm.controls['observation'].hasError('required')) return 'Tenés que ingresar un texto';
       if(this.dataForm.controls['observation'].hasError('minlength')) return 'Este valor debe tener más de 5 caracteres';
       if(this.dataForm.controls['observation'].hasError('maxlength')) return 'Este valor debe tener menos de 250 caracteres';
       return ''

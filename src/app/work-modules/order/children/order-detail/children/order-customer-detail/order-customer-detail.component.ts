@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
+import { ConectorsService } from 'src/app/services/conectors.service';
 import { Customer } from 'src/app/shared/interfaces/customer.interface';
+import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditCustomerComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-customer/dialog-order-edit-customer.component';
 import { environment } from 'src/enviroments/enviroment';
 
@@ -19,16 +22,32 @@ export class OrderCustomerDetailComponent {
   load: boolean = false;
   newCustomer!: Customer;
   uriImg = environment.SERVER;
+  employee!: Employee;
 
   constructor(
     private _api: ApiService,
-    private _dialog: MatDialog
-  ) {}
+    private _dialog: MatDialog,
+    private _conector: ConectorsService
+  ) {
+    this.getDataLocal().then( (employee: Employee) => {
+      this.employee = employee;
+    })
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['customer'].currentValue !== undefined) {
       this.load = true;
       this.getCustomer(changes['customer'].currentValue);
+    }
+  }
+
+  //trae el id_enterprise para el formulario
+  async getDataLocal(): Promise<Employee> {
+    try {
+      const data = await firstValueFrom(this._conector.getEmployee());
+      return data;
+    } catch (error) {
+      throw error;
     }
   }
 

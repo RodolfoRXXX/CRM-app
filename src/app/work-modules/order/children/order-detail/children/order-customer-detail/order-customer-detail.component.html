@@ -35,11 +35,22 @@
                     </small>
                 </div>
             </div>
-            <button class="col-auto" mat-stroked-button color="primary" (click)="editCustomer(customer)" [disabled]="info.status == 0">Editar</button>
+            <button class="col-auto" 
+                    mat-stroked-button
+                    color="primary"
+                    (click)="editCustomer(customer)"
+                    [disabled]="(info.status == 0) || (this.employee && this.info.seller && this.employee.name_role == 'administrador')?((this.info.seller != this.employee.id)):false">
+                    Editar
+            </button>
         </div>
         <!-- No customer -->
         <div class="mt-3" *ngIf="!newCustomer">
-            <button mat-stroked-button color="primary" (click)="editCustomer()" [disabled]="info.status == 0"> + Agregar cliente</button>
+            <button mat-stroked-button
+                    color="primary"
+                    (click)="editCustomer()"
+                    [disabled]="(info.status == 0) || (this.employee && this.info.seller && this.employee.name_role == 'administrador')?((this.info.seller != this.employee.id)):false">
+                     + Agregar cliente
+            </button>
         </div>
         <!-- Data customer -->
         <div class="mt-4 mb-3">

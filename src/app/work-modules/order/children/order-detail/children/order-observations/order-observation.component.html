@@ -15,7 +15,10 @@
         </div>
         <!-- edit observations -->
         <div class="mt-3">
-            <button mat-stroked-button color="primary" (click)="editObservation(observation)" [disabled]="info.status == 0">
+            <button mat-stroked-button 
+                    color="primary"
+                    (click)="editObservation(observation)"
+                    [disabled]="(info.status == 0) || (this.employee && this.info.seller && this.employee.name_role == 'administrador')?((this.info.seller != this.employee.id)):false">
                  Editar Observaciones
             </button>
         </div>

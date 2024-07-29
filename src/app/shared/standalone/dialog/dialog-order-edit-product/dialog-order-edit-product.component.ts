@@ -110,6 +110,7 @@ export class DialogOrderEditProductComponent implements OnInit {
       }
     }
 
+
 //Traigo la información del producto
   getProduct(id_product: number) {
     this.load = true;

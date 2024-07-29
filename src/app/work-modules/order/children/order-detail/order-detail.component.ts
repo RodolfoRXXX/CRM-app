@@ -130,6 +130,7 @@ export class OrderDetailComponent implements OnInit {
   //funciones que responden a los cambios de los componentes hijos y actualizan el formulario
   setDetail(detail: any) {
     this.dataForm.patchValue({ detail: JSON.stringify(detail.detail) })
+    this.detail = JSON.stringify(detail.detail)
     this.editRegister = detail.edit
   }
   setCustomer(customer: number) {
