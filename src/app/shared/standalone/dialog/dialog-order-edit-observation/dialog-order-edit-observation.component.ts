@@ -58,17 +58,19 @@ export class DialogOrderEditObservationComponent implements OnInit {
       return ''
     }
 
-    reset() {
-      if(this.data) {
-        this.setDataform();
-      } else {
-        this.dataForm.reset();
-      }
+  //Resetea el formulario
+  reset() {
+    if(this.data) {
+      this.setDataform();
+    } else {
+      this.dataForm.reset();
     }
+  }
 
-    onSubmit() {
-      this.closeDialog(this.dataForm.controls['observation'].value)
-    }
+  //Envia el mensaje
+  onSubmit() {
+    this.closeDialog(this.dataForm.controls['observation'].value)
+  }
 
   //Cierra la ventana de diálogo
   closeDialog(response: any): void {

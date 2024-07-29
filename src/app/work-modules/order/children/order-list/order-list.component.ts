@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { merge, startWith, map, switchMap, catchError, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { GetJsonDataService } from 'src/app/services/get-json-data.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { environment } from 'src/enviroments/enviroment';
 
@@ -32,7 +31,6 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   permissions: string[] = [];
   add_product_admin = '6';
   uriImg = environment.SERVER;
-  order_status!: any[];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -41,7 +39,6 @@ export class OrderListComponent implements OnInit, AfterViewInit {
     private _api: ApiService,
     private _conector: ConectorsService,
     private _paginatorIntl: MatPaginatorIntl,
-    private _getJson: GetJsonDataService,
     private _router: Router
   ) {
     this.initPaginatorLabels();
@@ -50,9 +47,6 @@ export class OrderListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this._conector.setUpdateTitle('Lista de pedidos');
-    this._getJson.getData('order_status.json').subscribe( (data: any) => {
-      this.order_status = data
-    } )
   }
 
   private initPaginatorLabels(): void {
@@ -138,11 +132,10 @@ export class OrderListComponent implements OnInit, AfterViewInit {
         this.load = false;
         if (data.data) {
           data.data.forEach((element: any) => {
-            let data = this.order_status?.find(status => status.id === element.status);
-            if(data) {
-              element.status = data.status;
-              element.bgColor = data.bgColor;
-              element.color = data.color;
+            if(element.status == 1) {
+              element.status = 'Abierto';
+            } else if(element.status == 0) {
+              element.status = 'Cerrado';
             }
           });
           this.dataSource.data = data.data;

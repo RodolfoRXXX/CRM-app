@@ -14,6 +14,7 @@ import { environment } from 'src/enviroments/enviroment';
 export class OrderMainComponent {
 
   @Input() data!: any;
+  @Input() info!: any;
   @Output() setDetail = new EventEmitter<any>();
 
   dataSource: any = new MatTableDataSource();

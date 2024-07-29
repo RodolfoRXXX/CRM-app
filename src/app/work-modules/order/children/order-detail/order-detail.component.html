@@ -6,24 +6,25 @@
         <div class="d-flex flex-column justify-content-center">
             <h4 class="mb-1">
                 Orden {{ order?('#' + order.id):'nueva' }}
-                <span class="badge rounded-pill cap fs-07"
-                        [style.color]="getStatus((order)?order.id:2)?.color || '#8a8d93'"
-                        [style.background-color]="getStatus((order)?order.id:2)?.bgColor || '#ecedee'">
-                    {{ getStatus((order)?order.id:2)?.status || 'Sin información' }}
+                <span class="badge rounded-pill cap fs-09 ms-1" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;"
+                        [style.color]="(order)?((order.status == 1)?'#16b1ff':'#56ca00'):'#8a8d93'"
+                        [style.background-color]="(order)?((order.status == 1)?'#daf3ff':'#e4f7d6'):'#ecedee'">
+                    {{ (order)?((order.status == 1)?'Abierto':'Cerrado'):'Sin información' }}
                 </span>
             </h4>
-            <p class="mb-0">Creada el <span class="fw-500">{{ (order?order.date:getDateNow()) | date:'dd/MM/yyyy' }}</span></p>
+            <p class="mb-0">Creado el <span class="fw-500">{{ (order?order.date:getDateNow()) | date:'dd/MM/yyyy' }}</span></p>
         </div>
         <div class="d-flex align-content-center flex-wrap gap-4">
             <button mat-flat-button color="primary" [disabled]="true">
                 <span>Eliminar</span> remito
             </button>
             <div class="d-flex justify-content-end">
-                <button mat-stroked-button color="warn" class="me-3" type="button" (click)="reset()">
+                <button mat-stroked-button color="warn" class="me-3" type="button" (click)="rechargeComponent()">
                   Reset
                 </button>
-                <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()" [disabled]="false">
-                  Guardar
+                <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()" [disabled]="dataForm.invalid || loading || !hasChange" style="width: 100px;">
+                  <span *ngIf="!loading">Guardar</span>
+                  <mat-spinner *ngIf="loading" style="width: 25px;"></mat-spinner>
                 </button>
               </div>
         </div>
@@ -32,13 +33,13 @@
     <div class="row">
         <!-- Primera columna -->
         <div class="col-12 col-lg-8">
-            <app-order-main [data]="{ detail: detail, edit: editRegister }" (setDetail)="setDetail($event)"></app-order-main>
-            <app-order-observation [observation]="observation" (setObservation)="setObservation($event)"></app-order-observation>
+            <app-order-main [data]="{ detail: detail, edit: editRegister }" [info]="info" (setDetail)="setDetail($event)"></app-order-main>
+            <app-order-observation [observation]="observation" [info]="info" (setObservation)="setObservation($event)"></app-order-observation>
         </div>
         <!-- Segunda columna -->
         <div class="col-12 col-lg-4">
-            <app-order-customer-detail [customer]="customer" (setCustomer)="setCustomer($event)"></app-order-customer-detail>
-            <app-order-shipping-address [shipment]="shipment" (setShipment)="setShipment($event)"></app-order-shipping-address>
+            <app-order-customer-detail [customer]="customer" [info]="info" (setCustomer)="setCustomer($event)"></app-order-customer-detail>
+            <app-order-shipping-address [shipment]="shipment" [info]="info" (setShipment)="setShipment($event)"></app-order-shipping-address>
         </div>
     </div>
 </div>

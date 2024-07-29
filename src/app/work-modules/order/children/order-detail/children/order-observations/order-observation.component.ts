@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogOrderEditObservationComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-observation/dialog-order-edit-observation.component';
 
@@ -10,6 +10,7 @@ import { DialogOrderEditObservationComponent } from 'src/app/shared/standalone/d
 export class OrderObservationComponent {
 
   @Input() observation!: string;
+  @Input() info!: any;
   @Output() setObservation = new EventEmitter<string>();
 
   constructor(
@@ -20,6 +21,7 @@ export class OrderObservationComponent {
     const dialogRef = this._dialog.open(DialogOrderEditObservationComponent, { data: { observation: observation }});
       dialogRef.afterClosed().subscribe(result => {
         if(result) {
+          this.observation = result;
           this.setObservation.emit(result);
         }
       });

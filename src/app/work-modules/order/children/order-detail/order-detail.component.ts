@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { GetJsonDataService } from 'src/app/services/get-json-data.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Order } from 'src/app/shared/interfaces/order.interface';
@@ -19,7 +17,6 @@ export class OrderDetailComponent implements OnInit {
 
   employee!: Employee;
   dataForm!: FormGroup;
-  order_status!: any[];
 
   id_order!: number;
 
@@ -28,8 +25,10 @@ export class OrderDetailComponent implements OnInit {
   detail!: any;
   shipment!: string;
   observation!: string;
+  info = {status: 1, seller: 0};
   editRegister = [];
 
+  hasChange: boolean = false;
   loading: boolean = false;
 
   constructor(
@@ -37,14 +36,9 @@ export class OrderDetailComponent implements OnInit {
     private _conector: ConectorsService,
     private _api: ApiService,
     private _notify: NotificationService,
-    private _getJson: GetJsonDataService,
-    private _auth: AuthService
+    private _router: Router
   ) {
     this.createDataForm();
-    this._getJson.getData('order_status.json').subscribe( (data: any) => {
-      this.order_status = data
-    })
-    this.getDataLocal().then( (employee: Employee) => this.employee = employee )
   }
 
   ngOnInit(): void {
@@ -55,7 +49,23 @@ export class OrderDetailComponent implements OnInit {
         this.id_order = parseInt(params['id_order']);
         this.getOrder(this.id_order);
       } else {
-        this.setDataForm()
+        this.getDataLocal().then( (employee: Employee) => {
+          this.employee = employee;
+          this.setDataForm()
+        })
+      }
+    });
+
+    // Detectar cambios en el formulario
+    this.dataForm.valueChanges.subscribe(value => {
+      if(this.dataForm.controls['customer'].value != 0 ||
+         this.dataForm.controls['detail'].value != '' ||
+         this.dataForm.controls['observation'].value != '' ||
+         this.dataForm.controls['shipment'].value != ''
+      ) {
+        this.hasChange = true;
+      } else {
+        this.hasChange = false;
       }
     });
   }
@@ -108,17 +118,13 @@ export class OrderDetailComponent implements OnInit {
         this.detail = this.order.detail
         this.shipment = this.order.shipment
         this.observation = this.order.observation
+        this.info.status = this.order.status
+        this.info.seller = this.order.seller
         this.setDataForm()
       } else {
         this.rechargeComponent()
       }
     })
-  }
-
-  // Método para encontrar el estado correspondiente
-  getStatus(statusId: number) {
-    const result = (this.order_status)?this.order_status.find(value => value.id === statusId):'';
-    return result
   }
 
   //funciones que responden a los cambios de los componentes hijos y actualizan el formulario
@@ -137,43 +143,42 @@ export class OrderDetailComponent implements OnInit {
   }
 
   //Navegar a la misma ruta para recargar el componente
-  rechargeComponent() {
-    window.location.reload();
-  }
-
-  reset() {
-    this.dataForm.reset();
-    if(this.id_order) {
-      this.getOrder(this.id_order)
+  rechargeComponent(id_order: number = 0) {
+    if(id_order > 0) {
+      this._router.navigate(['init/main/order/order-detail'], { queryParams: { id_order: id_order } });
     } else {
-      this.setDataForm()
+      window.location.reload();
     }
   }
 
+  resetAll() {
+    this.editRegister = [];
+    this.dataForm.reset();
+    this.setDataForm();
+  }
+
   onSubmit() {
-    console.log(this.dataForm.value, this.editRegister)
     if(this.dataForm.controls['id'].value > 0) {
       //Edita
+      this.loading =  true;
       this._api.postTypeRequest('profile/update-order-detail', {form: this.dataForm.value, edit: this.editRegister}).subscribe({
         next: (res: any) => {
-          console.log(res)
-          /*
           this.loading =  false;
           if(res.status == 1){
             //Accedió a la base de datos y no hubo problemas
-            if(res.changedRows == 1){
+            if(res.data.affectedRows == 1){
               //Modificó la imagen
-              this._notify.showSuccess('La imagen del producto se ha modificado con éxito!');
-              this.rechargeComponent();
+              this._notify.showSuccess('Se modificó el remito!');
+              this.resetAll();
+              //this.rechargeComponent();
             } else{
               //No hubo modificación
-              this._notify.showError('No se detectaron cambios. Ingresá una imagen diferente a la actual.')
+              this._notify.showError('No se detectaron cambios.')
             }
           } else{
               //Problemas de conexión con la base de datos(res.status == 0)
               this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
           }
-              */
         },
         error: (error) => {
           //Error de conexión, no pudo consultar con la base de datos
@@ -185,10 +190,34 @@ export class OrderDetailComponent implements OnInit {
       //Crea
       if(this.dataForm.controls['customer'].value == 0) {
         //Debe agregarse un customer
-
+        this._notify.showWarn('Agregá un cliente para este un remito');
       } else {
         //todas las condiciones dadas
-
+        this.loading =  true;
+        this._api.postTypeRequest('profile/create-order-detail', {form: this.dataForm.value, edit: this.editRegister}).subscribe({
+          next: (res: any) => {
+            this.loading =  false;
+            if(res.status == 1){
+              //Accedió a la base de datos y no hubo problemas
+              if(res.data.affectedRows == 1){
+                //Modificó la imagen
+                this._notify.showSuccess('Se ha creado un nuevo remito!');
+                this.rechargeComponent(res.data.insertId);
+              } else{
+                //No hubo modificación
+                this._notify.showError('No se detectaron cambios.')
+              }
+            } else{
+                //Problemas de conexión con la base de datos(res.status == 0)
+                this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+            }
+          },
+          error: (error) => {
+            //Error de conexión, no pudo consultar con la base de datos
+            this.loading =  false;
+            this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+          }
+        })
       }
     }
   }

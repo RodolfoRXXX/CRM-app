@@ -117,13 +117,16 @@
                     <mat-form-field class="col-md-6" appearance="outline">
                         <mat-label>Estado</mat-label>
                         <mat-select [(ngModel)]="chips.status" (valueChange)="add($event, 'status')">
-                            <ng-container *ngFor="let order of order_status">
-                                <mat-option [value]="order.status">
-                                    <span class="badge rounded-pill cap" [style.color]="order.color" [style.background-color]="order.bgColor">
-                                        {{ order.status }}
-                                    </span>
-                                </mat-option>
-                            </ng-container>
+                            <mat-option value="Abierto">
+                                <span class="badge rounded-pill cap" style="color: #16b1ff; background-color: #daf3ff;">
+                                    Abierto
+                                </span>
+                            </mat-option>
+                            <mat-option value="Cerrado">
+                                <span class="badge rounded-pill cap" style="color: #56ca00; background-color: #e4f7d6;">
+                                    Cerrado
+                                </span>
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -191,7 +194,9 @@
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1024-hidden"> ESTADO </th>
                         <td mat-cell *matCellDef="let element" class="max-1024-hidden">
-                            <span class="badge rounded-pill cap" [style.color]="element.color" [style.background-color]="element.bgColor">
+                            <span class="badge rounded-pill cap fs-08" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;"
+                                    [style.color]="(element.status == 'Abierto')?'#16b1ff':'#56ca00'"
+                                    [style.background-color]="(element.status == 'Abierto')?'#daf3ff':'#e4f7d6'">
                                 {{ element.status }}
                             </span>
                         </td>

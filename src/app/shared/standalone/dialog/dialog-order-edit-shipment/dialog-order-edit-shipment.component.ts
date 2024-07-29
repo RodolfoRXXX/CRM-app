@@ -25,12 +25,11 @@ export class DialogOrderEditShipmentComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _auth: AuthService
   ) {
-    this.createDataForm()
+    
   }
   ngOnInit(): void {
-    if(this.data) {
-      this.setDataform();
-    }
+    this.createDataForm()
+    this.setDataform()
   }
 
   //Edita datos de envío
@@ -73,15 +72,17 @@ export class DialogOrderEditShipmentComponent implements OnInit {
 
   //Setea los valores del formulario en caso de que los hubiera
   setDataform() {
-    this.dataForm.setValue({
-      address: (this.data.address)?this.data.address:'',
-      betweenStreets: (this.data.betweenStreets)?this.data.betweenStreets:'',
-      cp: (this.data.cp)?this.data.cp:'',
-      city: (this.data.city)?this.data.city:'',
-      state: (this.data.state)?this.data.state:'',
-      country: (this.data.country)?this.data.country:'',
-      schedule: (this.data.schedule)?this.data.schedule:''
-    })
+    if(this.data.shipment) {
+      this.dataForm.patchValue({
+        address: (this.data.shipment.address)?this.data.shipment.address:'',
+        betweenStreets: (this.data.shipment.betweenStreets)?this.data.shipment.betweenStreets:'',
+        cp: (this.data.shipment.cp)?this.data.shipment.cp:'',
+        city: (this.data.shipment.city)?this.data.shipment.city:'',
+        state: (this.data.shipment.state)?this.data.shipment.state:'',
+        country: (this.data.shipment.country)?this.data.shipment.country:'',
+        schedule: (this.data.shipment.schedule)?this.data.shipment.schedule:''
+      })
+    }
   }
 
     //Mensajes de error
@@ -141,8 +142,7 @@ export class DialogOrderEditShipmentComponent implements OnInit {
     }
 
     onSubmit() {
-      console.log(this.dataForm.value)
-      this.closeDialog(JSON.stringify(this.dataForm.value))
+      this.closeDialog(this.dataForm.value)
     }
 
   //Cierra la ventana de diálogo

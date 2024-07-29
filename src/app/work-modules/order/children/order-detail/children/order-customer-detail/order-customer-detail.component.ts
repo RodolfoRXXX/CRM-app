@@ -13,6 +13,7 @@ import { environment } from 'src/enviroments/enviroment';
 export class OrderCustomerDetailComponent {
 
   @Input() customer!: number;
+  @Input() info!: any;
   @Output() setCustomer = new EventEmitter<number>();
 
   load: boolean = false;

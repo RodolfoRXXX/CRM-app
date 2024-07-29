@@ -12,18 +12,20 @@
         <div class="row">
             <mat-form-field appearance="outline" class="col-12">
                 <mat-label>Observaciones</mat-label>
-                <textarea matInput 
+                <textarea matInput
+                            #input 
                             placeholder="Escribí aquí"
                             formControlName="observation"></textarea>
+                            <mat-hint align="end">{{input.value.length}}/250</mat-hint>
                 <mat-error class="fs-08" *ngIf="this.dataForm.controls['observation']!.errors">{{getErrorObservation()}}</mat-error>
             </mat-form-field>
         </div>
         <!-- Botones de reseteo y confirmación -->
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end mt-1">
             <button mat-stroked-button color="warn" class="me-3" type="button" (click)="reset()">
                 Reset
             </button>
-            <button mat-stroked-button color="primary" type="submit" [disabled]="dataForm.invalid || dataForm.untouched || dataForm.pristine">
+            <button mat-stroked-button color="primary" type="submit" [disabled]="dataForm.invalid ||  (data.observation == dataForm.controls['observation'].value)">
                 Guardar
             </button>
         </div>

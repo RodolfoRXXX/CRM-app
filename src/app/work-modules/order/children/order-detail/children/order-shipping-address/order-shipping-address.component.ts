@@ -10,6 +10,7 @@ import { DialogOrderEditShipmentComponent } from 'src/app/shared/standalone/dial
 export class OrderShippingAddressComponent {
 
   @Input() shipment!: string;
+  @Input() info!: any;
   @Output() setShipment = new EventEmitter<string>();
 
   dataShipment!: any;
@@ -24,11 +25,12 @@ export class OrderShippingAddressComponent {
     }
   }
 
-  editShipment(shipment: string = '') {
-    const dialogRef = this._dialog.open(DialogOrderEditShipmentComponent, { data: { shipment: shipment }});
+  editShipment() {
+    const dialogRef = this._dialog.open(DialogOrderEditShipmentComponent, { data: { shipment: this.dataShipment }});
       dialogRef.afterClosed().subscribe(result => {
         if(result) {
-          this.setShipment.emit(result);
+          this.dataShipment = result
+          this.setShipment.emit(JSON.stringify(result));
         }
       });
   }
