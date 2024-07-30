@@ -39,7 +39,7 @@
                     mat-stroked-button
                     color="primary"
                     (click)="editCustomer(customer)"
-                    [disabled]="(info.status == 0) || (this.employee && this.info.seller && this.employee.name_role == 'administrador')?((this.info.seller != this.employee.id)):false">
+                    [disabled]="(this.info.status == 0) || ((this.employee && this.info.seller && this.employee.name_role != 'administrador')?((this.info.seller != this.employee.id)):false)">
                     Editar
             </button>
         </div>
@@ -48,7 +48,7 @@
             <button mat-stroked-button
                     color="primary"
                     (click)="editCustomer()"
-                    [disabled]="(info.status == 0) || (this.employee && this.info.seller && this.employee.name_role == 'administrador')?((this.info.seller != this.employee.id)):false">
+                    [disabled]="(this.info.status == 0) || ((this.employee && this.info.seller && this.employee.name_role != 'administrador')?((this.info.seller != this.employee.id)):false)">
                      + Agregar cliente
             </button>
         </div>

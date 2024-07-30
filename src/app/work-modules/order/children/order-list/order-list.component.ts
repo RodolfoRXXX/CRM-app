@@ -17,7 +17,7 @@ import { environment } from 'src/enviroments/enviroment';
 export class OrderListComponent implements OnInit, AfterViewInit {
 
   employee!: Employee;
-  displayedColumns: string[] = ['id', 'date', 'customer', 'status', 'detail'];
+  displayedColumns: string[] = ['id', 'date', 'customer', 'seller', 'status', 'detail'];
   dataSource = new MatTableDataSource();
   resultsLength!: number;
   load_card1 = false;
@@ -142,6 +142,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
               element.status = 'Cerrado';
             }
           });
+          console.log(data.data)
           this.dataSource.data = data.data;
         } 
       });

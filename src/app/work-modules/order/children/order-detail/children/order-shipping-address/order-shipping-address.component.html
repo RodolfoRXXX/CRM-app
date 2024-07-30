@@ -47,7 +47,7 @@
             <button mat-stroked-button
                     color="primary"
                     (click)="editShipment()"
-                    [disabled]="(info.status == 0) || (this.employee && this.info.seller && this.employee.name_role == 'administrador')?((this.info.seller != this.employee.id)):false">
+                    [disabled]="(this.info.status == 0) || ((this.employee && this.info.seller && this.employee.name_role != 'administrador')?((this.info.seller != this.employee.id)):false)">
                  Editar datos de envío
             </button>
         </div>

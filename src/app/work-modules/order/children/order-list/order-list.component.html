@@ -163,7 +163,7 @@
                         </td>
                     </ng-container>
                         
-                    <!-- costumer Column -->
+                    <!-- customer Column -->
                     <ng-container matColumnDef="customer">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> CLIENTE </th>
                         <td mat-cell *matCellDef="let element">
@@ -187,6 +187,17 @@
                                     </small>
                                 </div>
                             </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- sellers Column -->
+                    <ng-container matColumnDef="seller">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> VENDEDOR </th>
+                        <td mat-cell *matCellDef="let element">
+                            <a mat-flat-button routerLink="#">
+                                <mat-icon>person_outline</mat-icon>
+                                {{ element.employee_name }}
+                            </a>
                         </td>
                     </ng-container>
     

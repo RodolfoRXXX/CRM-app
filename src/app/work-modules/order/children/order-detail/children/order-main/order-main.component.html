@@ -77,7 +77,7 @@
                       <button mat-icon-button 
                               color="primary"
                               (click)="addProduct(element.id_product, this.dataSource.data[i].qty)"
-                              [disabled]="(info.status == 0) || (this.employee && this.info.seller && this.employee.name_role == 'administrador')?((this.info.seller != this.employee.id)):false">
+                              [disabled]="(this.info.status == 0) || ((this.employee && this.info.seller && this.employee.name_role != 'administrador')?((this.info.seller != this.employee.id)):false)">
                           <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
                       </button>
                   </td>
@@ -97,7 +97,7 @@
                 color="primary"
                 type="button"
                 (click)="addProduct()"
-                [disabled]="(info.status == 0) || (this.employee && this.info.seller && this.employee.name_role == 'administrador')?((this.info.seller != this.employee.id)):false">
+                [disabled]="(this.info.status == 0) || ((this.employee && this.info.seller && this.employee.name_role != 'administrador')?((this.info.seller != this.employee.id)):false)">
           + Agregar producto
         </button>
       </div>
