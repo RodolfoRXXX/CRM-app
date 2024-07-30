@@ -17,19 +17,16 @@ import { environment } from 'src/enviroments/enviroment';
 export class OrderListComponent implements OnInit, AfterViewInit {
 
   employee!: Employee;
+  sellers!: any;
   displayedColumns: string[] = ['id', 'date', 'customer', 'seller', 'status', 'detail'];
   dataSource = new MatTableDataSource();
   resultsLength!: number;
-  load_card1 = false;
-  load_card2 = false;
-  load_card3 = false;
-  load_card4 = false;
+  loadCards: boolean = true;
   load = true;
   recharge = false;
-  chips: any = { search: '', status: '' };
+  chips: any = { search: '', status: '', seller: '' };
+  //d1: pendientes, d2: entregados, d3: devoluciones, d4: cancelaciones
   card_values: any = { d1: null, d2: null, d4: null, d5: null };
-  permissions: string[] = [];
-  add_product_admin = '6';
   uriImg = environment.SERVER;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -63,8 +60,9 @@ export class OrderListComponent implements OnInit, AfterViewInit {
       this.employee = item;
       if(item.name_role !== 'administrador') {
         this.seller = item.id;
+      } else {
+        this.getSellers(item.id_enterprise)
       }
-      this.permissions = item.list_of_permissions.split(',');
     });
     return this.employee.id_enterprise;
   }
@@ -86,11 +84,37 @@ export class OrderListComponent implements OnInit, AfterViewInit {
 
   private getDataCard(id_enterprise: number): void {
     const date_limit = this.calculateDateLimit(365);
-    this._api.postTypeRequest('profile/get-orders-data', { id_enterprise, date_limit }).subscribe((value: any) => {
-      this.card_values.d1 = value.data[0]?.d1 || 0;
-      this.card_values.d2 = value.data[0]?.d2 || 0;
-      this.card_values.d4 = value.data[0]?.d4 || 0;
-      this.card_values.d5 = value.data[0]?.d5 || 0;
+    this._api.postTypeRequest('profile/get-orders-data', { id_enterprise, date_limit, seller: this.seller }).subscribe((value: any) => {
+      if(value) {
+        this.loadCards = false;
+        value.data.forEach((item: any) => {
+          switch (item.status_value) {
+            case '1':
+              this.card_values.d1 = item.count_status
+              break;
+            case '2':
+              this.card_values.d2 = item.count_status
+              break;
+            case '3':
+              this.card_values.d2 += item.count_status
+              break;
+            case '4':
+              this.card_values.d4 = item.count_status
+              break;
+            case '5':
+              this.card_values.d5 = item.count_status
+              break;
+          }
+        });
+      }
+    });
+  }
+
+  private getSellers(id_enterprise: number) {
+    this._api.postTypeRequest('profile/get-enterprise-users', { id_enterprise }).subscribe((value: any) => {
+      if(value) {
+        this.sellers = value.data;
+      }
     });
   }
 
@@ -142,7 +166,6 @@ export class OrderListComponent implements OnInit, AfterViewInit {
               element.status = 'Cerrado';
             }
           });
-          console.log(data.data)
           this.dataSource.data = data.data;
         } 
       });
