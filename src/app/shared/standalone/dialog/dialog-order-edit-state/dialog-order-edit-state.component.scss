@@ -1,0 +1,31 @@
+
+.dialog {
+  min-width: 450px;
+  padding: 25px 25px 15px;
+  margin-bottom: 0;
+  .data-column {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .text-data {
+        display: flex;
+        flex-direction: column;
+        .name-data {
+            --bs-text-opacity: 1;
+            color: #3d3d3e !important;
+            white-space: nowrap !important;
+            font-weight: 500 !important;
+        }
+        .description-data {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+    .text-data-box {
+        min-width: 150px;
+        max-width: 300px;
+    }
+}
+}
+

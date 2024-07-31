@@ -12,12 +12,6 @@
         "color": "#16b1ff"
     },
     {
-        "id": 3,
-        "status": "Entregado parcialmente",
-        "bgColor": "#ede4ff ",
-        "color": "#8c57ff"
-    },
-    {
         "id": 4,
         "status": "Cancelado",
         "bgColor": "#ffcdd2",

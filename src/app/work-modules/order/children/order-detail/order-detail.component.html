@@ -15,8 +15,8 @@
             <p class="mb-0">Creado el <span class="fw-500">{{ (order?order.date:getDateNow()) | date:'dd/MM/yyyy' }}</span></p>
         </div>
         <div class="d-flex align-content-center flex-wrap gap-4">
-            <button mat-flat-button color="primary" [disabled]="true">
-                <span>Eliminar</span> remito
+            <button mat-flat-button color="primary" (click)="changeState(detail, this.id_order)" [disabled]="!detail || hasChange">
+                Editar estado
             </button>
             <div class="d-flex justify-content-end">
                 <button mat-stroked-button color="warn" class="me-3" type="button" (click)="rechargeComponent()">

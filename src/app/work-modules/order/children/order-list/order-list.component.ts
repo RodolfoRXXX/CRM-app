@@ -95,9 +95,6 @@ export class OrderListComponent implements OnInit, AfterViewInit {
             case '2':
               this.card_values.d2 = item.count_status
               break;
-            case '3':
-              this.card_values.d2 += item.count_status
-              break;
             case '4':
               this.card_values.d4 = item.count_status
               break;

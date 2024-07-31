@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -7,6 +8,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Order } from 'src/app/shared/interfaces/order.interface';
+import { DialogOrderEditStateComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-state/dialog-order-edit-state.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -36,7 +38,8 @@ export class OrderDetailComponent implements OnInit {
     private _conector: ConectorsService,
     private _api: ApiService,
     private _notify: NotificationService,
-    private _router: Router
+    private _router: Router,
+    private _dialog: MatDialog
   ) {
     this.createDataForm();
   }
@@ -78,6 +81,16 @@ export class OrderDetailComponent implements OnInit {
     } catch (error) {
       throw error;
     }
+  }
+
+  //cambia el estado del remito - edita el estado de sus productos
+  changeState(detail: string, id_order: number) {
+    const dialogRef = this._dialog.open(DialogOrderEditStateComponent, { data: { detail: detail, id_order: id_order }});
+      dialogRef.afterClosed().subscribe(result => {
+        if(result) {
+          console.log(result)
+        }
+      });
   }
 
   //Formulario creación/edición de producto
