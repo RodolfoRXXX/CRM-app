@@ -84,13 +84,8 @@ export class OrderDetailComponent implements OnInit {
   }
 
   //cambia el estado del remito - edita el estado de sus productos
-  changeState(detail: string, id_order: number) {
-    const dialogRef = this._dialog.open(DialogOrderEditStateComponent, { data: { detail: detail, id_order: id_order }});
-      dialogRef.afterClosed().subscribe(result => {
-        if(result) {
-          console.log(result)
-        }
-      });
+  changeState(detail: string, id_order: number, status: any) {
+    this._dialog.open(DialogOrderEditStateComponent, { data: { detail: detail, id_order: id_order, status: status }});
   }
 
   //Formulario creación/edición de producto

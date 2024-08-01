@@ -85,11 +85,11 @@
     </div>
     <!-- Footer -->
      <div class="b-t mt-3 pt-3 d-flex justify-content-between">
-        <button class="me-2" mat-flat-button color="warn">
+        <button class="me-2" mat-flat-button color="warn" (click)="closeAll()" [disabled]="(data.status == 0) || loading">
             Cerrar todo
         </button>
-        <button mat-flat-button color="primary" [disabled]="dataForm.invalid || loading" (click)="updateState()">
-            Confirmar cambios
+        <button mat-flat-button color="primary" [disabled]="dataForm.invalid || loading" (click)="closeByOne()">
+            Confirmar cambios <span *ngIf="data.status == 0">y abrir</span>
         </button>
      </div>
 </div>

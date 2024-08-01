@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from 'src/app/services/notification.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { GetJsonDataService } from 'src/app/services/get-json-data.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class DialogOrderEditStateComponent {
   editRegister: any = [];
   load: boolean = true;
   loading: boolean = false;
+  close_order!: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<DialogOrderEditStateComponent>,
@@ -39,7 +41,8 @@ export class DialogOrderEditStateComponent {
     private _api: ApiService,
     public _auth: AuthService,
     private _notify: NotificationService,
-    private _getJson: GetJsonDataService
+    private _getJson: GetJsonDataService,
+    private _router: Router
   ) {
     this._getJson.getData('order_status.json').subscribe((data: any) => {
       this.order_status = data;
@@ -66,10 +69,12 @@ export class DialogOrderEditStateComponent {
     return this.order_status.find(value => value.id === statusId);
   }
 
-/*  Esta sección maneja los cambios unitarios de cada producto del remito, toma los cambios de genera el usuario de a uno
-      y luego envía la información a la base de datos para guardarse, en caso de que se pueda, cierra la orden */
+
+/*  Esta sección maneja los cambios unitarios de cada producto del remito, toma los cambios que genera el usuario de a uno
+      y luego envía la información a la base de datos para guardarse, y en caso de que se pueda, cierra la orden */
+
   //Setea el estado en cada registro de la tabla y actualiza el formulario
-    private setStatus(id_product: number, status: string) {
+    private setStatusByOne(id_product: number, status: string) {
       this.dataSource.data.find( (element: any) => {
         if(element.id_product == id_product) {
           element.status = status
@@ -84,38 +89,63 @@ export class DialogOrderEditStateComponent {
       //1 - entregado
       //2 - no entregado
       //3 - cancelado
-      console.log(element, event.value)
       //element contiene status actual
       //event.value es el status nuevo
       if((element.status == 2) && (event.value == 1)) {
-        console.log("resto la cantidad al stock físico")
+        //console.log("resto la cantidad al stock físico")
         this.editRegister.push({ id_product: element.id_product, editQty: element.qty, type: 'real' })
-        this.setStatus(element.id_product, event.value)
+        this.setStatusByOne(element.id_product, event.value)
       }
       if((element.status == 1) && (event.value == 2)) {
-        console.log("sumo la cantidad al stock físico")
+        //console.log("sumo la cantidad al stock físico")
         this.editRegister.push({ id_product: element.id_product, editQty: -element.qty, type: 'real' })
-        this.setStatus(element.id_product, event.value)
+        this.setStatusByOne(element.id_product, event.value)
       }
       if((element.status == 2) && (event.value == 4)) {
-        console.log("resto la cantidad al stock disponible")
+        //console.log("resto la cantidad al stock disponible")
         this.editRegister.push({ id_product: element.id_product, editQty: element.qty, type: '' })
-        this.setStatus(element.id_product, event.value)
+        this.setStatusByOne(element.id_product, event.value)
       }
     }
 
+    //función que recorre el json con los productos y verifica si alguno tiene el status "no entregado", si es así, devuelve FALSE
+    verificateStatus(): boolean {
+      const data = !this.dataSource.data.find( (element: any) => element.status == 2 )
+      return data
+    }
+
+    //función que es llamada por el botón "Confirmar cambios"
+    closeByOne() {
+      this.loading = true;
+      //verifico que el listado de productos no contenga "no entregado"
+      this.close_order = this.verificateStatus()
+      this.updateState()
+    }
 
 /*  Esta sección tiene las funciones para cerrar toda la orden desde un solo botón, liberando el stock disponible
       para luego cerrar la orden */
+    setStatusAll() {
+      this.editRegister = []
+      const list = JSON.parse(this.data.detail)
+      if(list) {
+        list.forEach((element: any) => {
+          if(element.status == 2) {
+            element.status = 1
+            this.editRegister.push({ id_product: element.id_product, editQty: element.qty, type: 'real' })
+          }
+        });
+        this.close_order = true;
+        this.dataForm.patchValue({detail: JSON.stringify(list)})
+      }
+    }
 
-
-
-
-
-
-
-
-
+    //función que es llamada por el botón "Cerrar todo"
+    closeAll() {
+      this.loading = true;
+      //repaso todo el listado de productos y cambio aquellos con estado "no entregado" a "entregado"
+      this.setStatusAll()
+      this.updateState()
+    }
 
 /*  Sección de envío de formulario a la base de datos */
   //Crea el formulario para modificar el detalle de la orden
@@ -132,67 +162,42 @@ export class DialogOrderEditStateComponent {
 
   //envío los cambios a la base de datos
   updateState() {
-    console.log(this.dataForm.value)
-  }
-
-  /*
-  submitPermissions() {
-    this._api.postTypeRequest('profile/update-role-permissions', this.permissionForm.value).subscribe({
+    console.log(this.dataForm.value, this.close_order, this.editRegister)
+    this._api.postTypeRequest('profile/update-order-state', {form: this.dataForm.value, edit: this.editRegister, close_order: this.close_order}).subscribe({
       next: (res: any) => {
-        this.loading_set_permission =  false;
+        console.log(res)
+        this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
-          if(res.data.changedRows == 1){
-            //Modificó el usuario
-            this._notify.showSuccess('Permisos actualizados con éxito!');
+          if(res.data.affectedRows == 1){
+            //Modificó el remito
+            this._notify.showSuccess('Estado del remito actualizado con éxito!');
           } else{
             //No hubo modificación
-            this.disable_submit = false;
-            this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.');
+            this._notify.showError('No se realizaron cambios. Intentá nuevamente.');
           }
           setTimeout(() => {
             this.closeDialog(true);
           }, 2000);
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
-          this.disable_submit = false;
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
         }
       },
       error: (error) => {
         //Error de conexión, no pudo consultar con la base de datos
-        this.disable_submit = false;
-        this.loading_set_permission =  false;
+        this.loading =  false;
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }
     })
-}*/
+  }
 
 //cierro la ventana de diálogo
   closeDialog(state: boolean) {
+    if(state) {
+      this._router.navigate(['init/main/order/order-list']);
+    }
     this.dialogRef.close(state);
   }
 
 }
-
-/*
-para el button de CERRAR TODO
-  //este button cambia el estado de todos los productos a "entregado" y cierra la orden
-
-  - recorrer toda la tabla buscando aquellos productos que tengan un status "no entregado" para cambiar su estado a
-    "entregado" y guardar en la variable array editRegister() los cambios de cantidades al stock físico y disponible
-  - setear una variable que indique si debo cerrar el remito(closeOrder())
-  - guardar esta tabla nueva en el formulario
-  - llamar a la función updateState() para guardar los cambios en la base de datos
-
-
-para el button de CONFIRMAR CAMBIOS
-  //este button guarda los cambios de estado y cierra la orden si no queda ningun producto sin entregar
-
-  - ya tengo los cambios realizados en cada producto y el array editRegister() actualizado
-  - debo recorrer toda la tabla y ver si existe algun producto con status "no entregado", si existe entonces
-    setear la variable closeOrder = false(valor inicial false), para que sea TRUE todos los productos deben tener
-    un status de "entregado, cancelado o devolución"
-  - llamar a la función updateState() para guardar los cambios en la base de datos
-
-*/
