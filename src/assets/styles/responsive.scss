@@ -171,6 +171,10 @@
     flex-direction: column;
   }
 
+  .max-800-hidden {
+    display: none!important;
+  }
+
  }
 
 /*-- ============================================================== 
@@ -272,9 +276,13 @@
     }
   }
 
-.max-600-hidden {
-  display: none!important;
-}
+  .max-600-hidden {
+    display: none!important;
+  }
+
+  .set-width-600 {
+    width: 170px;
+  }
 
 }
 

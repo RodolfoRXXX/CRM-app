@@ -147,6 +147,37 @@ export class DialogOrderEditStateComponent {
       this.updateState()
     }
 
+  //Función que abre la orden, no hace más que eso
+  openOrder() {
+    this.loading =  true;
+    this._api.postTypeRequest('profile/update-order-open-state', {id: this.data.id_order, status: 1}).subscribe({
+      next: (res: any) => {
+        this.loading =  false;
+        if(res.status == 1){
+          //Accedió a la base de datos y no hubo problemas
+          if(res.data.affectedRows == 1){
+            //Modificó el remito
+            this._notify.showSuccess('El remito se reabrió con éxito!');
+          } else{
+            //No hubo modificación
+            this._notify.showError('No se realizaron cambios. Intentá nuevamente.');
+          }
+          setTimeout(() => {
+            this.closeDialog(true);
+          }, 2000);
+        } else{
+          //Problemas de conexión con la base de datos(res.status == 0)
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
+        }
+      },
+      error: (error) => {
+        //Error de conexión, no pudo consultar con la base de datos
+        this.loading =  false;
+        this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
+      }
+    })
+  }
+
 /*  Sección de envío de formulario a la base de datos */
   //Crea el formulario para modificar el detalle de la orden
   createDataForm() {
@@ -162,7 +193,6 @@ export class DialogOrderEditStateComponent {
 
   //envío los cambios a la base de datos
   updateState() {
-    console.log(this.dataForm.value, this.close_order, this.editRegister)
     this._api.postTypeRequest('profile/update-order-state', {form: this.dataForm.value, edit: this.editRegister, close_order: this.close_order}).subscribe({
       next: (res: any) => {
         console.log(res)
