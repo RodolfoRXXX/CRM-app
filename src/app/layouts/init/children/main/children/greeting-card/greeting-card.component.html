@@ -1,0 +1,18 @@
+<!-- Greeting Card -->
+<mat-card class="card mb-6">
+    <mat-card-content>
+        <div class="row">
+            <div class="col-12 col-md-6"></div>
+            <div class="col-12 col-md-6 position-relative">
+                <div class="d-flex justify-content-end">
+                    <img src="../../../../../../../assets/images/system/temporal.jpg" alt="" height="150px" style="border-radius: 50%;">
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isLoading">Loading...</div>
+        <div *ngIf="!isLoading && img">
+            <!--<img [src]="img.urls.regular" [alt]="img.alt_description" style="height: 200px;">-->
+        <p class="fs-06">Photo by <a [href]="img.user.links.html" target="_blank">{{ img.user.name }}</a> on <a href="https://unsplash.com" target="_blank">Unsplash</a></p>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -10,12 +10,26 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from 'src/app/services/interceptor.service';
 import { DashboardComponent } from './children/dashboard/dashboard.component';
+import { GreetingCardComponent } from './children/greeting-card/greeting-card.component';
+import { OpenOrderCardComponent } from './children/open-order-card/open-order-card.component';
+import { PendingProductCardComponent } from './children/pending-product-card/pending-product-card.component';
+import { BalanceCardComponent } from './children/balance-card/balance-card.component';
+import { TotalSalesCardComponent } from './children/total-sales-card/total-sales-card.component';
+import { ReturnsCardComponent } from './children/returns-card/returns-card.component';
+import { CancelationsCardComponent } from './children/cancelations-card/cancelations-card.component';
 
 
 @NgModule({
   declarations: [
     MainComponent,
-    DashboardComponent
+    DashboardComponent,
+    GreetingCardComponent,
+    OpenOrderCardComponent,
+    PendingProductCardComponent,
+    BalanceCardComponent,
+    TotalSalesCardComponent,
+    ReturnsCardComponent,
+    CancelationsCardComponent
   ],
   imports: [
     CommonModule,
