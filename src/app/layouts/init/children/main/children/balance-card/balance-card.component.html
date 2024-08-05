@@ -1,6 +1,18 @@
 <!-- Balance Card -->
-<mat-card class="card mb-6">
+
+<mat-card class="card mb-6" style="height: 345px;">
     <mat-card-content>
-        
+        <div class="row">
+            <!-- Chart -->
+            <div class="col-md-7">
+                <div class="card">
+                    <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
+                </div>                
+            </div>
+            <!-- Detail -->
+            <div class="col-md-5 b-l">
+                holas
+            </div>
+        </div>
     </mat-card-content>
 </mat-card>
