@@ -1,18 +1,21 @@
 <!-- Greeting Card -->
-<mat-card class="card mb-6">
-    <mat-card-content>
-        <div class="row">
-            <div class="col-12 col-md-6"></div>
-            <div class="col-12 col-md-6 position-relative">
-                <div class="d-flex justify-content-end">
-                    <img src="../../../../../../../assets/images/system/temporal.jpg" alt="" height="150px" style="border-radius: 50%;">
-                </div>
-            </div>
-        </div>
-        <div *ngIf="isLoading">Loading...</div>
-        <div *ngIf="!isLoading && img">
-            <!--<img [src]="img.urls.regular" [alt]="img.alt_description" style="height: 200px;">-->
-        <p class="fs-06">Photo by <a [href]="img.user.links.html" target="_blank">{{ img.user.name }}</a> on <a href="https://unsplash.com" target="_blank">Unsplash</a></p>
-        </div>
-    </mat-card-content>
+<mat-card class="card mb-6" 
+        [ngStyle]="img ? {
+          'background-image': 'url(' + img.urls.regular + ')', 
+          'background-size': 'cover', 
+          'background-position': 'center', 
+          'height': '400px'
+        } : {}">
+  <mat-card-content class="h-100">
+    <div class="d-flex flex-column justify-content-end h-100">
+      <h3 class="rounded fw-500" style="background-color: rgba(255, 255, 255, 0.75); padding: 0.25rem .5rem;">
+        <span>{{ day?day:'Buenas' }}</span>, <span>{{ name?name:'' }}!</span>
+        <span class="d-block fs-09 text-muted">Hagamos algunas cosas increíbles!</span>
+      </h3>
+      <p class="w-100 text-right mb-0 fs-07 fw-300" style="color: #fff">
+        Imagen de <a [href]="img?img.user.links.html:''" target="_blank">{{ img?img.user.name:'' }}</a> por <a href="https://unsplash.com" target="_blank">Unsplash</a>
+      </p>
+    </div>
+  </mat-card-content>
+  <div *ngIf="!img" class="fs-09 text-muted">Cargando imagen...</div> <!-- Indicador de carga -->
 </mat-card>

@@ -1,20 +1,31 @@
 <!-- Pending Card -->
+
 <mat-card class="card mb-6">
-    <mat-card-content>
-        <div class="row ps-3 pe-3">
-            <div class="col-6">
+    <mat-card-content class="position-relative">
+        <div class="row ps-1 pe-3">
+            <div class="col-4">
                 <div>
                     <span class="material-symbols-outlined icon">
                         other_admission
                     </span>
                 </div>
             </div>
-            <div class="col-6 d-flex align-items-center justify-content-end">
-                <div style="display: inline-block; text-align: center;">
-                    <h3 style="margin-bottom: 8px; font-weight: 600; color: #222;">23%</h3>
-                    <p class="mb-0" style="line-height: 25px;">Active user</p>
+            <div class="col-8 d-flex align-items-end justify-content-end">
+                <div class="box-info me-4">
+                    <h3 *ngIf="info != null">{{ info }}</h3>
+                    <h6 *ngIf="info == null" class="text-muted fs-08 mb-4">Cargando...</h6>
+                    <p class="mb-0 soft-grey-color font-14">Pendientes de entrega</p>
+                    <small class="text-muted fs-07">{{ textRange }}</small>
                 </div>
             </div>
         </div>
+        <button mat-icon-button aria-label="Date Data" class="btn-date" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button class="text-muted fs-09" mat-menu-item (click)="setRange(30, 'Ultimos 30 días')">Ultimos 30 días</button>
+            <button class="text-muted fs-09" mat-menu-item (click)="setRange(180, 'Ultimos 6 meses')">Ultimos 6 meses</button>
+            <button class="text-muted fs-09" mat-menu-item (click)="setRange(365, 'Ultimos 12 meses')">Ultimos 12 meses</button>
+        </mat-menu>
     </mat-card-content>
 </mat-card>

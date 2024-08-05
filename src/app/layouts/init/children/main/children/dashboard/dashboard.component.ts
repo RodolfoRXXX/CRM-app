@@ -10,9 +10,7 @@ export class DashboardComponent {
 
   constructor(
     private _conector: ConectorsService
-  ) { 
-    
-   }
+  ) {}
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
