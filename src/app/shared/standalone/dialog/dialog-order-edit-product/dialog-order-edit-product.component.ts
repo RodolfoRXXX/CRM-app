@@ -184,6 +184,7 @@ export class DialogOrderEditProductComponent implements OnInit {
           sku: this.product?this.product.sku:this.data.data.sku,
           qty: this.qty,
           status: 2,
+          price: this.product?this.product.sale_price:this.data.data.price,
           discount: 0
         }
         break;

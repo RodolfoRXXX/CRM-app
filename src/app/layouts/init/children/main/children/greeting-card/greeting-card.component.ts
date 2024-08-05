@@ -16,6 +16,7 @@ export class GreetingCardComponent implements OnInit {
   img!: UnsplashImage;
   name!: string;
   day!: string;
+  imgType!: string;
   error: string | null = null;
 
   constructor(
@@ -42,11 +43,19 @@ export class GreetingCardComponent implements OnInit {
   //Función que obtiene el momento del día en el que se encuentra
   private getHour(): string {
     const hours = new Date().getHours();
-    return hours >= 20 || hours < 6
-      ? 'Buenas noches'
-      : hours >= 6 && hours < 12
-        ? 'Buen día'
-        : 'Buenas tardes';
+    if (hours >= 20 || hours < 6) {
+      this.imgType = 'noche'
+      return 'Buenas noches';
+    } else if (hours >= 6 && hours < 12) {
+      this.imgType = 'mañana'
+      return 'Buen día';
+    } else if (hours >= 12 && hours < 20) {
+      this.imgType = 'tarde'
+      return 'Buenas tardes';
+    } else {
+      this.imgType = 'mañana'
+      return 'Buen día'
+    }
   }
 
   //Función que carga la imagen de Unsplash
@@ -61,7 +70,8 @@ export class GreetingCardComponent implements OnInit {
 
     this.error = null;
     try {
-      const response = await fetch(`${ENDPOINT}?client_id=${ACCESS_KEY}&orientation=landscape&query=${QUERY}&color=#00695c`);
+      let alt_query = QUERY + ',' + this.imgType;
+      const response = await fetch(`${ENDPOINT}?client_id=${ACCESS_KEY}&orientation=landscape&query=${alt_query}&color=#00695c`);
       if (!response.ok) {
         throw new Error('Network response was not ok ' + response.statusText);
       }
