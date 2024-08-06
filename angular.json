@@ -75,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "tickets-app:build:production"
+              "buildTarget": "tickets-app:build:production"
             },
             "development": {
-              "browserTarget": "tickets-app:build:development"
+              "buildTarget": "tickets-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -86,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "tickets-app:build"
+            "buildTarget": "tickets-app:build"
           }
         },
         "test": {
