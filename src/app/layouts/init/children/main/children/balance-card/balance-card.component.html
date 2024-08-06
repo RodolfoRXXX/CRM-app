@@ -1,17 +1,61 @@
 <!-- Balance Card -->
 
-<mat-card class="card mb-6" style="height: 345px;">
-    <mat-card-content>
-        <div class="row">
+<mat-card class="card mb-6">
+    <mat-card-content class="h-100">
+        <div class="row h-100">
             <!-- Chart -->
-            <div class="col-md-7">
-                <div class="card">
-                    <!--<p-chart type="bar" [data]="basicData" [options]="basicOptions" />-->
-                </div>                
+            <div class="col-md-7 d-flex flex-column justify-content-between position-relative">
+                <h4 class="mb-4 cap">Balance de ventas totales($)</h4>
+                <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
+                <button mat-icon-button aria-label="Date Data" class="btn-date" [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button class="text-muted fs-09" mat-menu-item (click)="setRange('day')">Ultima semana</button>
+                    <button class="text-muted fs-09" mat-menu-item (click)="setRange('week')">Ultimo mes</button>
+                    <button class="text-muted fs-09" mat-menu-item (click)="setRange('month')">Ultimos 6 meses</button>
+                </mat-menu>
             </div>
             <!-- Detail -->
-            <div class="col-md-5 b-l">
-                holas
+            <div class="col-md-5 b-l ps-4 pe-4 h-100">
+                <!-- Value -->
+                <h4 class="mb-4 cap">Detalle de cada período</h4>
+                <!-- Better -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="avatar">
+                        <span class="avatar-initial rounded text-heading bg-label-success">
+                            <span class="material-symbols-outlined">sentiment_very_satisfied</span>
+                        </span>
+                    </div>
+                    <div class="ms-3 d-flex flex-column align-items-between">
+                        <h5 class="mb-0">$426.54</h5>
+                        <p class="mb-0 text-muted fw-400 fs-09">Mejores ventas</p>
+                    </div>
+                </div>
+                <!-- Worst -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="avatar">
+                        <span class="avatar-initial rounded text-heading bg-label-danger">
+                            <span class="material-symbols-outlined">sentiment_dissatisfied</span>
+                        </span>
+                    </div>
+                    <div class="ms-3 d-flex flex-column align-items-between">
+                        <h5 class="mb-0">$426.54</h5>
+                        <p class="mb-0 text-muted fw-400 fs-09">Bajas ventas</p>
+                    </div>
+                </div>
+                <!-- Average -->
+                 <div class="d-flex align-items-center mb-4">
+                    <div class="avatar">
+                        <span class="avatar-initial rounded text-heading bg-label-warning">
+                            <span class="material-symbols-outlined">sentiment_neutral</span>
+                        </span>
+                    </div>
+                    <div class="ms-3 d-flex flex-column align-items-between">
+                        <h5 class="mb-0">$426.54</h5>
+                        <p class="mb-0 text-muted fw-400 fs-09">Promedio de ventas</p>
+                    </div>
+                 </div>
             </div>
         </div>
     </mat-card-content>

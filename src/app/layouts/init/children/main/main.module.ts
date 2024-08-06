@@ -17,6 +17,7 @@ import { BalanceCardComponent } from './children/balance-card/balance-card.compo
 import { TotalSalesCardComponent } from './children/total-sales-card/total-sales-card.component';
 import { ReturnsCardComponent } from './children/returns-card/returns-card.component';
 import { CancelationsCardComponent } from './children/cancelations-card/cancelations-card.component';
+import { ChartModule } from 'primeng/chart';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { CancelationsCardComponent } from './children/cancelations-card/cancelat
     MainRoutingModule,
     MaterialModule,
     SidebarComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChartModule
   ],
   exports: [
     
