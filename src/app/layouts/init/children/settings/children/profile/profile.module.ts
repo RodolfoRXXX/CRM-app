@@ -1,4 +1,3 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ProfileRoutingModule } from './profile-routing.module';
@@ -11,6 +10,8 @@ import { ProfileInformationComponent } from './children/profile-edit/children/pr
 import { ProfileImageComponent } from './children/profile-edit/children/profile-image/profile-image.component';
 import { ProfileWorkingHoursComponent } from './children/profile-edit/children/profile-working-hours/profile-working-hours.component';
 import { ProfileErContactComponent } from './children/profile-edit/children/profile-er-contact/profile-er-contact.component';
+import { ProfileViewComponent } from "../../../../../../shared/standalone/view/profile-view/profile-view.component";
+import { NgModule } from '@angular/core';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { ProfileErContactComponent } from './children/profile-edit/children/prof
     ProfileRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    ProfileViewComponent
+]
 })
 export class ProfileModule { }

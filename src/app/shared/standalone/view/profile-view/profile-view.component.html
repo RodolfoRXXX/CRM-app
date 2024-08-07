@@ -1,9 +1,13 @@
-<!-- Detail profile -->
+<!-- Profile View -->
 
+<!-- Loader -->
+<div class="loader" *ngIf="load">
+    <p>Cargando...</p>
+</div>
 <!-- Content -->
-<div class="container-xxl flex-grow-1 container-p-y row">
+<div class="container-xxl flex-grow-1 container-p-y row" *ngIf="!load">
     <!-- Caja que contiene imagen, indicadores básicos y detalles -->
-    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0" *ngIf="!load">
+    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
         <div class="card mb-6">
             <div class="card-body pt-12">
                 <!-- caja de la imagen -->
@@ -11,7 +15,7 @@
                     <div class="d-flex align-items-center flex-column">
                         <img [src]="baseURL + user.thumbnail" alt="User image" class="img-fluid rounded mb-4" width="120" height="120">
                         <div class="text-center mb-6">
-                            <h4 class="mb-0">{{ employee.name || user.name || user.email.split("@")[0] }}</h4>
+                            <h4 class="mb-0">{{ employee?(employee.name?employee.name:user.name):user.email.split("@")[0] }}</h4>
                             <span class="fs-09 text-muted cap">{{ employee.name_role || 'Sin Rol asignado' }}</span>
                         </div>
                     </div>
