@@ -28,7 +28,7 @@
                         </span>
                     </div>
                     <div class="ms-3 d-flex flex-column align-items-between">
-                        <h5 class="mb-0">$426.54</h5>
+                        <h5 class="mb-0">${{ (analysisResult.max)?analysisResult.max.response:0 | number:'1.2-2' }}</h5>
                         <p class="mb-0 text-muted fw-400 fs-09">Mejores ventas</p>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         </span>
                     </div>
                     <div class="ms-3 d-flex flex-column align-items-between">
-                        <h5 class="mb-0">$426.54</h5>
+                        <h5 class="mb-0">${{ (analysisResult.min && analysisResult.max)?((analysisResult.min.response != analysisResult.max.response)?(analysisResult.min.response):0):0 | number:'1.2-2' }}</h5>
                         <p class="mb-0 text-muted fw-400 fs-09">Bajas ventas</p>
                     </div>
                 </div>
@@ -48,11 +48,11 @@
                  <div class="d-flex align-items-center mb-4">
                     <div class="avatar">
                         <span class="avatar-initial rounded text-heading bg-label-warning">
-                            <span class="material-symbols-outlined">sentiment_neutral</span>
+                            <span class="material-symbols-outlined">functions</span>
                         </span>
                     </div>
                     <div class="ms-3 d-flex flex-column align-items-between">
-                        <h5 class="mb-0">$426.54</h5>
+                        <h5 class="mb-0">${{ analysisResult.avg | number:'1.2-2' }}</h5>
                         <p class="mb-0 text-muted fw-400 fs-09">Promedio de ventas</p>
                     </div>
                  </div>
