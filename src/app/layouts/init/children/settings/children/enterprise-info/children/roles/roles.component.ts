@@ -9,6 +9,7 @@ import { environment } from 'src/enviroments/enviroment';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditPermissionsComponent } from 'src/app/shared/standalone/dialog/dialog-edit-permissions/dialog-edit-permissions.component';
 import { DialogCreateRoleComponent } from 'src/app/shared/standalone/dialog/dialog-create-role/dialog-create-role.component';
+import { DialogViewProfileComponent } from 'src/app/shared/standalone/dialog/dialog-view-profile/dialog-view-profile.component';
 
 @Component({
   selector: 'app-roles',
@@ -99,10 +100,20 @@ export class RolesComponent implements OnInit {
     this.getDataUsers();
   }
 
-  openEditRoleDialog(id_role: any, role:string, icon_role: string, task:string): void {
-    const dialogRef = this._dialog.open(DialogEditPermissionsComponent, { data: { id_role: id_role, role: role, icon_role: icon_role, task: task }, disableClose: true  });
+  openView(id_user: number, id_employee: number, id_enterprise: number) {
+    const dialogView = this._dialog.open(DialogViewProfileComponent, { data: { id_user: id_user, id_employee: id_employee, id_enterprise: id_enterprise }});
+    dialogView.afterClosed().subscribe(result => {
+      if(result) {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+    });
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
+  openEditRoleDialog(id_role: any, role:string, icon_role: string, task:string): void {
+    const dialogRole = this._dialog.open(DialogEditPermissionsComponent, { data: { id_role: id_role, role: role, icon_role: icon_role, task: task }, disableClose: true});
+    dialogRole.afterClosed().subscribe(result => {
       if(result) {
         setTimeout(() => {
           window.location.reload();

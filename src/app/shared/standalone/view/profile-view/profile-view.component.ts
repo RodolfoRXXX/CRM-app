@@ -9,6 +9,8 @@ import { User } from 'src/app/shared/interfaces/user.interface';
 import { Router } from '@angular/router';
 import { environment } from 'src/enviroments/enviroment';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
+import { ConectorsService } from 'src/app/services/conectors.service';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -17,15 +19,20 @@ import { calculateDateLimit } from 'src/app/shared/functions/date.function';
   styleUrls: ['./profile-view.component.scss'],
   imports: [
     MaterialModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ]
 })
 export class ProfileViewComponent implements OnInit, OnChanges {
 
   @Input() data!: {userId: number, employeeId: number, id_enterprise: number};
 
+  dataForm!: FormGroup;
+
   employee!: Employee;
+  roles!: any;
   user!: User;
+  watcher!: Employee;
   date_limit!: string;
   seller!: number;
   load: boolean = true;
@@ -39,33 +46,42 @@ export class ProfileViewComponent implements OnInit, OnChanges {
   constructor(
     private _api: ApiService,
     private _notify: NotificationService,
-    private _router: Router
+    private _router: Router,
+    private _conector: ConectorsService,
   ) {}
 
   ngOnInit(): void {
+    this.createForm();
+    this.getRoles();
     this.date_limit = calculateDateLimit(30);
+    this.getDataLocal();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data'] && this.data) {
+    if (changes['data']) {
       this.loadData();
     }
   }
 
+  private getDataLocal(): void {
+    this._conector.getEmployee().subscribe((item: Employee) => {
+      this.watcher = item;
+    });
+  }
+
   loadData(): void {
-    if (this.data.userId && this.data.employeeId && this.data.id_enterprise) {
+    if (this.data.userId && this.data.id_enterprise) {
       forkJoin({
         employee: this._api.postTypeRequest('profile/get-employee-ID', { id_employee: this.data.employeeId }),
         user: this._api.postTypeRequest('profile/get-user-ID', { id_user: this.data.userId })
       }).subscribe({
         next: (results: any) => {
-          this.employee = results.employee.data[0];
+          this.employee = (results.employee.status == 1)?results.employee.data[0]:undefined;
           this.user = results.user.data[0];
-          this.getDataCard();
+          (this.employee)?this.getDataCard():'';
           this.load = false;
         },
-        error: (err) => {
-          console.error('Error loading data:', err);
+        error: () => {
           this.load = false; // Ensure load is set to false even if there's an error
         }
       });
@@ -105,7 +121,6 @@ export class ProfileViewComponent implements OnInit, OnChanges {
       this._api.postTypeRequest('profile/change-employee-state', {id_employee: id_employee, status: +!status}).subscribe({
         next: (res: any) => {
           this.loading =  false;
-          console.log(res)
           if(res.status == 1){
             //Accedió a la base de datos y no hubo problemas
             if(res.data.affectedRows == 1){
@@ -132,11 +147,38 @@ export class ProfileViewComponent implements OnInit, OnChanges {
     }
   }
 
+  getRoles(): void {
+    this._api.postTypeRequest('profile/get-roles', { id_enterprise: this.data.id_enterprise }).subscribe( (value:any) => {
+      this.roles = value.data
+    })
+  }
+
+  createForm() {
+    this.dataForm = new FormGroup({
+      id: new FormControl(this.data.userId, [
+        Validators.required
+      ]),
+      id_enterprise: new FormControl(this.data.id_enterprise, [
+        Validators.required
+      ]),
+      role: new FormControl('', [
+        Validators.required
+      ])
+    })
+  }
+
+  //Capturador de errores del valor de formulario
+  getErrorRole() {
+    //role
+    if(this.dataForm.controls['role'].hasError('required')) return 'Elegí una opción';
+      return ''
+  }
+
   //Crea un nuevo empleado
-  createEmployee(id_user: number, id_enterprise: number) {
-    console.log(id_user, id_enterprise)
-    if(id_user > 0) {
-      this._api.postTypeRequest('profile/create-employee', {id_user: id_user, id_enterprise: id_enterprise}).subscribe({
+  createEmployee() {
+    console.log(this.dataForm.value)
+    if(this.dataForm.valid) {
+      this._api.postTypeRequest('profile/create-employee', this.dataForm.value).subscribe({
         next: (res: any) => {
           console.log(res)
           this.loading =  false;

@@ -28,7 +28,7 @@ ngOnInit(): void {
   } )
 }
 
-//Obtiene la información del producto
+//Obtiene la información del empleado
 getEmployee(): Observable<Employee> {
   return new Observable<Employee>(observer => {
     this._conector.getEmployee().subscribe((employee: any) => {

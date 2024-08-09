@@ -98,9 +98,9 @@
             </div>
             <!-- Table of storages -->
             <div class="box-table">
-                <mat-form-field  class="bill-filter-input">
+                <mat-form-field  class="bill-filter-input" appearance="outline">
                     <mat-label>Filtrar</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. texto" #input>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Escribe algo aquí" #input>
                 </mat-form-field>
                 <table mat-table [dataSource]="dataSource"  *ngIf="dataSource">
                   
@@ -144,7 +144,7 @@
                     <ng-container matColumnDef="verified">
                         <th mat-header-cell *matHeaderCellDef> Verificado </th>
                         <td mat-cell *matCellDef="let element">
-                            <mat-chip class="cap font-14" 
+                            <mat-chip class="cap font-14 fw-500" 
                                     [style]="{'background-color':element.verified_state == 1?'rgb(230, 247, 217)':'rgb(255, 196, 189)' }"
                                     >
                                     <span class="max-1024-hidden" [style]="{'color':element.verified_state == 1?'rgb(86, 202, 0)':'rgb(255, 87, 51)'}">{{ (element.verified_state)?'Verificado':'No verificado' }}</span>
@@ -157,7 +157,7 @@
                     <ng-container matColumnDef="status">
                       <th mat-header-cell *matHeaderCellDef> Estado </th>
                       <td mat-cell *matCellDef="let element">
-                            <mat-chip class="cap font-14" 
+                            <mat-chip class="cap font-14 fw-500" 
                                   [style]="{'background-color':element.state_employee == 1?'rgb(230, 247, 217)':'rgb(237, 238, 239)'}">
                                   <span class="max-1024-hidden" [style]="{'color':element.state_employee == 1?'rgb(86, 202, 0)':'rgb(138, 141, 147)'}">{{ (element.state_employee)?'Activo':'Inactivo' }}</span>
                                   <mat-icon [color]="element.state_employee == 1?'primary':'accent'" class="min-1024-hidden" style="position: relative; top: 3px;">{{ element.state_employee == 1?'check_circle_outline':'remove_circle_outline' }}</mat-icon>
@@ -169,12 +169,12 @@
                     <ng-container matColumnDef="view">
                         <th mat-header-cell *matHeaderCellDef> Detalles </th>
                         <td mat-cell *matCellDef="let element">
-                            <a href="#" mat-icon-button color="primary" aria-label="">
-                                <mat-icon>
+                            <button mat-icon-button color="primary" aria-label="" (click)="openView(element.id_user, element.id_employee, element.id_enterprise)">
+                                <mat-icon style="position: relative; bottom: 2px;">
                                     <mat-icon class="badge-icon" *ngIf="element.state_employee == null || element.role == null">brightness_1</mat-icon>
                                     visibility
                                 </mat-icon>
-                            </a>
+                            </button>
                         </td>
                       </ng-container>
                   
