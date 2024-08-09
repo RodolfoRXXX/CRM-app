@@ -61,3 +61,14 @@ export function getMonthName(monthNumber: number) {
     return monthNames[monthNumber - 1];
   }
 
+//Función que devuelve la fecha resultado de la fecha actual menos un parámetro
+    //recibe: 30(un número entero)
+    //devuelve: '2024-07-05'(una fecha en string)
+export function calculateDateLimit(daysAgo: number): string {
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}

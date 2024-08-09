@@ -11,7 +11,8 @@ export class ProfileDetailComponent implements OnInit {
 
   data = {
     userId: 0,
-    employeeId: 0
+    employeeId: 0,
+    id_enterprise: 0
   }
 
   constructor(
@@ -23,6 +24,7 @@ ngOnInit(): void {
   this.getEmployee().subscribe( result => {
     this.data.userId = result.id_user;
     this.data.employeeId = result.id;
+    this.data.id_enterprise = result.id_enterprise;
   } )
 }
 

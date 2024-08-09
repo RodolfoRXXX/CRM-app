@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { merge, startWith, map, switchMap, catchError, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 
 @Component({
@@ -35,22 +36,13 @@ export class OpenOrderCardComponent {
     return this.employee.id_enterprise;
   }
 
-  private calculateDateLimit(daysAgo: number): string {
-    const date = new Date();
-    date.setDate(date.getDate() - daysAgo);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
   private getInfo(range: number): void {
     merge()
       .pipe(
         startWith({}),
         map(() => this.getDataLocal()),
         switchMap(id_enterprise => {
-          const date_limit = this.calculateDateLimit(range);
+          const date_limit = calculateDateLimit(range);
           return this._api.postTypeRequest('profile/get-data-open-order', { id_enterprise, date_limit, seller: this.seller })
             .pipe(catchError(() => observableOf(null)));
         }),

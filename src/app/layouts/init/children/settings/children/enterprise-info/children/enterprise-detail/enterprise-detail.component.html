@@ -81,15 +81,15 @@
     <!-- Caja que contiene información de las operaciones -->
     <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
         <!-- Tabs para ver otras opciones -->
-        <div class="nav-align-tab mb-4">
-        <ul class="nav nav-pills flex-column flex-md-row mb-6 row-gap-2">
-            <li class="nav-item me-3" *ngFor="let item of tabs, let i = index">
-                <button class="nav-link" [ngClass]="item.state" mat-button color="primary" (click)="setTab(i)">
-                    <mat-icon style="position: relative; bottom: 2px;">{{ item.icon }}</mat-icon>
-                    {{ item.name }}
-                </button>
-            </li>
-        </ul>
+        <div class="nav-align-tab mb-3">
+            <ul class="nav nav-pills flex-column flex-md-row mb-6 row-gap-2">
+                <li class="nav-item me-3" *ngFor="let item of tabs, let i = index">
+                    <button class="nav-link" [ngClass]="item.state" mat-button color="primary" (click)="setTab(i)">
+                        <mat-icon style="position: relative; bottom: 2px;">{{ item.icon }}</mat-icon>
+                        {{ item.name }}
+                    </button>
+                </li>
+            </ul>
         </div>
         <!-- Caja de Descripción -->
         <div class="row text-nowrap" *ngIf="tabs[0].state == 'active'">

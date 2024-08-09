@@ -8,36 +8,41 @@
 <div class="container-xxl flex-grow-1 container-p-y row" *ngIf="!load">
     <!-- Caja que contiene imagen, indicadores básicos y detalles -->
     <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
-        <div class="card mb-6">
-            <div class="card-body pt-12">
+        <mat-card class="card mb-6">
+            <mat-card-content>
                 <!-- caja de la imagen -->
-                <div>
-                    <div class="d-flex align-items-center flex-column">
-                        <img [src]="baseURL + user.thumbnail" alt="User image" class="img-fluid rounded mb-4" width="120" height="120">
-                        <div class="text-center mb-6">
-                            <h4 class="mb-0">{{ employee?(employee.name?employee.name:user.name):user.email.split("@")[0] }}</h4>
-                            <span class="fs-09 text-muted cap">{{ employee.name_role || 'Sin Rol asignado' }}</span>
-                        </div>
+                <div class="d-flex align-items-center flex-column">
+                    <img [src]="baseURL + user.thumbnail" alt="User image" class="img-fluid rounded mb-3" width="120" height="120">
+                    <div class="text-center mb-3">
+                        <h4 class="mb-0 cap">{{ (employee || user)?(employee.name || user.name || user.email.split("@")[0]):'Sin información' }}</h4>
+                        <span class="fs-09 text-muted cap">{{ employee.name_role || 'Sin Rol asignado' }}</span>
                     </div>
                 </div>
-                <!-- caja con indicadores básicos y el nombre -->
-                <div class="d-flex justify-content-center flex-wrap mb-6 gap-0 gap-md-3 gap-lg-4 mt-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="avatar">
-                            <span class="avatar-initial rounded text-heading primary-badge">
-                                <span class="material-symbols-outlined">outlined_flag</span>
-                            </span>
-                        </div>
-                        <div>
-                            <h5 class="mb-0">{{ employee.created || '' | date:'dd/MM/yyyy' }}</h5>
-                            <span class="text-muted fs-08">Fecha inicio actividades</span>
+                <!-- No existe empleado -->
+                <div *ngIf="employee">
+                    <!-- caja con indicadores básicos y el nombre -->
+                    <div class="d-flex justify-content-center flex-wrap mb-6 gap-0 gap-md-3 gap-lg-4 mt-0">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar">
+                                <span class="avatar-initial rounded text-heading primary-badge">
+                                    <span class="material-symbols-outlined">outlined_flag</span>
+                                </span>
+                            </div>
+                            <div>
+                                <h5 class="mb-0">{{ employee.created || 'Sin información' | date:'dd/MM/yyyy' }}</h5>
+                                <span class="text-muted fs-08">Fecha inicio actividades</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- caja con información básica -->
-                <div>
+                    <!-- caja con información básica -->
                     <h5 class="border-bottom text-capitalize pb-3 mt-4 mb-3">detalles</h5>
                     <ul class="list-unstyled mb-4">
+                        <li class="mb-2">
+                            <span class="h6 me-1">Estado: </span>
+                            <span class="badge rounded-pill cap fs-08" [ngClass]="employee.status == 1?'bg-label-success':'bg-label-danger'">
+                                {{ (employee.status == 1)?'Activo':'inactivo' }}
+                            </span>
+                        </li>
                         <li class="mb-2">
                             <span class="h6 me-1">Móvil: </span>
                             <span>{{ employee.mobile || 'Sin información' }}</span>
@@ -67,56 +72,76 @@
                             <span>{{ employee.country || 'Sin información' }}</span>
                         </li>
                     </ul>
+                    <!-- Caja con botón para editar información -->
+                    <div class="d-flex justify-content-center">
+                        <button mat-flat-button color="primary" (click)="editUser()">
+                            <mat-icon style="position: relative; bottom: 0">edit</mat-icon>
+                            Editar
+                        </button>
+                        <button mat-stroked-button 
+                                [color]="(employee.status == 1)?'warn':'primary'" 
+                                class="ms-2" 
+                                *ngIf="employee.name_role == 'administrador'"
+                                (click)="activateEmployee(employee.id, employee.status)">
+                            <mat-icon style="position: relative; bottom: 0;">power_settings_new</mat-icon>
+                            <span *ngIf="(employee.status == 0)">Activar</span>
+                            <span *ngIf="(employee.status == 1)">Suspender</span>
+                        </button>
+                    </div>
                 </div>
-                <!-- Caja con botón para editar información -->
-                 <div class="d-flex justify-content-center">
-                    <button mat-flat-button color="primary" class="w-100" (click)="editUser()">
-                        <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
-                        Editar detalles
+                <!-- Existe empleado  -->
+                <div *ngIf="!employee">
+                    <button mat-flat-button color="primary" class="w-100" (click)="createEmployee(user.id, user.id_enterprise)">
+                        <mat-icon style="position: relative; bottom: 0">power_settings_new</mat-icon>
+                        Crear empleado
                     </button>
-                 </div>
-            </div>
-        </div>
+                </div>
+            </mat-card-content>
+            <mat-card-footer class="login-footer mt-3">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+            </mat-card-footer>
+        </mat-card>
     </div>
     <!-- Caja que contiene información de las operaciones -->
     <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
         <!-- Tabs para ver otras opciones -->
-         <div class="nav-align-tab mb-4">
+        <div class="nav-align-tab mb-3">
             <ul class="nav nav-pills flex-column flex-md-row mb-6 row-gap-2">
-                <li class="nav-item me-3">
-                    <button mat-flat-button color="primary">
-                        <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
-                        Descripción
+                <li class="nav-item me-3" *ngFor="let item of tabs, let i = index">
+                    <button class="nav-link" [ngClass]="item.state" mat-button (click)="setTab(i)">
+                        <mat-icon style="position: relative; bottom: 0;">{{ item.icon }}</mat-icon>
+                        {{ item.name }}
                     </button>
                 </li>
             </ul>
-         </div>
-         <!-- Conjunto de cards con información -->
-          <div class="row text-nowrap" *ngIf="!load">
-            <!-- cards individuales -->
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body pb-0">
+        </div>
+        <!-- Conjunto de cards con información -->
+        <div class="row g-6 text-nowrap" *ngIf="!load && tabs[0].state == 'active'">
+            <!-- Ingresos totales($) -->
+            <div class="col-md-6">
+                <mat-card class="card">
+                    <mat-card-content>
                         <div class="card-icon mb-3">
                             <div class="avatar">
                                 <span class="avatar-initial rounded text-heading primary-badge">
-                                    <span class="material-symbols-outlined">inventory_2</span>
+                                    <span class="material-symbols-outlined">paid</span>
                                 </span>
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5 class="card-title mb-3">Valor del stock</h5>
+                            <h5 class="card-title mb-3">Ventas realizadas</h5>
                             <div class="d-flex align-items-baseline gap-1">
-                                <h5 class="text-primary mb-1 ms-1">${{ card_values.total_stock || 0 }}</h5>
+                                <h5 class="text-primary mb-1 ms-1">${{ card_values.total_sale || 0 }}</h5>
                             </div>
-                            <p class="mb-0 text-truncate">Valor total de todo el stock</p>
+                            <p class="mb-0 text-truncate">Ingreso por ventas en el último mes</p>
                         </div>
-                    </div>
-                </div>
+                    </mat-card-content>
+                </mat-card>
             </div>
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body pb-0">
+            <!-- Ingresos pendientes($) -->
+            <div class="col-md-6">
+                <mat-card class="card">
+                    <mat-card-content>
                         <div class="card-icon mb-3">
                             <div class="avatar">
                                 <span class="avatar-initial rounded text-heading primary-badge">
@@ -127,53 +152,55 @@
                         <div class="card-info">
                             <h5 class="card-title mb-3">Ingresos pendientes</h5>
                             <div class="d-flex align-items-baseline gap-1">
-                                <h5 class="text-primary mb-1 ms-1">${{ card_values.notpaid_orders || 0 }}</h5>
+                                <h5 class="text-primary mb-1 ms-1">${{ card_values.pending || 0 }}</h5>
                             </div>
-                            <p class="mb-0 text-truncate">Valor total de las ventas no facturadas</p>
+                            <p class="mb-0 text-truncate">Ingresos pendientes de no entregados</p>
                         </div>
-                    </div>
-                </div>
+                    </mat-card-content>
+                </mat-card>
             </div>
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body pb-0">
+            <!-- Pedidos abiertos(cant) -->
+            <div class="col-md-6">
+                <mat-card class="card">
+                    <mat-card-content>
                         <div class="card-icon mb-3">
                             <div class="avatar">
                                 <span class="avatar-initial rounded text-heading primary-badge">
-                                    <span class="material-symbols-outlined">paid</span>
+                                    <span class="material-symbols-outlined">orders</span>
                                 </span>
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5 class="card-title mb-3">Total de ventas</h5>
+                            <h5 class="card-title mb-3">Pedidos abiertos</h5>
                             <div class="d-flex align-items-baseline gap-1">
-                                <h5 class="text-primary mb-1 ms-1">${{ card_values.total_sales || 0 }}</h5>
+                                <h5 class="text-primary mb-1 ms-1">{{ card_values.open_orders || 0 }}</h5>
                             </div>
-                            <p class="mb-0 text-truncate">Ingreso por ventas en el último mes</p>
+                            <p class="mb-0 text-truncate">Pedidos pendientes de entrega</p>
                         </div>
-                    </div>
-                </div>
+                    </mat-card-content>
+                </mat-card>
             </div>
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body pb-0">
+            <!-- Eficacia(% relación entre cantidad de pedidos cerrados y pedidos realizados) -->
+            <div class="col-md-6">
+                <mat-card class="card">
+                    <mat-card-content>
                         <div class="card-icon mb-3">
                             <div class="avatar">
                                 <span class="avatar-initial rounded text-heading primary-badge">
-                                    <span class="material-symbols-outlined">group</span>
+                                    <span class="material-symbols-outlined">bolt</span>
                                 </span>
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5 class="card-title mb-3">Nuestro equipo</h5>
+                            <h5 class="card-title mb-3">Eficacia de venta</h5>
                             <div class="d-flex align-items-baseline gap-1">
-                                <h5 class="text-primary mb-1 ms-1">{{ card_values.total_employees || 0 }}</h5>
+                                <h5 class="text-primary mb-1 ms-1">{{ card_values.relative || 0 }}%</h5>
                             </div>
-                            <p class="mb-0 text-truncate">Total de colaboradores</p>
+                            <p class="mb-0 text-truncate">Capacidad para cerrar ventas</p>
                         </div>
-                    </div>
-                </div>
+                    </mat-card-content>
+                </mat-card>
             </div>
-          </div>
+        </div>
     </div>
 </div>
