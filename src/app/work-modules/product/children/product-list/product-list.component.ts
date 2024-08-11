@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { catchError, map, merge, startWith, switchMap, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Category } from 'src/app/shared/interfaces/category.interface';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
@@ -101,26 +102,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   getDataCard(id_enterprise: number) {
-    let fecha = new Date();
-    fecha.setDate(fecha.getDate() - 60);
-    // Obtener el año, mes y día de la fecha actual.
-    let año = fecha.getFullYear();
-    let mes = fecha.getMonth() + 1; // Los meses van de 0 a 11, así que sumamos 1.
-    let dia = fecha.getDate();
-    let _dia;
-    let _mes;
-    if(dia < 10) {
-      _dia = '0' + dia
-    } else {
-      _dia = dia
-    }
-    if(mes < 10) {
-      _mes = '0' + mes
-    } else {
-      _mes = mes
-    }
-    // Formatear la fecha como texto según tus preferencias.
-    let date_limit = año + '-' + _mes + '-' + _dia;
+    let date_limit = calculateDateLimit(60);
     this._api.postTypeRequest('profile/get-products-data', { id_enterprise: id_enterprise, date_limit: date_limit }).subscribe( (value:any) => {
       (value.data[0] && value.data[0].data != null)?this.card_values.products_with_stock = value.data[0].data:this.card_values.products_with_stock = 0;
       (value.data[1] && value.data[1].data != null)?this.card_values.value_stock = value.data[1].data:this.card_values.value_stock = 0;

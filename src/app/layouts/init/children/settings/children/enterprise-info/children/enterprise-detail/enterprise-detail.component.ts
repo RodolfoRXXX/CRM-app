@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
 import { environment } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-enterprise-detail',
-  templateUrl: './enterprise-detail.component.html',
-  styleUrls: ['./enterprise-detail.component.scss']
+  templateUrl: './enterprise-detail.component.html'
 })
 export class EnterpriseDetailComponent implements OnInit {
 
   enterprise!: Enterprise;
   load: boolean = true;
-  card_values: any = { total_employees: null, total_stock: null, notpaid_orders: null, total_sales: null };
+  date_limit!: string;
+  card_values: any = { total_employees: null, total_stock: null, pending: null, total_sale: null };
   tabs : any = [
-    {name: 'Descripción', icon: 'edit', state: 'active'},
-    {name: 'Edición de campos', icon: 'build', state: ''}
+    {name: 'Descripción', icon: 'edit', state: 'active'}
   ]
   baseURL = environment.SERVER;
 
@@ -33,6 +34,8 @@ export class EnterpriseDetailComponent implements OnInit {
   ngOnInit(): void {
     this._conector.setUpdateTitle('Detalles de mi empresa');
     this.fetchEnterprise();
+    this.date_limit = calculateDateLimit(30);
+    this.getDataCard();
   }
 
   fetchEnterprise(): void {
@@ -63,16 +66,12 @@ export class EnterpriseDetailComponent implements OnInit {
     });
   }
 
-  //Esta función busca: PENDIENTE!!!
   //total de empleados(un), valor del stock($), total de órdenes($), pagos de pedidos pendientes($), total de venta en el último mes($)
-  getDataCard(id_enterprise: number): void {
+  getDataCar(id_enterprise: number): void {
     this._api.postTypeRequest('profile/get-enterprise-data', { id_enterprise }).subscribe(
       (value: any) => {
         this.card_values = {
-          total_employees: value.data[0].data || 0,
-          total_stock: value.data[1].data || 0,
-          notpaid_orders: value.data[2].data || 0,
-          total_sales: value.data[3].data || 0,
+          total_employees: value.data[0].data || 0
         };
       },
       error => {
@@ -80,6 +79,26 @@ export class EnterpriseDetailComponent implements OnInit {
       }
     );
   }
+
+  getDataCard(): void {
+    if (this.date_limit) {
+      forkJoin({
+        total_sale: this._api.postTypeRequest('profile/get-user-total-sale', { id_enterprise: this.enterprise.id, date_limit: this.date_limit, seller: null }),
+        pending: this._api.postTypeRequest('profile/get-user-pending', { id_enterprise: this.enterprise.id, date_limit: this.date_limit, seller: null }),
+        total_stock: this._api.postTypeRequest('profile/get-total-stock', { id_enterprise: this.enterprise.id }),
+        total_employees: this._api.postTypeRequest('profile/get-count-users', { id: this.enterprise.id })
+      }).subscribe({
+        next: (results: any) => {
+          this.card_values.total_sale = results.total_sale.data[0]?.response;
+          this.card_values.pending = results.pending.data[0]?.response;
+          this.card_values.total_stock = results.total_stock.data[0]?.response;
+          this.card_values.total_employees = results.total_employees.data[0]?.total;
+        }
+      });
+    }
+  }
+
+
 
   editEnterprise(): void {
     this._router.navigate(['init/settings/enterprise-info/enterprise-edit']);

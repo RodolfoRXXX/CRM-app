@@ -39,7 +39,8 @@ export class ProfileViewComponent implements OnInit, OnChanges {
   loading: boolean = false;
   card_values: any = { total_sale: null, pending: null, open_orders: null, relative: null };
   tabs : any = [
-    {name: 'Descripción', icon: 'edit', state: 'active'}
+    {name: 'Descripción', icon: 'edit', state: 'active'},
+    {name: 'Configuración', icon: 'settings', state: ''}
   ]
   baseURL = environment.SERVER;
 
@@ -98,7 +99,7 @@ export class ProfileViewComponent implements OnInit, OnChanges {
       }).subscribe({
         next: (results: any) => {
           this.card_values.total_sale = results.total_sale.data[0]?.response;
-          this.card_values.pending = results.pending[0]?.response;
+          this.card_values.pending = results.pending.data[0]?.response;
           this.card_values.open_orders = results.open_orders.data[0]?.response;
           this.card_values.relative = (results.relative.data[0]?.open/results.relative.data[0]?.total)*100;
         }
@@ -176,11 +177,9 @@ export class ProfileViewComponent implements OnInit, OnChanges {
 
   //Crea un nuevo empleado
   createEmployee() {
-    console.log(this.dataForm.value)
     if(this.dataForm.valid) {
       this._api.postTypeRequest('profile/create-employee', this.dataForm.value).subscribe({
         next: (res: any) => {
-          console.log(res)
           this.loading =  false;
           if(res.status == 1){
             //Accedió a la base de datos y no hubo problemas
@@ -193,6 +192,38 @@ export class ProfileViewComponent implements OnInit, OnChanges {
             } else{
               //Ya existe dicho empleado
               this._notify.showWarn('El empleado que intentas crear ya existe.')
+            }
+          } else{
+            //Problemas de conexión con la base de datos(res.status == 0)
+            this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+          }
+        },
+        error: (error: any) => {
+          //Error de conexión, no pudo consultar con la base de datos
+          this.loading =  false;
+          this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');
+        }
+      })
+    }
+  }
+
+  //Cambiar de rol
+  changeRole() {
+    if(this.dataForm.valid) {
+      this._api.postTypeRequest('profile/update-user-role', this.dataForm.value).subscribe({
+        next: (res: any) => {
+          this.loading =  false;
+          if(res.status == 1){
+            //Accedió a la base de datos y no hubo problemas
+            if(res.data.affectedRows == 1){
+              //Creó un nuevo empleado
+              this._notify.showSuccess('Rol modificado con éxito!');
+              setTimeout(() => {
+                this.rechargeComponent();
+              }, 2000);
+            } else{
+              //Ya existe dicho empleado
+              this._notify.showWarn('No se realizaron cambios.')
             }
           } else{
             //Problemas de conexión con la base de datos(res.status == 0)

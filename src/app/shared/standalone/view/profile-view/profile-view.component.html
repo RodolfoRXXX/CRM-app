@@ -12,7 +12,7 @@
             <!-- caja de la imagen -->
             <div class="d-flex align-items-center flex-column mb-1">
                 <img [src]="baseURL + user.thumbnail" alt="User image" class="img-fluid rounded mb-3" width="120" height="120">
-                <h4 class="cap mb-3">{{ user?(user.name || user.email.split("@")[0]):'Sin información'}}</h4>
+                <h4 class="cap mb-3">{{ user?(user.name.length?user.name:user.email.split("@")[0]):'Sin información'}}</h4>
                 <mat-form-field appearance="outline">
                     <mat-label>Elegir un rol</mat-label>
                     <mat-select formControlName="role" 
@@ -47,7 +47,7 @@
                     <div class="d-flex align-items-center flex-column">
                         <img [src]="baseURL + user.thumbnail" alt="User image" class="img-fluid rounded mb-3" width="120" height="120">
                         <div class="text-center mb-3">
-                            <h4 class="mb-0 cap">{{ (employee)?(employee.name):(user?(user.name || user.email.split("@")[0]):'Sin información')}}</h4>
+                            <h4 class="mb-0 cap">{{ (employee)?(employee.name.length?employee.name:(user.name || user.email.split("@")[0])):(user.name.length?user.name:user.email.split("@")[0])}}</h4>
                             <span class="fs-09 text-muted cap">{{ employee?employee.name_role:'Sin Rol asignado' }}</span>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                         </li>
                         <li class="mb-2">
                             <span class="h6 me-1">Email: </span>
-                            <span>{{ employee.email || 'Sin información' }}</span>
+                            <span>{{ employee.email || user.email || 'Sin información' }}</span>
                         </li>
                         <li class="mb-2">
                             <span class="h6 me-1">Dirección: </span>
@@ -129,102 +129,157 @@
         <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
             <!-- Tabs para ver otras opciones -->
             <div class="nav-align-tab mb-3">
-                <ul class="nav nav-pills flex-column flex-md-row mb-6 row-gap-2">
+                <ul class="nav nav-pills flex-md-row mb-6 row-gap-2">
                     <li class="nav-item me-3" *ngFor="let item of tabs, let i = index">
                         <button class="nav-link" [ngClass]="item.state" mat-button (click)="setTab(i)">
                             <mat-icon style="position: relative; bottom: 0;">{{ item.icon }}</mat-icon>
-                            {{ item.name }}
+                            <span>{{ item.name }}</span>
                         </button>
                     </li>
                 </ul>
             </div>
             <!-- Conjunto de cards con información -->
-            <div class="row g-6 text-nowrap" *ngIf="tabs[0].state == 'active'">
-                <!-- Ingresos totales($) -->
-                <div class="col-md-6">
-                    <mat-card class="card">
-                        <mat-card-content>
-                            <div class="card-icon mb-3">
-                                <div class="avatar">
-                                    <span class="avatar-initial rounded text-heading primary-badge">
-                                        <span class="material-symbols-outlined">paid</span>
-                                    </span>
+                <!-- Cards desempeño empleado -->
+                <div class="row g-6 text-nowrap" *ngIf="tabs[0].state == 'active'">
+                    <!-- Ingresos totales($) -->
+                    <div class="col-md-6">
+                        <mat-card class="card">
+                            <mat-card-content>
+                                <div class="card-icon mb-3">
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded text-heading primary-badge">
+                                            <span class="material-symbols-outlined">paid</span>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-info">
-                                <h5 class="card-title mb-3">Ventas realizadas</h5>
-                                <div class="d-flex align-items-baseline gap-1">
-                                    <h5 class="text-primary mb-1 ms-1">${{ card_values.total_sale || 0 }}</h5>
+                                <div class="card-info">
+                                    <h5 class="card-title mb-3">Ventas realizadas</h5>
+                                    <div class="d-flex align-items-baseline gap-1">
+                                        <h5 class="text-primary mb-1 ms-1">${{ card_values.total_sale || 0 }}</h5>
+                                    </div>
+                                    <p class="mb-0 text-truncate">Ingreso por ventas en el último mes</p>
                                 </div>
-                                <p class="mb-0 text-truncate">Ingreso por ventas en el último mes</p>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <!-- Ingresos pendientes($) -->
+                    <div class="col-md-6">
+                        <mat-card class="card">
+                            <mat-card-content>
+                                <div class="card-icon mb-3">
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded text-heading primary-badge">
+                                            <span class="material-symbols-outlined">move_to_inbox</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <h5 class="card-title mb-3">Ingresos pendientes</h5>
+                                    <div class="d-flex align-items-baseline gap-1">
+                                        <h5 class="text-primary mb-1 ms-1">${{ card_values.pending || 0 }}</h5>
+                                    </div>
+                                    <p class="mb-0 text-truncate">Ingresos pendientes de no entregados</p>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <!-- Pedidos abiertos(cant) -->
+                    <div class="col-md-6">
+                        <mat-card class="card">
+                            <mat-card-content>
+                                <div class="card-icon mb-3">
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded text-heading primary-badge">
+                                            <span class="material-symbols-outlined">orders</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <h5 class="card-title mb-3">Pedidos abiertos</h5>
+                                    <div class="d-flex align-items-baseline gap-1">
+                                        <h5 class="text-primary mb-1 ms-1">{{ card_values.open_orders || 0 }}</h5>
+                                    </div>
+                                    <p class="mb-0 text-truncate">Pedidos pendientes de entrega</p>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <!-- Eficacia(% relación entre cantidad de pedidos cerrados y pedidos realizados) -->
+                    <div class="col-md-6">
+                        <mat-card class="card">
+                            <mat-card-content>
+                                <div class="card-icon mb-3">
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded text-heading primary-badge">
+                                            <span class="material-symbols-outlined">bolt</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <h5 class="card-title mb-3">Eficacia de venta</h5>
+                                    <div class="d-flex align-items-baseline gap-1">
+                                        <h5 class="text-primary mb-1 ms-1">{{ card_values.relative || 0 }}%</h5>
+                                    </div>
+                                    <p class="mb-0 text-truncate">Capacidad para cerrar ventas</p>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
                 </div>
-                <!-- Ingresos pendientes($) -->
-                <div class="col-md-6">
-                    <mat-card class="card">
-                        <mat-card-content>
-                            <div class="card-icon mb-3">
-                                <div class="avatar">
-                                    <span class="avatar-initial rounded text-heading primary-badge">
-                                        <span class="material-symbols-outlined">move_to_inbox</span>
-                                    </span>
+                <!-- Caja de configuraciones empleado -->
+                <div class="row g-6 text-nowrap" *ngIf="tabs[1].state == 'active'">
+                    <!-- Cambio de rol -->
+                    <div class="col-md-12">
+                        <mat-card class="card">
+                            <mat-card-content class="pb-2">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <div class="card-icon mb-3">
+                                            <div class="avatar">
+                                                <span class="avatar-initial rounded text-heading primary-badge">
+                                                    <span class="material-symbols-outlined">account_box</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-3">
+                                                <span class="text-muted fs-08 me-1">Rol actual: </span>
+                                                <mat-chip>
+                                                    <span class="cap" style="position: relative; bottom: 0;">{{ employee.name_role }}</span>
+                                                </mat-chip>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <!-- Editar rol -->
+                                    <form [formGroup]="dataForm" (ngSubmit)="changeRole()">
+                                        <h5 class="mb-2 mt-2">Cambiar Rol</h5>
+                                        <div class="d-flex">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Elegir un rol</mat-label>
+                                                <mat-select formControlName="role">
+                                                        <ng-container *ngFor="let item of roles">
+                                                            <mat-option [value]="item.id" [disabled]="employee.role == item.id"><mat-icon>{{ item.icon_role }}</mat-icon><p class="mb-0 cap">{{ item.name_role }}</p></mat-option>
+                                                        </ng-container>
+                                                </mat-select>
+                                                <mat-error *ngIf="this.dataForm.controls['role']!.errors" class="fs-08">{{getErrorRole()}}</mat-error>
+                                            </mat-form-field>
+                                            <button mat-fab
+                                                    class="ms-2" 
+                                                    color="primary"
+                                                    [disabled]="(user.state == '0') || this.dataForm.invalid"
+                                                    type="submit">
+                                                <mat-icon style="position: relative; bottom: 0">save</mat-icon>
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </div>
-                            <div class="card-info">
-                                <h5 class="card-title mb-3">Ingresos pendientes</h5>
-                                <div class="d-flex align-items-baseline gap-1">
-                                    <h5 class="text-primary mb-1 ms-1">${{ card_values.pending || 0 }}</h5>
-                                </div>
-                                <p class="mb-0 text-truncate">Ingresos pendientes de no entregados</p>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
+                                
+
+
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
                 </div>
-                <!-- Pedidos abiertos(cant) -->
-                <div class="col-md-6">
-                    <mat-card class="card">
-                        <mat-card-content>
-                            <div class="card-icon mb-3">
-                                <div class="avatar">
-                                    <span class="avatar-initial rounded text-heading primary-badge">
-                                        <span class="material-symbols-outlined">orders</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="card-info">
-                                <h5 class="card-title mb-3">Pedidos abiertos</h5>
-                                <div class="d-flex align-items-baseline gap-1">
-                                    <h5 class="text-primary mb-1 ms-1">{{ card_values.open_orders || 0 }}</h5>
-                                </div>
-                                <p class="mb-0 text-truncate">Pedidos pendientes de entrega</p>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
-                </div>
-                <!-- Eficacia(% relación entre cantidad de pedidos cerrados y pedidos realizados) -->
-                <div class="col-md-6">
-                    <mat-card class="card">
-                        <mat-card-content>
-                            <div class="card-icon mb-3">
-                                <div class="avatar">
-                                    <span class="avatar-initial rounded text-heading primary-badge">
-                                        <span class="material-symbols-outlined">bolt</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="card-info">
-                                <h5 class="card-title mb-3">Eficacia de venta</h5>
-                                <div class="d-flex align-items-baseline gap-1">
-                                    <h5 class="text-primary mb-1 ms-1">{{ card_values.relative || 0 }}%</h5>
-                                </div>
-                                <p class="mb-0 text-truncate">Capacidad para cerrar ventas</p>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
-                </div>
-            </div>
         </div>
     </div>
 </div>
