@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from 'src/app/services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Product } from 'src/app/shared/interfaces/product.interface';
-import { environment } from 'src/enviroments/enviroment';
+import { environment, permissions } from 'src/enviroments/enviroment';
 import { Router } from '@angular/router';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -28,8 +28,8 @@ export class DialogProductDetailComponent implements OnInit {
   baseURL = environment.SERVER;
   load: boolean = true;
   permissions: string[] = [];
-  sens_info_admin = '5';
-  add_product_admin = '6';
+  sens_info_admin = permissions.EDIT_PROVIDER_CONTROL;
+  add_product_admin = permissions.EDIT_PRODUCT_CONTROL;
 
   constructor(
     public dialogRef: MatDialogRef<DialogProductDetailComponent>,

@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Product } from 'src/app/shared/interfaces/product.interface';
+import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-product-price',
@@ -17,7 +18,7 @@ export class ProductPriceComponent {
   @Input() permissions: string[] = [];
 
   dataForm!: FormGroup;
-  sens_info_admin = '5';
+  sens_info_admin = permissions.EDIT_PROVIDER_CONTROL;
   loading: boolean = false;
 
   constructor(

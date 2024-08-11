@@ -10,7 +10,7 @@ import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Category } from 'src/app/shared/interfaces/category.interface';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
-import { environment } from 'src/enviroments/enviroment';
+import { environment, permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-product-list',
@@ -34,7 +34,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   chips: any = {category: '', stock: '', state: '', search: ''};
   card_values: any = {products_with_stock: null, value_stock: null, products_without_stock: null, immo_stock: null};
   permissions: string[] = [];
-  add_product_admin = '6';
+  add_product_admin = permissions.EDIT_PRODUCT_CONTROL;
 
   uriImg = environment.SERVER;
 

@@ -7,7 +7,7 @@ import { merge, startWith, map, switchMap, catchError, of as observableOf } from
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
-import { environment } from 'src/enviroments/enviroment';
+import { environment, permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-order-list',
@@ -28,6 +28,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   //d1: pendientes, d2: entregados, d3: devoluciones, d4: cancelaciones
   card_values: any = { d1: null, d2: null, d4: null, d5: null };
   uriImg = environment.SERVER;
+  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -58,7 +59,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   private getDataLocal(): number {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
-      if(item.name_role !== 'administrador') {
+      if(item.list_of_permissions.includes(this.edit_enterprise_control)) {
         this.seller = item.id;
       } else {
         this.getSellers(item.id_enterprise)

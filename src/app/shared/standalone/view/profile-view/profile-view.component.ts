@@ -7,7 +7,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { Router } from '@angular/router';
-import { environment } from 'src/enviroments/enviroment';
+import { environment, permissions } from 'src/enviroments/enviroment';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -33,6 +33,8 @@ export class ProfileViewComponent implements OnInit, OnChanges {
   roles!: any;
   user!: User;
   watcher!: Employee;
+  permissions: string[] = [];
+  edit_employee_control = permissions.EDIT_EMPLOYEE_CONTROL;
   date_limit!: string;
   seller!: number;
   load: boolean = true;
@@ -53,9 +55,15 @@ export class ProfileViewComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.createForm();
-    this.getRoles();
     this.date_limit = calculateDateLimit(30);
     this.getDataLocal();
+    this.getRoles();
+    this._conector.getEmployee().subscribe( value => {
+      //la lista de permisos se almacena como un string y luego se lo separa en un array
+      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
+      //que es el valor vacío, por eso la desigualdad es mayor a 1
+      this.permissions = value.list_of_permissions.split(',')
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -247,5 +255,3 @@ export class ProfileViewComponent implements OnInit, OnChanges {
   }
   
 }
-
-

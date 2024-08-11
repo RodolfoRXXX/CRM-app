@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Product, empty_product } from 'src/app/shared/interfaces/product.interface';
+import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-add-product',
@@ -17,7 +18,7 @@ export class AddProductComponent implements OnInit {
   dataForm!: FormGroup;
   product: Product = empty_product;
   permissions: string[] = [];
-  sens_info_admin = '5';
+  sens_info_admin = permissions.EDIT_PROVIDER_CONTROL;
   activeState: boolean = false;
   loading: boolean = false;
 

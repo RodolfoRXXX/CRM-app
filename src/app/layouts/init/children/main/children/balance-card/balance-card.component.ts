@@ -6,6 +6,7 @@ import { formatDate, getMonthName, getWeekInfo } from 'src/app/shared/functions/
 import { analyzeData } from 'src/app/shared/functions/operation.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DataItem } from 'src/app/shared/interfaces/period.interface';
+import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-balance-card',
@@ -50,7 +51,7 @@ export class BalanceCardComponent implements OnInit {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
       id_enterprise = item.id_enterprise;
-      if (item.name_role !== 'administrador') {
+      if (item.list_of_permissions.includes(permissions.EDIT_ENTERPRISE_CONTROL)) {
         this.seller = item.id;
       } else {
         this.seller = null;

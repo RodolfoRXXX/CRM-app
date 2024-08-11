@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-index',
@@ -9,6 +10,7 @@ export class IndexComponent {
 
   permissions: string[] = [];
   is_employee = false;
+  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
 
   constructor(
     private _conector: ConectorsService

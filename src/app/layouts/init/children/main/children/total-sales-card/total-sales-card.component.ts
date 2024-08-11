@@ -3,6 +3,7 @@ import { merge, startWith, map, switchMap, catchError, of as observableOf } from
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-total-sales-card',
@@ -26,7 +27,7 @@ export class TotalSalesCardComponent {
   private getDataLocal(): number {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
-      if(item.name_role !== 'administrador') {
+      if(item.list_of_permissions.includes(permissions.EDIT_ENTERPRISE_CONTROL)) {
         this.seller = item.id;
       } else {
         this.seller = null;

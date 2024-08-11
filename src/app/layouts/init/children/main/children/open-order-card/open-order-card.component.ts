@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-open-order-card',
@@ -27,7 +28,7 @@ export class OpenOrderCardComponent {
   private getDataLocal(): number {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
-      if(item.name_role !== 'administrador') {
+      if(item.list_of_permissions.includes(permissions.EDIT_ENTERPRISE_CONTROL)) {
         this.seller = item.id;
       } else {
         this.seller = null;

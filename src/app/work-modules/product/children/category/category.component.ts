@@ -5,6 +5,7 @@ import { merge, startWith, map, switchMap, catchError, of as observableOf } from
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-category',
@@ -20,7 +21,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['id', 'category', 'stock', 'price', 'edit'];
   dataSource = new MatTableDataSource();
   empty_categories: boolean = false;
-  add_product_admin = '6';
+  add_product_admin = permissions.EDIT_PRODUCT_CONTROL;
 
   constructor(
     private _api: ApiService,
