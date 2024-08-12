@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { merge, startWith, map, switchMap, catchError, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { environment, permissions } from 'src/enviroments/enviroment';
 
@@ -32,7 +33,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  seller!: number;
+  seller!: number | null;
 
   constructor(
     private _api: ApiService,
@@ -59,9 +60,10 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   private getDataLocal(): number {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
-      if(item.list_of_permissions.includes(this.edit_enterprise_control)) {
+      if(!item.list_of_permissions.includes(this.edit_enterprise_control)) {
         this.seller = item.id;
       } else {
+        this.seller = null;
         this.getSellers(item.id_enterprise)
       }
     });
@@ -84,10 +86,9 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   }
 
   private getDataCard(id_enterprise: number): void {
-    const date_limit = this.calculateDateLimit(365);
+    const date_limit = calculateDateLimit(365);
     this._api.postTypeRequest('profile/get-orders-data', { id_enterprise, date_limit, seller: this.seller }).subscribe((value: any) => {
-      if(value) {
-        this.loadCards = false;
+      if(value.data) {
         value.data.forEach((item: any) => {
           switch (item.status_value) {
             case '1':
@@ -104,7 +105,15 @@ export class OrderListComponent implements OnInit, AfterViewInit {
               break;
           }
         });
+      } else {
+        this.card_values = {
+          d1 : 0,
+          d2 : 0,
+          d3 : 0,
+          d4 : 0
+        }
       }
+      this.loadCards = false;
     });
   }
 
@@ -116,13 +125,8 @@ export class OrderListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private calculateDateLimit(daysAgo: number): string {
-    const date = new Date();
-    date.setDate(date.getDate() - daysAgo);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  getEmployeeDisplayName(item: any): string {
+    return item.name_employee || item.email.split("@")[0];
   }
 
   applyFilter(): void {

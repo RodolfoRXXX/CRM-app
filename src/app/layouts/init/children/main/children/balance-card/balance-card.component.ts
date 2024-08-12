@@ -51,7 +51,7 @@ export class BalanceCardComponent implements OnInit {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
       id_enterprise = item.id_enterprise;
-      if (item.list_of_permissions.includes(permissions.EDIT_ENTERPRISE_CONTROL)) {
+      if (!item.list_of_permissions.includes(permissions.EDIT_ENTERPRISE_CONTROL)) {
         this.seller = item.id;
       } else {
         this.seller = null;
@@ -87,33 +87,34 @@ export class BalanceCardComponent implements OnInit {
     this.basicData.datasets[0].data = [];
     this.basicData.datasets[0].backgroundColor = [];
     this.basicData.datasets[0].borderColor = [];
-
-    data.forEach((item: any) => {
-      //Arma el eje x
-      switch (this.range) {
-        case 'day':
-          //almacena la fecha del dia
-          this.basicData.labels.push(formatDate(item.period));
-          break;
-        case 'week':
-          //almacena la semana
-          this.basicData.labels.push(getWeekInfo(item.period.split('-W')[1], item.period.split('-W',1)[0]));
-          break;
-        case 'month':
-          //almacena el mes
-          this.basicData.labels.push(getMonthName(item.period));
-          break;
-        default:
-          //almacena la fecha del dia
-          this.basicData.labels.push(formatDate(item.period));
-          break;
-      }
-      
-      //Arma el eje y, un array
-      this.basicData.datasets[0].data.push(item.response);
-      this.basicData.datasets[0].backgroundColor.push('rgba(255, 159, 64, 0.2)');
-      this.basicData.datasets[0].borderColor.push('rgba(255, 159, 64)');
-    });
+    if(data) {
+      data.forEach((item: any) => {
+        //Arma el eje x
+        switch (this.range) {
+          case 'day':
+            //almacena la fecha del dia
+            this.basicData.labels.push(formatDate(item.period));
+            break;
+          case 'week':
+            //almacena la semana
+            this.basicData.labels.push(getWeekInfo(item.period.split('-W')[1], item.period.split('-W',1)[0]));
+            break;
+          case 'month':
+            //almacena el mes
+            this.basicData.labels.push(getMonthName(item.period));
+            break;
+          default:
+            //almacena la fecha del dia
+            this.basicData.labels.push(formatDate(item.period));
+            break;
+        }
+        
+        //Arma el eje y, un array
+        this.basicData.datasets[0].data.push(item.response);
+        this.basicData.datasets[0].backgroundColor.push('rgba(255, 159, 64, 0.2)');
+        this.basicData.datasets[0].borderColor.push('rgba(255, 159, 64)');
+      });
+    }
 
     this.basicData.datasets[0].borderWidth = 2;
   }

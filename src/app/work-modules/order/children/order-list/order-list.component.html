@@ -131,19 +131,19 @@
                         </mat-form-field>
                     </div>
                     <!-- Filtro por vendedor -->
-                     <div class="row" *ngIf="employee.name_role && (employee.list_of_permissions.includes(this.edit_enterprise_control))">
+                    <div class="row" *ngIf="employee.list_of_permissions.includes(edit_enterprise_control)">
                         <mat-form-field class="col-md-6" appearance="outline">
                             <mat-label>Vendedor</mat-label>
                             <mat-select [(ngModel)]="chips.seller" (valueChange)="add($event, 'seller')">
                                 <ng-container *ngFor="let item of sellers">
-                                    <mat-option [value]="item.name_employee" *ngIf="item.verified_state == 1">
+                                    <mat-option [value]="getEmployeeDisplayName(item)" *ngIf="item.verified_state === 1">
                                         <mat-icon>{{ item.icon_role }}</mat-icon>
-                                        <span class="cap">{{ item.name_employee || item.email.split("@")[0] }}</span>
+                                        <span class="cap">{{ getEmployeeDisplayName(item) }}</span>
                                     </mat-option>
                                 </ng-container>
                             </mat-select>
                         </mat-form-field>
-                     </div>
+                    </div>
                 </mat-expansion-panel>
             </mat-accordion>
             <!-- Loader -->
@@ -206,8 +206,8 @@
 
                     <!-- sellers Column -->
                     <ng-container matColumnDef="seller">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1150-hidden" [style.display]="(employee.name_role && (employee.list_of_permissions.includes(this.edit_enterprise_control)))?'none':''"> VENDEDOR </th>
-                        <td mat-cell *matCellDef="let element" class="max-1150-hidden" [style.display]="(employee.name_role && (employee.list_of_permissions.includes(this.edit_enterprise_control)))?'none':''">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1150-hidden" [style.display]="(employee.list_of_permissions.includes(this.edit_enterprise_control))?'':'none'"> VENDEDOR </th>
+                        <td mat-cell *matCellDef="let element" class="max-1150-hidden" [style.display]="(employee.list_of_permissions.includes(this.edit_enterprise_control))?'':'none'">
                             <a mat-flat-button routerLink="#">
                                 <mat-icon>person_outline</mat-icon>
                                 <span class="cap">{{ element.employee_name }}</span>

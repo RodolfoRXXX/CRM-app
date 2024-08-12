@@ -124,6 +124,9 @@
                     height: min-content;
                     padding: 2px 0 8px!important;
                 }
+                .mat-expansion-panel-body {
+                    padding: 0!important;
+                }
                 .accordion-box {
                     display: flex;
                     justify-content: space-between;

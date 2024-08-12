@@ -28,7 +28,7 @@ export class OpenOrderCardComponent {
   private getDataLocal(): number {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
-      if(item.list_of_permissions.includes(permissions.EDIT_ENTERPRISE_CONTROL)) {
+      if(!item.list_of_permissions.includes(permissions.EDIT_ENTERPRISE_CONTROL)) {
         this.seller = item.id;
       } else {
         this.seller = null;
