@@ -1,5 +1,5 @@
 # Proyecto CRM - Bamboo
-Aplicación web que se utiliza como sistema de gestión para un negocio de venta de artículos o servicios.
+Aplicación web que se utiliza como sistema de gestión para un negocio online de venta de artículos.
 
 <h4>Detalles</h4>
   <p>El lenguaje a utilizar es javascript con el framework de Angular 15 y una base de datos en MySQL, la cual es modificada por medio de una API escrita en NodeJS.</p>
@@ -26,9 +26,9 @@ Aplicación web que se utiliza como sistema de gestión para un negocio de venta
 
 
 ## <h3>Requerimientos:</h3>
-  <p>Los requerimientos del cliente fueron los siguientes:</p>
+  <p>Los requerimientos fueron los siguientes:</p>
     <ol>
-      <li>Un sistema de gestión de comercio para la venta de indumentaria mayorista y minorista - <b>Alta</b></li>
+      <li>Un sistema de gestión de comercio para la venta online de productos - <b>Alta</b></li>
       <li>El sistema debe tener una sección para manejar el stock - <b>Alta</b></li>
       <li>El stock se debe actualizar a medida que se vayan vendiendo artículos - <b>Alta</b></li>
       <li>El stock también se debe actualizar a medida que se compran artículos y se debe discriminar desde donde se compran para poder tener indicadores de su procedencia
@@ -51,7 +51,7 @@ Aplicación web que se utiliza como sistema de gestión para un negocio de venta
   <p>Considerando cada uno de los requerimientos del sistema se detalla lo que se espera del software y de qué manera el mismo puede responder a cada uno. 
     Aquí solo se detallan los requerimientos con prioridad ALTA, más adelante se analizarán los demás.</p>
 
-  <h4>1. Un sistema de gestión de comercio para la venta de indumentaria mayorista y minorista (Alta)</h4>
+  <h4>1. Un sistema de gestión de comercio para la venta online de productos (Alta)</h4>
     <p>El software ya tiene una etapa realizada y cuenta con los siguientes elementos:</p>
       <ul>
         <li>Página de inicio de sesión</li>
@@ -61,8 +61,8 @@ Aplicación web que se utiliza como sistema de gestión para un negocio de venta
         <li>Página de configuración de datos del usuario, como ser: datos personales, datos de la empresa, foto, modificación de contraseña, usuario y correo electrónico, 
             manejo de usuarios del sistema y permisos</li>
       </ul>
-      
-  > En base a los requerimientos se modela el software que funcionará en la página principal que ahora se encuentra vacía.
+    <p>Este software se diseña para ser utilizado por pequeñas y medianas empresas que comercialicen productos por internet u otros medios de venta(whatsapp, email, etc).</p>
+    <p>El sistema deberá contar con diversas secciones que permitan gestionar los aspectos principales de un comercio/empresa.</p>
 
   <h4>2. El sistema debe tener una sección para manejar el stock (Alta)</h4>
     <p>Para esto se planea incluir una sección de artículos, desde donde se controlará todos los aspectos de los artículos almacenados.</p>
@@ -113,6 +113,9 @@ Aplicación web que se utiliza como sistema de gestión para un negocio de venta
   <h4>12. El sistema debe contar con diferentes roles para gestionar la empresa, como ser: administrador, vendedor, etc (Alta)</h4>
     <p>Esta es una sección que solo la verá el administrador y podrá modificarla.</p>
     <p>Aquí el administrador podrá crear roles en la empresa y asignar a cada usuario con un rol y también definir permisos para cada rol.</p>
+    <p>El software está pensado para poder ser usado por diferentes empleados de la empresa, los que se separan por roles. La clasificación por roles para los usuarios permiten restringir el acceso a algunos empleados cuyo rango o puesto no justifica el acceso a ciertas áreas o información.</p>
+    <p>La estructura de trabajo se basa en un administrador que tiene acceso total y vé todos los valores de la empresa e información sensible y luego están los otros roles, como ser usuarios/vendedores que tienen acceso parcial al software y que solo ven información relacionada a su cuenta, tanto en indicadores como ventas realizadas.</p>
+    <p>El/los administradores puede crear roles y modificarlos, como también configurar el rol de cada empleado, crear un empleado nuevo como también, activar y desactivar cuentas existentes.</p>
  
 ## <h3>Planificación:</h3>
   <ol>
