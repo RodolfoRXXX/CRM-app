@@ -2,7 +2,9 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { ConectorsService } from '../services/conectors.service';
+import { permissions } from 'src/enviroments/enviroment';
 
+const edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
 
   //Guard para evitar acceso a sector: "editar detalles de la empresa" en settings
   export const is_eddle_settings: CanActivateFn =
@@ -16,7 +18,7 @@ import { ConectorsService } from '../services/conectors.service';
 
     return _conector.getEmployee().pipe(
       map(value => {
-        const permissions = value.list_of_permissions.split(',').includes('1');
+        const permissions = value.list_of_permissions.split(',').includes(edit_enterprise_control);
         if (!permissions) {
           return _router.createUrlTree(['init/settings/index']); // Redirige a la ruta 'index'
         }

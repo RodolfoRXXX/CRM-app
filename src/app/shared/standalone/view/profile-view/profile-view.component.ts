@@ -35,6 +35,7 @@ export class ProfileViewComponent implements OnInit, OnChanges {
   watcher!: Employee;
   permissions: string[] = [];
   edit_employee_control = permissions.EDIT_EMPLOYEE_CONTROL;
+  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
   date_limit!: string;
   seller!: number;
   load: boolean = true;
@@ -100,10 +101,10 @@ export class ProfileViewComponent implements OnInit, OnChanges {
   getDataCard(): void {
     if (this.date_limit) {
       forkJoin({
-        total_sale: this._api.postTypeRequest('profile/get-user-total-sale', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.employee.name_role != 'administrador')?this.data.userId:null }),
-        pending: this._api.postTypeRequest('profile/get-user-pending', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.employee.name_role != 'administrador')?this.data.userId:null }),
-        open_orders: this._api.postTypeRequest('profile/get-user-open-orders', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.employee.name_role != 'administrador')?this.data.userId:null }),
-        relative: this._api.postTypeRequest('profile/get-user-relative', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.employee.name_role != 'administrador')?this.data.userId:null })
+        total_sale: this._api.postTypeRequest('profile/get-user-total-sale', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null }),
+        pending: this._api.postTypeRequest('profile/get-user-pending', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null }),
+        open_orders: this._api.postTypeRequest('profile/get-user-open-orders', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null }),
+        relative: this._api.postTypeRequest('profile/get-user-relative', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null })
       }).subscribe({
         next: (results: any) => {
           this.card_values.total_sale = results.total_sale.data[0]?.response;
