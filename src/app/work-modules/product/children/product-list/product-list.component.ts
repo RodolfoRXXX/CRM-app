@@ -175,7 +175,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   //Función que toma la fila clickeada del table eligiendo esa opción
   onRowClicked(row: any) {
     if(row) {
-      console.log(row)
       this.openDialogDetail(row.id_enterprise, row.name, row.id_option_1, row.id_option_2);
     }
   }

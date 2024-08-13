@@ -19,7 +19,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
 
   employee!: Employee;
   sellers!: any;
-  displayedColumns: string[] = ['id', 'date', 'customer', 'seller', 'status', 'detail'];
+  displayedColumns: string[] = ['id', 'date', 'customer', 'seller', 'status'];
   dataSource = new MatTableDataSource();
   resultsLength!: number;
   loadCards: boolean = true;
@@ -175,8 +175,11 @@ export class OrderListComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  openDetail(id_order: number) {
-    this._router.navigate(['init/main/order/order-detail'], { queryParams: { id_order: id_order } });
+  //Función que toma la fila clickeada del table eligiendo esa opción
+  onRowClicked(row: any) {
+    if(row) {
+      this._router.navigate(['init/main/order/order-detail'], { queryParams: { id_order: row.id } });
+    }
   }
 
   rechargeData(): void {

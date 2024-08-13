@@ -20,7 +20,7 @@ export class StorageListComponent {
 
   employee!: Employee;
   resultsLength!: number;
-  displayedColumns: string[] = ['detail', 'id', 'name', 'phone', 'address', 'city', 'state', 'country', 'status', 'edit'];
+  displayedColumns: string[] = ['id', 'name', 'phone', 'address', 'city', 'state', 'country', 'status', 'edit'];
   dataSource = new MatTableDataSource<any>();
   permissions: string[] = [];
   empty_storage: boolean = false;
@@ -94,6 +94,13 @@ export class StorageListComponent {
 
   rechargeData() {
     this.loadStorages();
+  }
+
+  //Función que toma la fila clickeada del table eligiendo esa opción
+  onRowClicked(row: any) {
+    if(row) {
+      this.openDialogDetail(row.id);
+    }
   }
 
   openDialogDetail(id_storage: number): void {

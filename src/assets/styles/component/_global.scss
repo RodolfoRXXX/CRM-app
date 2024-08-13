@@ -13,6 +13,13 @@ body {
   font-weight: 300;
 }
 
+.font-family-def {
+  font-family: $bodyfont!important;
+}
+.font-size-def {
+  font-size: 1rem;
+}
+
 html {
   position: relative;
   min-height: 100%;

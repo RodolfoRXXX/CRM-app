@@ -20,7 +20,7 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
 
   employee!: Employee;
   resultsLength!: number;
-  displayedColumns: string[] = ['detail', 'provider', 'phone', 'whatsapp', 'email', 'address', 'country', 'edit'];
+  displayedColumns: string[] = ['id', 'provider', 'phone', 'whatsapp', 'email', 'address', 'country', 'edit'];
   dataSource = new MatTableDataSource<any>();
   load = true;
   recharge = false;
@@ -106,8 +106,11 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
     this.loadProviders();
   }
 
-  detailProvider(id_provider: Number) {
-    this._router.navigate(['init/main/provider/provider-detail'], { queryParams: { id_provider: id_provider } });
+  //Función que toma la fila clickeada del table eligiendo esa opción
+  onRowClicked(row: any) {
+    if(row) {
+      this._router.navigate(['init/main/provider/provider-detail'], { queryParams: { id_provider: row.id } });
+    }
   }
 
   editProvider(id_provider: number) {
