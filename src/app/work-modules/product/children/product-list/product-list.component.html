@@ -177,8 +177,12 @@
                     <ng-container matColumnDef="detail">
                         <th mat-header-cell *matHeaderCellDef></th>
                         <td mat-cell *matCellDef="let element">
-                            <button mat-icon-button color="primary" (click)="openDialogDetail(element.id_enterprise, element.name, element.id_option_1, element.id_option_2)">
-                                <mat-icon style="position: relative; bottom: 2px;">add_circle_outline</mat-icon>
+                            <button mat-icon-button 
+                                    matTooltip="Editar" matTooltipPosition="above"
+                                    color="primary" 
+                                    (click)="editProduct(element.id)" 
+                                    [disabled]="!this.permissions.includes(add_product_admin)">
+                                <mat-icon style="position: relative; bottom: 2px;">edit_note</mat-icon>
                             </button>
                         </td>
                     </ng-container>
@@ -265,8 +269,8 @@
                     </ng-container>
                 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
-    
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)" class="bill-row"></tr>
+                    
                     <!-- Row shown when there is no matching data. -->
                     <tr class="mat-row" *matNoDataRow>
                         <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{chips.category || chips.stock || chips.state || chips.search}}"</td>

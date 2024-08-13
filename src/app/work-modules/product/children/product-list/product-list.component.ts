@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { catchError, map, merge, startWith, switchMap, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
@@ -45,7 +46,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     private _api: ApiService,
     private _conector: ConectorsService,
     private _paginator: MatPaginatorIntl,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _router: Router
   ) {
     this.load = true;
     this.recharge = false;
@@ -168,6 +170,18 @@ export class ProductListComponent implements OnInit, AfterViewInit {
         }
       });
       this.dataSource.sort = this.sort;
+  }
+
+  //Función que toma la fila clickeada del table eligiendo esa opción
+  onRowClicked(row: any) {
+    if(row) {
+      console.log(row)
+      this.openDialogDetail(row.id_enterprise, row.name, row.id_option_1, row.id_option_2);
+    }
+  }
+
+  editProduct(id_product: number) {
+    this._router.navigate(['init/main/product/add-product'], { queryParams: { id_product: id_product } });
   }
 
   openDialogDetail(id_enterprise: number, name: string, id_option_1: number, id_option_2: number): void {

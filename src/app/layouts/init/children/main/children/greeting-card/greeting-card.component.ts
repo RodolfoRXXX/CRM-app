@@ -44,16 +44,16 @@ export class GreetingCardComponent implements OnInit {
   private getHour(): string {
     const hours = new Date().getHours();
     if (hours >= 20 || hours < 6) {
-      this.imgType = 'noche'
+      this.imgType = 'night'
       return 'Buenas noches';
     } else if (hours >= 6 && hours < 12) {
-      this.imgType = 'mañana'
+      this.imgType = 'morning'
       return 'Buen día';
     } else if (hours >= 12 && hours < 20) {
-      this.imgType = 'tarde'
+      this.imgType = 'afternoon'
       return 'Buenas tardes';
     } else {
-      this.imgType = 'mañana'
+      this.imgType = 'morning'
       return 'Buen día'
     }
   }
@@ -77,6 +77,7 @@ export class GreetingCardComponent implements OnInit {
       }
       const jsonResponse = await response.json();
       this.img = jsonResponse;
+      console.log(this.img)
       // Trigger download
       await fetch(`${this.img.links.download_location}?client_id=${ACCESS_KEY}`, {
         method: 'GET'
