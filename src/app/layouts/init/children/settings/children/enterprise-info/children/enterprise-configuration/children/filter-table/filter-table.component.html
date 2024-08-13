@@ -1,16 +1,35 @@
 <!-- Set option 2 -->
 
 <!-- Card edit data -->
-<mat-card class="card card-user editOption">
-    <mat-card-header>
-        <mat-card-title>Opción 2 de clasificación de productos</mat-card-title>
-    </mat-card-header>
+<mat-card class="card">
     <mat-card-content>
+        <!-- Título -->
+        <div class="d-flex justify-content-between">
+            <div class="card-icon mb-3">
+                <div class="avatar">
+                    <span class="avatar-initial rounded text-heading primary-badge">
+                        <span class="material-symbols-outlined">filter_alt</span>
+                    </span>
+                </div>
+            </div>
+            <button color="primary" mat-stroked-button>Agregar un valor</button>
+        </div>
         <!-- Caja con el nombre del clasificador -->
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h3 class="mb-0 cap">{{ this.dataForm.get('name')?.value || 'No definido' }}</h3>
             <p><mat-slide-toggle (toggleChange)="toggleEdit()">Editar nombre</mat-slide-toggle></p>
         </div>
+
+        <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> This is the expansion title </mat-panel-title>
+                <mat-panel-description> This is a summary of the content </mat-panel-description>
+              </mat-expansion-panel-header>
+              <p>This is the primary content of the panel.</p>
+            </mat-expansion-panel>
+          </mat-accordion>
+
         <!-- Caja para editar el clasificador -->
         <div *ngIf="edit">
             <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
@@ -31,12 +50,6 @@
         </div>
         <!-- Caja del table de datos -->
         <div class="box-table" *ngIf="this.enterprise.name_option2">
-            <!-- Add new value -->
-            <div class="d-flex justify-content-end w-100 pb-2 b-b">
-                <button mat-flat-button color="primary" (click)="editOption(0, '', 'table_option_2')">
-                    + Agregar Nuevo Valor
-                </button>
-            </div>
             <!-- Table -->
             <table mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length">                
                 <!-- ID Column -->

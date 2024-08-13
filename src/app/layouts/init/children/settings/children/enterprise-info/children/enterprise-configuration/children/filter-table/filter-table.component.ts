@@ -9,11 +9,11 @@ import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
 import { DialogEditClassificationComponent } from 'src/app/shared/standalone/dialog/dialoge-edit-classification/dialog-edit-classification.component';
 
 @Component({
-  selector: 'app-option2',
-  templateUrl: './option2.component.html',
-  styleUrls: ['./option2.component.scss']
+  selector: 'app-filter-table',
+  templateUrl: './filter-table.component.html',
+  styleUrls: ['./filter-table.component.scss']
 })
-export class Option2Component {
+export class FilterTableComponent {
 
   @Input() enterprise!: Enterprise;
 

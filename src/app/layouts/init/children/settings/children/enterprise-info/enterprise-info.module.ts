@@ -10,8 +10,7 @@ import { MaterialModule } from 'src/app/material/material/material.module';
 import { EnterpriseEditInfoComponent } from './children/enterprise-edit/children/enterprise-edit-info/enterprise-edit-info.component';
 import { EnterpriseEditImageComponent } from './children/enterprise-edit/children/enterprise-edit-image/enterprise-edit-image.component';
 import { EnterpriseConfigurationComponent } from './children/enterprise-configuration/enterprise-configuration.component';
-import { Option1Component } from './children/enterprise-configuration/children/option1/option1.component';
-import { Option2Component } from './children/enterprise-configuration/children/option2/option2.component';
+import { FilterTableComponent } from './children/enterprise-configuration/children/filter-table/filter-table.component';
 
 
 @NgModule({
@@ -22,8 +21,7 @@ import { Option2Component } from './children/enterprise-configuration/children/o
     EnterpriseEditInfoComponent,
     EnterpriseEditImageComponent,
     EnterpriseConfigurationComponent,
-    Option1Component,
-    Option2Component
+    FilterTableComponent
   ],
   imports: [
     CommonModule,
