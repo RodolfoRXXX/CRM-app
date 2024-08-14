@@ -9,151 +9,70 @@
     z-index: 10;
 }
 
-.mat-card.dialog-detail {
-    margin: 0;
-    max-width: 768px;
-    .mat-card-content {
-        padding-bottom: 0!important;
-        p {
-            margin-bottom: 0;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            margin-bottom: 0;
-        }
-        .box-detail {
-            display: flex;
-            justify-content: space-between;
-            .box-image {
-                min-width: 288px;
-                height: 100%;
-                img {
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 4px;
-                }
-            }
-            .box-text {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                padding: 0 0 0 25px;
-                min-width: 400px;
-                .category_state {
-                    display: flex;
-                    justify-content: flex-start;
-                }
-                .name_price {
-                    display: flex;
-                    justify-content: space-between;
-                    .name_box {
-                        color: #000;
-                        padding: 0.5rem 2rem 0.5rem 0;
-                    }
-                    .price_box {
-                        display: flex;
-                        align-items: center;
-                    }
-                }
-                .description_box {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    justify-content: flex-start;
-                    padding-bottom: 10px;
-                }
-                .options_stock {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    .options_box {
-                        display: flex;
-                        justify-content:flex-start;
-                        flex-direction: column;
-                        .options_1_box {
-                            display: flex;
-                            justify-content: flex-start;
-                            padding: 5px 0;
-                            span {
-                                border-radius: 4px;
-                                box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-                                cursor: pointer;
-                                margin-right: 5px;
-                            }
-                        }
-                        .options_2_box {
-                            display: flex;
-                            justify-content: flex-start;
-                            padding: 5px 0;
-                            span {
-                                cursor: pointer;
-                                margin-right: 5px;
-                                border-radius: 4px;
-                                padding: 0 3px;
-                            }
-                            .selected {
-                                outline: solid black thin;
-                                color: #000;
-                                font-weight: 700;
-                            }
-                        }
-                    }
-                    .stock_box {
-                        display: flex;
-                        flex-direction: column;
-                        border-radius: 4px;
-                        padding: 3px 5px 8px;
-                        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-                    }
-                }
-            }
-        }
-        mat-accordion {
-            background: none!important;
-            mat-expansion-panel {
-                background: none!important;
-                box-shadow: none;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                mat-expansion-panel-header {
-                    width: 100%;
-                    display: flex;
-                    flex-flow: column;
-                    background: none!important;
-                    height: min-content;
-                    padding: 2px 0 8px!important;
-                }
-                .mat-expansion-panel-body {
-                    padding: 0!important;
-                }
-                .accordion-box {
-                    display: flex;
-                    justify-content: space-between;
-                    width: 100%;
-                    .more_options_admin {
-                        flex: 1;
-                        border: 1px solid red;
-                        border-radius: 4px;
-                        padding: 0 15px;
-                    }
-                    .more_options {
-                        flex: 1;
-                        padding: 0 15px;
-                        .edit-box {
-                            display: flex;
-                            justify-content: flex-end;
-                            padding: 10px 0;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-}
-
 ::ng-deep .mat-expansion-panel-content{
     width: 100%!important;
 }
 
+
+.dialog-detail {
+    margin: 0;
+    max-width: 768px;
+    .card-content {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+  
+      @media (max-width: 768px) {
+        flex-direction: column;
+      }
+    }
+  
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      
+      @media (min-width: 769px) {
+        margin-bottom: 0;
+      }
+    }
+  
+    .product-image {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      border-radius: 8px;
+    }
+  
+    .text-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  
+    .product-name {
+      font-size: 1.4rem;
+      padding: 5px 0;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+  
+    .status-container {
+      margin-bottom: 10px;
+  
+      .status {
+        margin-right: 10px;
+        border-radius: 5px;
+        padding: 2px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  
+    .description {
+      margin: 5px 0;
+      h6 {
+        font-size: 1rem;
+      }
+    }
+}

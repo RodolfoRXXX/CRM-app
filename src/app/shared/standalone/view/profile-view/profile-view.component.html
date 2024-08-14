@@ -218,7 +218,7 @@
                                 <div class="card-info">
                                     <h5 class="card-title mb-3">Eficacia de venta</h5>
                                     <div class="d-flex align-items-baseline gap-1">
-                                        <h5 class="text-primary mb-1 ms-1">{{ card_values.relative || 0 }}%</h5>
+                                        <h5 class="text-primary mb-1 ms-1">{{ (card_values.relative | number:'1.2-2') || 0 }}%</h5>
                                     </div>
                                     <p class="mb-0 text-truncate">Capacidad para cerrar ventas</p>
                                 </div>

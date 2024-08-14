@@ -1,217 +1,71 @@
 <mat-card class="mat-card dialog-detail">
-  <mat-card-content class="mat-card-content">
-    <a mat-icon-button class="close-card" routerLink="#" aria-label="close-button" (click)="closeDialog()">
-        <mat-icon>close</mat-icon>
-    </a>
+    <mat-card-content class="mat-card-content">
+        <a mat-icon-button class="close-card" routerLink="#" aria-label="close-button" (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </a>
+    
         <!-- Loader -->
-        <div class="box-detail" *ngIf="load">
-            <div class="box-image soft-grey-background" style="width: 288px; height: 288px;">
-            </div>
-            <div class="box-text">
-                <!-- caja de categoría y estado -->
-                <div class="category_state">
-                    <!-- caja de estado -->
-                    <div class="me-1">
-                        <div class="soft-grey-background" style="width: 60px; height: 22px; border-radius: 10px;"></div>
-                    </div>
-                    <!-- caja de categoría -->
-                    <div>
-                        <div class="soft-grey-background" style="width: 60px; height: 22px; border-radius: 10px;"></div>
-                    </div>
-                </div>
-                <!-- caja de nombre y precio -->
-                <div class="name_price">
-                    <!-- caja de nombre -->
-                    <div class="soft-grey-background" style="width: 100%; height: 46px; margin-top: 5px;"></div>
-                </div>
-                <!-- caja de descripción -->
-                <div class="description_box">
-                    <p class="fs-08">Descripción</p>
-                    <div class="soft-grey-background" style="width: 100%; height: 20px;"></div>
-                </div>
-                <!-- caja de colores, medidas y stocks -->
-                <div class="options_stock">
-                    <!-- Aquí se muestran dos opciones que forman parte del SKU y permiten buscar otros 
-                    productos similares al seleccionado pero que sea de otro valor de cada categoría -->
-                    <!-- caja de colores y medidas. -->
-                    <div class="options_box">
-                        <!-- caja de opciones 1 -->
-                        <div>
-                            <!-- Título de opciones 1 -->
-                            <p class="fs-08">Opción de producto</p>
-                            <!-- listado de opciones 1 -->
-                            <div class="soft-grey-background" class="options_1_box" style="width: 100%; height: 25px;">
-                            </div>
-                        </div>
-                        <!-- caja de opciones 2 -->
-                        <div class="pb-1">
-                            <!-- Título de opciones 2 -->
-                            <p class="fs-08">Opción de producto</p>
-                            <!-- listado de opciones 2 -->
-                            <div class="options_2_box soft-grey-background" style="width: 100%; height: 25px;">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- caja de stocks -->
-                    <div class="stock_box">
-                        <p class="fs-08">Stock físico</p>
-                            <div class="soft-grey-background" style="width: 25px; height: 25px; margin: auto;"></div>
-                        <p class="fs-08">Stock disponible</p>
-                            <div class="soft-grey-background" style="width: 25px; height: 25px; margin: auto;"></div>
-                    </div>
-                </div>
-            </div>
+        <div class="p-4" *ngIf="load">
+            Cargando...
         </div>
-
+    
         <!-- Box principal -->
-        <div class="box-detail" *ngIf="!load">
-            <div class="box-image" *ngIf="this.product.image">
-                <img [src]="(baseURL + this.product.image)" [alt]="this.product.image">
+        <div class="row card-content" *ngIf="!load">
+            <!-- Caja imagen -->
+            <div class="col-md-5 image-container">
+                <img class="product-image" [src]="product?(baseURL + product.image):''" [alt]="product?product.name:'product image'">
             </div>
-            <div class="box-text">
-                <!-- caja de categoría y estado -->
-                <div class="category_state">
-                    <!-- caja de estado -->
-                    <div class="me-1">
-                        <span class="badge rounded-pill cap" [ngClass]="(this.product.state == 'activo')?'bg-label-success':'bg-label-danger'">
-                            {{ this.product.state || 'Inactivo' }}
+    
+            <!-- Caja de texto -->
+            <div class="col-md-7 text-container">
+                <p class="product-name">{{ product?product.name:'Sin información' }}</p>
+                
+                <div class="status-container d-flex justify-content-start">
+                    <p class="status mb-0 fw-500 cap" [ngClass]="((product?product.state:'inactivo') == 'activo')?'bg-label-success':'bg-label-danger'">
+                        {{ product?product.state:'Inactivo' }}
+                    </p>
+                    <p class="status mb-0 fw-500 cap" [ngStyle]="getStatusCategory(product?product.category_color:'')">
+                        {{ product?product.category_item:'Sin Categoría' }}
+                    </p>
+                    <p class="status mb-0 fw-500 cap" [ngClass]="((product?product.is_stock:'sin stock') == 'con stock')?'bg-label-success':'bg-label-danger'">
+                        {{ product?product.is_stock:'Inactivo' }}
+                    </p>
+                </div>
+    
+                <div class="description">
+                    <h6>{{ product?product.description:'Sin Descripción' }}</h6>
+                </div>
+                <ul class="list-unstyled ps-1 mb-1">
+                    <li class="mb-2">
+                        <span class="h6 me-1 fs-08">SKU: </span>
+                        <span>{{ product?product.sku:'Sin información' }}</span>
+                    </li>
+                    <li class="mb-2">
+                        <span class="h6 me-1 fs-08">Stock físico/disponible: </span>
+                        <span>
+                            {{ product?product.stock_real:0 + ' unidades' }}/
+                            {{ product?product.stock_available:0 + ' unidades' }}
                         </span>
-                    </div>
-                    <!-- caja de categoría -->
-                    <div>
-                        <span class="badge rounded-pill cap" [ngClass]="this.product.category_color || 'blanck-badge'">
-                            {{ this.product.category_item || 'Sin Categoría' }}
-                        </span>
-                    </div>
+                    </li>
+                    <li class="mb-2">
+                        <span class="h6 me-1 fs-08">Ubicación: </span>
+                        <span>{{ product?product.storage_name:'Sin información' }}</span>
+                    </li>
+                </ul>
+                <div class="status-container d-flex justify-content-start">
+                    <p class="status mb-0 fw-500 cap" style="border: 2px solid rgb(126, 124, 124);">
+                        {{ product?product.sku:'Sin información' }}
+                    </p>
+                    <p class="status mb-0 fw-500 cap" style="border: 2px solid rgb(126, 124, 124);">
+                        {{ product?product.stock_real:0 + ' unidades' }}
+                    </p>
+                    <p class="status mb-0 fw-500 cap" style="border: 2px solid rgb(126, 124, 124);">
+                        {{ product?product.storage_name:'Sin información' }}
+                    </p>
                 </div>
-                <!-- caja de nombre y precio -->
-                <div class="name_price">
-                    <!-- caja de nombre -->
-                    <h3 class="fw-700 name_box">{{ this.product.name || '' }}</h3>
-                    <!-- caja de precio -->
-                    <div class="price_box">
-                        <h2 class="fw-700 black-color">{{ '$' + this.product.sale_price || 0.00 }}</h2>
-                    </div>
-                </div>
-                <!-- caja de descripción -->
-                <div class="description_box">
-                    <p class="fs-08">Descripción</p>
-                    <h6 [style.color]="(this.product.description == 'NO EXISTE ESTE PRODUCTO')?'red':''">{{ this.product.description || 'Sin Descripción' }}</h6>
-                </div>
-                <!-- caja de colores, medidas y stocks -->
-                <div class="options_stock">
-                    <!-- Aquí se muestran dos opciones que forman parte del SKU y permiten buscar otros 
-                    productos similares al seleccionado pero que sea de otro valor de cada categoría -->
-                    <!-- caja de colores y medidas. -->
-                    <div class="options_box">
-                        <!-- caja de variantes -->
-                        <p class="fs-08">Producto elegido</p>
-                        <div class="mb-2 d-flex justify-content-around align-items-start">
-                            <div class="d-flex">
-                                <span class="fs-07 me-2 cap">{{ this._auth.getOptionName1() || 'Color' }}</span>
-                                <span class="material-icons" [style.color]="product.option_1_name">
-                                    square
-                                </span>
-                            </div>
-                            <div class="d-flex">
-                                <span class="fs-07 me-2 cap">{{ this._auth.getOptionName2() || 'Opción 2' }}</span>
-                                <span class="fw-700" style="font-size: 1.3rem;">
-                                    {{product.option_2_name}}
-                                </span>
-                            </div>
-                        </div>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Ver otras variantes</mat-label>
-                            <mat-select (valueChange)="changeVariant($event)" [disabled]="(variants.length == 1) && (product.id === variants[0].id)">
-                              <ng-container *ngFor="let item of variants">
-                                <mat-option [value]="item" *ngIf="product.id !== item.id">
-                                    <span class="fs-06 cap">{{ this._auth.getOptionName1() || 'Color' }}: </span><span class="fw-700 me-1 ms-1" style="font-size: 1.1rem;">
-                                        <span class="material-icons" [style.color]="item.option_1_name" style="position: relative; top: 4px;">
-                                            square
-                                        </span>
-                                    </span>
-                                    <span class="fs-06 cap">{{ this._auth.getOptionName2() || 'Opción 2' }}: </span><span class="fw-700 me-3 ms-1" style="font-size: 1.1rem;">
-                                        {{ item.option_2_name }}
-                                    </span>
-                                </mat-option>
-                              </ng-container>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <!-- caja de stocks -->
-                    <div class="stock_box">
-                        <p class="fs-08">Stock físico</p>
-                            <h3 class="text-center fw-700 black-color">{{ this.product.stock_real || 0 }}</h3>
-                        <p class="fs-08">Stock disponible</p>
-                            <h4 class="text-center fw-700 black-color">{{ this.product.stock_available || 0 }}</h4>
-                    </div>
-                </div>
+                <h2 class="fw-700 black-color mb-0">${{ product?product.sale_price:0.00 }}</h2>
             </div>
         </div>
-
-        <mat-accordion *ngIf="!load">
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        Ver más
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="accordion-box">
-                    <!-- Caja de proveedor, fecha de compra, precio de compra y ganancia --> 
-                    <div class="more_options_admin" *ngIf="this.permissions.includes(sens_info_admin)">
-                        <!-- Caja de proveedor -->
-                        <div class="b-b">
-                            <p class="fs-08 fw-700"><strong>Proveedor:</strong></p>
-                            <p class="ms-4 cap">{{ this.product.provider_name || '' }}</p>
-                        </div>
-                        <!-- Caja de fecha de compra --> 
-                        <div class="b-b">
-                            <p class="fs-08 fw-700"><strong>Fecha de compra:</strong></p>
-                            <p class="ms-4">{{ this.product.purchase_date | date:'dd/MM/yyyy' || '' }}</p>
-                        </div>
-                        <!-- Caja de precio de compra --> 
-                        <div class="b-b">
-                            <p class="fs-08 fw-700"><strong>Precio de compra:</strong></p>
-                            <p class="ms-4">{{ '$' + this.product.purchase_price || '' }}</p>
-                        </div>
-                        <!-- Caja de ganancia --> 
-                        <div class="b-b pb-1">
-                            <p class="fs-08 fw-700"><strong>Ganancia:</strong></p>
-                            <span class="badge rounded-pill cap ms-4 fs-09" 
-                                    [ngClass]="((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price < 0)?'bg-label-danger':'bg-label-success'"
-                                    *ngIf="this.product.sale_price">
-                                <span class="fs-09">{{ ((((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price) >= 0)?((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price)*100:(((this.product.sale_price - this.product.purchase_price)/this.product.purchase_price)*100)*(-1)) | number:'1.2-2'  }}%</span>
-                                <mat-icon class="fs-09" style="width: auto; height: auto;" *ngIf="(this.product.sale_price - this.product.purchase_price)/this.product.purchase_price > 0">arrow_upward</mat-icon>
-                                <mat-icon class="fs-09" style="width: auto; height: auto;" *ngIf="(this.product.sale_price - this.product.purchase_price)/this.product.purchase_price <= 0">arrow_downward</mat-icon>
-                            </span>
-                        </div>
-                    </div>
-                    <!-- Caja de SKU, ubicación y fecha última venta --> 
-                    <div class="more_options">
-                        <!-- Caja de SKU --> 
-                        <div class="b-b">
-                            <p class="fs-08 fw-700"><strong>SKU:</strong></p>
-                            <p class="ms-4">{{ this.product.sku || '' }}</p>
-                        </div>
-                        <!-- Caja de ubicación --> 
-                        <div class="b-b">
-                            <p class="fs-08 fw-700"><strong>Ubicación:</strong></p>
-                            <p class="ms-4">{{ this.product.storage_name || 'Sin ubicación' }}</p>
-                        </div>
-                        <!-- Caja de última venta --> 
-                        <div class="b-b">
-                            <p class="fs-08 fw-700"><strong>Última venta:</strong></p>
-                            <p class="ms-4">{{ this.product.sale_date | date:'dd/MM/yyyy' || '' }}</p>
-                        </div>
-                        <!-- Bóton de edición del producto -->
-                         <div class="edit-box" *ngIf="this.permissions.includes(add_product_admin) && this.product.id > 0">
-                            <button mat-flat-button color="primary" (click)="editProduct(this.product.id)">
-                                <mat-icon>edit</mat-icon> Editar Producto
-                            </button>
-                         </div>
-                    </div>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-card>
+  

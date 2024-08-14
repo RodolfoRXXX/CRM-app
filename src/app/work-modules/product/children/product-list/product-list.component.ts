@@ -175,7 +175,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   //Función que toma la fila clickeada del table eligiendo esa opción
   onRowClicked(row: any) {
     if(row) {
-      this.openDialogDetail(row.id_enterprise, row.name, row.id_option_1, row.id_option_2);
+      this.openDialogDetail(row.id);
     }
   }
 
@@ -183,8 +183,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this._router.navigate(['init/main/product/add-product'], { queryParams: { id_product: id_product } });
   }
 
-  openDialogDetail(id_enterprise: number, name: string, id_option_1: number, id_option_2: number): void {
-      const dialogRef = this._dialog.open(DialogProductDetailComponent, { data: { id_enterprise: id_enterprise, name: name, id_option_1: id_option_1, id_option_2: id_option_2 } });
+  openDialogDetail(id_product: number): void {
+      const dialogRef = this._dialog.open(DialogProductDetailComponent, { data: { id_product: id_product } });
   }
 
   rechargeData() {
