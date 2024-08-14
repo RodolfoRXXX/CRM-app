@@ -5,27 +5,33 @@
     </a>
       <mat-card-title class="mat-card-title text-center mt-2">
             <mat-chip>
-                <mat-icon style="position: relative; bottom: -4px;">create</mat-icon>
+                <mat-icon style="position: relative; bottom: -4px;">filter_alt</mat-icon>
                 <span class="cap" style="position: relative; bottom: 3px; left: 4px;">
-                    {{ is_new?'Crear':'Editar' }} un valor
+                    Crear un nuevo filtro
                 </span>
             </mat-chip>
       </mat-card-title>
       <mat-card-subtitle class="mat-card-subtitle text-center">
-          Edita los valores de este campo de clasificación
+          Creá un nuevo filtro para tus productos
       </mat-card-subtitle>
       <div>
         <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
-            <div>
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Valor</mat-label>
-                    <input matInput
-                        type="text"
-                        formControlName="filter_value" 
-                        required>
-                    <mat-error class="fs-08" *ngIf="this.dataForm.controls['filter_value']!.errors">{{getValueError()}}</mat-error>
-                </mat-form-field>
-            </div>
+            <mat-form-field appearance="outline" class="w-100 mb-1">
+                <mat-label>Nombre del filtro</mat-label>
+                <input matInput
+                    type="text"
+                    formControlName="filter_name" 
+                    required>
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['filter_name']!.errors">{{getNameError()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Primer valor</mat-label>
+                <input matInput
+                    type="text"
+                    formControlName="filter_value" 
+                    required>
+                <mat-error class="fs-08" *ngIf="this.dataForm.controls['filter_value']!.errors">{{getValueError()}}</mat-error>
+            </mat-form-field>
             <div class="m-t-10 text-center">
                 <button mat-stroked-button color="warn" class="me-3" type="reset" (click)="closeDialog(false)">Cancelar</button>
                 <button mat-stroked-button color="primary" type="submit" [disabled]="this.dataForm.invalid || this.dataForm.untouched || this.dataForm.pristine">Guardar</button>

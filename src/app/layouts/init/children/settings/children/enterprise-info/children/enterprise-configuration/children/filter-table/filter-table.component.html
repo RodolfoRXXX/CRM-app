@@ -1,101 +1,92 @@
 <!-- Set option 2 -->
 
 <!-- Card edit data -->
-<mat-card class="card">
-    <mat-card-content>
-        <!-- Título -->
-        <div class="d-flex justify-content-between">
-            <div class="card-icon mb-3">
-                <div class="avatar">
-                    <span class="avatar-initial rounded text-heading primary-badge">
-                        <span class="material-symbols-outlined">filter_alt</span>
-                    </span>
-                </div>
+    <mat-accordion>
+        <mat-expansion-panel (opened)="edit">
+            <mat-expansion-panel-header style="padding: 35px 22px;">
+                <mat-panel-title>
+                    <div class="d-flex justify-content-between">
+                        <div class="card-icon">
+                            <div class="avatar">
+                                <span class="avatar-initial rounded text-heading primary-badge">
+                                    <span class="material-symbols-outlined">filter_alt</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="mb-0 ms-4 cap">{{ this.dataForm.get('filter_name')?.value || 'No definido' }}</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <!-- Caja edición nombre -->
+            <div class="d-flex justify-content-end align-items-center">
+                <p><mat-slide-toggle (toggleChange)="toggleEdit()">Editar nombre</mat-slide-toggle></p>
             </div>
-            <button color="primary" mat-stroked-button>Agregar un valor</button>
-        </div>
-        <!-- Caja con el nombre del clasificador -->
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h3 class="mb-0 cap">{{ this.dataForm.get('name')?.value || 'No definido' }}</h3>
-            <p><mat-slide-toggle (toggleChange)="toggleEdit()">Editar nombre</mat-slide-toggle></p>
-        </div>
-
-        <mat-accordion>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title> This is the expansion title </mat-panel-title>
-                <mat-panel-description> This is a summary of the content </mat-panel-description>
-              </mat-expansion-panel-header>
-              <p>This is the primary content of the panel.</p>
-            </mat-expansion-panel>
-          </mat-accordion>
-
-        <!-- Caja para editar el clasificador -->
-        <div *ngIf="edit">
-            <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
-                <div class="row w-100">
-                    <mat-form-field appearance="outline" class="col">
-                        <input matInput
-                                formControlName="name"
-                                type="text"
-                                placeholder="Escribe un nombre"
-                                required>
-                        <mat-error class="fs-08" *ngIf="this.dataForm.controls['name']!.errors">{{getError()}}</mat-error>
-                    </mat-form-field>
-                    <button mat-fab color="primary" type="submit" [disabled]="this.dataForm.invalid || loading || this.dataForm.untouched || this.dataForm.pristine">
-                        <mat-icon>check</mat-icon>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <!-- Caja del table de datos -->
-        <div class="box-table" *ngIf="this.enterprise.name_option2">
-            <!-- Table -->
-            <table mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length">                
-                <!-- ID Column -->
-                <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef> ID </th>
+            <!-- Caja para editar el clasificador -->
+            <div *ngIf="edit">
+                <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+                    <div class="row w-100">
+                        <mat-form-field appearance="outline" class="col">
+                            <input matInput
+                                    formControlName="filter_name"
+                                    type="text"
+                                    placeholder="Escribe un nombre"
+                                    required>
+                            <mat-error class="fs-08" *ngIf="this.dataForm.controls['filter_name']!.errors">{{getError()}}</mat-error>
+                        </mat-form-field>
+                        <button mat-fab color="primary" type="submit" [disabled]="this.dataForm.invalid || loading || this.dataForm.untouched || this.dataForm.pristine">
+                            <mat-icon>check</mat-icon>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- Caja del table de datos -->
+            <div class="box-table">
+                <!-- Table -->
+                <table mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length">                
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let element; let i = index" class="font-family-def">
+                            # {{ i + 1 }}
+                        </td>
+                    </ng-container>
+                    
+                    <!-- name Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Valor </th>
+                        <td mat-cell *matCellDef="let element" class="font-family-def">
+                            <span class="fw-500 cap">{{ element }}</span>
+                        </td>
+                    </ng-container>
+        
+                    <!-- edit Column -->
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell *matHeaderCellDef> Editar </th>
                     <td mat-cell *matCellDef="let element">
-                    # {{ element.id }}
+                        <button mat-icon-button color="primary" (click)="editOption(element)">
+                            <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
+                        </button>
                     </td>
                 </ng-container>
-                
-                <!-- name Column -->
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> Valor </th>
-                    <td mat-cell *matCellDef="let element">
-                    <span class="fw-700">{{ element.name }}</span>
-                    </td>
-                </ng-container>
-    
-                <!-- edit Column -->
-            <ng-container matColumnDef="edit">
-                <th mat-header-cell *matHeaderCellDef> Editar </th>
-                <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="primary" (click)="editOption(element.id, element.name, 'table_option_2')">
-                        <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-                
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
-            </table>
-            <!-- Empty table -->
-            <div class="d-flex align-items-center p-3" *ngIf="!dataSource.data.length">
-                <h4 class="mb-0 text-center text-muted">No hay valores creados</h4>
+                    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
+                </table>
+                <!-- Empty table -->
+                <div class="d-flex align-items-center p-3" *ngIf="!dataSource.data.length">
+                    <h4 class="mb-0 text-center text-muted">No hay valores creados</h4>
+                </div>
+                <!-- Recharge button -->
+                <div class="recharge" *ngIf="recharge">
+                    <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
+                </div>
             </div>
-            <!-- Recharge button -->
-            <div class="recharge" *ngIf="recharge">
-                <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
+            <!-- Caja nuevo valor -->
+            <div class="d-flex justify-content-end align-items-center">
+                <button mat-stroked-button color="primary" (click)="editOption('')">Agregar nuevo valor</button>
             </div>
-        </div>
-        <!-- No clasification name defined -->
-        <div class="d-flex align-items-center p-3" *ngIf="!this.enterprise.name_option2">
-            <h4 class="mb-0 text-center text-muted">No se pueden agregar valores si no hay un nombre de clasificación definido.</h4>
-        </div>
-    </mat-card-content>
-    <mat-card-footer class="login-footer">
-        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    </mat-card-footer>
-</mat-card>
+        </mat-expansion-panel>
+        <mat-card-footer class="login-footer">
+            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-accordion>

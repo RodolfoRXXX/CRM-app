@@ -25,10 +25,10 @@
         </div>
         <!-- Cajas -->
             <!-- Caja de configuración de filtros -->
-            <div class="row g-6 text-nowrap" *ngIf="tabs[0].state == 'active'">
+            <div class="row g-4 text-nowrap" *ngIf="tabs[0].state == 'active'">
                 <!-- Ingresos totales($) -->
                 <div class="col-md-6" *ngFor="let item of filters">
-                    <app-filter-table [enterprise]="enterprise"></app-filter-table>
+                    <app-filter-table [enterprise]="enterprise" [data]="item" (update)="updateView($event)"></app-filter-table>
                 </div>
                 <!-- Agregar nuevo filtro -->
                 <div class="col-md-6">
@@ -41,7 +41,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <button color="primary" mat-flat-button>Crear un filtro</button>
+                            <button color="primary" mat-flat-button (click)="CreateFilter()">Crear un filtro</button>
                         </mat-card-content>
                     </mat-card>
                 </div>

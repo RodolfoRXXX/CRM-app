@@ -9,22 +9,22 @@ import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   standalone: true,
-  selector: 'app-dialog-edit-classification',
-  templateUrl: './dialog-edit-classification.component.html',
+  selector: 'app-dialog-create-classification',
+  templateUrl: './dialog-create-classification.component.html',
   imports: [
     MaterialModule,
     CommonModule,
     ReactiveFormsModule
   ]
 })
-export class DialogEditClassificationComponent {
+export class DialogCreateClassificationComponent {
 
   dataForm!: FormGroup;
   loading: boolean = false;
   is_new!: boolean;
 
   constructor(
-    public dialogRef: MatDialogRef<DialogEditClassificationComponent>,
+    public dialogRef: MatDialogRef<DialogCreateClassificationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _api: ApiService,
     private _notify: NotificationService
@@ -35,21 +35,28 @@ export class DialogEditClassificationComponent {
 
   createDataForm(): void {
     this.dataForm = new FormGroup({
-        id_enterprise: new FormControl((this.data.id_enterprise)?this.data.id_enterprise:'', [
+        id_enterprise: new FormControl((this.data.id_enterprise)?this.data.id_enterprise: '', [
           Validators.required
         ]),
-        filter_name: new FormControl((this.data.filter_name)?this.data.filter_name:'', [
+        filter_name: new FormControl('', [
           Validators.required
         ]),
-        filter_value: new FormControl((this.data.filter_value)?this.data.filter_value:'', [
+        filter_value: new FormControl('', [
           Validators.required,
           Validators.minLength(1),
           Validators.maxLength(15)
         ]),
-        last_filter_value : new FormControl((this.data.filter_value)?this.data.filter_value:'')
+        last_filter_name: new FormControl('')
     });
   }
 
+  getNameError() {
+    //value
+    if(this.dataForm.controls['filter_name'].hasError('required')) return 'Tenés que ingresar un valor';
+    if(this.dataForm.controls['filter_name'].hasError('minlength')) return 'Este valor debe tener al menos 1 caracter';
+    if(this.dataForm.controls['filter_name'].hasError('maxlength')) return 'Este valor debe tener menos de 15 caracteres'
+    return ''
+  }
   getValueError() {
     //value
     if(this.dataForm.controls['filter_value'].hasError('required')) return 'Tenés que ingresar un valor';
@@ -60,14 +67,14 @@ export class DialogEditClassificationComponent {
 
   onSubmit() {
     this.loading = true;
-    this._api.postTypeRequest('profile/update-filter-value', this.dataForm.value).subscribe({
+    this._api.postTypeRequest('profile/update-filter-name', this.dataForm.value).subscribe({
       next: (res: any) => {
         this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
           if(res.data.affectedRows == 1){
             //Editó el valor
-            this._notify.showSuccess('Valor actualizado con éxito!');
+            this._notify.showSuccess('Nuevo filtro creado con éxito!');
           } else{
             //No hubo modificación
             this._notify.showError('No se ha podido actualizar la tabla');
