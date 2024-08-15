@@ -79,3 +79,19 @@
         margin-bottom: 10px;
     }
 }
+
+.status-container {
+    //margin-bottom: 10px;
+
+    .status {
+      border-radius: 5px;
+      padding: 0 10px;
+      font-size: 0.8rem;
+      height: fit-content;
+      border: 2px solid rgb(194, 188, 188);
+      cursor: pointer;
+      &:hover {
+        background-color: #efeff2;
+      }
+    }
+}

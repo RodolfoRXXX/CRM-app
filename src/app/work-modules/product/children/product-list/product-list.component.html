@@ -112,8 +112,13 @@
                     </mat-panel-description>
                     </mat-expansion-panel-header>
                 <div class="row">
+                    <!-- Filtro search -->
+                    <mat-form-field class="col-md-3" appearance="outline">
+                        <mat-label>Filtrar</mat-label>
+                        <input [ngModel]="chips.search" matInput #search (change)="add($event, 'search')" placeholder="Buscar un producto" #input>
+                    </mat-form-field>
                     <!-- Filtro Categorías -->
-                    <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-form-field class="col-md-3" appearance="outline">
                         <mat-label>Categoría</mat-label>
                         <mat-select [(ngModel)]="chips.category" (valueChange)="add($event, 'category')">
                             <ng-container *ngFor="let category of categories">
@@ -126,7 +131,7 @@
                         </mat-select>
                     </mat-form-field>
                     <!-- Filtro Productos con Stock -->
-                    <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-form-field class="col-md-3" appearance="outline">
                         <mat-label>Stock</mat-label>
                         <mat-select  [(ngModel)]="chips.stock" (valueChange)="add($event, 'stock')">
                             <mat-option value="Sin stock">Sin stock</mat-option>
@@ -134,7 +139,7 @@
                         </mat-select>
                     </mat-form-field>
                     <!-- Filtro Estado -->
-                    <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-form-field class="col-md-3" appearance="outline">
                         <mat-label>Estado</mat-label>
                         <mat-select [(ngModel)]="chips.state" (valueChange)="add($event, 'state')">
                             <mat-option value="Activo">
@@ -150,11 +155,18 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="row">
-                    <mat-form-field class="col-md-4" appearance="outline">
-                        <mat-label>Filtrar</mat-label>
-                        <input [ngModel]="chips.search" matInput #search (change)="add($event, 'search')" placeholder="Buscar un producto" #input>
-                    </mat-form-field>
+                <!-- Caja con los tags -->
+                <div class="status-container d-flex justify-content-start">
+                    <div *ngFor="let filter of filters" class="d-flex p-2 b-all m-2">
+                        <p class="me-2 cap text-muted fw-500 fs-08">{{ filter.filter_name }}:</p>
+                        <ul class="list-unstyled mb-0">
+                            <li *ngFor="let item of filter.filter_values">
+                                <p class="status mb-1 fw-500 cap" (click)="setFilter(item.id)">
+                                    {{ item.value }}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 </mat-expansion-panel>
             </mat-accordion>

@@ -8,7 +8,6 @@ import { catchError, map, merge, startWith, switchMap, of as observableOf } from
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
-import { Category } from 'src/app/shared/interfaces/category.interface';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
 import { environment, permissions } from 'src/enviroments/enviroment';
@@ -22,6 +21,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   employee!: Employee;
   categories!: any[];
+  filters!: any[];
   displayedColumns: string[] = ['detail', 'product', 'category', 'stock_real', 'state_stock', 'sale_price', 'sku', 'state'];
   dataSource = new MatTableDataSource();
   resultsLength!: number;
@@ -84,6 +84,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
         switchMap((id_enterprise) => {
           this.getDataCard(id_enterprise);
           this.getCategories(id_enterprise);
+          this.getTags(id_enterprise);
           return this._api.postTypeRequest('profile/get-count-products', { id_enterprise: id_enterprise })
                         .pipe(catchError(async () => {observableOf(null); this.recharge = true;}));
         }),
@@ -100,6 +101,36 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       this.categories.forEach((item: any) => {
         item.color_badge = JSON.parse(item.color_badge)
       });
+    })
+  }
+
+  getTags(id_enterprise: number): void {
+    this._api.postTypeRequest('profile/get-filters-obj', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
+      if(value.data) {
+        value.data.forEach((element: any) => {
+          element.filter_values = JSON.parse(element.filter_values)
+        });
+        this.filters = value.data;
+      }
+    })
+  }
+
+  setFilter(id_filter: number) {
+    this.load = true;
+    this.empty_products = false;
+    console.log(id_filter)
+    this._api.postTypeRequest('profile/get-product-filter-id', { id_enterprise: this.employee.id_enterprise, id_filter: id_filter }).subscribe( (value:any) => {
+      this.load = false;
+      console.log(value.data)
+        if (value.data) {
+          value.data.forEach((item: any) => {
+            item.category_color = JSON.parse(item.category_color)
+          });
+        this.dataSource.data = value.data;
+        } else {
+          //Sin resultados
+          this.empty_products = true;
+        }
     })
   }
 
