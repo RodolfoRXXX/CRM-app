@@ -43,8 +43,8 @@
                     <li class="mb-2">
                         <span class="h6 me-1 fs-08">Stock físico/disponible: </span>
                         <span>
-                            {{ product?product.stock_real:0 + ' unidades' }}/
-                            {{ product?product.stock_available:0 + ' unidades' }}
+                            {{ product?product.stock_real:0 }}/
+                            {{ product?product.stock_available:0 }} unidades
                         </span>
                     </li>
                     <li class="mb-2">
@@ -53,15 +53,16 @@
                     </li>
                 </ul>
                 <div class="status-container d-flex justify-content-start">
-                    <p class="status mb-0 fw-500 cap" style="border: 2px solid rgb(126, 124, 124);">
-                        {{ product?product.sku:'Sin información' }}
-                    </p>
-                    <p class="status mb-0 fw-500 cap" style="border: 2px solid rgb(126, 124, 124);">
-                        {{ product?product.stock_real:0 + ' unidades' }}
-                    </p>
-                    <p class="status mb-0 fw-500 cap" style="border: 2px solid rgb(126, 124, 124);">
-                        {{ product?product.storage_name:'Sin información' }}
-                    </p>
+                    <ng-container *ngIf="product.filter_values != null">
+                        <p class="status mb-0 fw-500 cap" *ngFor="let item of product.filter_values.split(',')">
+                            {{ item }}
+                        </p>
+                    </ng-container>
+                    <ng-container *ngIf="product.filter_values == null">
+                        <p class="status mb-0 fw-500 cap">
+                            Sin información
+                        </p>
+                    </ng-container>
                 </div>
                 <h2 class="fw-700 black-color mb-0">${{ product?product.sale_price:0.00 }}</h2>
             </div>
