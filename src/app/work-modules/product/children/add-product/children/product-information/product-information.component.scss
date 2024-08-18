@@ -18,6 +18,18 @@
             }
         }
     }
+    .status-container {
+        margin-bottom: 10px;
+    
+        .status {
+          margin-left: 10px;
+          border-radius: 5px;
+          padding: 2px 10px;
+          font-size: 0.8rem;
+          height: fit-content;
+          border: 2px solid rgb(126, 124, 124);
+        }
+      }
     .sku-product-box {
         display: flex;
         justify-content: space-between;

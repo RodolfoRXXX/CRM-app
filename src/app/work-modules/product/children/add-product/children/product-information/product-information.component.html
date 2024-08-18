@@ -13,7 +13,7 @@
         </div>
        </ng-container>
       <!-- Formulario que se muestra si existen categorías y las dos opciones creadas -->
-      <ng-container *ngIf="categories && option1 && option2 && !load">
+      <ng-container *ngIf="categories && !load">
         <form  [formGroup]="dataForm" (ngSubmit)="onSubmit()">
           <!-- Nombre del producto -->
           <div class="box-info-product">
@@ -45,6 +45,7 @@
           <!-- Categoría, medida y color del producto -->
           <div class="row">
             <mat-form-field appearance="outline" class="col">
+              <!-- Filtro de categoría -->
               <mat-label>Categoría</mat-label>
               <mat-select formControlName="category" 
                           required>
@@ -54,30 +55,27 @@
               </mat-select>
               <mat-error *ngIf="this.dataForm.controls['category']!.errors" class="fs-09">{{getErrorCategory()}}</mat-error>
             </mat-form-field>
+            <!-- Filtros de tags -->
             <mat-form-field appearance="outline" class="col">
-              <mat-label class="cap">{{ this._auth.getOptionName1() || 'Color' }}</mat-label>
-              <mat-select formControlName="id_option_1" 
-                          required>
-                <ng-container *ngFor="let item of option1">
-                  <mat-option [value]="item.id">
-                    <span class="badge rounded-pill cap" [style.background-color]="item.name" >
-                      {{ item.name }}
-                    </span>
-                  </mat-option>
-                </ng-container>
+              <mat-label class="cap">Más filtros</mat-label>
+              <mat-select formControlName="filters" multiple (valueChange)="setChips($event)">
+                @for (group of filters; track group) {
+                  <mat-optgroup class="cap fw-500" [label]="group.filter_name">
+                    @for (value of group.filter_values; track value) {
+                      <mat-option class="cap fw-300" [value]="value.id">{{value.value}}</mat-option>
+                    }
+                  </mat-optgroup>
+                }
               </mat-select>
-              <mat-error *ngIf="this.dataForm.controls['id_option_1']!.errors" class="fs-09">{{getErrorOption1()}}</mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="col">
-              <mat-label class="cap">{{ this._auth.getOptionName2() || 'Opción 2' }}</mat-label>
-              <mat-select formControlName="id_option_2"
-                          required>
-                <ng-container *ngFor="let item of option2">
-                  <mat-option [value]="item.id"> {{ item.name }} </mat-option>
-                </ng-container>
-              </mat-select>
-              <mat-error *ngIf="this.dataForm.controls['id_option_2']!.errors" class="fs-09">{{getErrorOption2()}}</mat-error>
-            </mat-form-field>
+          </div>
+          <!-- Caja de filtros mostrados en chips -->
+          <div class="status-container d-flex justify-content-end">
+            <mat-chip-set class="ms-1" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
+              <mat-chip class="soft-grey-background me-1">
+                  <span class="cap fw-500">{{ item.value }}</span>
+              </mat-chip>
+            </mat-chip-set>
           </div>
           <!-- SKU del producto -->
           <div class="sku-product-box">
@@ -122,7 +120,10 @@
             <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
               Reset
             </button>
-            <button mat-stroked-button color="primary" type="submit" [disabled]="(this.dataForm.status == 'INVALID') || loading || this.dataForm.dirty || this.getSku() !== this.dataForm.controls['sku'].value">
+<!--<button mat-stroked-button color="primary" type="submit" [disabled]="(this.dataForm.status == 'INVALID') || loading || this.dataForm.dirty || this.getSku() !== this.dataForm.controls['sku'].value">
+              Guardar
+            </button>-->
+            <button mat-stroked-button color="primary" type="submit">
               Guardar
             </button>
           </div>
@@ -130,17 +131,11 @@
       </ng-container>
 
       <!-- Vista que muestra si no hay categorías y opciones creadas -->
-       <ng-container *ngIf="!categories && !option1 && !option2 && !load">
+       <ng-container *ngIf="!categories && !load">
         <!-- Vista que muestra si no hay categorías creadas -->
         <ng-container *ngIf="!categories">
           <div class="d-flex text-center align-items-center p-4">
             <h4>No se pueden crear productos porque no existen categorías</h4>
-          </div>
-        </ng-container>
-        <!-- Vista que muestra si no hay opciones creadas -->
-        <ng-container *ngIf="!option1 || !option2">
-          <div class="d-flex text-center align-items-center p-4">
-            <h4>No se pueden crear productos porque no se han configurado las opciones de clasificación</h4>
           </div>
         </ng-container>
        </ng-container>

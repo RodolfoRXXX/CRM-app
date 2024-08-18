@@ -56,6 +56,7 @@ export class EnterpriseConfigurationComponent implements OnInit {
     }, 1500);
   }
 
+  //QUIZAS CAMBIAR POR LA FUNCION GET-FILTERS.OBJ QUE DEVUELVE LA RESPUESTA COMO UN ARRAY DE OBJETOS CON SU ID, NAME, ETC
   getFilters(id_enterprise: number) {
     this._api.postTypeRequest('profile/get-filters', { id_enterprise: id_enterprise }).subscribe( (value: any) => {
       if(value) {

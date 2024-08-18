@@ -77,7 +77,6 @@ export class GreetingCardComponent implements OnInit {
       }
       const jsonResponse = await response.json();
       this.img = jsonResponse;
-      console.log(this.img)
       // Trigger download
       await fetch(`${this.img.links.download_location}?client_id=${ACCESS_KEY}`, {
         method: 'GET'

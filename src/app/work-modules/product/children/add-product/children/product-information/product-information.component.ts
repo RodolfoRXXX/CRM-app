@@ -10,8 +10,6 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Category } from 'src/app/shared/interfaces/category.interface';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
-import { Option1 } from 'src/app/shared/interfaces/option1.interface';
-import { Option2 } from 'src/app/shared/interfaces/option2.interface';
 import { Product } from 'src/app/shared/interfaces/product.interface';
 import { DialogConfirmOperationComponent } from 'src/app/shared/standalone/dialog/dialog-confirm-operation/dialog-confirm-operation.component';
 
@@ -28,15 +26,15 @@ export class ProductInformationComponent implements OnInit {
   sku!: string;
   employee!: Employee;
   categories!: Category[];
-  option1!: Option1[];
-  option2!: Option2[];
+  filters!: any[];
   dataForm!: FormGroup;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['name'];
-  inputBoxName!:boolean;
+  inputBoxName:boolean = false;
   load: boolean = true;
-  loading!: boolean;
+  loading: boolean = false;
   exist_sku!: string;
+  chips: string[] = [];
 
   constructor(
     private _conector: ConectorsService,
@@ -46,8 +44,6 @@ export class ProductInformationComponent implements OnInit {
     private _router: Router,
     private _dialog: MatDialog
   ) {
-    this.loading = false;
-    this.inputBoxName = false;
     this.createDataForm();
   }
 
@@ -62,8 +58,7 @@ export class ProductInformationComponent implements OnInit {
     try {
       const value = await this.getData();
       this.getCategories(value.id_enterprise);
-      this.getOption1(value.id_enterprise);
-      this.getOption2(value.id_enterprise);
+      this.getFilters(value.id_enterprise);
       this.id_enterprise = value.id_enterprise;
       this.employee = value;
       this.dataForm.patchValue({id_enterprise : value.id_enterprise})
@@ -93,12 +88,7 @@ export class ProductInformationComponent implements OnInit {
         category: new FormControl('', [
           Validators.required,
         ]),
-        id_option_1: new FormControl('', [
-          Validators.required,
-        ]),
-        id_option_2: new FormControl('', [
-          Validators.required,
-        ]),
+        filters: new FormControl(['']),
         sku: new FormControl('', [
           Validators.required,
         ]),
@@ -112,13 +102,12 @@ export class ProductInformationComponent implements OnInit {
 
   //Setea los valores del formulario si tuviera que cargarse un producto
   setDataForm(product: Product) {
-    this.dataForm.setValue({
+    this.dataForm.patchValue({
       id: (product.id > 0)?product.id:'',
       id_enterprise: (product.id_enterprise > 0)?product.id_enterprise:'',
       name: (product.name != '')?product.name:'',
       category: (product.category > 0)?product.category:'',
-      id_option_1: (product.id_option_1 > 0)?product.id_option_1:'',
-      id_option_2: (product.id_option_2 > 0)?product.id_option_2:'',
+      filters: (product.filters != '')?product.filters.split(',').map(Number):[''],
       sku: (product.sku != '')?product.sku:'',
       description: (product.description != '')?product.description:'',
     })
@@ -129,84 +118,99 @@ export class ProductInformationComponent implements OnInit {
     //Categorías
     getCategories(id_enterprise: number): void {
       this._api.postTypeRequest('profile/get-categories', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-        this.categories = value.data
+        if(value.status == 1 && value.data) {
+          this.categories = value.data
+        }
       })
     }
-    //Opción 1
-    getOption1(id_enterprise: number): void {
-      this._api.postTypeRequest('profile/get-option1', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-        this.option1 = value.data
-      })
-    }
-    //Opción 2
-    getOption2(id_enterprise: number): void {
-      this._api.postTypeRequest('profile/get-option2', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-        this.option2 = value.data
+    //Filtros
+    getFilters(id_enterprise: number): void {
+      this._api.postTypeRequest('profile/get-filters-obj', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
+        if(value.status == 1 && value.data) {
+          value.data.forEach((element: any) => {
+            element.filter_values = JSON.parse(element.filter_values)
+          });
+          this.filters = value.data
+          this.setChips()
+        }
       })
     }
 
-  //Carga todas las opciones de producto
-  searchAll() {
-    merge()
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          return this._api.postTypeRequest('profile/get-products-listOfName', { id_enterprise: this.id_enterprise})
-                        .pipe(catchError(async () => {observableOf(null)}));
-        }),
-        map((response: any) => {
-          if (response && response.data) {
-            // Filtramos y eliminamos elementos duplicados basados en 'name' y 'category'
-            const uniqueData = this.filterUniqueData(response.data);
-            return uniqueData;
-          } else {
-            return []; // Retornamos un array vacío si no hay datos o response.data no existe
-          }
-        })
-      )
-      .subscribe((uniqueData: any[]) => {
-          // Asignamos los datos únicos al dataSource (suponiendo que dataSource es un MatTableDataSource o similar)
-          this.dataSource.data = uniqueData;
-          this.inputBoxName = true;
-        });
-  }
-  private filterUniqueData(data: any[]): any[] {
-    const uniqueMap = new Map<string, any>();
-    data.forEach(item => {
-      const key = `${item.name}_${item.category}`; // Construimos una clave única
-      if (!uniqueMap.has(key)) {
-        uniqueMap.set(key, item); // Agregamos el objeto al Map si no existe la clave
-      }
+  //setea el array de chips de filtros que se muestran
+  setChips(event: any = '') {
+    this.chips = [];
+    ((event)?event:this.product.filters.split(',').map(Number)).forEach((id: number) => {
+      this.filters.forEach(filter => {
+          filter.filter_values.forEach((value: any) => {
+              if ((value.id === id) && (!this.chips.includes(value.value))) {
+                  this.chips.push(value.value);
+                }
+          });
+      });
     });
-    return Array.from(uniqueMap.values()); // Convertimos el Map de nuevo a un array de valores únicos
   }
-  //Filtra el listado de productos de acuerdo a lo ingresado en el input
-  applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  //Cuando se clickea fuera del input de nombre esta función oculta el table con los productos
-  onBlur() {
-    setTimeout(() => {
-      this.inputBoxName = false;
-    }, 100);
-    
-  }
-  //Función que toma la fila clickeada del table eligiendo esa opción
-  onRowClicked(row: any) {
-    this.dataForm.patchValue({
-      name: row.name,
-      category: row.category
-    })
-  }
+
+  //Carga todas las opciones de producto
+    searchAll() {
+      merge()
+        .pipe(
+          startWith({}),
+          switchMap(() => {
+            return this._api.postTypeRequest('profile/get-products-listOfName', { id_enterprise: this.id_enterprise})
+                          .pipe(catchError(async () => {observableOf(null)}));
+          }),
+          map((response: any) => {
+            if (response && response.data) {
+              // Filtramos y eliminamos elementos duplicados basados en 'name' y 'category'
+              const uniqueData = this.filterUniqueData(response.data);
+              return uniqueData;
+            } else {
+              return []; // Retornamos un array vacío si no hay datos o response.data no existe
+            }
+          })
+        )
+        .subscribe((uniqueData: any[]) => {
+            // Asignamos los datos únicos al dataSource (suponiendo que dataSource es un MatTableDataSource o similar)
+            this.dataSource.data = uniqueData;
+            this.inputBoxName = true;
+          });
+    }
+    private filterUniqueData(data: any[]): any[] {
+      const uniqueMap = new Map<string, any>();
+      data.forEach(item => {
+        const key = `${item.name}_${item.category}`; // Construimos una clave única
+        if (!uniqueMap.has(key)) {
+          uniqueMap.set(key, item); // Agregamos el objeto al Map si no existe la clave
+        }
+      });
+      return Array.from(uniqueMap.values()); // Convertimos el Map de nuevo a un array de valores únicos
+    }
+    //Filtra el listado de productos de acuerdo a lo ingresado en el input
+    applyFilter(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+    //Cuando se clickea fuera del input de nombre esta función oculta el table con los productos
+    onBlur() {
+      setTimeout(() => {
+        this.inputBoxName = false;
+      }, 100);
+      
+    }
+    //Función que toma la fila clickeada del table eligiendo esa opción
+    onRowClicked(row: any) {
+      this.dataForm.patchValue({
+        name: row.name,
+        category: row.category
+      })
+    }
 
   //Función que verifica el SKU
   checkSKU(): void {
     if(
       (this.dataForm.controls['name'].value && !this.dataForm.controls['name']!.errors) &&
       (this.dataForm.controls['category'].value && !this.dataForm.controls['category']!.errors) &&
-      (this.dataForm.controls['id_option_1'].value && !this.dataForm.controls['id_option_1']!.errors) &&
-      (this.dataForm.controls['id_option_2'].value && !this.dataForm.controls['id_option_2']!.errors) && 
+      (this.dataForm.controls['id_enterprise'].value && !this.dataForm.controls['id_enterprise']!.errors) &&
       (this.getSku() !== this.dataForm.controls['sku'].value)
     ) {
       this.loading = true;
@@ -230,11 +234,11 @@ export class ProductInformationComponent implements OnInit {
   }
   //Función que devuelve el sku
   getSku(): string {
-    return ((this.dataForm.controls['name'].value).trim().toLowerCase()).slice(0, 3) +
-            (this.dataForm.controls['name'].value).trim().toLowerCase().slice(-3) + '-' +
-              this.dataForm.controls['category'].value +
-              this.dataForm.controls['id_option_1'].value +
-              this.dataForm.controls['id_option_2'].value;
+    let sku = (((this.dataForm.controls['name'].value).toLowerCase()).replace(/\s+/g, '')).trim()
+    return sku.slice(0, 3) +
+            sku.slice(-3) + '-' +
+            this.dataForm.controls['category'].value +
+            this.dataForm.controls['id_enterprise'].value;
   }
 
   //Función que abre un dialog de pregunta para redirigir al producto que ya existe
@@ -269,16 +273,6 @@ export class ProductInformationComponent implements OnInit {
     if(this.dataForm.controls['category'].hasError('required')) return 'Elegí una opción';
       return ''
   }
-  getErrorOption1() {
-    //option_1
-    if(this.dataForm.controls['id_option_1'].hasError('required')) return 'Elegí una opción';
-      return ''
-  }
-  getErrorOption2() {
-    //option_2
-    if(this.dataForm.controls['id_option_2'].hasError('required')) return 'Elegí una opción';
-      return ''
-  }
   getErrorSku() {
     //sku
     if(this.dataForm.controls['sku'].hasError('required')) return 'Tenés que generar un SKU';
@@ -297,6 +291,8 @@ export class ProductInformationComponent implements OnInit {
   resetAll() {
     this.sku = '';
     this.exist_sku = '';
+    this.chips = [];
+    this.setChips()
     this.setDataForm(this.product)
   }
 
