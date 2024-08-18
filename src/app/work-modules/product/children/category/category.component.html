@@ -31,7 +31,7 @@
           <!-- category Column -->
           <ng-container matColumnDef="category">
             <th mat-header-cell *matHeaderCellDef>CATEGORIA</th>
-            <td mat-cell *matCellDef="let element" class="font-family-def">
+            <td mat-cell *matCellDef="let element" class="font-family-def font-size-def">
               <span class="badge rounded-pill cap" [style.color]="element.color_badge.color" [style.background-color]="element.color_badge.bgColor">
                   {{ element.name }}
               </span>
@@ -41,7 +41,7 @@
           <!-- stock Column -->
           <ng-container matColumnDef="stock">
             <th mat-header-cell *matHeaderCellDef class="max-500-hidden">STOCK POR CATEGORIA</th>
-            <td mat-cell *matCellDef="let element" class="max-500-hidden font-family-def">
+            <td mat-cell *matCellDef="let element" class="max-500-hidden font-family-def font-size-def">
               {{ element.total_stock_real || 0 }}
             </td>
           </ng-container>
@@ -49,7 +49,7 @@
           <!-- price Column -->
           <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef class="max-600-hidden">COSTO POR CATEGORIA</th>
-            <td mat-cell *matCellDef="let element" class="max-600-hidden font-family-def">
+            <td mat-cell *matCellDef="let element" class="max-600-hidden font-family-def font-size-def">
               ${{ element.total_sale_price || 0 | number:'1.2-2' }}
             </td>
           </ng-container>
