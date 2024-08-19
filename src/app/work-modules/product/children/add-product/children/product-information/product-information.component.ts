@@ -234,7 +234,11 @@ export class ProductInformationComponent implements OnInit {
   }
   //Función que devuelve el sku
   getSku(): string {
-    let sku = (((this.dataForm.controls['name'].value).toLowerCase()).replace(/\s+/g, '')).trim()
+    let sku = (((this.dataForm.controls['name'].value)
+    .toLowerCase())
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '')).trim();
     return sku.slice(0, 3) +
             sku.slice(-3) + '-' +
             this.dataForm.controls['category'].value +

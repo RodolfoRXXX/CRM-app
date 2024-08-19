@@ -83,10 +83,12 @@ export class ProductListComponent implements OnInit {
   }
   getCategories(id_enterprise: number): void {
     this._api.postTypeRequest('profile/get-categories', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-      this.categories = value.data
-      this.categories.forEach((item: any) => {
+      if(value.date) {
+        this.categories = value.data
+        this.categories.forEach((item: any) => {
         item.color_badge = JSON.parse(item.color_badge)
       });
+      }
     })
   }
   getTags(id_enterprise: number): void {
