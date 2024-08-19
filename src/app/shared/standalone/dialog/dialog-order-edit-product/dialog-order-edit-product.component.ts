@@ -29,7 +29,7 @@ export class DialogOrderEditProductComponent implements OnInit {
   @ViewChild('input') input!: ElementRef;
 
   employee!: Employee;
-  product!: Product;
+  product!: any;
   uriImg = environment.SERVER;
   optionBox:boolean = false;
   dataSource = new MatTableDataSource();
@@ -39,6 +39,7 @@ export class DialogOrderEditProductComponent implements OnInit {
   stkError: boolean = false;
   editRegister: any = [];
   state!: string;
+  filters!: any[];
 
   constructor(
     public dialogRef: MatDialogRef<DialogOrderEditProductComponent>,
@@ -75,6 +76,18 @@ export class DialogOrderEditProductComponent implements OnInit {
     }
   }
 
+  //Filtros
+  getFilters(id_enterprise: number): void {
+    this._api.postTypeRequest('profile/get-filters-obj', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
+      if(value.status == 1 && value.data) {
+        value.data.forEach((element: any) => {
+          element.filter_values = JSON.parse(element.filter_values)
+        });
+        this.filters = value.data
+      }
+    })
+  }
+
   //Valor nuevo
     //Carga todas las opciones de producto
     getOptions(text: string) {
@@ -83,6 +96,7 @@ export class DialogOrderEditProductComponent implements OnInit {
           startWith({}),
           map(() => this.getDataLocal()),
           switchMap((id_enterprise) => {
+            this.getFilters(id_enterprise)
             return this._api.postTypeRequest('profile/get-products-options', { id_enterprise: id_enterprise, text: text })
                           .pipe(catchError(async () => {observableOf(null)}));
           }),
@@ -96,6 +110,21 @@ export class DialogOrderEditProductComponent implements OnInit {
         )
         .subscribe((value: any) => {
             // Asignamos los datos únicos al dataSource (suponiendo que dataSource es un MatTableDataSource o similar)
+            let arr: any[] = [];
+            value.forEach((element: any) => {
+              arr = [];
+              (element.filters.split(',').map(Number)).forEach((id: number) => {
+                this.filters.forEach(filter => {
+                    filter.filter_values.forEach((value: any) => {
+                        if (value.id === id) {
+                            arr.push(value.value);
+                          }
+                    });
+                });
+              });
+              element.filter_values = arr
+            });
+            
             this.dataSource.data = value
             this.optionBox = true;
           });
@@ -114,9 +143,10 @@ export class DialogOrderEditProductComponent implements OnInit {
 //Traigo la información del producto
   getProduct(id_product: number) {
     this.load = true;
-    this._api.postTypeRequest('profile/get-product-detail-by-id', { id_product: id_product }).subscribe( (value:any) => {
+    this._api.postTypeRequest('profile/get-product-detail', { id_product: id_product }).subscribe( (value:any) => {
       this.load = false;
       if(value.data) {
+        value.data[0].filter_values = (value.data[0].filter_values)?value.data[0].filter_values.split(','):[]
         this.product = value.data[0];
       }
     })

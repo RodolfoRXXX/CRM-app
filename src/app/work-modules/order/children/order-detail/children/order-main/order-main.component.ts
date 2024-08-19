@@ -69,6 +69,7 @@ export class OrderMainComponent {
       const data = JSON.parse(this.data.detail);
       if(data) {
         this.dataSource.data = data;
+        console.log(data)
       }
     }
     this.load = false;

@@ -40,21 +40,15 @@
                         <div class="fw-500 fs-11">
                             {{ element.name || 'Sin información' }}
                         </div>
-                        <div class="d-flex justify-content-between w-100">
-                            <div class="d-flex align-items-center fs-08">
-                                Color: 
-                                <span class="material-icons fs-09 ms-1" [style.color]="element.option_1_name">
-                                    square
-                                </span>
-                            </div>
-                            <div>
-                                <span class="fs-08">{{ this._auth.getOptionName2() || 'Opción 2' }}: </span>
-                                <span class="fw-500">{{ element.option_2_name }}</span>
-                            </div>
-                            <div>
-                                <span class="fs-08">Stock: </span>
-                                <span class="fw-700">{{ (element.stock_available > 0)?element.stock_available:'sin stock' }}</span>
-                            </div>
+                        <div class="d-flex justify-content-start w-100">
+                            <mat-chip-set class="ms-1" aria-label="filter-chips">
+                                <mat-chip class="soft-grey-background me-1">
+                                    <span class="cap fw-500">{{ (element.stock_available > 0)?(element.stock_available + ' unidades'):'sin stock' }}</span>
+                                </mat-chip>
+                                <mat-chip class="soft-grey-background me-1" *ngFor="let item of element.filter_values | keyvalue">
+                                    <span class="cap fw-500">{{ item.value }}</span>
+                                </mat-chip>
+                            </mat-chip-set>
                         </div>
                     </div>
                     </td>
@@ -103,21 +97,12 @@
         <!-- caja con información básica -->
         <h5 class="border-bottom text-capitalize pb-2 mt-3 mb-2">detalles</h5>
         <ul class="list-unstyled mb-2 ps-2">
-            <li class="mb-2">
-                <span class="me-1 fs-08">Color: </span>
-                <span>
-                    <span class="h6" *ngIf="!product['option_1_name']">Sin información</span>
-                    <span class="material-icons fs-11" 
-                            [style.color]="product['option_1_name']"
-                            style="position: relative; top: 3px;"
-                            *ngIf="product['option_1_name']">
-                        square
-                    </span>
-                </span>
-            </li>
-            <li class="mb-2">
-                <span class="me-1 fs-08">{{ this._auth.getOptionName2() || 'Opción 2' }}: </span>
-                <span class="h6">{{ (product['option_2_name'])?product['option_2_name']:'Sin información' }}</span>
+            <li class="mb-2" *ngIf="product.filters != ''">
+                <mat-chip-set class="ms-1" aria-label="filter-chips">
+                    <mat-chip class="soft-grey-background me-1" *ngFor="let item of product.filter_values | keyvalue">
+                        <span class="cap fw-500">{{ item.value }}</span>
+                    </mat-chip>
+                </mat-chip-set>
             </li>
             <li class="mb-2">
                 <span class="me-1 fs-08">SKU: </span>
