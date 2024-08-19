@@ -1,0 +1,44 @@
+<!--Componente que edita los filtros adicionales del producto -->
+
+<mat-card class="card card-product addProduct productFilters">
+    <mat-card-header>
+      <mat-card-title>Filtros adicionales</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+        <!-- Filtros de tags -->
+        <mat-form-field appearance="outline" class="col-12" style="margin-bottom: -15px;">
+          <mat-label class="cap">Más filtros</mat-label>
+          <mat-select formControlName="filters" multiple (valueChange)="setChips($event)">
+            @for (group of filters; track group) {
+              <mat-optgroup class="cap fw-500" [label]="group.filter_name">
+                @for (value of group.filter_values; track value) {
+                  <mat-option class="cap fw-300" [value]="value.id">{{value.value}}</mat-option>
+                }
+              </mat-optgroup>
+            }
+          </mat-select>
+        </mat-form-field>
+        <!-- Caja de filtros mostrados en chips -->
+        <div class="status-container d-flex justify-content-start mb-2 flex-wrap">
+          <mat-chip-set class="ms-1 chip-set" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
+            <mat-chip class="soft-grey-background me-1">
+              <span class="cap fw-500">{{ item.value }}</span>
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+        <!-- Botones de reseteo y confirmación -->
+        <div class="submit-btn-box">
+          <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
+            Reset
+          </button>
+          <button mat-stroked-button color="primary" type="submit" [disabled]="dataForm.invalid || loading || dataForm.untouched || dataForm.pristine">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-footer class="login-footer">
+      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>

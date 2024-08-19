@@ -28,6 +28,7 @@
         <div class="col-12 col-lg-4">
             <app-product-stock [product]="product" *ngIf="product.id > 0"></app-product-stock>
             <app-product-price [product]="product" [permissions]="permissions" *ngIf="product.id > 0"></app-product-price>
+            <app-product-filters [product]="product" *ngIf="product.id > 0"></app-product-filters>
             <app-product-storage [product]="product" *ngIf="product.id > 0"></app-product-storage>
         </div>
     </div>

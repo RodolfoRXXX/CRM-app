@@ -42,9 +42,9 @@
               <mat-error *ngIf="this.dataForm.controls['name']!.errors" class="fs-09">{{getErrorName()}}</mat-error>
             </mat-form-field>
           </div>
-          <!-- Categoría, medida y color del producto -->
+          <!-- Categoría, y sku -->
           <div class="row">
-            <mat-form-field appearance="outline" class="col">
+            <mat-form-field appearance="outline" class="col-md-6">
               <!-- Filtro de categoría -->
               <mat-label>Categoría</mat-label>
               <mat-select formControlName="category" 
@@ -55,75 +55,53 @@
               </mat-select>
               <mat-error *ngIf="this.dataForm.controls['category']!.errors" class="fs-09">{{getErrorCategory()}}</mat-error>
             </mat-form-field>
-            <!-- Filtros de tags -->
-            <mat-form-field appearance="outline" class="col">
-              <mat-label class="cap">Más filtros</mat-label>
-              <mat-select formControlName="filters" multiple (valueChange)="setChips($event)">
-                @for (group of filters; track group) {
-                  <mat-optgroup class="cap fw-500" [label]="group.filter_name">
-                    @for (value of group.filter_values; track value) {
-                      <mat-option class="cap fw-300" [value]="value.id">{{value.value}}</mat-option>
-                    }
-                  </mat-optgroup>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <!-- Caja de filtros mostrados en chips -->
-          <div class="status-container d-flex justify-content-end">
-            <mat-chip-set class="ms-1" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
-              <mat-chip class="soft-grey-background me-1">
-                  <span class="cap fw-500">{{ item.value }}</span>
-              </mat-chip>
-            </mat-chip-set>
-          </div>
-          <!-- SKU del producto -->
-          <div class="sku-product-box">
-            <div>
-              <div class="sku-box-text">
-                <div>
-                  <span>SKU: </span>
-                  <span class="sku-text">{{ sku }}</span>
+            <!-- SKU del producto -->
+            <div class="col-md-6 sku-product-box">
+              <div>
+                <div class="sku-box-text">
+                  <div>
+                    <span>SKU: </span>
+                    <span class="sku-text">{{ sku }}</span>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <mat-icon color="primary" *ngIf="exist_sku == 'not'">check_circle_outline</mat-icon>
+                    <mat-icon color="warn" *ngIf="exist_sku == 'yes'">error_outline</mat-icon>
+                  </div>
                 </div>
-                <div class="d-flex align-items-center">
-                  <mat-icon color="primary" *ngIf="exist_sku == 'not'">check_circle_outline</mat-icon>
-                  <mat-icon color="warn" *ngIf="exist_sku == 'yes'">error_outline</mat-icon>
+                <!-- Caja de error de sku -->
+                <div class="sku-error fs-09">
+                  <span *ngIf="exist_sku == 'yes'">Este producto ya existe</span>
+                  <span *ngIf="exist_sku == 'regenerate'">Se debe actualizar el sku</span>
                 </div>
               </div>
-              <!-- Caja de error de sku -->
-              <div class="sku-error fs-09">
-                <span *ngIf="exist_sku == 'yes'">Este producto ya existe</span>
-                <span *ngIf="exist_sku == 'regenerate'">Se debe actualizar el sku</span>
-              </div>
+              <button mat-stroked-button 
+                      color="accent" 
+                      type="button" 
+                      (click)="checkSKU()"
+                      class="fs-09"
+                      [disabled]="loading">
+                Generar SKU
+              </button>
             </div>
-            <button mat-stroked-button 
-                    color="accent" 
-                    type="button" 
-                    (click)="checkSKU()"
-                    [disabled]="loading">
-              Generar SKU
-            </button>
           </div>
           <!-- Descripción del producto -->
-          <div>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Descripción</mat-label>
-              <textarea matInput
-                        formControlName="description" 
-                        required>
-              </textarea>
-              <mat-error *ngIf="this.dataForm.controls['description']!.errors" class="fs-09">{{getErrorDescription()}}</mat-error>
-            </mat-form-field>
-          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput
+                      formControlName="description" 
+                      required>
+            </textarea>
+            <mat-error *ngIf="this.dataForm.controls['description']!.errors" class="fs-09">{{getErrorDescription()}}</mat-error>
+          </mat-form-field>
           <!-- Botones de reseteo y confirmación -->
           <div class="submit-btn-box">
             <button mat-stroked-button color="warn" class="me-3" type="button" (click)="resetAll()">
               Reset
             </button>
-<!--<button mat-stroked-button color="primary" type="submit" [disabled]="(this.dataForm.status == 'INVALID') || loading || this.dataForm.dirty || this.getSku() !== this.dataForm.controls['sku'].value">
-              Guardar
-            </button>-->
-            <button mat-stroked-button color="primary" type="submit">
+            <button mat-stroked-button 
+                    color="primary" 
+                    type="submit" 
+                    [disabled]="(this.dataForm.status == 'INVALID') || loading || !this.dataForm.dirty || this.dataForm.pristine || this.getSku() !== this.dataForm.controls['sku'].value">
               Guardar
             </button>
           </div>
@@ -133,11 +111,9 @@
       <!-- Vista que muestra si no hay categorías y opciones creadas -->
        <ng-container *ngIf="!categories && !load">
         <!-- Vista que muestra si no hay categorías creadas -->
-        <ng-container *ngIf="!categories">
-          <div class="d-flex text-center align-items-center p-4">
-            <h4>No se pueden crear productos porque no existen categorías</h4>
-          </div>
-        </ng-container>
+        <div class="d-flex text-center align-items-center p-4">
+          <h4>No se pueden crear productos porque no existen categorías</h4>
+        </div>
        </ng-container>
     </mat-card-content>
     <!-- barra de loading -->

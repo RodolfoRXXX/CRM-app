@@ -1,0 +1,21 @@
+
+.card-product.addProduct.productFilters {
+    mat-card-content {
+        padding-bottom: 15px;
+        padding-top: 15px;
+        .status-container {
+            max-width: 100%; /* Asegura que el contenedor no exceda el ancho del padre */
+            overflow-wrap: break-word; /* Permite que el contenido se ajuste dentro del contenedor */
+        }
+          
+        .chip-set {
+            display: flex;
+            flex-wrap: wrap; /* Permite que los chips pasen a la siguiente fila */
+            gap: 0.5rem; /* Espacio entre los chips */
+        }
+    }
+    .submit-btn-box {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

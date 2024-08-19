@@ -26,7 +26,6 @@ export class ProductInformationComponent implements OnInit {
   sku!: string;
   employee!: Employee;
   categories!: Category[];
-  filters!: any[];
   dataForm!: FormGroup;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['name'];
@@ -34,7 +33,6 @@ export class ProductInformationComponent implements OnInit {
   load: boolean = true;
   loading: boolean = false;
   exist_sku!: string;
-  chips: string[] = [];
 
   constructor(
     private _conector: ConectorsService,
@@ -58,7 +56,6 @@ export class ProductInformationComponent implements OnInit {
     try {
       const value = await this.getData();
       this.getCategories(value.id_enterprise);
-      this.getFilters(value.id_enterprise);
       this.id_enterprise = value.id_enterprise;
       this.employee = value;
       this.dataForm.patchValue({id_enterprise : value.id_enterprise})
@@ -88,7 +85,6 @@ export class ProductInformationComponent implements OnInit {
         category: new FormControl('', [
           Validators.required,
         ]),
-        filters: new FormControl(['']),
         sku: new FormControl('', [
           Validators.required,
         ]),
@@ -107,7 +103,6 @@ export class ProductInformationComponent implements OnInit {
       id_enterprise: (product.id_enterprise > 0)?product.id_enterprise:'',
       name: (product.name != '')?product.name:'',
       category: (product.category > 0)?product.category:'',
-      filters: (product.filters != '')?product.filters.split(',').map(Number):[''],
       sku: (product.sku != '')?product.sku:'',
       description: (product.description != '')?product.description:'',
     })
@@ -123,32 +118,6 @@ export class ProductInformationComponent implements OnInit {
         }
       })
     }
-    //Filtros
-    getFilters(id_enterprise: number): void {
-      this._api.postTypeRequest('profile/get-filters-obj', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-        if(value.status == 1 && value.data) {
-          value.data.forEach((element: any) => {
-            element.filter_values = JSON.parse(element.filter_values)
-          });
-          this.filters = value.data
-          this.setChips()
-        }
-      })
-    }
-
-  //setea el array de chips de filtros que se muestran
-  setChips(event: any = '') {
-    this.chips = [];
-    ((event)?event:this.product.filters.split(',').map(Number)).forEach((id: number) => {
-      this.filters.forEach(filter => {
-          filter.filter_values.forEach((value: any) => {
-              if ((value.id === id) && (!this.chips.includes(value.value))) {
-                  this.chips.push(value.value);
-                }
-          });
-      });
-    });
-  }
 
   //Carga todas las opciones de producto
     searchAll() {
@@ -295,8 +264,6 @@ export class ProductInformationComponent implements OnInit {
   resetAll() {
     this.sku = '';
     this.exist_sku = '';
-    this.chips = [];
-    this.setChips()
     this.setDataForm(this.product)
   }
 
