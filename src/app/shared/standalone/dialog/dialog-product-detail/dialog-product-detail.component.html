@@ -27,8 +27,8 @@
                     <p class="status mb-0 fw-500 cap" [ngStyle]="getStatusCategory(product?product.category_color:'')">
                         {{ product?product.category_item:'Sin Categoría' }}
                     </p>
-                    <p class="status mb-0 fw-500 cap" [ngClass]="((product?product.is_stock:'sin stock') == 'con stock')?'bg-label-success':'bg-label-danger'">
-                        {{ product?product.is_stock:'Inactivo' }}
+                    <p class="status mb-0 fw-500 cap" [ngClass]="((product?product.stock_available:0) > 0)?'bg-label-success':'bg-label-danger'">
+                        {{ product?((product.stock_available > 0)?'Con stock':'Sin stock'):'Sin stock' }}
                     </p>
                 </div>
     
@@ -41,15 +41,15 @@
                         <span>{{ product?product.sku:'Sin información' }}</span>
                     </li>
                     <li class="mb-2">
-                        <span class="h6 me-1 fs-08">Stock físico/disponible: </span>
+                        <span class="h6 me-1 fs-08">Stock físico / disponible: </span>
                         <span>
-                            {{ product?product.stock_real:0 }}/
+                            {{ product?product.stock_real:0 }} /
                             {{ product?product.stock_available:0 }} unidades
                         </span>
                     </li>
                     <li class="mb-2">
                         <span class="h6 me-1 fs-08">Ubicación: </span>
-                        <span>{{ product?product.storage_name:'Sin información' }}</span>
+                        <span>{{ product?((product.storage_name.length)?product.storage_name:'Sin información'):'Sin información' }}</span>
                     </li>
                 </ul>
                 <div class="status-container d-flex justify-content-start">

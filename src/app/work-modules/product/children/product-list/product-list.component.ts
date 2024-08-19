@@ -28,7 +28,7 @@ export class ProductListComponent implements OnInit {
   employee!: Employee;
   categories!: any[];
   filters!: any[];
-  displayedColumns: string[] = ['detail', 'product', 'category', 'stock_real', 'state_stock', 'sale_price', 'sku', 'state'];
+  displayedColumns: string[] = ['detail', 'product', 'category', 'stock_real', 'sale_price', 'sku', 'state'];
   dataSource = new MatTableDataSource();
   resultsLength!: number;
   load_card1!: boolean;

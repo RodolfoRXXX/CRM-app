@@ -34,7 +34,6 @@ export class ProductStockComponent {
     this.dataForm = this.fb.group({
       id: ['', Validators.required],
       stock_real: ['', Validators.required],
-      is_stock: ['', Validators.required],
       stock_available: [0, Validators.required]
     });
   }
@@ -43,7 +42,6 @@ export class ProductStockComponent {
     this.dataForm.setValue({
       id: product.id || '',
       stock_real: product.stock_real || 0,
-      is_stock: product.is_stock || '',
       stock_available: product.stock_available || 0
     });
   }
@@ -66,7 +64,6 @@ export class ProductStockComponent {
   onSubmit() {
     if(this.dataForm.controls['id'].value > 0) {
       this.loading = true;
-      this.dataForm.patchValue({is_stock: (this.dataForm.controls['stock_real'].value > 0)?'con stock':'sin stock'})
       this._api.postTypeRequest('profile/edit-product-stock', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
