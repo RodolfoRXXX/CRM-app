@@ -29,7 +29,7 @@ export class DialogOrderEditProductComponent implements OnInit {
   @ViewChild('input') input!: ElementRef;
 
   employee!: Employee;
-  product!: any;
+  product!: Product;
   uriImg = environment.SERVER;
   optionBox:boolean = false;
   dataSource = new MatTableDataSource();
@@ -115,16 +115,15 @@ export class DialogOrderEditProductComponent implements OnInit {
               arr = [];
               (element.filters.split(',').map(Number)).forEach((id: number) => {
                 this.filters.forEach(filter => {
-                    filter.filter_values.forEach((value: any) => {
-                        if (value.id === id) {
-                            arr.push(value.value);
-                          }
-                    });
+                  filter.filter_values.forEach((value: any) => {
+                    if (value.id === id) {
+                        arr.push(value.value);
+                      }
+                  });
                 });
               });
               element.filter_values = arr
             });
-            
             this.dataSource.data = value
             this.optionBox = true;
           });
@@ -208,9 +207,6 @@ export class DialogOrderEditProductComponent implements OnInit {
         item = {
           id_product: this.product?this.product.id:this.data.data.id_product,
           name: this.product?this.product.name:this.data.data.name,
-          description: this.product?this.product.description:this.data.data.description,
-          option_1: this.product?this.product.option_1_name:this.data.data.option_1,
-          option_2: this.product?this.product.option_2_name:this.data.data.option_2,
           sku: this.product?this.product.sku:this.data.data.sku,
           qty: this.qty,
           status: 2,
@@ -245,4 +241,3 @@ export class DialogOrderEditProductComponent implements OnInit {
   }
 
 }
-

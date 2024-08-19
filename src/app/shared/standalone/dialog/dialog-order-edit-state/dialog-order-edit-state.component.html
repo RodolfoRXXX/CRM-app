@@ -1,101 +1,88 @@
 
 <div class="card dialog">
-    <div class="d-flex justify-content-between align-items-start pb-3 b-b">
-        <div class="d-flex flex-column align-items-start">
-            <h4 class="cap mb-0">Definir estado del remito</h4>
-            <p class="mb-0 fs-09">Editá el estado de los productos asociados a este remito</p>
+    <div class="dialog-box">
+        <div class="d-flex justify-content-between align-items-start pb-3 b-b">
+            <div class="d-flex flex-column align-items-start">
+                <h4 class="cap mb-0">Definir estado del remito</h4>
+                <p class="mb-0 fs-09">Editá el estado de los productos asociados a este remito</p>
+            </div>
+            <a mat-icon-button routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
+                <mat-icon>close</mat-icon>
+            </a>
         </div>
-        <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
-            <mat-icon>close</mat-icon>
-        </a>
+        <!-- cargando... -->
+        <div class="d-flex justify-content-center p-3" *ngIf="load">
+            <h4>Cargando...</h4>
+        </div>
+        <!-- Table of orders -->
+        <div *ngIf="dataSource.data.length">
+            <table mat-table [dataSource]="dataSource">
+            
+                <!-- sku Column -->
+                <ng-container matColumnDef="sku">
+                    <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400 max-800-hidden">SKU</th>
+                    <td mat-cell *matCellDef="let element" class="max-800-hidden font-family-def">
+                        <p class="mb-0 text-muted fs-09">{{ element.sku }}</p>
+                    </td>
+                </ng-container>
+    
+                <!-- product Column -->
+                <ng-container matColumnDef="product">
+                    <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400"> PRODUCTO </th>
+                    <td mat-cell *matCellDef="let element" class="font-family-def">
+                        <span class="name-data">
+                            {{ element.name || 'Sin información' }}
+                        </span>
+                    </td>
+                </ng-container>
+    
+                <!-- qty column -->
+                <ng-container matColumnDef="qty">
+                    <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400 max-600-hidden"> CANTIDAD </th>
+                    <td mat-cell *matCellDef="let element" class="max-600-hidden font-family-def">
+                        <p class="mb-0 ms-4 fs-11 fw-500">{{ element.qty || 0 }}</p>
+                    </td>
+                </ng-container>
+    
+                <!-- status column -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400"> ESTADO </th>
+                    <td mat-cell *matCellDef="let element" class="font-family-def">
+                        <mat-form-field appearance="outline" class="set-width-600" style="margin-bottom: -20px; margin-top: 5px;">
+                            <mat-label>Estado</mat-label>
+                            <mat-select [value]="element.status" (selectionChange)="changeState(element, $event)">
+                                <ng-container *ngFor="let item of order_status">
+                                    <mat-option [value]="item.id" [disabled]="(item.id == 5) || ((element.status == 1)?(item.id == 4):false) || ((element.status == 4)?(item.id == 2):false)">
+                                        <span class="badge rounded-pill cap fs-08"
+                                            [style.color]="item.color"
+                                            [style.background-color]="item.bgColor">
+                                            {{ item.status }}
+                                        </span>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+    
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
+            </table>            
+        </div>
+        <!-- Footer -->
+        <div class="b-t mt-3 pt-3 d-flex justify-content-between">
+            <button class="me-2" mat-flat-button color="warn" (click)="closeAll()" [disabled]="loading" *ngIf="data.status == 1">
+                Cerrar Remito
+            </button>
+            <button class="me-2" mat-flat-button color="warn" (click)="openOrder()" [disabled]="loading" *ngIf="data.status == 0">
+                Abrir remito
+            </button>
+            <button mat-flat-button color="primary" [disabled]="dataForm.invalid || loading" (click)="closeByOne()">
+                Confirmar <span *ngIf="data.status == 0">y abrir</span><span *ngIf="data.status == 1">y cerrar</span>
+            </button>
+        </div>
     </div>
-    <!-- cargando... -->
-    <div class="d-flex justify-content-center p-3" *ngIf="load">
-        <h4>Cargando...</h4>
-    </div>
-    <!-- Table of orders -->
-    <div *ngIf="dataSource.data.length">
-        <table mat-table [dataSource]="dataSource">
-        
-            <!-- sku Column -->
-            <ng-container matColumnDef="sku">
-                <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400 max-800-hidden">SKU</th>
-                <td mat-cell *matCellDef="let element" class="max-800-hidden font-family-def">
-                    <p class="mb-0 text-muted fs-09">{{ element.sku }}</p>
-                </td>
-            </ng-container>
-
-            <!-- product Column -->
-            <ng-container matColumnDef="product">
-                <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400"> PRODUCTO </th>
-                <td mat-cell *matCellDef="let element" class="font-family-def">
-                    <div class="data-column">
-                        <div class="text-data text-data-box">
-                            <span class="name-data">
-                                {{ element.name || 'Sin información' }}
-                            </span>
-                            <small class="description-product fs-09 text-muted max-1150-hidden" matTooltip="{{ element.description }}" matTooltipPosition="above">
-                                {{ element.description || 'Sin información' }}
-                            </small>
-                            <small class="description-product text-muted max-1150-hidden">
-                                <span class="fs-08">Color: 
-                                    <span class="material-icons fs-09" [style.color]="element.option_1" style="position: relative; top: 3px;">
-                                    square
-                                    </span>
-                                </span>
-                                <span class="ms-2 fs-08">{{ this._auth.getOptionName2() || 'Opción 2' }}: </span><span class="fw-500">{{ element.option_2 }}</span>
-                            </small>
-                        </div>
-                    </div>
-                </td>
-            </ng-container>
-
-            <!-- qty column -->
-            <ng-container matColumnDef="qty">
-                <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400 max-600-hidden"> CANTIDAD </th>
-                <td mat-cell *matCellDef="let element" class="max-600-hidden font-family-def">
-                    <p class="mb-0 ms-4 fs-11 fw-500">{{ element.qty || 0 }}</p>
-                </td>
-            </ng-container>
-
-            <!-- status column -->
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef class="text-muted fs-08 fw-400"> ESTADO </th>
-                <td mat-cell *matCellDef="let element" class="font-family-def">
-                    <mat-form-field appearance="outline" class="set-width-600" style="margin-bottom: -20px; margin-top: 5px;">
-                        <mat-label>Estado</mat-label>
-                        <mat-select [value]="element.status" (selectionChange)="changeState(element, $event)">
-                            <ng-container *ngFor="let item of order_status">
-                                <mat-option [value]="item.id" [disabled]="(item.id == 5) || ((element.status == 1)?(item.id == 4):false) || ((element.status == 4)?(item.id == 2):false)">
-                                    <span class="badge rounded-pill cap fs-08"
-                                        [style.color]="item.color"
-                                        [style.background-color]="item.bgColor">
-                                        {{ item.status }}
-                                    </span>
-                                </mat-option>
-                            </ng-container>
-                        </mat-select>
-                    </mat-form-field>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
-        </table>            
-    </div>
-    <!-- Footer -->
-     <div class="b-t mt-3 pt-3 d-flex justify-content-between">
-        <button class="me-2" mat-flat-button color="warn" (click)="closeAll()" [disabled]="loading" *ngIf="data.status == 1">
-            Cerrar Remito
-        </button>
-        <button class="me-2" mat-flat-button color="warn" (click)="openOrder()" [disabled]="loading" *ngIf="data.status == 0">
-            Abrir remito
-        </button>
-        <button mat-flat-button color="primary" [disabled]="dataForm.invalid || loading" (click)="closeByOne()">
-            Confirmar <span *ngIf="data.status == 0">y abrir</span><span *ngIf="data.status == 1">y cerrar</span>
-        </button>
-     </div>
+    <mat-card-footer class="login-footer">
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
 </div>
-<mat-card-footer class="login-footer">
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-</mat-card-footer>
