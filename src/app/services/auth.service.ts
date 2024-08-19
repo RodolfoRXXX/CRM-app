@@ -101,14 +101,6 @@ export class AuthService {
   setEnterpriseThumbnail(thumbnail: any): void {
     localStorage.setItem('enterprise_thumbnail', thumbnail);
   }
-  //Seteo valores por defecto para el usuario según su empresa
-  setOptionName1(name: string) {
-    localStorage.setItem('optionName1', name);
-  }
-  setOptionName2(name: string) {
-    localStorage.setItem('optionName2', name);
-  }
-
 // ----------------- GET ----------------
   //Devuelvo las credenciales de acceso
   getDataFromLocalStorage(): any | null {
@@ -134,13 +126,6 @@ export class AuthService {
   //Recuperar el objeto role del usuario logueado
   getRole(): any | null{
     return localStorage.getItem('role');
-  }
-  //Obtengo los valores por defecto de la empresa
-  getOptionName1() {
-    return localStorage.getItem('optionName1');
-  }
-  getOptionName2() {
-    return localStorage.getItem('optionName2');
   }
 
 // ------------- CLEAR STORAGE --------------
