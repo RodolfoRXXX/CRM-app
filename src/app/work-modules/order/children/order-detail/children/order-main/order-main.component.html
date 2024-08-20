@@ -61,7 +61,7 @@
                   <td mat-cell *matCellDef="let element; let i = index;">
                       <button mat-icon-button 
                               color="primary"
-                              (click)="addProduct(element.id_product, this.dataSource.data[i].qty)"
+                              (click)="addProduct($event, element.id_product, this.dataSource.data[i].qty)"
                               [disabled]="(this.info.status == 0) || ((this.employee && this.info.seller && !this.employee.list_of_permissions.includes(this.edit_enterprise_control))?((this.info.seller != this.employee.id)):false) || (element.status == 1)">
                           <mat-icon style="position: relative; bottom: 2px;">edit</mat-icon>
                       </button>
@@ -69,7 +69,7 @@
               </ng-container>
           
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bill-row"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)" class="bill-row"></tr>
           </table>            
       </div>
       <!-- No products -->
@@ -81,7 +81,7 @@
         <button mat-stroked-button 
                 color="primary"
                 type="button"
-                (click)="addProduct()"
+                (click)="addProduct($event)"
                 [disabled]="(this.info.status == 0) || ((this.employee && this.info.seller && !this.employee.list_of_permissions.includes(this.edit_enterprise_control))?((this.info.seller != this.employee.id)):false) || (dataSource.data.length > 9)">
           + Agregar producto
         </button>

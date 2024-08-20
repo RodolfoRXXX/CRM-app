@@ -98,7 +98,7 @@
                         </mat-panel-title>
                         <mat-panel-description style="overflow: auto;">
                             <mat-chip-set class="ms-1" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
-                                    <mat-chip class="soft-grey-background me-1" *ngIf="item.value">
+                                    <mat-chip class="soft-grey-background me-1 fw-500" *ngIf="item.value">
                                         {{ item.value }}
                                         <button matChipRemove (click)="delete(item.key)">
                                             <mat-icon>cancel</mat-icon>

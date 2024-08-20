@@ -7,6 +7,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 import { GetJsonDataService } from 'src/app/services/get-json-data.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditProductComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-product/dialog-order-edit-product.component';
+import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
 import { environment, permissions } from 'src/enviroments/enviroment';
 
 @Component({
@@ -74,13 +75,26 @@ export class OrderMainComponent {
     this.load = false;
   }
 
+  //Función que toma la fila clickeada del table eligiendo esa opción
+  onRowClicked(row: any) {
+    if(row) {
+      this.openDialogDetail(row.id_product);
+    }
+  }
+
+  //Abre el detalle del producto
+  openDialogDetail(id_product: number): void {
+    const dialogRef = this._dialog.open(DialogProductDetailComponent, { data: { id_product: id_product } });
+}
+
   // Método para encontrar el estado correspondiente
   getStatus(statusId: number) {
     return this.order_status.find(value => value.id === statusId);
   }
 
   //Abro la ventana de diálogo para agregar lineas o modificarlas
-  addProduct(id_product: number = 0, qty_db: number = 0) {
+  addProduct(e: Event, id_product: number = 0, qty_db: number = 0) {
+    e.stopPropagation();
     const dialogRef = this._dialog.open(DialogOrderEditProductComponent, { data: {id_product: id_product, qty_db: qty_db, edit: this.editRegister} });
     dialogRef.afterClosed().subscribe(response => {
       if(response) {

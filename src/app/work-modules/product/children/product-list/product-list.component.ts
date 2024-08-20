@@ -56,7 +56,6 @@ export class ProductListComponent implements OnInit {
     private _dialog: MatDialog,
     private _router: Router
   ) {
-    //this.getProducts();
     this.initPaginatorLabels()
   }
 
