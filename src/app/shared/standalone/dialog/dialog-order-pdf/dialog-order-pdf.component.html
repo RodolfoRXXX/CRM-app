@@ -1,0 +1,85 @@
+ 
+<div class="card options">
+    <div class="d-flex justify-content-between align-items-center mb-2 b-b">
+        <h4 class="cap mb-0">Generar vista del remito</h4>
+        <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
+            <mat-icon>close</mat-icon>
+        </a>
+    </div>
+    <!-- Vista a generar el pdf -->
+    <div class="remito" style="overflow-y: auto!important; height: 80vh;">
+        <header>
+            <div class="logo">
+                <img src="logo.png" alt="Logo Empresa">
+            </div>
+            <div class="company-info">
+                <h1>Remito</h1>
+                <p>Número: 001-00000001</p>
+                <p>Fecha: 19/08/2024</p>
+            </div>
+        </header>
+
+        <section class="from-to">
+            <div class="from">
+                <h2>Remitente</h2>
+                <p>Empresa Remitente</p>
+                <p>Dirección</p>
+                <p>Ciudad, Provincia</p>
+                <p>Teléfono</p>
+                <p>CUIT: 30-12345678-9</p>
+            </div>
+            <div class="to">
+                <h2>Cliente</h2>
+                <p>Empresa Destinataria</p>
+                <p>Dirección</p>
+                <p>Ciudad, Provincia</p>
+                <p>Teléfono</p>
+                <p>CUIT: 30-98765432-1</p>
+            </div>
+        </section>
+
+        <section class="products b-b">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="column-code">Código</th>
+                        <th class="column-quantity">Cantidad</th>
+                        <th class="column-description">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="column-code">1</td>
+                        <td class="column-quantity">10</td>
+                        <td class="column-description">Producto A</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="shipment">
+                Esta es la información de envío
+            </div>
+        </section>
+
+        <footer>
+            <div class="signature">
+                <p>Firma Remitente: ____________________________</p>
+                <p>Firma Destinatario: ___________________________</p>
+            </div>
+            <div class="notes">
+                <p><strong>Observaciones:</strong></p>
+                <p>Esta es una nota adicional sobre el remito.</p>
+            </div>
+        </footer>
+    </div>
+    <!-- Caja que muestra el archivo generado -->
+    <div>
+        <mat-spinner *ngIf="loading" style="width: 25px;"></mat-spinner>
+    </div>
+    <!-- Botones que muestran las acciones a realizar con ese documento -->
+    <div>
+    
+    </div>
+    <mat-card-footer class="login-footer">
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    </mat-card-footer>
+</div>

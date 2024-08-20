@@ -1,5 +1,6 @@
 export interface Order {
     id: number,
+    nroRemito: string,
     id_enterprise: number,
     date: string,
     customer: number,

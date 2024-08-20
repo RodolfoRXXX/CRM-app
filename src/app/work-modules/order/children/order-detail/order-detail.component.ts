@@ -9,6 +9,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Order } from 'src/app/shared/interfaces/order.interface';
 import { DialogOrderEditStateComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-state/dialog-order-edit-state.component';
+import { DialogOrderPdfComponent } from 'src/app/shared/standalone/dialog/dialog-order-pdf/dialog-order-pdf.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -86,6 +87,11 @@ export class OrderDetailComponent implements OnInit {
   //cambia el estado del remito - edita el estado de sus productos
   changeState(detail: string, id_order: number, status: any) {
     this._dialog.open(DialogOrderEditStateComponent, { data: { detail: detail, id_order: id_order, status: status }});
+  }
+
+  //cambia el estado del remito - edita el estado de sus productos
+  getView(id_order: number) {
+    this._dialog.open(DialogOrderPdfComponent, { data: id_order});
   }
 
   //Formulario creación/edición de producto
@@ -205,13 +211,14 @@ export class OrderDetailComponent implements OnInit {
         this.loading =  true;
         this._api.postTypeRequest('profile/create-order-detail', {form: this.dataForm.value, edit: this.editRegister}).subscribe({
           next: (res: any) => {
+            console.log(res)
             this.loading =  false;
             if(res.status == 1){
               //Accedió a la base de datos y no hubo problemas
-              if(res.data.affectedRows == 1){
+              if(res.data.orderId){
                 //Modificó la imagen
                 this._notify.showSuccess('Se ha creado un nuevo remito!');
-                this.rechargeComponent(res.data.insertId);
+                this.rechargeComponent(res.data.orderId);
               } else{
                 //No hubo modificación
                 this._notify.showError('No se detectaron cambios.')
