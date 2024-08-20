@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ApiService } from 'src/app/services/api.service';
 import { MaterialModule } from 'src/app/material/material/material.module';
@@ -24,15 +24,16 @@ import { NotificationService } from 'src/app/services/notification.service';
     ReactiveFormsModule
   ]
 })
-export class DialogOrderPdfComponent {
+export class DialogOrderPdfComponent implements OnInit {
 
   @ViewChild('input') input!: ElementRef;
 
   emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
   dataForm!: FormGroup;
   employee!: Employee;
-  customer!: Customer;
+  order!: any;
   uriImg = environment.SERVER;
+  load: boolean = true;
   loading: boolean = false;
   optionBox:boolean = false;
   dataSource = new MatTableDataSource();
@@ -49,6 +50,9 @@ export class DialogOrderPdfComponent {
   ) {
     console.log(this.data)
   }
+  ngOnInit(): void {
+    this.getOrder();
+  }
 
   private getDataLocal(): number {
     this._conector.getEmployee().subscribe((item: Employee) => {
@@ -59,7 +63,19 @@ export class DialogOrderPdfComponent {
 
   //trae toda la información de la orden para armar el remito
   getOrder() {
-
+    this.load = true;
+    //Obtener la información del producto
+    this._api.postTypeRequest('profile/get-order-detail-by-id', { id_order: this.data }).subscribe( (value: any) => {
+      if (value.data) {
+        //Si existe el producto lo carga
+        this.order = value.data[0];
+        console.log(value.data)
+      } else {
+        //Si NO existe el producto centonces cierra el dialog como error
+        //this.closeDialog();
+      }
+      this.load = false;
+    })
   }
 
   //Cierra la ventana de diálogo
