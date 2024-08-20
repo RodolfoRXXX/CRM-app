@@ -57,9 +57,13 @@ export class ProductListComponent implements OnInit {
     private _router: Router
   ) {
     //this.getProducts();
+    this.initPaginatorLabels()
+  }
+
+  private initPaginatorLabels(): void {
     this._paginator.itemsPerPageLabel = "Registros por página";
     this._paginator.firstPageLabel = "Primera página";
-    this._paginator.lastPageLabel = "última página";
+    this._paginator.lastPageLabel = "Última página";
     this._paginator.nextPageLabel = "Próxima página";
     this._paginator.previousPageLabel = "Anterior página";
   }
@@ -83,7 +87,7 @@ export class ProductListComponent implements OnInit {
   }
   getCategories(id_enterprise: number): void {
     this._api.postTypeRequest('profile/get-categories', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-      if(value.date) {
+      if(value.data) {
         this.categories = value.data
         this.categories.forEach((item: any) => {
         item.color_badge = JSON.parse(item.color_badge)
