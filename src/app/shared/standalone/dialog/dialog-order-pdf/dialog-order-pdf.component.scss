@@ -8,10 +8,12 @@
 .remito {
     width: 210mm;
     height: 297mm;
-    padding: 20mm;
-    margin: auto;
+    padding: 15mm;
     border: 1px solid #000;
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 header {
@@ -21,27 +23,39 @@ header {
     padding-bottom: 10px;
 }
 
-.logo img {
-    max-width: 100px;
+.company-name {
+    padding-top: 10px;
+    p {
+        margin-bottom: 5px;
+        padding-left: 5px;
+    }
 }
 
 .company-info {
     text-align: right;
+    p {
+        margin-bottom: 5px;
+    }
 }
 
 .from-to {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.from, .to {
-    width: 48%;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    .to {
+        p {
+            margin-bottom: 5px;
+            padding-left: 5px;
+        }
+    }
 }
 
 h2 {
     margin-bottom: 5px;
     border-bottom: 1px solid #000;
+}
+
+.products {
+    border-top: 2px solid #000;
 }
 
 .products table {
@@ -80,13 +94,18 @@ footer {
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
+    border-top: 1px solid #000;
 }
 
 .signature p {
     margin: 10px 30px 0 0;
 }
 
-.notes {
+.notes, .shipment {
+    margin-top: 10px;
     text-align: left;
     width: 100%;
+    p {
+        padding-left: 5px;
+    }
 }

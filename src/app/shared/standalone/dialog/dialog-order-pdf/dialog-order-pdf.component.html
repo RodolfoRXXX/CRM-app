@@ -6,79 +6,119 @@
             <mat-icon>close</mat-icon>
         </a>
     </div>
+    <!-- Caja que muestra el archivo generado -->
+    <div class="d-flex justify-content-center p-2">
+        <button mat-flat-button (click)="generatePDF()">
+            <span *ngIf="!false"> 
+                Generar PDF
+            </span>
+            <span class="d-flex justify-content-between" *ngIf="false">
+                <span>Generando PDF </span>
+                <mat-spinner *ngIf="!loading" diameter="20" class="ms-2"></mat-spinner>
+            </span>
+        </button>
+    </div>
     <!-- Vista a generar el pdf -->
-    <div class="remito" style="overflow-y: auto!important; height: 80vh;">
-        <header>
-            <div class="logo">
-                <img [src]="order?(uriImg + order.e_thumbnail):''" alt="Logo Empresa">
-            </div>
-            <div class="company-info">
-                <h1>Remito</h1>
-                <p>Número: 001-00000001</p>
-                <p>Fecha: 19/08/2024</p>
-            </div>
-        </header>
-
-        <section class="from-to">
-            <div class="from">
-                <h2>Remitente</h2>
-                <p>Empresa Remitente</p>
-                <p>Dirección</p>
-                <p>Ciudad, Provincia</p>
-                <p>Teléfono</p>
-                <p>CUIT: 30-12345678-9</p>
-            </div>
-            <div class="to">
-                <h2>Cliente</h2>
-                <p>Empresa Destinataria</p>
-                <p>Dirección</p>
-                <p>Ciudad, Provincia</p>
-                <p>Teléfono</p>
-                <p>CUIT: 30-98765432-1</p>
-            </div>
-        </section>
-
-        <section class="products b-b">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="column-code">Código</th>
-                        <th class="column-quantity">Cantidad</th>
-                        <th class="column-description">Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="column-code">1</td>
-                        <td class="column-quantity">10</td>
-                        <td class="column-description">Producto A</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="shipment">
-                Esta es la información de envío
-            </div>
-        </section>
-
+    <div #remitoPdf class="remito">
+        <div>
+            <header>
+                <div class="company-name">
+                    <h3 class="mb-2">{{ order?order.e_name:'Sin información' }}</h3>
+                    <p>{{ order?order.e_address:'Sin información' }}</p>
+                    <p>{{ order?order.e_city + ', ':'' }}{{ order?order.e_state:'' }}</p>
+                    <p>{{ order?order.e_cp + ', ':'' }}{{ order?order.e_country:'' }}</p>
+                    <p>Tel: {{ order?order.e_phone:'Sin información' }}</p>
+                </div>
+                <div class="company-info">
+                    <h1>Remito</h1>
+                    <p>Número: {{ order?order.nroRemito:'' }}</p>
+                    <p>Fecha: {{ order?(order.date | date:'dd/MM/yyyy'):'' }}</p>
+                    <p>CUIT: {{ order?order.e_cuit:'Sin información' }}</p>
+                </div>
+            </header>
+    
+            <section class="from-to row">
+                <p class="mb-1 fs-11"><strong>Cliente</strong></p>
+                <div class="to col">
+                    <p class="fs-11 fw-500">{{ order?order.c_name:'Sin información' }}</p>
+                    <p>Tel: {{ order?order.c_phone:'' }}</p>
+                    <p>CUIT/L: {{ order?order.c_cuit:'' }}</p>
+                </div>
+                <div class="to col">
+                    <p>{{ order?order.c_address:'Sin información' }}</p>
+                    <p>{{ order?order.c_city + ', ':'' }}{{ order?order.c_state:'' }}</p>
+                    <p>{{ order?order.c_country:'' }}</p>
+                </div>
+            </section>
+    
+            <section class="products">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="column-code">Código</th>
+                            <th class="column-quantity">Cantidad</th>
+                            <th class="column-description">Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of order?order.detail:[]">
+                            <td class="column-code">{{ item.sku }}</td>
+                            <td class="column-quantity">{{ item.qty }}</td>
+                            <td class="column-description">{{ item.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="shipment">
+                    <h4 class="mb-1">Entrega:</h4>
+                    <ng-container *ngIf="order?order.shipment != '':false">
+                        <p class="mb-0">
+                            {{ order?order.shipment.address + ', ':'' }}
+                            {{ order?order.shipment.betweenStreets:'' }}
+                        </p>
+                        <p class="mb-0">
+                            {{ order?order.shipment.cp + ', ':'' }}
+                            {{ order?order.shipment.city + ', ':'' }}
+                            {{ order?order.shipment.state + ', ':'' }}
+                            {{ order?order.shipment.country:'' }}
+                        </p>
+                        <p class="mb-0">
+                            {{ order?order.shipment.schedule:'' }}
+                        </p>
+                    </ng-container>
+                </div>
+            </section>
+        </div>
         <footer>
             <div class="signature">
                 <p>Firma Remitente: ____________________________</p>
                 <p>Firma Destinatario: ___________________________</p>
             </div>
             <div class="notes">
-                <p><strong>Observaciones:</strong></p>
-                <p>Esta es una nota adicional sobre el remito.</p>
+                <h4 class="mb-1">Observaciones:</h4>
+                <p>{{ order?order.observation:'Sin observaciones' }}</p>
             </div>
         </footer>
     </div>
-    <!-- Caja que muestra el archivo generado -->
-    <div>
-        <mat-spinner *ngIf="loading" style="width: 25px;"></mat-spinner>
-    </div>
-    <!-- Botones que muestran las acciones a realizar con ese documento -->
-    <div>
     
+    <!-- Botones que muestran las acciones a realizar con ese documento -->
+    <div class="d-flex justify-content-between p-2 b-t">
+        <!-- Enviar por email -->
+        <div>
+            Email
+        </div>
+        <!-- Enviar por Whatsapp -->
+        <div>
+            Whatsapp
+        </div>
+        <!-- Imprimir -->
+        <div>
+            Imprimir
+        </div>
     </div>
+    <!-- Sección de envío -->
+     <div>
+
+     </div>
     <mat-card-footer class="login-footer">
         <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
     </mat-card-footer>
