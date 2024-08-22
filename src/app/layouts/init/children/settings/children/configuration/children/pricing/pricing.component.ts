@@ -9,7 +9,8 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 
 @Component({
   selector: 'app-pricing',
-  templateUrl: './pricing.component.html'
+  templateUrl: './pricing.component.html',
+  styleUrls: ['./pricing.component.scss']
 })
 export class PricingComponent implements OnInit, AfterViewInit {
 
