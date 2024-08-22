@@ -1,0 +1,85 @@
+
+.btn-date {
+    position: absolute;
+    top: -10px;
+    right: 5px;
+    color: #b6b4b4;
+    mat-icon {
+        position: relative;
+        bottom: 2px;
+    }
+}
+
+.product-column {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1rem;
+    .text-product {
+        display: flex;
+        flex-direction: column;
+        .name-product {
+            --bs-text-opacity: 1;
+            color: #433c50 !important;
+            white-space: nowrap !important;
+            font-weight: 500 !important;
+            text-transform: capitalize;
+        }
+        .description-product {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.8rem;
+            font-weight: 300 !important;
+        }
+    }
+    .text-product-box {
+        min-width: 150px;
+        max-width: 300px;
+    }
+}
+  
+
+.gold-metallic {
+    background: linear-gradient(45deg,
+        rgba(249, 215, 28, 1) 0%,
+        rgba(212, 175, 55, 1) 25%,
+        rgba(255, 223, 0, 1) 50%,
+        rgba(212, 175, 55, 1) 75%,
+        rgba(249, 215, 28, 1) 100%
+    );
+    background-size: 200% 200%;
+    animation: shimmer 3s infinite;
+}
+
+.silver-metallic {
+    background: linear-gradient(45deg,
+        rgba(224, 224, 224, 1) 0%,
+        rgba(192, 192, 192, 1) 25%,
+        rgba(211, 211, 211, 1) 50%,
+        rgba(169, 169, 169, 1) 75%,
+        rgba(224, 224, 224, 1) 100%
+    );
+    background-size: 200% 200%;
+    animation: shimmer 3s infinite;
+}
+
+.bronze-metallic {
+    background: linear-gradient(45deg,
+        rgba(205, 127, 50, 1) 0%,
+        rgba(184, 115, 51, 1) 25%,
+        rgba(218, 165, 32, 1) 50%,
+        rgba(184, 115, 51, 1) 75%,
+        rgba(205, 127, 50, 1) 100%
+    );
+    background-size: 200% 200%;
+    animation: shimmer 3s infinite;
+}
+
+/* Animación de brillo */
+@keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+

@@ -27,7 +27,7 @@ const MENUMANAGEMENT = [
         { state: 'order/order-list', name: 'Lista de pedidos', type: '', icon: '' },
         { state: 'order/order-detail', name: 'Edición de pedido', type: '', icon: '' }
     ] },
-    { state: '', name: 'Productos', type: '', icon: 'assignment', children: [
+    { state: '', name: 'Stock', type: '', icon: 'assignment', children: [
         { state: 'product/product-list', name: 'Lista de productos', type: '', icon: '' },
         { state: 'product/add-product', name: 'Edición de producto', type: permissions.EDIT_PRODUCT_CONTROL, icon: '' },
         { state: 'product/category', name: 'Categorías', type: '', icon: '' }

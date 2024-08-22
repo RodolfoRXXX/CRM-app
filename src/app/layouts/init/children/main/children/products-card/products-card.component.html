@@ -1,0 +1,91 @@
+<!-- Products Card -->
+
+<mat-card class="card mb-6">
+    <mat-card-content class="h-100">
+        <div class="row h-100">
+            <!-- tabla -->
+            <div class="col-md-7 d-flex flex-column justify-content-start position-relative">
+                <h4 class="cap">Productos más vendidos <span class="fs-09 text-muted">({{ text_range }})</span></h4>
+                <!-- Contenedor para la tabla con desplazamiento -->
+                <div class="m-4 mt-2 mb-2" style="max-height: 180px!important; overflow-y: auto;">
+                    <div class="d-flex justify-content-between b-b" *ngFor="let item of results; let i = index">
+                            <div class="w-auto d-flex align-items-center fs-09">
+                                {{ i + 1 }}
+                            </div>
+                            <div class="w-50">
+                                <div class="product-column">
+                                    <div class="text-product text-product-box">
+                                        <span class="name-product">
+                                            {{ item.name }}
+                                        </span>
+                                        <small class="description-product ps-1">
+                                            {{ item.sku }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-25 fw-500 d-flex align-items-center">
+                                ${{ item.total_amount }}
+                            </div>
+                    </div>
+                </div>
+                <button mat-icon-button aria-label="Date Data" class="btn-date" [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button class="text-muted fs-09" mat-menu-item (click)="setRange('1M')">Último Mes</button>
+                  <button class="text-muted fs-09" mat-menu-item (click)="setRange('6M')">Últimos 6 meses</button>
+                  <button class="text-muted fs-09" mat-menu-item (click)="setRange('12M')">Último Año</button>
+                </mat-menu>
+            </div>
+              
+            <!-- Detail -->
+            <div class="col-md-5 b-l ps-4 pe-4 h-100">
+                <!-- Value -->
+                <h4 class="mb-4 cap">Ranking de productos</h4>
+                <!-- Better -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="avatar">
+                        <span class="avatar-initial rounded text-heading gold-metallic">
+                            <span class="material-symbols-outlined">emoji_events</span>
+                        </span>
+                    </div>
+                    <div class="ms-3 d-flex flex-column align-items-between">
+                        <h5 class="mb-0">1ero</h5>
+                        <p class="mb-0 text-muted fw-400 fs-09">
+                            {{ results?results[0].name:'' }} ({{ results?'$' + results[0].total_amount:'' }})
+                        </p>
+                    </div>
+                </div>
+                <!-- Worst -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="avatar">
+                        <span class="avatar-initial rounded text-heading silver-metallic">
+                            <span class="material-symbols-outlined">workspace_premium</span>
+                        </span>
+                    </div>
+                    <div class="ms-3 d-flex flex-column align-items-between">
+                        <h5 class="mb-0">2do</h5>
+                        <p class="mb-0 text-muted fw-400 fs-09">
+                            {{ results?results[1].name:'' }} ({{ results?'$' + results[1].total_amount:'' }})
+                        </p>
+                    </div>
+                </div>
+                <!-- Average -->
+                 <div class="d-flex align-items-center mb-1">
+                    <div class="avatar">
+                        <span class="avatar-initial rounded text-heading bronze-metallic">
+                            <span class="material-symbols-outlined">license</span>
+                        </span>
+                    </div>
+                    <div class="ms-3 d-flex flex-column align-items-between">
+                        <h5 class="mb-0">3ero</h5>
+                        <p class="mb-0 text-muted fw-400 fs-09">
+                            {{ results?results[2].name:'' }} ({{ results?'$' + results[2].total_amount:'' }})
+                        </p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
