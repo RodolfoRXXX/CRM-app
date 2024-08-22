@@ -9,7 +9,9 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Order } from 'src/app/shared/interfaces/order.interface';
 import { DialogOrderEditStateComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-state/dialog-order-edit-state.component';
-import { DialogOrderPdfComponent } from 'src/app/shared/standalone/dialog/dialog-order-pdf/dialog-order-pdf.component';
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-order-detail',
@@ -24,6 +26,7 @@ export class OrderDetailComponent implements OnInit {
   id_order!: number;
 
   order!: Order;
+  preview!: any;
   customer!: number;
   detail!: any;
   shipment!: string;
@@ -33,6 +36,7 @@ export class OrderDetailComponent implements OnInit {
 
   hasChange: boolean = false;
   loading: boolean = false;
+  loadPDF: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -89,9 +93,159 @@ export class OrderDetailComponent implements OnInit {
     this._dialog.open(DialogOrderEditStateComponent, { data: { detail: detail, id_order: id_order, status: status }});
   }
 
-  //cambia el estado del remito - edita el estado de sus productos
-  getView(id_order: number) {
-    this._dialog.open(DialogOrderPdfComponent, { data: id_order});
+  //función que genera la vista del remito en pdf
+  getView() {
+    this.loadPDF = true;
+      const documentDefinition: any = {
+        pageSize: 'A4',
+        pageMargins: [40, 60, 40, 60], // Márgenes de la página
+        content: [
+          {
+            columns: [
+              {
+                width: '50%',
+                stack: [
+                  { text: this.preview ? this.preview.e_name : 'Sin información', style: 'companyName' },
+                  { text: this.preview ? this.preview.e_address : 'Sin información' },
+                  { text: (this.preview?.e_city ? this.preview.e_city + ', ' : '') + (this.preview?.e_state || '') },
+                  { text: (this.preview?.e_cp ? this.preview.e_cp + ', ' : '') + (this.preview?.e_country || '') },
+                  { text: 'Tel: ' + (this.preview ? this.preview.e_phone : 'Sin información') }
+                ]
+              },
+              {
+                width: '50%',
+                stack: [
+                  { text: 'Remito', style: 'header', alignment: 'right' },
+                  { text: 'R' + (this.preview?.nroRemito || ''), alignment: 'right' },
+                  { text: 'Fecha: ' + (this.preview?.date ? new Date(this.preview.date).toLocaleDateString('es-AR') : ''), alignment: 'right' },
+                  { text: 'CUIT: ' + (this.preview?.e_cuit || 'Sin información'), alignment: 'right' }
+                ]
+              }
+            ]
+          },
+          { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }] }, // Separador
+      
+          { text: 'Cliente', style: 'subheader', margin: [0, 10, 0, 5] },
+          {
+            columns: [
+              {
+                width: '50%',
+                stack: [
+                  { text: this.preview ? this.preview.c_name : 'Sin información', style: 'clientName' },
+                  { text: 'Tel: ' + (this.preview?.c_phone || '') },
+                  { text: 'CUIT/L: ' + (this.preview?.c_cuit || '') }
+                ]
+              },
+              {
+                width: '50%',
+                stack: [
+                  { text: this.preview ? this.preview.c_address : 'Sin información' },
+                  { text: (this.preview?.c_city ? this.preview.c_city + ', ' : '') + (this.preview?.c_state || '') },
+                  { text: this.preview?.c_country || '' }
+                ]
+              }
+            ]
+          },
+          { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }] }, // Separador
+      
+          { text: 'Productos', style: 'subheader', margin: [0, 10, 0, 5] },
+          {
+            table: {
+              widths: ['auto', 'auto', '*'],
+              body: (() => {
+                const body = [
+                  [
+                    { text: 'Código', style: 'tableHeader' },
+                    { text: 'Cantidad', style: 'tableHeader' },
+                    { text: 'Descripción', style: 'tableHeader' }
+                  ]
+                ];
+      
+                // Añadir las filas con los productos
+                const rows = this.preview?.detail || [];
+                rows.forEach((item: any) => {
+                  body.push([
+                    item.sku,
+                    item.qty,
+                    item.name
+                  ]);
+                });
+      
+                // Rellenar con filas vacías hasta alcanzar 10 filas
+                for (let i = rows.length; i < 10; i++) {
+                  body.push([{text: '-', style: ''}, {text: '', style: ''}, {text: '', style: ''}]);
+                }
+      
+                return body;
+              })()
+            },
+            layout: {
+              fillColor: function (rowIndex: any) {
+                return (rowIndex % 2 === 0) ? '#f3f3f3' : null;
+              }
+            }
+          },
+          { text: 'Observaciones:', style: 'subheader', margin: [0, 10, 0, 5] },
+          { text: this.preview?.observation || 'Sin observaciones' },
+          { text: '', margin: [0, 0, 0, 0] }, // Ajusta para ocupar todo el alto
+          { text: 'Entrega', style: 'subheader', margin: [0, 130, 0, 5] },
+          ...(this.preview?.shipment
+            ? [
+                { text: `${this.preview.shipment.address}, ${this.preview.shipment.betweenStreets || ''}`, margin: [0, 0, 0, 0] },
+                { text: `${this.preview.shipment.cp}, ${this.preview.shipment.city}, ${this.preview.shipment.state}, ${this.preview.shipment.country}`, margin: [0, 5, 0, 0] },
+                { text: `Horario: ${this.preview.shipment.schedule}`, margin: [0, 5, 0, 0] }
+              ]
+            : []),
+          { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 1 }] }, // Separador
+      
+          {
+            columns: [
+              {
+                width: '50%',
+                text: 'Firma Remitente: ____________________________',
+                margin: [0, 20, 0, 5]
+              },
+              {
+                width: '50%',
+                text: 'Firma Destinatario: ___________________________',
+                alignment: 'right',
+                margin: [0, 20, 0, 5]
+              }
+            ]
+          }
+        ],
+        styles: {
+          header: {
+            fontSize: 24,
+            bold: true,
+            margin: [0, 0, 0, 10]
+          },
+          subheader: {
+            fontSize: 14,
+            bold: true,
+            margin: [0, 10, 0, 5]
+          },
+          companyName: {
+            fontSize: 18,
+            bold: true,
+            margin: [0, 0, 0, 5]
+          },
+          clientName: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 0, 0, 5]
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 13,
+            color: 'black'
+          }
+        }
+    };
+      const pdf = pdfMake.createPdf(documentDefinition);
+      this.loadPDF = false;
+      pdf.open();
+  
   }
 
   //Formulario creación/edición de producto
@@ -134,6 +288,9 @@ export class OrderDetailComponent implements OnInit {
         this.observation = this.order.observation
         this.info.status = this.order.status
         this.info.seller = this.order.seller
+        this.preview = value.data[0]
+        this.preview.detail = (this.preview.detail != '')?JSON.parse(this.preview.detail):'';
+        this.preview.shipment = (this.preview.shipment != '')?JSON.parse(this.preview.shipment):'';
         this.setDataForm()
       } else {
         this.rechargeComponent()
@@ -185,7 +342,9 @@ export class OrderDetailComponent implements OnInit {
               //Modificó la imagen
               this._notify.showSuccess('Se modificó el remito!');
               this.resetAll();
-              //this.rechargeComponent();
+              setTimeout(() => {
+                this.rechargeComponent();
+              }, 2000);
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios.')
@@ -218,7 +377,9 @@ export class OrderDetailComponent implements OnInit {
               if(res.data.orderId){
                 //Modificó la imagen
                 this._notify.showSuccess('Se ha creado un nuevo remito!');
-                this.rechargeComponent(res.data.orderId);
+                setTimeout(() => {
+                  this.rechargeComponent(res.data.orderId);
+                }, 2000);
               } else{
                 //No hubo modificación
                 this._notify.showError('No se detectaron cambios.')

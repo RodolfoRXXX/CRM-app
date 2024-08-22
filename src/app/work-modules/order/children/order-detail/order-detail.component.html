@@ -18,8 +18,13 @@
             <button mat-flat-button color="primary" (click)="changeState(detail, this.id_order, order.status)" [disabled]="!detail || hasChange">
                 Editar estado
             </button>
-            <button mat-stroked-button color="primary" (click)="getView(order.id)" [disabled]="hasChange">
-                Generar vista
+            <button mat-stroked-button color="primary" (click)="getView()" [disabled]="hasChange || order?order.status == 1:false">
+                <ng-container *ngIf="!loadPDF; else loadingSpinner">
+                  Generar Vista
+                </ng-container>
+                <ng-template #loadingSpinner>
+                  <mat-spinner diameter="20"></mat-spinner>
+                </ng-template>
             </button>
             <button mat-stroked-button color="warn" type="button" (click)="rechargeComponent()">
                 Reset
@@ -31,7 +36,7 @@
                 <ng-template #loadingSpinner>
                   <mat-spinner diameter="20"></mat-spinner>
                 </ng-template>
-              </button>
+            </button>
         </div>        
     </div>
     <!-- Información -->
