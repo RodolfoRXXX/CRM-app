@@ -4,11 +4,11 @@ import { permissions } from 'src/enviroments/enviroment';
 
 const MENUSETTINGS = [
     { state: 'index', name: 'Tablero', type: '', icon: 'dashboard', children: [] },
-    { state: '', name: 'Mi perfíl', type: 'employee', icon: 'fingerprint', children: [
+    { state: '', name: 'Mi perfíl', type: 'employee', icon: 'account_circle', children: [
         { state: 'profile/profile-detail', name: 'Detalle de mi perfíl', type: '', icon: '' },
         { state: 'profile/profile-edit', name: 'Editar perfíl', type: '', icon: '' }
     ] },
-    { state: '', name: 'Mi empresa', type: permissions.EDIT_ENTERPRISE_CONTROL, icon: 'business', children: [
+    { state: '', name: 'Mi empresa', type: permissions.EDIT_ENTERPRISE_CONTROL, icon: 'corporate_fare', children: [
         { state: 'enterprise-info/enterprise-detail', name: 'Detalle', type: '', icon: '' },
         { state: 'enterprise-info/enterprise-edit', name: 'Edición de datos', type: '', icon: '' },
         { state: 'enterprise-info/roles', name: 'Roles y permisos', type: '', icon: '' },

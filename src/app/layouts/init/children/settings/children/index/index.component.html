@@ -1,29 +1,53 @@
-<div class="index-container">
-    <a routerLink="../profile" class="ripple-container mat-elevation-z4"
-     matRipple
-     [matRippleCentered]=true
-     *ngIf="is_employee">
-        <mat-icon>fingerprint</mat-icon>
-        <h5>Mi cuenta</h5>
-    </a>
-    <a routerLink="../enterprise-info" class="ripple-container mat-elevation-z4"
-     matRipple
-     [matRippleCentered]=true
-     *ngIf="permissions.includes(edit_enterprise_control)">
-        <mat-icon>business</mat-icon>
-        <h5>Mi empresa</h5>
-    </a>
-    <a routerLink="../security" class="ripple-container mat-elevation-z4"
-     matRipple
-     [matRippleCentered]=true>
-        <mat-icon>vpn_key</mat-icon>
-        <h5>Seguridad</h5>
-    </a>
-    <a routerLink="../configuration" class="ripple-container mat-elevation-z4"
-     matRipple
-     [matRippleCentered]=true
-     *ngIf="permissions.includes(edit_enterprise_control)">
-        <mat-icon>settings</mat-icon>
-        <h5>Configuración</h5>
-    </a>
+<!-- Index -->
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Títulos -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-4 gap-md-0">
+        <div class="d-flex flex-column justify-content-center">
+            <h4 class="mb-1">Configuración de la aplicación</h4>
+            <p class="mb-0">Desde aquí podés configurar todos los aspectos de tu aplicación</p>
+        </div>
+    </div>
+    <div class="row g-6 text-nowrap">
+        <!-- Card de Mi Cuenta -->
+        <a routerLink="../profile" class="col-md-4" *ngIf="is_employee">
+            <mat-card class="card card-index card-hover">
+                <mat-card-content>
+                    <img src="../../../../../../../assets/images/system/account_circle.png" height="80" alt="">
+                    <h4 class="fw-500">Mi Perfíl</h4>
+                    <p>Información sobre mi cuenta</p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+        <!-- Card de Mi Empresa -->
+        <a routerLink="../enterprise-info" class="col-md-4 a-link" *ngIf="permissions.includes(edit_enterprise_control)">
+            <mat-card class="card card-index card-hover">
+                <mat-card-content>
+                    <img src="../../../../../../../assets/images/system/corporate_fare.png" height="80" alt="">
+                    <h4 class="fw-500">Mi Empresa</h4>
+                    <p>Información sobre mi empresa</p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+        <!-- Card de Seguridad -->
+        <a routerLink="../security" class="col-md-4 a-link" *ngIf="permissions.includes(edit_enterprise_control)">
+            <mat-card class="card card-index card-hover">
+                <mat-card-content>
+                    <img src="../../../../../../../assets/images/system/vpn_key.png" height="80" alt="">
+                    <h4 class="fw-500">Seguridad</h4>
+                    <p>Mis datos importantes aquí</p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+        <!-- Card de Mi Empresa -->
+        <a routerLink="../configuration" class="col-md-4 a-link" *ngIf="permissions.includes(edit_enterprise_control)">
+            <mat-card class="card card-index card-hover">
+                <mat-card-content>
+                    <img src="../../../../../../../assets/images/system/settings.png" height="80" alt="">
+                    <h4 class="fw-500">Configuración</h4>
+                    <p>Configuración de la aplicación</p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+    </div>
 </div>
