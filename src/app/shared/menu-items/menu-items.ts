@@ -15,7 +15,7 @@ const MENUSETTINGS = [
         { state: 'enterprise-info/configuration', name: 'Configuración', type: '', icon: '' }
     ] },
     { state: 'security', name: 'Seguridad', type: '', icon: 'vpn_key', children: [] },
-    { state: '', name: 'Configuración', type: '', icon: 'settings', children: [
+    { state: '', name: 'Configuración de pago', type: '', icon: 'credit_card_gear', children: [
         { state: 'configuration/configuration-detail', name: 'Detalles', type: '', icon: '' },
         { state: 'configuration/pricing', name: 'Planes de pago', type: permissions.EDIT_ENTERPRISE_CONTROL, icon: '' }
     ] },
