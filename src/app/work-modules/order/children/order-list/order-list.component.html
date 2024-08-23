@@ -99,31 +99,34 @@
                         <mat-panel-description style="overflow: auto;">
                             <mat-chip-set class="ms-1" aria-label="filter-chips" *ngFor="let item of chips | keyvalue">
                                     <mat-chip class="soft-grey-background me-1 fw-500" *ngIf="item.value">
-                                        {{ item.value }}
+                                        <span class="cap fw-500">{{ item.value }}</span>
                                         <button matChipRemove (click)="delete(item.key)">
                                             <mat-icon>cancel</mat-icon>
                                         </button>
                                     </mat-chip>
-                                </mat-chip-set>
+                            </mat-chip-set>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="row">
-                        <!-- Filtro por texto -->
+                        <!-- Filtro dateTime -->
                         <mat-form-field class="col-md-6" appearance="outline">
-                            <mat-label>Filtrar por texto</mat-label>
-                            <input [ngModel]="chips.search" matInput #search (change)="add($event, 'search')" placeholder="Buscar un producto" #input>
+                            <mat-label>Elegí una fecha</mat-label>
+                            <input matInput [matDatepicker]="picker" (dateChange)="add($event.value, 'dateTime')">
+                            <mat-hint class="fs-08">MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
                         <!-- Filtro por Estado -->
                         <mat-form-field class="col-md-6" appearance="outline">
                             <mat-label>Estado</mat-label>
-                            <mat-select [(ngModel)]="chips.status" (valueChange)="add($event, 'status')">
-                                <mat-option value="Abierto">
+                            <mat-select #state (valueChange)="add($event, 'state')">
+                                <mat-option [value]="{id: 1, name: 'Abierto'}">
                                     <span class="badge rounded-pill cap" style="color: #16b1ff; background-color: #daf3ff;">
                                         Abierto
                                     </span>
                                 </mat-option>
-                                <mat-option value="Cerrado">
-                                    <span class="badge rounded-pill cap" style="color: #56ca00; background-color: #e4f7d6;">
+                                <mat-option [value]="{id: 0, name: 'Cerrado'}">
+                                    <span class="badge rounded-pill cap bg-label-success">
                                         Cerrado
                                     </span>
                                 </mat-option>
@@ -134,9 +137,9 @@
                     <div class="row" *ngIf="employee.list_of_permissions.includes(edit_enterprise_control)">
                         <mat-form-field class="col-md-6" appearance="outline">
                             <mat-label>Vendedor</mat-label>
-                            <mat-select [(ngModel)]="chips.seller" (valueChange)="add($event, 'seller')">
+                            <mat-select #sellerF (valueChange)="add($event, 'sellerF')">
                                 <ng-container *ngFor="let item of sellers">
-                                    <mat-option [value]="getEmployeeDisplayName(item)" *ngIf="item.verified_state === 1">
+                                    <mat-option [value]="{id: item.id_employee, name: getEmployeeDisplayName(item)}" *ngIf="item.verified_state === 1">
                                         <mat-icon>{{ item.icon_role }}</mat-icon>
                                         <span class="cap">{{ getEmployeeDisplayName(item) }}</span>
                                     </mat-option>
@@ -151,7 +154,7 @@
                 <p>Cargando...</p>
             </div>
             <!-- Table of orders -->
-            <div class="box-list" *ngIf="dataSource.data">
+            <div class="box-list" *ngIf="!empty_orders">
                 <div class="row justify-content-end">
                     <div class="btn-add col-md-4">
                         <a mat-flat-button color="primary" routerLink="../order-detail">
@@ -229,7 +232,7 @@
     
                     <!-- Row shown when there is no matching data. -->
                     <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{chips.search || chips.status || chips.seller}}"</td>
+                        <td class="mat-cell" colspan="4">Búsqueda sin resultados para "{{chips.dateTime || chips.status || chips.seller}}"</td>
                     </tr>
                 </table>
                 <mat-paginator class="m-t-15" [length]="resultsLength" [pageSize]="10" showFirstLastButtons aria-label="paginador"></mat-paginator>              
@@ -240,7 +243,7 @@
                 <button mat-raised-button color="accent" (click)="rechargeData()">Recargar los datos</button>
             </div>
             <!-- No orders -->
-            <div class="recharge" *ngIf="!dataSource.data">
+            <div class="recharge" *ngIf="empty_orders">
                 <!-- Botón para agregar un pedido -->
                 <p>No hay remitos</p>
                 <a mat-flat-button color="primary" routerLink="../order-detail">
