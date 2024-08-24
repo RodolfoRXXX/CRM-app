@@ -3,13 +3,23 @@
   <mat-card-content>
     <div class="d-flex flex-column align-items-start justify-content-between info">
         <p class="text-muted">Días restantes</p>
-        <h1 class="primary-color">57</h1>
-        <div class="d-flex justify-content-start align-items-center">
+        <h1 class="primary-color">{{ remains }}</h1>
+        <div class="d-flex justify-content-start align-items-center mb-1">
             <p class="mb-0 text-muted fs-09 me-2">Estado del plan: </p>
-            <span class="badge rounded-pill cap fs-08 bg-label-success">
-                Activo
+            <span class="badge rounded-pill cap fs-08" [ngClass]="(statusAccount == 'Activo')?'bg-label-success':'bg-label-danger'">
+                {{ statusAccount }}
             </span>
         </div>
+        <div class="d-flex justify-content-start align-items-center mb-1">
+          <p class="mb-0 text-muted fs-09 me-2">Estado de cuenta: </p>
+          <span class="badge rounded-pill cap fs-08" [ngClass]="(statusPlan == 'Atrasado')?'bg-label-danger':'bg-label-blue'">
+              {{ statusPlan }}
+          </span>
+      </div>
+      <div class="d-flex justify-content-start align-items-center">
+        <p class="mb-0 text-muted fs-09 me-2">Período abonado: </p>
+        <span class="fw-500">{{ period }}</span>
+    </div>
     </div>
   </mat-card-content>
 </mat-card>

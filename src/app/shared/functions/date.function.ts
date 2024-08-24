@@ -72,3 +72,72 @@ export function calculateDateLimit(daysAgo: number): string {
   const day = date.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+
+//Función que devuelve la cantidad de días desde la fecha actual hasta fin de mes
+    //no recibe datos
+    //entrega un número entero que son la cantidad de días
+export function diasHastaFinDeMes(): number {
+  // Obtener la fecha actual
+  const hoy: Date = new Date();
+  
+  // Obtener el año y el mes actual
+  const año: number = hoy.getFullYear();
+  const mes: number = hoy.getMonth();
+  
+  // Calcular la fecha del primer día del próximo mes
+  const primerDiaProximoMes: Date = new Date(año, mes + 1, 1);
+  
+  // Calcular la diferencia en milisegundos entre las dos fechas
+  const diferenciaMilisegundos: number = primerDiaProximoMes.getTime() - hoy.getTime();
+  
+  // Convertir la diferencia de milisegundos a días
+  const diasRestantes: number = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+  
+  return diasRestantes;
+}
+
+//Función que devuelve el nombre del mes de acuerdo a la fecha ingresada
+    //recibe una fecha del siguiente formato: '2024-08-24 20:24:46'
+    //devuelve el nombre del mes en string, ej: Agosto
+export function getMonthNameForDate(dateString: string): string {
+  // Convertir la cadena de fecha a un objeto Date
+  const date = new Date(dateString);
+  
+  // Obtener el número del mes (0-11) y sumarle 1 para ajustarlo al rango (1-12)
+  const monthNumber = date.getMonth() + 1;
+  
+  // Diccionario para los nombres completos de los meses en español
+  const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+  
+  // Devolver el nombre del mes correspondiente
+  return monthNames[monthNumber - 1];
+}
+
+//Función que devuelve true si la fecha ingresada es del mismo mes o posterior al actual y false si es de meses anteriores al actual
+    //recibe una fecha del siguiente formato: '2024-08-24 20:24:46'
+    //devuelve boolean, true or false
+export function esMismoOMesPosterior(fechaString: string): boolean {
+  // Convertir la cadena de fecha a un objeto Date
+  const fecha = new Date(fechaString);
+  
+  // Obtener la fecha actual
+  const fechaActual = new Date();
+  
+  // Comparar años
+  if (fecha.getFullYear() < fechaActual.getFullYear()) {
+      return false;
+  }
+  
+  // Si el año es el mismo, comparar los meses
+  if (fecha.getFullYear() === fechaActual.getFullYear()) {
+      if (fecha.getMonth() < fechaActual.getMonth()) {
+          return false;
+      }
+  }
+  
+  // Si la fecha ingresada no es anterior, devolver true
+  return true;
+}

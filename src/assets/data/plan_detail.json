@@ -1,0 +1,40 @@
+[
+    {
+        "id": 1,
+        "name": "Prueba",
+        "image": "assets/images/system/basic-price.png",
+        "description": "Probá el software por 1 mes",
+        "features": [
+            "Versión de prueba con limitaciones",
+            "Podés tener un administrador y un usuario",
+            "Contról de acceso y roles definidos"
+        ],
+        "price": 15000
+    },
+    {
+        "id": 2,
+        "name": "Profesional",
+        "image": "assets/images/system/standard-price.png",
+        "description": "Organizá tu empresa con Bamboo",
+        "features": [
+            "Full access",
+            "Podés tener hasta 5 colaboradores",
+            "Contról de acceso y roles definidos",
+            "Cóntról de clientes con límites"
+        ],
+        "price": 150000
+    },
+    {
+        "id": 3,
+        "name": "Empresa",
+        "image": "assets/images/system/enterprise-price.png",
+        "description": "Soluciones para grandes organizaciones",
+        "features": [
+            "Full access",
+            "Colaboradores sin límite",
+            "Chatbots programables",
+            "Cóntról de clientes e intereses avanzado"
+        ],
+        "price": 250000
+    }
+]

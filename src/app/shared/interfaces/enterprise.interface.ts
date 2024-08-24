@@ -11,5 +11,8 @@ export interface Enterprise {
     state: string;
     country: string;
     cp: string;
+    plan: number,
+    updatedPayment: string,
+    status: number,
     created: string;
 }

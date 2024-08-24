@@ -4,11 +4,11 @@
     <div class="row">
         <!-- plan remains -->
         <div class="col-md-12 col-xl-4">
-            <app-plan-remains class="col-xl-8 col-lg-7 align-self-end mt-md-7 mt-lg-4 pt-md-2 pt-lg-0"></app-plan-remains>
+            <app-plan-remains [enterprise]="enterprise"></app-plan-remains>
         </div>
         <!-- plan detail -->
         <div class="col-md-12 col-lg-8">
-            <app-plan-detail class="col-xl-8"></app-plan-detail>
+            <app-plan-detail [enterprise]="enterprise"></app-plan-detail>
         </div>
     </div>
 </div>

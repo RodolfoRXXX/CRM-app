@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
+import { merge, startWith, map, switchMap, range, catchError, of as observableOf } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
+import { calculateDateLimit } from 'src/app/shared/functions/date.function';
+import { Employee } from 'src/app/shared/interfaces/employee.interface';
+import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
 import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
@@ -8,25 +13,44 @@ import { permissions } from 'src/enviroments/enviroment';
 })
 export class ConfigurationDetailComponent {
 
-  permissions: string[] = [];
-  is_employee = false;
-  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
+  enterprise!: Enterprise;
+  employee!: Employee;
 
   constructor(
-    private _conector: ConectorsService
+    private _conector: ConectorsService,
+    private _api: ApiService
   ) { 
-    this._conector.getEmployee().subscribe( value => {
-      //la lista de permisos se almacena como un string y luego se lo separa en un array
-      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
-      //que es el valor vacío, por eso la desigualdad es mayor a 1
-      this.permissions = value.list_of_permissions.split(',')
-      this.is_employee = (value.id > 0)?true:false;
-    })
    }
 
   ngOnInit(): void {
     //Modifica el título de la vista principal
     this._conector.setUpdateTitle('Detalle de mi plan')
+    this.getEnterprise()
+  }
+
+  private getDataLocal(): number {
+    this._conector.getEmployee().subscribe((item: Employee) => {
+      this.employee = item;
+    });
+    return this.employee.id_enterprise;
+  }
+
+  getEnterprise() {
+    merge()
+      .pipe(
+        startWith({}),
+        map(() => this.getDataLocal()),
+        switchMap(id_enterprise => {
+          return this._api.postTypeRequest('profile/get-enterprise', { id: id_enterprise })
+            .pipe(catchError(() => observableOf(null)));
+        }),
+        map(data => data)
+      )
+      .subscribe((data: any) => {
+        if((data.status == 1) && data.data[0]) {
+          this.enterprise = data.data[0]
+        }
+      } );
   }
 
 }

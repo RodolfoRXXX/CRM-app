@@ -6,19 +6,15 @@
         <div class="row g-2 w-100 p-2 rounded border">
             <!-- título -->
             <div class="col-12 col-md-4 d-flex flex-column align-items-center justify-content-between p-2">
-                <img src="../../../../../../../../../assets/images/system/basic-price.png" height="100" alt="">
-                <h4 class="cap mt-2 mb-0">Prueba</h4>
-                <p class="fs-08 mb-0">Algo básico con lo que empezar</p>
+                <img [src]="actualPlan?actualPlan.image:''" height="100" alt="">
+                <h4 class="cap mt-2 mb-0">{{ actualPlan?actualPlan.name:'' }}</h4>
+                <p class="fs-08 mb-0 text-center">{{ actualPlan?actualPlan.description:'' }}</p>
             </div>
             <!-- características -->
             <div class="col-12 col-md-4 ps-2">
                 <p class="mb-1 text-muted">Características: </p>
-                <ul>
-                    <li>Item 1</li>
-                    <li>Item 2</li>
-                    <li>Item 3</li>
-                    <li>Item 3</li>
-                    <li>Item 3</li>
+                <ul *ngFor="let item of actualPlan?actualPlan.features:[]">
+                    <li class="fs-08">{{ item }}</li>
                 </ul>
             </div>
             <!-- precio -->
@@ -26,7 +22,7 @@
                 <p class="mb-4 text-muted">Precio: </p>
                 <div class="d-flex justify-content-center aling-items-centers mb-2">
                     <sup class="fs-09 mt-2 mb-0 me-1">$</sup>
-                    <h1 class="mb-0">0</h1>
+                    <h1 class="mb-0">${{ actualPlan?actualPlan.price:'0.00' }}</h1>
                     <sub class="fs-08 fw-500 mt-auto mb-1">/mes</sub>
                 </div>
             </div>
