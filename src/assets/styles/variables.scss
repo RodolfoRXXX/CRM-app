@@ -29,6 +29,7 @@ $light-text: #a6b7bf;
 
     $themecolor: mat.get-color-from-palette(mat.define-palette(mat.$teal-palette, 800));
     $themeAccent: mat.get-color-from-palette(mat.define-palette(mat.$light-green-palette, 300));
+    $themeWarn: mat.get-color-from-palette(mat.define-palette(mat.$red-palette));
 
 $themecolor-alt: #26c6da;
 $themecolor-dark: #028ee1;

@@ -7,13 +7,17 @@ import { ConfigurationDetailComponent } from './children/configuration-detail/co
 import { PricingComponent } from './children/pricing/pricing.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material/material/material.module';
+import { PlanRemainsComponent } from './children/configuration-detail/children/plan-remains/plan-remains.component';
+import { PlanDetailComponent } from './children/configuration-detail/children/plan-detail/plan-detail.component';
 
 
 @NgModule({
   declarations: [
     ConfigurationComponent,
     ConfigurationDetailComponent,
-    PricingComponent
+    PricingComponent,
+    PlanRemainsComponent,
+    PlanDetailComponent
   ],
   imports: [
     CommonModule,

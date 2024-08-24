@@ -50,6 +50,18 @@ html .page-wrapper {
   }
 }
 
+//color text main
+
+.primary-color {
+  color: $themecolor!important;
+}
+.accent-color {
+  color: $themeAccent!important;
+}
+.warn-color {
+  color: $themeWarn!important;
+}
+
 
 // Color Font
 

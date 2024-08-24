@@ -1,10 +1,32 @@
 import { Component } from '@angular/core';
+import { ConectorsService } from 'src/app/services/conectors.service';
+import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-configuration-detail',
-  templateUrl: './configuration-detail.component.html',
-  styleUrls: ['./configuration-detail.component.scss']
+  templateUrl: './configuration-detail.component.html'
 })
 export class ConfigurationDetailComponent {
+
+  permissions: string[] = [];
+  is_employee = false;
+  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
+
+  constructor(
+    private _conector: ConectorsService
+  ) { 
+    this._conector.getEmployee().subscribe( value => {
+      //la lista de permisos se almacena como un string y luego se lo separa en un array
+      //aunque el string de la DB esté vacío, el split devuelve un array con al menos un valor,
+      //que es el valor vacío, por eso la desigualdad es mayor a 1
+      this.permissions = value.list_of_permissions.split(',')
+      this.is_employee = (value.id > 0)?true:false;
+    })
+   }
+
+  ngOnInit(): void {
+    //Modifica el título de la vista principal
+    this._conector.setUpdateTitle('Detalle de mi plan')
+  }
 
 }
