@@ -8,7 +8,9 @@
                 <h4 class="cap">Productos más vendidos <span class="fs-09 text-muted">({{ text_range }})</span></h4>
                 <!-- Contenedor para la tabla con desplazamiento -->
                 <div class="m-4 mt-2 mb-2" style="max-height: 180px!important; overflow-y: auto;">
-                    <div class="d-flex justify-content-between b-b" *ngFor="let item of results; let i = index">
+                    <!-- Hay resultados -->
+                    <ng-container *ngIf="results">
+                        <div class="d-flex justify-content-between b-b" *ngFor="let item of results; let i = index">
                             <div class="w-auto d-flex align-items-center fs-09">
                                 {{ i + 1 }}
                             </div>
@@ -28,6 +30,13 @@
                                 ${{ item.total_amount }}
                             </div>
                     </div>
+                    </ng-container>
+                    <!-- No hay resultados -->
+                    <ng-container *ngIf="!results">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p>Sin información</p>
+                         </div>
+                    </ng-container>
                 </div>
                 <button mat-icon-button aria-label="Date Data" class="btn-date" [matMenuTriggerFor]="menu">
                   <mat-icon>more_vert</mat-icon>
@@ -53,7 +62,7 @@
                     <div class="ms-3 d-flex flex-column align-items-between">
                         <h5 class="mb-0">1ero</h5>
                         <p class="mb-0 text-muted fw-400 fs-09">
-                            {{ results?results[0].name:'' }} ({{ results?'$' + results[0].total_amount:'' }})
+                            {{ (results && results[0])?results[0].name:'Sin información' }} {{ (results && results[0])?'($' + results[0].total_amount + ')':'' }}
                         </p>
                     </div>
                 </div>
@@ -67,7 +76,7 @@
                     <div class="ms-3 d-flex flex-column align-items-between">
                         <h5 class="mb-0">2do</h5>
                         <p class="mb-0 text-muted fw-400 fs-09">
-                            {{ results?results[1].name:'' }} ({{ results?'$' + results[1].total_amount:'' }})
+                            {{ (results && results[1])?results[1].name:'Sin información' }} {{ (results && results[1])?'($' + results[1].total_amount + ')':'' }}
                         </p>
                     </div>
                 </div>
@@ -81,7 +90,7 @@
                     <div class="ms-3 d-flex flex-column align-items-between">
                         <h5 class="mb-0">3ero</h5>
                         <p class="mb-0 text-muted fw-400 fs-09">
-                            {{ results?results[2].name:'' }} ({{ results?'$' + results[2].total_amount:'' }})
+                            {{ (results && results[2])?results[2].name:'Sin información' }} {{ (results && results[2])?'($' + results[2].total_amount + ')':'' }}
                         </p>
                     </div>
                  </div>
