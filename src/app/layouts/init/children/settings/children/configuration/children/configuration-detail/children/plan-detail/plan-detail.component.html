@@ -20,10 +20,11 @@
             <!-- precio -->
             <div class="col-12 col-md-4 ps-2">
                 <p class="mb-4 text-muted">Precio: </p>
-                <div class="d-flex justify-content-center aling-items-centers mb-2">
-                    <sup class="fs-09 mt-2 mb-0 me-1">$</sup>
-                    <h1 class="mb-0">${{ actualPlan?actualPlan.price:'0.00' }}</h1>
-                    <sub class="fs-08 fw-500 mt-auto mb-1">/mes</sub>
+                <div class="text-center mb-3 mt-4">
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                      <h1 class="mb-0"><span class="fs-09">$</span>{{ actualPlan?actualPlan.price:0 }}<span class="fs-08">/mes</span></h1>
+                      <small class="text-muted fs-08">(K equivale a 1000)</small>
+                    </div>
                 </div>
             </div>
         </div>

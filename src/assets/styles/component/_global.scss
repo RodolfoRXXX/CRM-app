@@ -425,3 +425,7 @@ html body {
 .active {
   background-color: $themecolor!important;
 }
+
+.border-primary {
+  border: 1px solid $themecolor!important;
+}

@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { merge, startWith, map, switchMap, range, catchError, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
-import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
   selector: 'app-configuration-detail',

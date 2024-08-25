@@ -7,9 +7,10 @@
         "features": [
             "Versión de prueba con limitaciones",
             "Podés tener un administrador y un usuario",
-            "Contról de acceso y roles definidos"
+            "Contról de acceso y roles definidos",
+            "Cóntról de proveedores"
         ],
-        "price": 15000
+        "price": "15K"
     },
     {
         "id": 2,
@@ -22,7 +23,7 @@
             "Contról de acceso y roles definidos",
             "Cóntról de clientes con límites"
         ],
-        "price": 150000
+        "price": "150K"
     },
     {
         "id": 3,
@@ -35,6 +36,6 @@
             "Chatbots programables",
             "Cóntról de clientes e intereses avanzado"
         ],
-        "price": 250000
+        "price": "250K"
     }
 ]

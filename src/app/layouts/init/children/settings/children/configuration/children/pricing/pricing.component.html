@@ -5,96 +5,43 @@
   <mat-card class="card">
     <mat-card-content>
       <!-- Título -->
-        <h3 class="text-center mb-2 mt-0 mt-md-4">Precio de los planes</h3>
+        <h2 class="text-center mb-3 mt-0 mt-md-4">Precio de los planes</h2>
         <!-- Subtítulo -->
-        <p class="text-center mb-2">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae atque deserunt, veniam distinctio ipsa ab repellendus, officiis porro amet vel nemo suscipit. Ducimus vel qui distinctio nobis quae perspiciatis temporibus!
+        <p class="text-center mb-4">
+          Tenemos los planes que mejor se adaptan a la medida de tu empresa. Podés cambiar de plan en cualquier momento!
         </p>
-        <!-- Radio button mensual/anual -->
-        <div class="d-flex aling-items-center justify-content-center flex-wrap gap-2 pt-5 mb-6">
-          <!-- Radio-button -->
-        </div>
         <!-- Cards con opciones comerciales -->
-        <div class="row mx-4 gy-3 px-lg-12">
-          <!-- Basic -->
-          <div class="col-lg mb-lg-0 mb-3">
-            <div class="card border rounded shadow-none">
-              <div class="p-2 pt-6">
-                <!-- Imagen -->
+        <div class="row g-2 mt-4">
+          <div class="col-12 col-md-4 mb-3" *ngFor="let item of planData ? planData : []">
+              <div class="card border rounded shadow-none h-100 p-3 pt-6 d-flex flex-column justify-content-between"
+                  [ngClass]="(item.id == 2)?'border-primary':''">
+                <!-- image -->
                 <div class="mb-3 mt-5 text-center">
-                  <img src="assets/images/system/basic-price.png" height="100" alt="">
+                  <img [src]="item.image" height="100" alt="">
                 </div>
-                <h4 class="text-center cap mb-1">Prueba</h4>
-                <p class="text-center mb-5">Probá el software por 1 mes</p>
-                <div class="text-center mb-4">
-                  <div class="d-flex justify-content-center">
-                    <sup class="fs-09 mt-2 mb-0 me-1">$</sup>
-                    <h1 class="mb-0">0</h1>
-                    <sub class="fs-08 fw-500 mt-auto mb-1">/mes</sub>
+                <!-- name -->
+                <div class="mb-3">
+                  <h4 class="text-center cap mb-1">{{ item.name }}</h4>
+                  <p class="text-center">{{ item.description }}</p>
+                </div>
+                <!-- price -->
+                <div class="text-center mb-3 mt-4">
+                  <div class="d-flex flex-column align-items-center justify-content-center mb-4">
+                    <h1 class="mb-0"><span class="fs-09">$</span>{{ item.price }}<span class="fs-08">/mes</span></h1>
+                    <small class="text-muted fs-08">(K equivale a 1000)</small>
                   </div>
                 </div>
-                <mat-list role="list">
-                  <mat-list-item class="" role="listitem">• Item 1</mat-list-item>
-                  <mat-list-item class="" role="listitem">• Item 2</mat-list-item>
-                  <mat-list-item class="" role="listitem">• Item 3</mat-list-item>
-                </mat-list>
-                <button mat-stroked-button color="accent" class="w-100">Your current plan</button>
+                <!-- features -->
+                <div class="mb-3">
+                  <ul>
+                    <li class="fs-09 mb-2" *ngFor="let feature of item.features">{{ feature }}</li>
+                  </ul>
+                </div>
+                <button mat-flat-button color="primary" class="w-100 mt-2" *ngIf="enterprise?(enterprise.plan != item.id):true">Contratar</button>
+                <button mat-stroked-button color="primary" class="w-100 mt-2" *ngIf="enterprise && enterprise.plan == item.id">Tu plan actual</button>
               </div>
-            </div>
           </div>
-          <!-- Standard -->
-          <div class="col-lg mb-lg-0 mb-3">
-            <div class="card border rounded shadow-none" style="border: 1px solid #00695c !important;">
-              <div class="p-2 pt-6">
-                <!-- Imagen -->
-                <div class="mb-3 mt-5 text-center">
-                  <img src="assets/images/system/standard-price.png" height="100" alt="">
-                </div>
-                <h4 class="text-center cap mb-1">Profesional</h4>
-                <p class="text-center mb-5">Viví la experiencia bamboo</p>
-                <div class="text-center mb-4">
-                  <div class="d-flex justify-content-center">
-                    <sup class="fs-09 mt-2 mb-0 me-1">$</sup>
-                    <h1 class="mb-0">0</h1>
-                    <sub class="fs-08 fw-500 mt-auto mb-1">/mes</sub>
-                  </div>
-                </div>
-                <mat-list role="list">
-                  <mat-list-item class="" role="listitem">• Item 1</mat-list-item>
-                  <mat-list-item class="" role="listitem">• Item 2</mat-list-item>
-                  <mat-list-item class="" role="listitem">• Item 3</mat-list-item>
-                </mat-list>
-                <button mat-flat-button color="primary" class="w-100">Contratar</button>
-              </div>
-            </div>
-          </div>
-          <!-- Enterprise -->
-          <div class="col-lg mb-lg-0 mb-3">
-            <div class="card border rounded shadow-none">
-              <div class="p-2 pt-6">
-                <!-- Imagen -->
-                <div class="mb-3 mt-5 text-center">
-                  <img src="assets/images/system/enterprise-price.png" height="100" alt="">
-                </div>
-                <h4 class="text-center cap mb-1">Empresa</h4>
-                <p class="text-center mb-5">Soluciones para grandes organizaciones</p>
-                <div class="text-center mb-4">
-                  <div class="d-flex justify-content-center">
-                    <sup class="fs-09 mt-2 mb-0 me-1">$</sup>
-                    <h1 class="mb-0">0</h1>
-                    <sub class="fs-08 fw-500 mt-auto mb-1">/mes</sub>
-                  </div>
-                </div>
-                <mat-list role="list">
-                  <mat-list-item class="" role="listitem">• Item 1</mat-list-item>
-                  <mat-list-item class="" role="listitem">• Item 2</mat-list-item>
-                  <mat-list-item class="" role="listitem">• Item 3</mat-list-item>
-                </mat-list>
-                <button mat-stroked-button color="primary" class="w-100">Contratar</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        </div>        
     </mat-card-content>
 </mat-card>
 </div>
