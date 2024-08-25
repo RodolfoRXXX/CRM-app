@@ -3,18 +3,20 @@
 <mat-card class="card mb-6">
     <mat-card-content class="position-relative">
         <div class="row ps-1 pe-3">
-            <div class="col-4">
-                <div>
-                    <span class="material-symbols-outlined icon">
-                        grading
+            <div class="col-4 d-flex align-items-center">
+                <div class="avatar">
+                    <span class="avatar-initial rounded text-heading bg-label-success">
+                        <span class="material-symbols-outlined">grading</span>
                     </span>
+                </div>
+                <div class="box-info ms-3">
+                    <h3 class="mb-0" *ngIf="info != null">{{ info }}</h3>
+                    <h6 *ngIf="info == null" class="text-muted fs-08 mb-0">Cargando...</h6>
                 </div>
             </div>
             <div class="col-8 d-flex align-items-end justify-content-end">
-                <div class="box-info me-4">
-                    <h3 *ngIf="info != null">{{ info }}</h3>
-                    <h6 *ngIf="info == null" class="text-muted fs-08 mb-4">Cargando...</h6>
-                    <p class="mb-0 soft-grey-color font-14">Pedidos abiertos</p>
+                <div class="box-info me-4 p-2">
+                    <p class="mb-0 soft-grey-color font-16">Pedidos abiertos</p>
                     <small class="text-muted fs-07">{{ textRange }}</small>
                 </div>
             </div>

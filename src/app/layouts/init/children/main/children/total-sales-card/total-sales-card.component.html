@@ -3,17 +3,19 @@
 <mat-card class="card mb-6">
     <mat-card-content class="position-relative">
         <div class="row ps-1 pe-3">
-            <div class="col-4">
-                <div>
-                    <span class="material-symbols-outlined icon">
-                        price_check
+            <div class="col d-flex align-items-center">
+                <div class="avatar">
+                    <span class="avatar-initial rounded text-heading bg-label-blue">
+                        <span class="material-symbols-outlined">price_check</span>
                     </span>
                 </div>
+                <div class="box-info ms-3">
+                    <h4 class="mb-0" *ngIf="info != null">${{ info }}</h4>
+                    <h6 *ngIf="info == null" class="text-muted fs-08 mb-0">Cargando...</h6>
+                </div>
             </div>
-            <div class="col-8 d-flex align-items-end justify-content-end">
-                <div class="box-info me-4">
-                    <h3 *ngIf="info != null">${{ info }}</h3>
-                    <h6 *ngIf="info == null" class="text-muted fs-08 mb-4">Cargando...</h6>
+            <div class="col d-flex align-items-end justify-content-end">
+                <div class="box-info me-4 p-2">
                     <p class="mb-0 soft-grey-color font-14">Ventas totales</p>
                     <small class="text-muted fs-07">{{ textRange }}</small>
                 </div>
