@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from 'src/app/services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/enviroments/enviroment';
+import { isNewerThan30Days } from 'src/app/shared/functions/date.function';
 
 
 @Component({
@@ -21,6 +22,8 @@ export class DialogProductDetailComponent implements OnInit {
   product!: any;
   baseURL = environment.SERVER;
   load: boolean = true;
+
+  isNewerThan30Days = isNewerThan30Days;
 
   constructor(
     public dialogRef: MatDialogRef<DialogProductDetailComponent>,

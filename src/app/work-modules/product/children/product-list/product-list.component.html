@@ -242,6 +242,24 @@
                         </td>
                     </ng-container>
 
+                    <!-- rotation Column -->
+                    <ng-container matColumnDef="rotation">
+                        <th mat-header-cell *matHeaderCellDef class="max-1150-hidden"></th>
+                        <td mat-cell *matCellDef="let element" class="max-1150-hidden font-family-def">
+                            <!-- código que muestra la rotación del producto -->
+                            <span class="badge rounded-pill cap fs-08 bg-label-danger p-1"
+                                    *ngIf="isNewerThan30Days(element.sale_date)"
+                                 matTooltip="Alta rotación">
+                                <mat-icon>local_fire_department</mat-icon>
+                            </span>
+                            <span class="badge rounded-pill cap fs-08 bg-label-blue p-1"
+                                    *ngIf="!isNewerThan30Days(element.sale_date)"
+                                    matTooltip="Baja rotación">
+                                <mat-icon>ac_unit</mat-icon>
+                            </span>
+                        </td>
+                    </ng-container>
+
                     <!-- sale_price Column -->
                     <ng-container matColumnDef="sale_price">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-768-hidden"> PRECIO </th>

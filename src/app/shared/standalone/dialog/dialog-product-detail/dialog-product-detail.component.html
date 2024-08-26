@@ -20,7 +20,7 @@
             <div class="col-md-7 text-container">
                 <p class="product-name">{{ product?product.name:'Sin información' }}</p>
                 
-                <div class="status-container d-flex justify-content-start">
+                <div class="status-container d-flex justify-content-start align-items-center">
                     <p class="status mb-0 fw-500 cap" [ngClass]="((product?product.state:'inactivo') == 'activo')?'bg-label-success':'bg-label-danger'">
                         {{ product?product.state:'Inactivo' }}
                     </p>
@@ -30,6 +30,18 @@
                     <p class="status mb-0 fw-500 cap" [ngClass]="((product?product.stock_available:0) > 0)?'bg-label-success':'bg-label-danger'">
                         {{ product?((product.stock_available > 0)?'Con stock':'Sin stock'):'Sin stock' }}
                     </p>
+                    <div *ngIf="product">
+                        <span class="badge rounded-pill cap fs-08 bg-label-danger p-1"
+                                *ngIf="isNewerThan30Days(product.sale_date)"
+                                matTooltip="Alta rotación">
+                            <mat-icon>local_fire_department</mat-icon>
+                        </span>
+                        <span class="badge rounded-pill cap fs-08 bg-label-blue p-1"
+                                *ngIf="!isNewerThan30Days(product.sale_date)"
+                                matTooltip="Baja rotación">
+                            <mat-icon>ac_unit</mat-icon>
+                        </span>
+                    </div>
                 </div>
     
                 <div class="description">

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { calculateDateLimit } from 'src/app/shared/functions/date.function';
+import { calculateDateLimit, isNewerThan30Days } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
 import { environment, permissions } from 'src/enviroments/enviroment';
@@ -20,6 +20,8 @@ import { environment, permissions } from 'src/enviroments/enviroment';
 })
 export class ProductListComponent implements OnInit {
 
+  isNewerThan30Days = isNewerThan30Days;
+
   @ViewChild('search') search!: ElementRef;
   @ViewChild('category') category!: ElementRef;
   @ViewChild('is_stock') is_stock!: ElementRef;
@@ -28,7 +30,7 @@ export class ProductListComponent implements OnInit {
   employee!: Employee;
   categories!: any[];
   filters!: any[];
-  displayedColumns: string[] = ['detail', 'product', 'category', 'stock_real', 'sale_price', 'sku', 'state'];
+  displayedColumns: string[] = ['detail', 'product', 'category', 'stock_real', 'rotation', 'sale_price', 'sku', 'state'];
   dataSource = new MatTableDataSource();
   resultsLength!: number;
   load: boolean = true;

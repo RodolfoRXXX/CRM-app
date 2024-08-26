@@ -141,3 +141,16 @@ export function esMismoOMesPosterior(fechaString: string): boolean {
   // Si la fecha ingresada no es anterior, devolver true
   return true;
 }
+
+//Función que devuelve true o false si la fecha pasada está dentro de los 30 días de la fecha actual o false en caso contrario
+    //recibe una fecha del siguiente formato: '2024-08-24 20:24:46'
+    //devuelve un boolean, true or false
+export function isNewerThan30Days(inputDate: string): boolean {
+  const currentDate = new Date();
+  const pastDate = new Date(currentDate);
+  pastDate.setDate(currentDate.getDate() - 30);
+
+  const formattedInputDate = new Date(inputDate);
+
+  return formattedInputDate > pastDate;
+}

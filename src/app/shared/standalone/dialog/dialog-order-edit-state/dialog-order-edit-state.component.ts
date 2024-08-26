@@ -195,7 +195,6 @@ export class DialogOrderEditStateComponent {
   updateState() {
     this._api.postTypeRequest('profile/update-order-state', {form: this.dataForm.value, edit: this.editRegister, close_order: this.close_order}).subscribe({
       next: (res: any) => {
-        console.log(res)
         this.loading =  false;
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
