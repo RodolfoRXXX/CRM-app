@@ -63,7 +63,6 @@ export class OrderDetailComponent implements OnInit {
         })
       }
     });
-
     // Detectar cambios en el formulario
     this.dataForm.valueChanges.subscribe(value => {
       if(this.dataForm.controls['customer'].value != 0 ||
@@ -370,7 +369,6 @@ export class OrderDetailComponent implements OnInit {
         this.loading =  true;
         this._api.postTypeRequest('profile/create-order-detail', {form: this.dataForm.value, edit: this.editRegister}).subscribe({
           next: (res: any) => {
-            console.log(res)
             this.loading =  false;
             if(res.status == 1){
               //Accedió a la base de datos y no hubo problemas

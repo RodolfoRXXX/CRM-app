@@ -95,7 +95,7 @@ export class DialogOrderEditCustomerComponent {
     onRowClicked(row: any) {
       if(row) {
         this.customer = row;
-        this.closeDialog(row)
+        this.closeDialog({client: row, id: row.id})
       }
     }
 
@@ -218,7 +218,7 @@ export class DialogOrderEditCustomerComponent {
         //oculto la caja de opciones
         this.optionBox = false;
       }
-      this.dataForm.patchValue({id_enterprise: this.employee.id_enterprise});
+      this.dataForm.patchValue({id_enterprise: this.getDataLocal()});
     }
 
     onSubmit() {
@@ -230,7 +230,8 @@ export class DialogOrderEditCustomerComponent {
             //Accedió a la base de datos y no hubo problemas
             if(res.data.affectedRows == 1){
               //Modificó datos
-              this.closeDialog(res.client[0]);
+              console.log(res)
+              this.closeDialog({client: res.client[0], id: res.data.insertId});
               this._notify.showSuccess('Nuevo cliente creado!');
             } else{
               //Ya existe

@@ -17,7 +17,7 @@
             <button mat-flat-button color="primary" (click)="changeState(detail, this.id_order, order.status)" [disabled]="!detail || hasChange">
                 Editar estado
             </button>
-            <button mat-stroked-button color="primary" (click)="getView()" [disabled]="hasChange || order?order.status == 1:false">
+            <button mat-stroked-button color="primary" (click)="getView()" [disabled]="order?(order.status == 1):true">
                 <ng-container *ngIf="!loadPDF; else loadingSpinner">
                   Generar Vista
                 </ng-container>

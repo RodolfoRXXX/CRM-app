@@ -1,7 +1,7 @@
  
 <div class="card options">
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h4 class="cap mb-0"><span>{{ isNewCustomer?'Crear':'Buscar' }}</span> un cliente</h4>
+        <h4 class="cap mb-0"><span>{{ isNewCustomer?'Crear':'Agregar' }}</span> un cliente</h4>
         <a mat-icon-button class="" routerLink="#" aria-label="close-button" (click)="closeDialog(false)">
             <mat-icon>close</mat-icon>
         </a>
@@ -13,7 +13,7 @@
                         [style.position]="(optionBox && customer)?'absolute':'relative'">
             <input matInput 
                     type="text"
-                    placeholder="Ingresá un texto"
+                    placeholder="Buscá un cliente por nombre"
                     #input
                     (keyup)="getText($event)"
                     class="mb-1">
@@ -50,9 +50,10 @@
             </table>
             <p class="mb-0 fw-500 text-center" *ngIf="!dataSource.data.length && optionBox">
                 El cliente que buscas no existe
-                <button mat-raised-button color="accent" class="w-100 mt-1" (click)="newCustomer(true)">+ Agregar cliente nuevo</button>
             </p>
         </mat-form-field>
+        <p class="text-center">- O -</p>
+        <button mat-raised-button color="accent" class="w-100 mt-1" (click)="newCustomer(true)">+ Crear cliente nuevo</button>
     </div>
     <!-- Crear un cliente nuevo -->
     <div *ngIf="isNewCustomer">
@@ -148,12 +149,14 @@
                     Buscar un cliente existente
                 </button>
                 <button mat-stroked-button color="primary" type="submit" [disabled]="dataForm.invalid || dataForm.untouched || dataForm.pristine">
-                    Guardar
+                    <ng-container *ngIf="!loading; else loadingSpinner">
+                      Guardar
+                    </ng-container>
+                    <ng-template #loadingSpinner>
+                      <mat-spinner diameter="20"></mat-spinner>
+                    </ng-template>
                 </button>
             </div>
         </form>
     </div>
 </div>
-<mat-card-footer class="login-footer">
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-</mat-card-footer>

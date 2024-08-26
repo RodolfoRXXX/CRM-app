@@ -65,7 +65,7 @@ export class OrderCustomerDetailComponent {
     const dialogRef = this._dialog.open(DialogOrderEditCustomerComponent, { data: { id_customer: customer }});
       dialogRef.afterClosed().subscribe(result => {
         if(result) {
-          this.newCustomer = result;
+          this.newCustomer = result.client;
           this.setCustomer.emit(result.id);
         }
       });
