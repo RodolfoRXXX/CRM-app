@@ -230,7 +230,6 @@ export class DialogOrderEditCustomerComponent {
             //Accedió a la base de datos y no hubo problemas
             if(res.data.affectedRows == 1){
               //Modificó datos
-              console.log(res)
               this.closeDialog({client: res.client[0], id: res.data.insertId});
               this._notify.showSuccess('Nuevo cliente creado!');
             } else{
