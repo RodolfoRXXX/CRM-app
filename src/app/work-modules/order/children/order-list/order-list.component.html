@@ -10,16 +10,16 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
                         <div class="pt-1">
-                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="!loadCards">{{ this.card_values.d2 || 0 }}</h2>
+                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="!loadCards">{{ this.card_values.open_orders || 0 }}</h2>
                             <p class="fs-08 mb-1" *ngIf="loadCards">Cargando...</p>
                             <p class="soft-grey-color font-14 mb-0">
-                                Pendientes de entrega
+                                Pedidos Pendientes
                             </p>
                         </div>
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded text-heading">
                                 <span class="material-symbols-outlined">
-                                    share_windows
+                                    other_admission
                                 </span>
                             </span>
                         </div>
@@ -29,16 +29,16 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-4 pb-sm-0">
                         <div class="pt-1">
-                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="!loadCards">{{ this.card_values.d1 || 0 }}</h2>
+                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="!loadCards">{{ this.card_values.close_orders || 0 }}</h2>
                             <p class="fs-08 mb-1" *ngIf="loadCards">Cargando...</p>
                             <p class="soft-grey-color font-14 mb-0">
-                                Entregados
+                                Pedidos Finalizados
                             </p>
                         </div>
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-secondary text-heading">
                                 <span class="material-symbols-outlined">
-                                    task_alt
+                                    fact_check
                                 </span>
                             </span>
                         </div>
@@ -48,16 +48,16 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="d-flex justify-content-between align-items-start border-end pb-4 pb-sm-0 card-widget-3">
                         <div class="pt-1">
-                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="!loadCards">{{ this.card_values.d5 || 0 }}</h2>
+                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="!loadCards">{{ this.card_values.pending_products || 0 }}</h2>
                             <p class="fs-08 mb-1" *ngIf="loadCards">Cargando...</p>
                             <p class="soft-grey-color font-14 mb-0">
-                                Devoluciones
+                                Productos Pendientes
                             </p>
                         </div>
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-secondary text-heading">
                                 <span class="material-symbols-outlined">
-                                    assignment_return
+                                    pending
                                 </span>
                             </span>
                         </div>
@@ -67,16 +67,16 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="pt-1">
-                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="!loadCards">{{ this.card_values.d4 || 0 }}</h2>
+                            <h2 class="fw-500 mb-1" style="font-size: 25px;" *ngIf="!loadCards">{{ this.card_values.delivered_products || 0 }}</h2>
                             <p class="fs-08 mb-1" *ngIf="loadCards">Cargando...</p>
                             <p class="soft-grey-color font-14 mb-0">
-                                Cancelaciones
+                                Productos Entregados
                             </p>
                         </div>
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-secondary text-heading">
                                 <span class="material-symbols-outlined">
-                                    delete_forever
+                                    task_alt
                                 </span>
                             </span>
                         </div>
@@ -120,14 +120,14 @@
                         <mat-form-field class="col-md-6" appearance="outline">
                             <mat-label>Estado</mat-label>
                             <mat-select #state (valueChange)="add($event, 'state')">
-                                <mat-option [value]="{id: 1, name: 'Abierto'}">
-                                    <span class="badge rounded-pill cap" style="color: #16b1ff; background-color: #daf3ff;">
-                                        Abierto
+                                <mat-option [value]="{id: 1, name: 'Pendiente'}">
+                                    <span class="badge rounded-pill cap bg-label-danger">
+                                        Pendiente
                                     </span>
                                 </mat-option>
-                                <mat-option [value]="{id: 0, name: 'Cerrado'}">
+                                <mat-option [value]="{id: 0, name: 'Finalizado'}">
                                     <span class="badge rounded-pill cap bg-label-success">
-                                        Cerrado
+                                        Finalizado
                                     </span>
                                 </mat-option>
                             </mat-select>
@@ -219,9 +219,8 @@
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header class="max-1280-hidden"> ESTADO </th>
                         <td mat-cell *matCellDef="let element" class="max-1280-hidden font-family-def font-size-def">
-                            <span class="badge rounded-pill cap fs-08" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;"
-                                    [style.color]="(element.status == 'Abierto')?'#16b1ff':'#56ca00'"
-                                    [style.background-color]="(element.status == 'Abierto')?'#daf3ff':'#e4f7d6'">
+                            <span class="badge rounded-pill cap fs-08"
+                                    [ngClass]="(element.status == 'Pendiente')?'bg-label-danger':'bg-label-success'">
                                 {{ element.status }}
                             </span>
                         </td>

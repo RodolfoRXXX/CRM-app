@@ -6,10 +6,9 @@
         <div class="d-flex flex-column justify-content-center">
             <h4 class="mb-1">
                 Remito {{ order?(order.nroRemito):'nuevo' }}
-                <span class="badge rounded-pill cap fs-09 ms-1" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;"
-                        [style.color]="(order)?((order.status == 1)?'#16b1ff':'#56ca00'):'#8a8d93'"
-                        [style.background-color]="(order)?((order.status == 1)?'#daf3ff':'#e4f7d6'):'#ecedee'">
-                    {{ (order)?((order.status == 1)?'Abierto':'Cerrado'):'Sin información' }}
+                <span class="badge rounded-pill border cap fs-09 ms-1"
+                [ngClass]="(order)?((order.status == 0)?'bg-label-success':'bg-label-danger'):'bg-label-none'">
+                    {{ (order)?((order.status == 1)?'Pendiente':'Finalizado'):'Sin información' }}
                 </span>
             </h4>
             <p class="mb-0">Creado el <span class="fw-500">{{ (order?order.date:getDateNow()) | date:'dd/MM/yyyy' }}</span></p>

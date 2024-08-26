@@ -6,7 +6,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { merge, startWith, map, switchMap, catchError, of as observableOf, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
@@ -36,8 +36,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   chips: any = {};
   chips_arr: any = {};
   permissions: string[] = [];
-  //d1: pendientes, d2: entregados, d3: devoluciones, d4: cancelaciones
-  card_values: any = { d1: null, d2: null, d4: null, d5: null };
+  card_values: any = { open_orders: null, close_orders: null, pending_products: null, delivered_products: null };
   uriImg = environment.SERVER;
   edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
 
@@ -91,35 +90,36 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   }
   private getDataCard(id_enterprise: number): void {
     const date_limit = calculateDateLimit(365);
-    this._api.postTypeRequest('profile/get-orders-data', { id_enterprise, date_limit, seller: this.seller }).subscribe((value: any) => {
-      if(value.data) {
-        value.data.forEach((item: any) => {
-          switch (item.status_value) {
-            case '1':
-              this.card_values.d1 = item.count_status
-              break;
-            case '2':
-              this.card_values.d2 = item.count_status
-              break;
-            case '4':
-              this.card_values.d4 = item.count_status
-              break;
-            case '5':
-              this.card_values.d5 = item.count_status
-              break;
-          }
-        });
-      } else {
+    const requestData = { id_enterprise, date_limit, seller: this.seller }; 
+    forkJoin({
+      orders: this._api.postTypeRequest('profile/get-orders-data-orders', requestData),
+      products: this._api.postTypeRequest('profile/get-orders-data-products', requestData)
+    }).subscribe({
+      next: (results: any) => {
+        const { orders, products } = results;
         this.card_values = {
-          d1 : 0,
-          d2 : 0,
-          d3 : 0,
-          d4 : 0
+          open_orders: orders.status === 1 ? orders.data[0].open_orders : 0,
+          close_orders: orders.status === 1 ? orders.data[0].close_orders : 0,
+          pending_products: 0,
+          delivered_products: 0
+        };
+        if (products.status === 1) {
+          products.data.forEach((element: any) => {
+            if (element.status_value === '1') {
+              this.card_values.delivered_products = element.count_status;
+            } else if (element.status_value === '2') {
+              this.card_values.pending_products = element.count_status;
+            }
+          });
         }
+        this.loadCards = false;
+      },
+      error: () => {
+        this.loadCards = false;
       }
-      this.loadCards = false;
     });
   }
+  
 
 //Función que trae los valores desde la DB
 loadData(): void {
@@ -136,9 +136,9 @@ loadData(): void {
         if(results.count.data[0].total > 0) {
           results.orders.data.forEach((element: any) => {
             if(element.status == 1) {
-              element.status = 'Abierto'
+              element.status = 'Pendiente'
             } else {
-              element.status = 'Cerrado'
+              element.status = 'Finalizado'
             }
           });
           this.resultsLength = results.count.data.total
@@ -179,7 +179,6 @@ loadData(): void {
     this.loadData()
   }
   delete(key: any) {
-    console.log(key)
     delete this.chips[key];
     delete this.chips_arr[key];
 
