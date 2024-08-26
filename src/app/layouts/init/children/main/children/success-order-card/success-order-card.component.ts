@@ -7,11 +7,11 @@ import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
-  selector: 'app-open-order-card',
-  templateUrl: './open-order-card.component.html',
-  styleUrls: ['./open-order-card.component.scss']
+  selector: 'app-success-order-card',
+  templateUrl: './success-order-card.component.html',
+  styleUrls: ['./success-order-card.component.scss']
 })
-export class OpenOrderCardComponent {
+export class SuccessOrderCardComponent {
 
   employee!: Employee;
   seller!: number | null;
@@ -44,7 +44,7 @@ export class OpenOrderCardComponent {
         map(() => this.getDataLocal()),
         switchMap(id_enterprise => {
           const date_limit = calculateDateLimit(range);
-          return this._api.postTypeRequest('profile/get-data-open-order', { id_enterprise, date_limit, seller: this.seller })
+          return this._api.postTypeRequest('profile/get-data-success-order', { id_enterprise, date_limit, seller: this.seller })
             .pipe(catchError(() => observableOf(null)));
         }),
         map(data => data)

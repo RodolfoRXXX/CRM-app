@@ -7,11 +7,11 @@ import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { permissions } from 'src/enviroments/enviroment';
 
 @Component({
-  selector: 'app-pending-product-card',
-  templateUrl: './pending-product-card.component.html',
-  styleUrls: ['./pending-product-card.component.scss']
+  selector: 'app-pending-order-card',
+  templateUrl: './pending-order-card.component.html',
+  styleUrls: ['./pending-order-card.component.scss']
 })
-export class PendingProductCardComponent {
+export class PendingOrderCardComponent {
 
   employee!: Employee;
   seller!: number | null;
@@ -44,7 +44,7 @@ export class PendingProductCardComponent {
         map(() => this.getDataLocal()),
         switchMap(id_enterprise => {
           const date_limit = calculateDateLimit(range);
-          return this._api.postTypeRequest('profile/get-data-pending-product', { id_enterprise, date_limit, seller: this.seller })
+          return this._api.postTypeRequest('profile/get-data-pending-order', { id_enterprise, date_limit, seller: this.seller })
             .pipe(catchError(() => observableOf(null)));
         }),
         map(data => data)
