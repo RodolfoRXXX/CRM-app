@@ -86,8 +86,24 @@ export class BalanceCardComponent implements OnInit {
     this.basicData.datasets[0].data = [];
     this.basicData.datasets[0].backgroundColor = [];
     this.basicData.datasets[0].borderColor = [];
+    const colors = [
+      'rgba(0, 105, 92, 0.2)',
+      'rgba(38, 166, 154, 0.2)',
+      'rgba(100, 255, 218, 0.2)',
+      'rgba(144, 224, 239, 0.2)',
+      'rgba(0, 145, 234, 0.2)',
+      'rgba(41, 98, 255, 0.2)'
+    ];
+    const borderColors = [
+      'rgba(0, 105, 92, 1)',
+      'rgba(38, 166, 154, 1)',
+      'rgba(100, 255, 218, 1)',
+      'rgba(144, 224, 239, 1)',
+      'rgba(0, 145, 234, 1)',
+      'rgba(41, 98, 255, 1)'
+    ];
     if(data) {
-      data.forEach((item: any) => {
+      data.forEach((item: any, index: number) => {
         //Arma el eje x
         switch (this.range) {
           case 'day':
@@ -110,8 +126,8 @@ export class BalanceCardComponent implements OnInit {
         
         //Arma el eje y, un array
         this.basicData.datasets[0].data.push(item.response);
-        this.basicData.datasets[0].backgroundColor.push('rgba(255, 159, 64, 0.2)');
-        this.basicData.datasets[0].borderColor.push('rgba(255, 159, 64)');
+        this.basicData.datasets[0].backgroundColor.push(colors[index % colors.length]);
+        this.basicData.datasets[0].borderColor.push(borderColors[index % borderColors.length]);
       });
     }
 
