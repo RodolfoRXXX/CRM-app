@@ -7,7 +7,7 @@
             <div class="col-md-7 d-flex flex-column justify-content-start position-relative">
                 <h4 class="cap">Productos más vendidos <span class="fs-09 text-muted">({{ text_range }})</span></h4>
                 <!-- Contenedor para la tabla con desplazamiento -->
-                <div class="m-4 mt-2 mb-2" style="max-height: 180px!important; overflow-y: auto;">
+                <div class="m-4 mt-2 mb-2" style="height: 180px!important; overflow-y: auto;">
                     <!-- Hay resultados -->
                     <ng-container *ngIf="results">
                         <div class="d-flex justify-content-between b-b" *ngFor="let item of results; let i = index">
@@ -32,11 +32,9 @@
                     </div>
                     </ng-container>
                     <!-- No hay resultados -->
-                    <ng-container *ngIf="!results">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <p>Sin información</p>
-                         </div>
-                    </ng-container>
+                    <div class="h-100 d-flex flex-column justify-content-center align-items-center" *ngIf="!results">
+                        <p>Sin información</p>
+                    </div>
                 </div>
                 <button mat-icon-button aria-label="Date Data" class="btn-date" [matMenuTriggerFor]="menu">
                   <mat-icon>more_vert</mat-icon>

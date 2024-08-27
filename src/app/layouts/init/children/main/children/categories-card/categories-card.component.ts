@@ -24,6 +24,8 @@ export class CategoriesCardComponent implements OnInit {
       borderWidth: 2
     }]
   };
+  load: boolean = true;
+  noData: boolean = false;
 
   constructor(
     private _api: ApiService,
@@ -45,6 +47,8 @@ export class CategoriesCardComponent implements OnInit {
   }
 
   private getInfo(id_enterprise?: number): void {
+    this.load = true;
+    this.load = false;
     merge()
       .pipe(
         startWith({}),
@@ -56,12 +60,15 @@ export class CategoriesCardComponent implements OnInit {
         map(data => data)
       )
       .subscribe((data: any) => {
-        if (data.data) {
+        this.load = false;
+        if (data.status == 1 && data.data.length) {
           data.data.forEach((element: any) => {
             element.color_badge = JSON.parse(element.color_badge)
           });
           this.initializeChartOptions();
           this.initializeChartData(data.data);
+        } else {
+          this.noData = true;
         }
       });
   }
