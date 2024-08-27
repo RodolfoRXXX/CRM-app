@@ -437,11 +437,11 @@ html body {
 
 .grey-load {
   background: linear-gradient(45deg,
-      rgba(211, 211, 211, 1) 0%,   /* Light Gray */
-      rgb(191, 191, 191) 25%,  /* Silver */
-      rgb(156, 156, 156) 50%,  /* Dark Gray */
-      rgba(191, 191, 191, 1) 75%,  /* Silver */
-      rgba(211, 211, 211, 1) 100%  /* Light Gray */
+      rgb(229, 229, 229) 0%,   /* Light Gray */
+      rgb(211, 211, 211) 25%,  /* Silver */
+      rgb(180, 180, 180) 50%,  /* Dark Gray */
+      rgba(211, 211, 211, 1) 75%,  /* Silver */
+      rgba(229, 229, 229, 1) 100%  /* Light Gray */
   );
   background-size: 200% 200%;
   animation: shimmer 3s infinite;

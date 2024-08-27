@@ -21,7 +21,6 @@ export class DialogProductDetailComponent implements OnInit {
 
   product!: any;
   baseURL = environment.SERVER;
-  load: boolean = true;
 
   isNewerThan30Days = isNewerThan30Days;
 
@@ -36,7 +35,6 @@ export class DialogProductDetailComponent implements OnInit {
   }
 
   searchProduct(id_product: number): void {
-    this.load = true;
     //Obtener la información del producto
     this._api.postTypeRequest('profile/get-product-detail', { id_product: id_product }).subscribe( (value: any) => {
       if (value.data) {
@@ -46,7 +44,6 @@ export class DialogProductDetailComponent implements OnInit {
         //Si NO existe el producto centonces cierra el dialog como error
         this.closeDialog();
       }
-      this.load = false;
     })
   }
 

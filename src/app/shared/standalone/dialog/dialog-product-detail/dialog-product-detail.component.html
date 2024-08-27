@@ -4,11 +4,6 @@
             <mat-icon>close</mat-icon>
         </a>
     
-        <!-- Loader
-        <div class="d-flex justify-content-center align-items-center p-4" *ngIf="load">
-            Cargando...
-        </div> -->
-    
         <!-- Box principal -->
         <div class="row card-content">
             <!-- Caja imagen -->
@@ -20,14 +15,14 @@
             <!-- Caja de texto -->
             <div class="col-md-7 text-container">
                 <!-- Nombre -->
-                <p class="rounded grey-load" style="height: 30px; width: 300px;" *ngIf="!product"></p>
+                <p class=" product-name rounded grey-load" style="height: 23px; width: 300px;" *ngIf="!product"></p>
                 <p class="product-name" *ngIf="product">{{ product.name }}</p>
                 
                 <!-- Badges -->
                 <div class="status-container d-flex justify-content-start align-items-center" *ngIf="!product">
-                    <p class="rounded grey-load mb-0 me-2" style="height: 30px; width: 70px;"></p>
-                    <p class="rounded grey-load mb-0 me-2" style="height: 30px; width: 70px;"></p>
-                    <p class="rounded grey-load mb-0" style="height: 30px; width: 70px;"></p>
+                    <p class="rounded grey-load mb-0 me-2" style="height: 23px; width: 70px;"></p>
+                    <p class="rounded grey-load mb-0 me-2" style="height: 23px; width: 70px;"></p>
+                    <p class="rounded grey-load mb-0" style="height: 23px; width: 70px;"></p>
                 </div>
                 <div class="status-container d-flex justify-content-start align-items-center" *ngIf="product">
                     <p class="status mb-0 fw-500 cap" [ngClass]="(product.state == 'activo')?'bg-label-success':'bg-label-danger'">
@@ -53,20 +48,20 @@
     
                 <!-- Descripción -->
                 <div class="description">
-                    <p class="rounded grey-load mb-2" style="height: 25px; width: 300px;" *ngIf="!product"></p>
+                    <p class="rounded grey-load mb-2" style="height: 16px; width: 300px;" *ngIf="!product"></p>
                     <h6 *ngIf="product">{{ product.description }}</h6>
                 </div>
                 <!-- lista -->
                 <ul class="list-unstyled ps-1 mb-1">
                     <li class="mb-2">
-                        <p class="rounded grey-load mb-0" style="height: 25px; width: 100px;" *ngIf="!product"></p>
+                        <p class="rounded grey-load mb-0" style="height: 23px; width: 100px;" *ngIf="!product"></p>
                         <span *ngIf="product">
                             <span class="h6 me-1 fs-08">SKU: </span>
                             <span>{{ product.sku }}</span>
                         </span>
                     </li>
                     <li class="mb-2">
-                        <p class="rounded grey-load mb-0" style="height: 25px; width: 250px;" *ngIf="!product"></p>
+                        <p class="rounded grey-load mb-0" style="height: 23px; width: 250px;" *ngIf="!product"></p>
                         <span *ngIf="product">
                             <span class="h6 me-1 fs-08">Stock físico / disponible: </span>
                             <span>
@@ -76,7 +71,7 @@
                         </span>
                     </li>
                     <li class="mb-2">
-                        <p class="rounded grey-load mb-0" style="height: 25px; width: 200px;" *ngIf="!product"></p>
+                        <p class="rounded grey-load mb-0" style="height: 23px; width: 200px;" *ngIf="!product"></p>
                         <span *ngIf="product">
                             <span class="h6 me-1 fs-08">Ubicación: </span>
                             <span>{{ (product.storage_name.length)?product.storage_name:'Sin información' }}</span>
@@ -100,7 +95,7 @@
                     </ng-container>
                 </div>
                 <!-- Precio -->
-                <p class="rounded grey-load mb-0" style="height: 35px; width: 120px;" *ngIf="!product"></p>
+                <p class="rounded grey-load mb-0" style="height: 36px; width: 120px;" *ngIf="!product"></p>
                 <h2 class="fw-700 black-color mb-0" *ngIf="product">${{ product.sale_price }}</h2>
             </div>
         </div>
