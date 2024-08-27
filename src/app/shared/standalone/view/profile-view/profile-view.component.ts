@@ -101,7 +101,7 @@ export class ProfileViewComponent implements OnInit, OnChanges {
   getDataCard(): void {
     if (this.date_limit) {
       forkJoin({
-        total_sale: this._api.postTypeRequest('profile/get-user-total-sale', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null }),
+        total_sale: this._api.postTypeRequest('profile/get-data-total-sale', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null }),
         pending: this._api.postTypeRequest('profile/get-user-pending', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null }),
         open_orders: this._api.postTypeRequest('profile/get-user-open-orders', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null }),
         relative: this._api.postTypeRequest('profile/get-user-relative', { id_enterprise: this.data.id_enterprise, date_limit: this.date_limit, seller: (this.permissions.includes(this.edit_enterprise_control))?this.data.userId:null })
@@ -110,7 +110,7 @@ export class ProfileViewComponent implements OnInit, OnChanges {
           this.card_values.total_sale = results.total_sale.data[0]?.response;
           this.card_values.pending = results.pending.data[0]?.response;
           this.card_values.open_orders = results.open_orders.data[0]?.response;
-          this.card_values.relative = (results.relative.data[0]?.open/results.relative.data[0]?.total)*100;
+          this.card_values.relative = (1 - (results.relative.data[0]?.open/results.relative.data[0]?.total))*100;
         }
       });
     }

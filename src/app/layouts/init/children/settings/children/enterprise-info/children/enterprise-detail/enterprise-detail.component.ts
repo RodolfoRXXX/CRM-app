@@ -66,24 +66,10 @@ export class EnterpriseDetailComponent implements OnInit {
     });
   }
 
-  //total de empleados(un), valor del stock($), total de órdenes($), pagos de pedidos pendientes($), total de venta en el último mes($)
-  getDataCar(id_enterprise: number): void {
-    this._api.postTypeRequest('profile/get-enterprise-data', { id_enterprise }).subscribe(
-      (value: any) => {
-        this.card_values = {
-          total_employees: value.data[0].data || 0
-        };
-      },
-      error => {
-        console.error(error);
-      }
-    );
-  }
-
   getDataCard(): void {
     if (this.date_limit) {
       forkJoin({
-        total_sale: this._api.postTypeRequest('profile/get-user-total-sale', { id_enterprise: this.enterprise.id, date_limit: this.date_limit, seller: null }),
+        total_sale: this._api.postTypeRequest('profile/get-data-total-sale', { id_enterprise: this.enterprise.id, date_limit: this.date_limit, seller: null }),
         pending: this._api.postTypeRequest('profile/get-user-pending', { id_enterprise: this.enterprise.id, date_limit: this.date_limit, seller: null }),
         total_stock: this._api.postTypeRequest('profile/get-total-stock', { id_enterprise: this.enterprise.id }),
         total_employees: this._api.postTypeRequest('profile/get-count-users', { id: this.enterprise.id })
@@ -97,8 +83,6 @@ export class EnterpriseDetailComponent implements OnInit {
       });
     }
   }
-
-
 
   editEnterprise(): void {
     this._router.navigate(['init/settings/enterprise-info/enterprise-edit']);
