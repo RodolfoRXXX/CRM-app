@@ -3,5 +3,11 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+*::-webkit-scrollbar{
+    width: 8px;
+    border-radius: 20px;
+}
+*::-webkit-scrollbar-thumb  {
+    background-color: #5c5c5c;
+    border-radius: 6px;
+}

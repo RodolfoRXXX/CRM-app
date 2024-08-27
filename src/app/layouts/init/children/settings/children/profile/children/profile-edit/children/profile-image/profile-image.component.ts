@@ -46,6 +46,9 @@ export class ProfileImageComponent {
       id: new FormControl('', [
         Validators.required
       ]),
+      id_enterprise: new FormControl('', [
+        Validators.required
+      ]),
       thumbnail: new FormControl('', [
         Validators.required
       ]),
@@ -60,6 +63,7 @@ export class ProfileImageComponent {
     if (user) {
       this.dataForm.patchValue({
         id: (user.id > 0)?user.id:'',
+        id_enterprise: (user.id_enterprise > 0)?user.id_enterprise:'',
         thumbnail: '',
         prev_thumb: (user.thumbnail != '')?user.thumbnail:''
       });

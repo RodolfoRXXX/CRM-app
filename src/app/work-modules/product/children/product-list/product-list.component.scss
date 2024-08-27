@@ -29,9 +29,12 @@
     align-items: center;
     font-size: 1rem;
     .image-product {
-        border-radius: 0.25rem;
+        border-radius: 8px;
         background-color: #ecedee !important;
         color: #8a8d93 !important;
+        img {
+            border-radius: 8px;
+        }
     }
     .text-product {
         display: flex;

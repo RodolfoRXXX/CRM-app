@@ -4,79 +4,104 @@
             <mat-icon>close</mat-icon>
         </a>
     
-        <!-- Loader -->
-        <div class="p-4" *ngIf="load">
+        <!-- Loader
+        <div class="d-flex justify-content-center align-items-center p-4" *ngIf="load">
             Cargando...
-        </div>
+        </div> -->
     
         <!-- Box principal -->
-        <div class="row card-content" *ngIf="!load">
+        <div class="row card-content">
             <!-- Caja imagen -->
             <div class="col-md-5 image-container">
-                <img class="product-image" [src]="product?(baseURL + product.image):''" [alt]="product?product.name:'product image'">
+                <div class="product-image grey-load" *ngIf="!product" style="height: 300px; width: 300px;"></div>
+                <img class="product-image" *ngIf="product" [src]="baseURL + product.image" [alt]="product.name">
             </div>
     
             <!-- Caja de texto -->
             <div class="col-md-7 text-container">
-                <p class="product-name">{{ product?product.name:'Sin información' }}</p>
+                <!-- Nombre -->
+                <p class="rounded grey-load" style="height: 30px; width: 300px;" *ngIf="!product"></p>
+                <p class="product-name" *ngIf="product">{{ product.name }}</p>
                 
-                <div class="status-container d-flex justify-content-start align-items-center">
-                    <p class="status mb-0 fw-500 cap" [ngClass]="((product?product.state:'inactivo') == 'activo')?'bg-label-success':'bg-label-danger'">
-                        {{ product?product.state:'Inactivo' }}
+                <!-- Badges -->
+                <div class="status-container d-flex justify-content-start align-items-center" *ngIf="!product">
+                    <p class="rounded grey-load mb-0 me-2" style="height: 30px; width: 70px;"></p>
+                    <p class="rounded grey-load mb-0 me-2" style="height: 30px; width: 70px;"></p>
+                    <p class="rounded grey-load mb-0" style="height: 30px; width: 70px;"></p>
+                </div>
+                <div class="status-container d-flex justify-content-start align-items-center" *ngIf="product">
+                    <p class="status mb-0 fw-500 cap" [ngClass]="(product.state == 'activo')?'bg-label-success':'bg-label-danger'">
+                        {{ product.state }}
                     </p>
-                    <p class="status mb-0 fw-500 cap" [ngStyle]="getStatusCategory(product?product.category_color:'')">
-                        {{ product?product.category_item:'Sin Categoría' }}
+                    <p class="status mb-0 fw-500 cap" [ngStyle]="getStatusCategory(product.category_color)">
+                        {{ product.category_item }}
                     </p>
-                    <p class="status mb-0 fw-500 cap" [ngClass]="((product?product.stock_available:0) > 0)?'bg-label-success':'bg-label-danger'">
-                        {{ product?((product.stock_available > 0)?'Con stock':'Sin stock'):'Sin stock' }}
+                    <p class="status mb-0 fw-500 cap" [ngClass]="(product.stock_available > 0)?'bg-label-success':'bg-label-danger'">
+                        {{ (product.stock_available > 0)?'Con stock':'Sin stock' }}
                     </p>
-                    <div *ngIf="product">
-                        <span class="badge rounded-pill cap fs-08 bg-label-danger p-1"
-                                *ngIf="isNewerThan30Days(product.sale_date)"
-                                matTooltip="Alta rotación">
-                            <mat-icon>local_fire_department</mat-icon>
-                        </span>
-                        <span class="badge rounded-pill cap fs-08 bg-label-blue p-1"
-                                *ngIf="!isNewerThan30Days(product.sale_date)"
-                                matTooltip="Baja rotación">
-                            <mat-icon>ac_unit</mat-icon>
-                        </span>
-                    </div>
+                    <span class="badge rounded-pill cap fs-08 bg-label-danger p-1"
+                            *ngIf="isNewerThan30Days(product.sale_date)"
+                            matTooltip="Alta rotación">
+                        <mat-icon>local_fire_department</mat-icon>
+                    </span>
+                    <span class="badge rounded-pill cap fs-08 bg-label-blue p-1"
+                            *ngIf="!isNewerThan30Days(product.sale_date)"
+                            matTooltip="Baja rotación">
+                        <mat-icon>ac_unit</mat-icon>
+                    </span>
                 </div>
     
+                <!-- Descripción -->
                 <div class="description">
-                    <h6>{{ product?product.description:'Sin Descripción' }}</h6>
+                    <p class="rounded grey-load mb-2" style="height: 25px; width: 300px;" *ngIf="!product"></p>
+                    <h6 *ngIf="product">{{ product.description }}</h6>
                 </div>
+                <!-- lista -->
                 <ul class="list-unstyled ps-1 mb-1">
                     <li class="mb-2">
-                        <span class="h6 me-1 fs-08">SKU: </span>
-                        <span>{{ product?product.sku:'Sin información' }}</span>
-                    </li>
-                    <li class="mb-2">
-                        <span class="h6 me-1 fs-08">Stock físico / disponible: </span>
-                        <span>
-                            {{ product?product.stock_real:0 }} /
-                            {{ product?product.stock_available:0 }} unidades
+                        <p class="rounded grey-load mb-0" style="height: 25px; width: 100px;" *ngIf="!product"></p>
+                        <span *ngIf="product">
+                            <span class="h6 me-1 fs-08">SKU: </span>
+                            <span>{{ product.sku }}</span>
                         </span>
                     </li>
                     <li class="mb-2">
-                        <span class="h6 me-1 fs-08">Ubicación: </span>
-                        <span>{{ product?((product.storage_name.length)?product.storage_name:'Sin información'):'Sin información' }}</span>
+                        <p class="rounded grey-load mb-0" style="height: 25px; width: 250px;" *ngIf="!product"></p>
+                        <span *ngIf="product">
+                            <span class="h6 me-1 fs-08">Stock físico / disponible: </span>
+                            <span>
+                                {{ product.stock_real }} /
+                                {{ product.stock_available }} unidades
+                            </span>
+                        </span>
+                    </li>
+                    <li class="mb-2">
+                        <p class="rounded grey-load mb-0" style="height: 25px; width: 200px;" *ngIf="!product"></p>
+                        <span *ngIf="product">
+                            <span class="h6 me-1 fs-08">Ubicación: </span>
+                            <span>{{ (product.storage_name.length)?product.storage_name:'Sin información' }}</span>
+                        </span>
                     </li>
                 </ul>
+                <!-- Filtros adicionales -->
                 <div class="status-container d-flex justify-content-start">
-                    <ng-container *ngIf="product.filter_values != null">
-                        <p class="status mb-0 fw-500 cap" *ngFor="let item of product.filter_values.split(',')">
-                            {{ item }}
-                        </p>
-                    </ng-container>
-                    <ng-container *ngIf="product.filter_values == null">
-                        <p class="status mb-0 fw-500 cap">
-                            Sin información
-                        </p>
+                    <p class="rounded grey-load mb-0" style="height: 30px; width: 80px;" *ngIf="!product"></p>
+                    <ng-container *ngIf="product">
+                        <ng-container *ngIf="product.filter_values != null">
+                            <p class="status mb-0 fw-500 cap" *ngFor="let item of product.filter_values.split(',')">
+                                {{ item }}
+                            </p>
+                        </ng-container>
+                        <ng-container *ngIf="product.filter_values == null">
+                            <p class="status mb-0 fw-500 cap">
+                                Sin información
+                            </p>
+                        </ng-container>
                     </ng-container>
                 </div>
-                <h2 class="fw-700 black-color mb-0">${{ product?product.sale_price:0.00 }}</h2>
+                <!-- Precio -->
+                <p class="rounded grey-load mb-0" style="height: 35px; width: 120px;" *ngIf="!product"></p>
+                <h2 class="fw-700 black-color mb-0" *ngIf="product">${{ product.sale_price }}</h2>
             </div>
         </div>
     </mat-card-content>

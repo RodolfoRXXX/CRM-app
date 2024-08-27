@@ -434,3 +434,22 @@ html body {
 .border-primary {
   border: 1px solid $themecolor!important;
 }
+
+.grey-load {
+  background: linear-gradient(45deg,
+      rgba(211, 211, 211, 1) 0%,   /* Light Gray */
+      rgb(191, 191, 191) 25%,  /* Silver */
+      rgb(156, 156, 156) 50%,  /* Dark Gray */
+      rgba(191, 191, 191, 1) 75%,  /* Silver */
+      rgba(211, 211, 211, 1) 100%  /* Light Gray */
+  );
+  background-size: 200% 200%;
+  animation: shimmer 3s infinite;
+}
+
+/* Animación de brillo */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

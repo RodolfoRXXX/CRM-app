@@ -47,6 +47,9 @@ export class ProductImageComponent {
       id: new FormControl('', [
         Validators.required
       ]),
+      id_enterprise: new FormControl('', [
+        Validators.required
+      ]),
       image: new FormControl('', [
         Validators.required,
       ]),
@@ -61,6 +64,7 @@ export class ProductImageComponent {
     if (product) {
       this.dataForm.patchValue({
         id: (product.id > 0)?product.id:'',
+        id_enterprise: (product.id_enterprise > 0)?product.id_enterprise:'',
         image: '',
         prev_thumb: (product.image != '')?product.image:''      
       });
