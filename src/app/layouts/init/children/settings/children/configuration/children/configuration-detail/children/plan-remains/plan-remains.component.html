@@ -1,25 +1,30 @@
-<!-- Greeting Card -->
+<!-- remains Card -->
+
 <mat-card class="card">
   <mat-card-content>
     <div class="d-flex flex-column align-items-start justify-content-between info">
-        <p class="text-muted">Días restantes</p>
-        <h1 class="primary-color">{{ remains }}</h1>
-        <div class="d-flex justify-content-start align-items-center mb-2">
-            <p class="mb-0 text-muted fs-09 me-2">Estado del plan: </p>
-            <span class="badge rounded-pill cap fs-08" [ngClass]="(statusAccount == 'Activo')?'bg-label-success':'bg-label-danger'">
-                {{ statusAccount }}
+        <p class="text-muted mb-2">Estado de mi plan</p>
+        <div class="w-100 p-2 rounded border">
+          <h1 class="primary-color">
+              {{remains}}<span class="fs-07 text-muted"> días restantes</span>
+          </h1>
+          <div class="d-flex justify-content-start align-items-center mb-2">
+              <p class="mb-0 text-muted fs-09 me-2">Estado del plan: </p>
+              <span class="badge rounded-pill cap fs-08" [ngClass]="(statusAccount == 'Activo')?'bg-label-success':'bg-label-danger'">
+                  {{ statusAccount }}
+              </span>
+          </div>
+          <div class="d-flex justify-content-start align-items-center mb-2">
+            <p class="mb-0 text-muted fs-09 me-2">Estado de cuenta: </p>
+            <span class="badge rounded-pill cap fs-08" [ngClass]="(statusPlan == 'Atrasado')?'bg-label-danger':'bg-label-blue'">
+                {{ statusPlan }}
             </span>
+          </div>
+          <div class="d-flex justify-content-start align-items-center">
+            <p class="mb-0 text-muted fs-09 me-2">Período abonado: </p>
+            <span class="fw-500">{{ period }}</span>
+          </div>
         </div>
-        <div class="d-flex justify-content-start align-items-center mb-2">
-          <p class="mb-0 text-muted fs-09 me-2">Estado de cuenta: </p>
-          <span class="badge rounded-pill cap fs-08" [ngClass]="(statusPlan == 'Atrasado')?'bg-label-danger':'bg-label-blue'">
-              {{ statusPlan }}
-          </span>
-      </div>
-      <div class="d-flex justify-content-start align-items-center">
-        <p class="mb-0 text-muted fs-09 me-2">Período abonado: </p>
-        <span class="fw-500">{{ period }}</span>
-    </div>
     </div>
   </mat-card-content>
 </mat-card>

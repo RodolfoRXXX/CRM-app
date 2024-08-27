@@ -1,9 +1,10 @@
-<!-- Greeting Card -->
+<!-- detail Card -->
+
 <mat-card class="card">
   <mat-card-content>
     <div class="d-flex flex-column align-items-start justify-content-between info">
-        <p class="text-muted mb-3">Detalles de mi plan: </p>
-        <div class="row g-2 w-100 p-2 rounded border">
+        <p class="text-muted mb-3">Detalle de mi plan</p>
+        <div class="row g-2 w-100 p-2 rounded border" *ngIf="!load">
             <!-- título -->
             <div class="col-12 col-md-4 d-flex flex-column align-items-center justify-content-between p-2">
                 <img [src]="actualPlan?actualPlan.image:''" height="100" alt="">
@@ -27,6 +28,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center p-3 w-100" *ngIf="load">
+            <p class="mb-0">Cargando...</p>
         </div>
     </div>
   </mat-card-content>

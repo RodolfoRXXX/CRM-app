@@ -12,6 +12,7 @@ export class PlanDetailComponent {
   @Input() enterprise!: Enterprise;
   planData!: any[];
   actualPlan!: any;
+  load: boolean = true;
 
   constructor(
     private _getJson: GetJsonDataService,
@@ -35,7 +36,11 @@ export class PlanDetailComponent {
   }
 
   setCard() {
-    this.actualPlan = this.planData.find(value => value.id === this.enterprise.plan);
+    const data = this.planData.find(value => value.id === this.enterprise.plan);
+    if(data) {
+      this.load = false;
+      this.actualPlan = data
+    }
   }
 
 }
