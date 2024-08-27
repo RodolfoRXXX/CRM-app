@@ -56,7 +56,7 @@ export class CategoriesCardComponent implements OnInit {
         map(data => data)
       )
       .subscribe((data: any) => {
-        if (data) {
+        if (data.data) {
           data.data.forEach((element: any) => {
             element.color_badge = JSON.parse(element.color_badge)
           });
