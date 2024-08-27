@@ -35,6 +35,8 @@ export class BalanceCardComponent implements OnInit {
     min: null,
     avg: 0
   };
+  load: boolean = true;
+  noData: boolean = false;
 
   constructor(
     private _api: ApiService,
@@ -61,6 +63,8 @@ export class BalanceCardComponent implements OnInit {
   }
 
   private getInfo(id_enterprise?: number): void {
+    this.load = true;
+    this.load = false;
     merge()
       .pipe(
         startWith({}),
@@ -72,10 +76,13 @@ export class BalanceCardComponent implements OnInit {
         map(data => data)
       )
       .subscribe((data: any) => {
-        if (data) {
+        this.load = false;
+        if (data.status == 1 && data.data.length) {
           this.initializeChartOptions();
           this.initializeChartData(data.data);
           this.analysisResult = analyzeData(data.data);
+        } else {
+          this.noData = true;
         }
       });
   }
