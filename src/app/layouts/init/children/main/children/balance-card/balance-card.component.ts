@@ -15,7 +15,6 @@ import { permissions } from 'src/enviroments/enviroment';
 })
 export class BalanceCardComponent implements OnInit {
 
-  asicData: any;
   basicOptions: any;
   employee!: Employee;
   seller!: number | null;

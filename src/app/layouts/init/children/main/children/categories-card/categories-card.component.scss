@@ -1,0 +1,16 @@
+:root {
+    --text-color: #333333;
+    --text-color-secondary: #aaaaaa;
+    --surface-border: #dddddd;
+}
+
+.btn-date {
+  position: absolute;
+  top: -10px;
+  right: 5px;
+  color: #b6b4b4;
+  mat-icon {
+      position: relative;
+      bottom: 2px;
+  }
+}

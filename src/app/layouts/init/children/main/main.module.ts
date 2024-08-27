@@ -19,6 +19,7 @@ import { CancelationsCardComponent } from './children/cancelations-card/cancelat
 import { ChartModule } from 'primeng/chart';
 import { ProductsCardComponent } from './children/products-card/products-card.component';
 import { SuccessOrderCardComponent } from './children/success-order-card/success-order-card.component';
+import { CategoriesCardComponent } from './children/categories-card/categories-card.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { SuccessOrderCardComponent } from './children/success-order-card/success
     TotalSalesCardComponent,
     ReturnsCardComponent,
     CancelationsCardComponent,
-    ProductsCardComponent
+    ProductsCardComponent,
+    CategoriesCardComponent
   ],
   imports: [
     CommonModule,
