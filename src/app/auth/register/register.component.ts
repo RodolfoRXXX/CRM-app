@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { Md5 } from 'ts-md5';
+import { generateUniqueId } from 'src/app/shared/functions/operation.function';
 
 
 @Component({
@@ -146,14 +146,12 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.disable_submit = true;
     this.loading =  true;
-    const md5 = new Md5();
-    const hash_code = Md5.hashStr(this.registerForm.get('email')?.value).slice(0,10);
+    const hash_code = generateUniqueId(10);
     this.formMsg.patchValue({
       email: this.registerForm.get('email')?.value,
       data: hash_code
     });
-    this.registerForm.controls['activation_code'].setValue(hash_code);
-    md5.end();
+    this.registerForm.controls['activation_code'].patchValue(hash_code);
     this._api.postTypeRequest('user/register', this.registerForm.value).subscribe({
       next: (res: any) => {
         this.loading =  false;
@@ -168,7 +166,26 @@ export class RegisterComponent implements OnInit {
             setTimeout(() => {
               this._router.navigate(['init']);
             }, 2000);
-            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe();
+            this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe({
+              next: (res: any) => {
+                if(res.status == 1){
+                  if(res.data == 'ok') {
+                    //envío de email exitoso!
+                    this._notify.showSuccess('Se envió un correo a tu cuenta con el código de verificación.');
+                  } else {
+                    //no se envío el email
+                    this._notify.showError('No se pudo enviar el correo con el código de verificación.');
+                  }
+                } else{
+                  //no se envío el email
+                  this._notify.showError('No se pudo enviar el correo con el código de verificación.');
+                }
+              },
+              error: (error) => {
+                //Error de conexión, no pudo consultar con la base de datos
+                this._notify.showError('No se pudo enviar el correo con el código de verificación.');
+              }
+            });
           }
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
