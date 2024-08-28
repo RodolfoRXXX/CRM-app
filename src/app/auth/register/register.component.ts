@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit {
           (control: AbstractControl):ValidationErrors|null => {
           return (control.value !== this.passwordFirst.value) ? {no_equal: {value: control.value}} : null;}
         ]),
-        thumbnail: new FormControl('blanck_user.png'),
+        thumbnail: new FormControl('no-image.png'),
         id_enterprise: new FormControl('', [
           Validators.required
         ]),

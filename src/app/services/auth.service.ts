@@ -68,7 +68,7 @@ export class AuthService {
 // ----------------- SET ----------------
   //Guarda las credenciales de acceso en el localstorage y actualiza los observables de logged y authenticated
   setDataInLocalStorage(id: number, token: any, state:any, data:any, remember:boolean): void {
-    localStorage.setItem('userData', JSON.stringify(data));
+    this.setUserData(data);
     this.setState(state);
     this.setIdUserToLocalStorage(id);
     this.setToken(token);
@@ -76,6 +76,10 @@ export class AuthService {
     this.setLoggedState(true);
     this.setAuthenticatedState(true);
     //this.isActive();
+  }
+  //Guardo toda la data en la variable "userData" de localStorage
+  setUserData(data: any) {
+    localStorage.setItem('userData', JSON.stringify(data));
   }
   //Guardo el Id del usuario logueado
   setIdUserToLocalStorage(id: number): void {
@@ -96,10 +100,6 @@ export class AuthService {
   //Setear el objeto role del usuario logueado y guardarlo en el localStorage
   setRole(role: any): void {
     localStorage.setItem('role', role);
-  }
-  //Setear el objeto enterprise_thumbnail del usuario logueado y guardarlo en el localStorage
-  setEnterpriseThumbnail(thumbnail: any): void {
-    localStorage.setItem('enterprise_thumbnail', thumbnail);
   }
 // ----------------- GET ----------------
   //Devuelvo las credenciales de acceso

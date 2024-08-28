@@ -12,7 +12,9 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class VerifyComponent {
 
   verifyForm!: FormGroup;
+  formMsg!: FormGroup;
   loading: boolean = false;
+  load: boolean = false
   disable_submit!: boolean;
 
   constructor(
@@ -26,6 +28,7 @@ export class VerifyComponent {
 
   ngOnInit(): void {
     this.createForm();
+    this.createFormMsg();
     this.setDataUser();
   }
 
@@ -39,7 +42,11 @@ export class VerifyComponent {
         .then( value => {
           this.verifyForm.patchValue({
             email: value.email
-          })
+          });
+          this.formMsg.patchValue({
+            email: value.email,
+            data: value.activation_code
+          });
         })
   }
 
@@ -52,6 +59,14 @@ export class VerifyComponent {
         ])
     }
     );
+  }
+
+  createFormMsg() {
+    this.formMsg = new FormGroup({
+      email: new FormControl(''),
+      data: new FormControl(''),
+      tipo: new FormControl('code')
+  });
   }
 
   getCodeErrorMessage() {
@@ -72,7 +87,7 @@ export class VerifyComponent {
           if(res.data.changedRows == 1){
             //Encontró el usuario
             this.loading =  false;
-            this._notify.showSuccess('Cuenta desbloqueada!');
+            this._notify.showSuccess('Cuenta verificada!');
             this._auth.setActiveState(true);
             this._auth.setState(1);
             setTimeout(() => {
@@ -98,6 +113,32 @@ export class VerifyComponent {
         this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intente nuevamente por favor.');
       }
     })
+  }
+
+  sendCode() {
+    this.load = true;
+    this._api.postTypeRequest('user/envio-email', this.formMsg.value).subscribe({
+      next: (res: any) => {
+        this.load = false;
+        if(res.status == 1){
+          if(res.data == 'ok') {
+            //envío de email exitoso!
+            this._notify.showSuccess('Se envió un correo a tu cuenta con el código de verificación.');
+          } else {
+            //no se envío el email
+            this._notify.showError('No se pudo enviar el correo con el código de verificación.');
+          }
+        } else{
+          //no se envío el email
+          this._notify.showError('No se pudo enviar el correo con el código de verificación.');
+        }
+      },
+      error: (error) => {
+        //Error de conexión, no pudo consultar con la base de datos
+        this.load = false;
+        this._notify.showError('No se pudo enviar el correo con el código de verificación.');
+      }
+    });
   }
 
 }

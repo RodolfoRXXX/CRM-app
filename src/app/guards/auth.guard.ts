@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable, map, pipe, tap } from 'rxjs';
+import { Observable, map, of, pipe, switchMap, tap } from 'rxjs';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 
@@ -118,22 +118,28 @@ import { AuthService } from '../services/auth.service';
       return isEmployee();
     };
 
-  const isEmployee = () : | boolean | UrlTree | Observable< boolean | UrlTree > | Promise< boolean | UrlTree > => {
+  const isEmployee = (): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> => {
     const _apiSvc = inject(ApiService);
     const _authSvc = inject(AuthService);
-    const _router  = inject(Router);
+    const _router = inject(Router);
 
     const id = _authSvc.getUserId();
 
-    if(!id) return _router.navigate(['init/blocked']);
+    if (!id) return _router.parseUrl('init/blocked');
 
-    const result = _apiSvc.postTypeRequest('profile/get-employee', {id_user: id})
-                  .pipe(
-                      map( (value:any) => (value.data.length)?true:false),
-                      tap( (value:boolean) => (!value)?_router.navigate(['init/blocked']):'' )
-                  )
-            return result;
-  }
+    return _apiSvc.postTypeRequest('profile/get-employee', { id_user: id }).pipe(
+        switchMap((response: any) => {
+            const employee = response.data?.[0];
+            if (employee && employee.status === 1) {
+                return of(true);
+            } else {
+                _router.navigate(['init/blocked']);
+                return of(false);
+            }
+        })
+    );
+};
+
 
   //Guard para evitar que un empleado acceda al componente de "empleado bloqueado"
   export const isNot_employee: CanActivateFn =
@@ -150,10 +156,15 @@ import { AuthService } from '../services/auth.service';
 
     if(!id) return _router.navigate(['init/blocked']);
 
-    const result = _apiSvc.postTypeRequest('profile/get-employee', {id_user: id})
-                  .pipe(
-                      map( (value:any) => (value.data.length)?false:true),
-                      tap( (value:boolean) => (!value)?_router.navigate(['init']):'' )
-                  )
-            return result;
+    return _apiSvc.postTypeRequest('profile/get-employee', { id_user: id }).pipe(
+      switchMap((response: any) => {
+          const employee = response.data?.[0];
+          if (!employee || employee.status === 0) {
+              return of(true);
+          } else {
+              _router.navigate(['init']);
+              return of(false);
+          }
+      })
+    );
   }

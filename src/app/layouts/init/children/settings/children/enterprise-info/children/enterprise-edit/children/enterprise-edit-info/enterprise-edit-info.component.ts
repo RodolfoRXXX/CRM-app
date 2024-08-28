@@ -1,6 +1,7 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
 
@@ -19,7 +20,8 @@ export class EnterpriseEditInfoComponent {
 
   constructor(
     private _api: ApiService,
-    private _notify: NotificationService
+    private _notify: NotificationService,
+    private _auth: AuthService
   ) {
     this.createDataForm();
   }
@@ -179,13 +181,17 @@ export class EnterpriseEditInfoComponent {
           if(res.data.changedRows == 1){
             //Modificó datos empresa
             this._notify.showSuccess('Información actualizada con éxito!');
+            //Modificar el localstorage
+            let data = JSON.parse(this._auth.getDataFromLocalStorage())
+            data.enterprise = res.name
+            this._auth.setUserData(data)
+            setTimeout(() => {
+              this.rechargeComponent();
+            }, 2000);
           } else{
             //No hubo modificación
             this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
           }
-          setTimeout(() => {
-            this.rechargeComponent();
-          }, 2000);
         } else{
           //Problemas de conexión con la base de datos(res.status == 0)
           this._notify.showWarn('No ha sido posible conectarse a la base de datos. Intentá nuevamente por favor.');

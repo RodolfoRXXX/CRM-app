@@ -169,7 +169,10 @@ export class EnterpriseEditImageComponent {
             if(res.changedRows == 1){
               //Modificó la imagen
               this._notify.showSuccess('La imagen de la empresa se ha modificado con éxito!');
-              this._auth.setEnterpriseThumbnail(res.data);
+              //Modificar el localstorage
+              let data = JSON.parse(this._auth.getDataFromLocalStorage())
+              data.enterprise_thumbnail = res.data
+              this._auth.setUserData(data)
               setTimeout(() => {
                 window.location.reload();
               }, 2000);

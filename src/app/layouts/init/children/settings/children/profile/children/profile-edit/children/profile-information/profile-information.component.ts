@@ -1,6 +1,7 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
@@ -21,7 +22,8 @@ export class ProfileInformationComponent {
   constructor(
     private _api: ApiService,
     private _conector: ConectorsService,
-    private _notify: NotificationService
+    private _notify: NotificationService,
+    private _auth: AuthService
   ) {
     this.createDataForm();
   }
@@ -153,23 +155,24 @@ export class ProfileInformationComponent {
     this.setDataForm(this.employee)
   }
 
-  //Navegar a la misma ruta para recargar el componente
-  rechargeComponent() {
-    window.location.reload();
-  }
-
   onSubmit() {
     this.loading = true;
     this._api.postTypeRequest('profile/update-employee-personal', this.dataForm.value).subscribe({
       next: (res: any) => {
         this.loading =  false;
+        console.log(res)
         if(res.status == 1){
           //Accedió a la base de datos y no hubo problemas
-          if(res.changedRows == 1){
+          if(res.data.affectedRows == 1){
             //Modificó la info
             this._notify.showSuccess('Información actualizada con éxito!');
-            this._conector.setEmployee(res.data[0]);
-            this.rechargeComponent();
+            //Modificar el localstorage
+            let data = JSON.parse(this._auth.getDataFromLocalStorage())
+            data.name = res.name
+            this._auth.setUserData(data)
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           } else{
             //No hubo modificación
             this._notify.showError('No se detectaron cambios. Ingresá valores diferentes.');

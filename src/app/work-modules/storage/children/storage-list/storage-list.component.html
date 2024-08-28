@@ -117,7 +117,7 @@
             <div class="recharge" *ngIf="empty_storage">
                 <!-- Botón para recargar los datos -->
                 <p>No hay depósitos</p>
-                <a mat-flat-button color="primary" routerLink="../storage-edit" [disabled]="!this.permissions.includes(admin)">
+                <a mat-flat-button color="primary" routerLink="../storage-edit" *ngIf="this.permissions.includes(admin)">
                     + Agregar Depósito
                 </a>
             </div>

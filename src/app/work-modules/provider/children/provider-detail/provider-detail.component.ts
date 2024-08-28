@@ -72,9 +72,9 @@ export class ProviderDetailComponent implements OnInit {
     this._api.postTypeRequest('profile/get-provider-data', { id_enterprise, id_provider }).subscribe(
       (value: any) => {
         this.card_values = {
-          total_art: value.data[0].data || 0,
-          total_inv: value.data[1].data || 0,
-          last_shop: value.data[2].data || 0,
+          total_art: value.data[0]?value.data[0].data:0,
+          total_inv: value.data[1]?value.data[1].data:0,
+          last_shop: value.data[2]?value.data[2].data:0,
         };
       },
       error => {
@@ -87,5 +87,3 @@ export class ProviderDetailComponent implements OnInit {
     this._router.navigate(['init/main/provider/provider-edit'], { queryParams: { id_provider } });
   }
 }
-
-

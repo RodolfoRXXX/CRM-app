@@ -24,6 +24,16 @@
                                 <mat-hint align="end">{{input.value.length}}/10</mat-hint>
                             </mat-form-field>
                         </div>
+                        <div>
+                            <button mat-button color="primary" type="button" (click)="sendCode()">
+                                <ng-container *ngIf="!load; else loadingSpinner">
+                                    Enviar código
+                                </ng-container>
+                                <ng-template #loadingSpinner>
+                                  <mat-spinner diameter="20"></mat-spinner>
+                                </ng-template>
+                            </button>
+                        </div>                          
                         <div class="form-input-100 mt-3">
                             <button mat-raised-button type="submit" color="primary" [disabled]="this.verifyForm.invalid || this.disable_submit">Activar mi cuenta</button>
                         </div>
