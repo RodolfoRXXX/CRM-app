@@ -4,31 +4,47 @@
 <div class="loader" *ngIf="load">
     <p>Cargando...</p>
 </div>
+
 <!-- Content -->
-<div class="container-xxl flex-grow-1 container-p-y" [ngClass]="employee?'dialog-profile-width':''" *ngIf="!load">
+<div
+    class="container-xxl flex-grow-1 container-p-y"
+    [ngClass]="{'dialog-profile-width': employee, 'container-box-width': !employee}"
+    *ngIf="!load"
+    style="max-height: 95vh;"
+>
     <!-- Caja si no existe empleado -->
-    <div *ngIf="!employee && this.permissions.includes(edit_employee_control)" class="p-3">
+    <div *ngIf="!employee && permissions.includes(edit_employee_control)" class="p-3">
         <form [formGroup]="dataForm" (ngSubmit)="createEmployee()">
             <!-- caja de la imagen -->
             <div class="d-flex align-items-center flex-column mb-1">
-                <img [src]="baseURL + user.thumbnail" alt="User image" class="img-fluid rounded mb-3" width="120" height="120">
-                <h4 class="cap mb-3">{{ user?(user.name.length?user.name:user.email.split("@")[0]):'Sin información'}}</h4>
+                <img
+                    [src]="baseURL + user.thumbnail"
+                    alt="User image"
+                    class="img-fluid rounded mb-3"
+                    width="120"
+                    height="120"
+                />
+                <h4 class="cap mb-3">{{ user.name.length ? user.name : user.email.split('@')[0] || 'Sin información' }}</h4>
                 <mat-form-field appearance="outline">
                     <mat-label>Elegir un rol</mat-label>
-                    <mat-select formControlName="role" 
-                                required>
-                            <ng-container *ngFor="let item of roles">
-                                <mat-option [value]="item.id"><mat-icon>{{ item.icon_role }}</mat-icon><p class="mb-0 cap">{{ item.name_role }}</p></mat-option>
-                            </ng-container>
+                    <mat-select formControlName="role" required>
+                        <ng-container *ngFor="let item of roles">
+                            <mat-option [value]="item.id">
+                                <mat-icon>{{ item.icon_role }}</mat-icon>
+                                <p class="mb-0 cap">{{ item.name_role }}</p>
+                            </mat-option>
+                        </ng-container>
                     </mat-select>
-                    <mat-error *ngIf="this.dataForm.controls['role']!.errors" class="fs-08">{{getErrorRole()}}</mat-error>
+                    <mat-error *ngIf="dataForm.controls['role']!.errors" class="fs-08">{{ getErrorRole() }}</mat-error>
                 </mat-form-field>
             </div>
-            <button mat-flat-button 
-                    color="primary" 
-                    class="w-100"
-                    [disabled]="(user.state == '0') || this.dataForm.invalid"
-                    type="submit">
+            <button
+                mat-flat-button
+                color="primary"
+                class="w-100"
+                [disabled]="user.state == '0' || dataForm.invalid"
+                type="submit"
+            >
                 <mat-icon style="position: relative; bottom: 0">power_settings_new</mat-icon>
                 Crear empleado
             </button>
@@ -37,18 +53,26 @@
             <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
         </mat-card-footer>
     </div>
+
     <!-- Caja si existe empleado -->
     <div class="row" *ngIf="employee">
         <!-- Caja que contiene imagen, indicadores básicos y detalles -->
-        <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+        <div class="col-xl-4 col-lg-5 col-md-5">
             <mat-card class="card mb-6">
                 <mat-card-content>
-                    <!-- caja de la imagen -->
                     <div class="d-flex align-items-center flex-column">
-                        <img [src]="baseURL + user.thumbnail" alt="User image" class="img-fluid rounded mb-3" width="120" height="120">
+                        <img
+                            [src]="baseURL + user.thumbnail"
+                            alt="User image"
+                            class="img-fluid rounded mb-3"
+                            width="120"
+                            height="120"
+                        />
                         <div class="text-center mb-3">
-                            <h4 class="mb-0 cap">{{ (employee)?(employee.name.length?employee.name:(user.name || user.email.split("@")[0])):(user.name.length?user.name:user.email.split("@")[0])}}</h4>
-                            <span class="fs-09 text-muted cap">{{ employee?employee.name_role:'Sin Rol asignado' }}</span>
+                            <h4 class="mb-0 cap">
+                                {{ employee.name.length ? employee.name : user.name || user.email.split('@')[0] }}
+                            </h4>
+                            <span class="fs-09 text-muted cap">{{ employee.name_role || 'Sin Rol asignado' }}</span>
                         </div>
                     </div>
                     <!-- caja con indicadores básicos y el nombre -->
@@ -126,7 +150,7 @@
             </mat-card>
         </div>
         <!-- Caja que contiene información de las operaciones -->
-        <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+        <div class="col-xl-8 col-lg-7 col-md-7">
             <!-- Tabs para ver otras opciones -->
             <div class="nav-align-tab mb-3">
                 <ul class="nav nav-pills flex-md-row mb-6 row-gap-2">
@@ -142,7 +166,7 @@
                 <!-- Cards desempeño empleado -->
                 <div class="row g-6 text-nowrap" *ngIf="tabs[0].state == 'active'">
                     <!-- Ingresos totales($) -->
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <mat-card class="card">
                             <mat-card-content>
                                 <div class="card-icon mb-3">
@@ -163,7 +187,7 @@
                         </mat-card>
                     </div>
                     <!-- Ingresos pendientes($) -->
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <mat-card class="card">
                             <mat-card-content>
                                 <div class="card-icon mb-3">
@@ -184,7 +208,7 @@
                         </mat-card>
                     </div>
                     <!-- Pedidos abiertos(cant) -->
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <mat-card class="card">
                             <mat-card-content>
                                 <div class="card-icon mb-3">
@@ -205,7 +229,7 @@
                         </mat-card>
                     </div>
                     <!-- Eficacia(% relación entre cantidad de pedidos cerrados y pedidos realizados) -->
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <mat-card class="card">
                             <mat-card-content>
                                 <div class="card-icon mb-3">
@@ -227,12 +251,12 @@
                     </div>
                 </div>
                 <!-- Caja de configuraciones empleado -->
-                <div class="" *ngIf="tabs[1].state == 'active'">
+                <div class="row g-2" *ngIf="tabs[1].state == 'active'">
                     <!-- Cambio de rol -->
-                    <mat-card class="card">
+                    <mat-card class="card col-12 col-xl-6">
                         <mat-card-content class="pb-2">
-                            <div class="d-flex justify-content-between">
-                                <div>
+                            <div class="">
+                                <div class="">
                                     <div class="card-icon mb-3">
                                         <div class="avatar">
                                             <span class="avatar-initial rounded text-heading primary-badge">
@@ -250,7 +274,7 @@
                                     </div>
                                 </div>
                                 <!-- Editar rol -->
-                                <form [formGroup]="dataForm" (ngSubmit)="changeRole()" *ngIf="this.permissions.includes(edit_employee_control)">
+                                <form class="" [formGroup]="dataForm" (ngSubmit)="changeRole()" *ngIf="this.permissions.includes(edit_employee_control)">
                                     <h5 class="mb-2 mt-2">Cambiar Rol</h5>
                                     <div class="d-flex">
                                         <mat-form-field appearance="outline">
