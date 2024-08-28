@@ -139,7 +139,7 @@
                             <mat-label>Vendedor</mat-label>
                             <mat-select #sellerF (valueChange)="add($event, 'sellerF')">
                                 <ng-container *ngFor="let item of sellers">
-                                    <mat-option [value]="{id: item.id_employee, name: getEmployeeDisplayName(item)}" *ngIf="item.verified_state === 1">
+                                    <mat-option [value]="{id: item.id_employee, name: getEmployeeDisplayName(item)}" *ngIf="item.role">
                                         <mat-icon>{{ item.icon_role }}</mat-icon>
                                         <span class="cap">{{ getEmployeeDisplayName(item) }}</span>
                                     </mat-option>
@@ -244,7 +244,7 @@
             <!-- No orders -->
             <div class="recharge" *ngIf="empty_orders">
                 <!-- Botón para agregar un pedido -->
-                <p>No hay remitos</p>
+                <p>No hay pedidos</p>
                 <a mat-flat-button color="primary" routerLink="../order-detail">
                     + Crear remito
                 </a>

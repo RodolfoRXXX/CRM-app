@@ -2,93 +2,8 @@
 
 <!-- Content -->
 <div class="container-xxl flex-grow-1 container-p-y">
-    
-    <div class="row g-6 mb-0">
-        <div class="col-sm-6 col-xl-3 mb-2">
-            <div class="card" style="border-bottom: 3px solid rgb(108, 248, 108);">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div class="me-1">
-                            <p class="text-heading mb-1">Ultimo mes</p>
-                            <div class="d-flex align-items-center">
-                                <h4 class="mb-1 me-2">0</h4>
-                                <p class="text-success mb-1">(0%)</p>
-                            </div>
-                            <small class="mb-0">Proveedores nuevos</small>
-                        </div>
-                        <div class="avatar">
-                            <span class="avatar-initial rounded text-heading" style="background-color: rgb(108, 248, 108);">
-                                <span class="material-symbols-outlined">inventory</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3 mb-2">
-            <div class="card" style="border-bottom: 3px solid rgb(228, 81, 81);">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div class="me-1">
-                            <p class="text-heading mb-1">Total en $</p>
-                            <div class="d-flex align-items-center">
-                                <h4 class="mb-1 me-2">$0.00</h4>
-                            </div>
-                            <small class="mb-0">Deuda con proveedores</small>
-                        </div>
-                        <div class="avatar">
-                            <span class="avatar-initial rounded text-heading" style="background-color: rgb(228, 81, 81);">
-                                <span class="material-symbols-outlined">inventory</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>                  
-        <div class="col-sm-6 col-xl-3 mb-2">
-            <div class="card" style="border-bottom: 3px solid rgb(86, 86, 235);">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div class="me-1">
-                            <p class="text-heading mb-1">Total en $</p>
-                            <div class="d-flex align-items-center">
-                                <h4 class="mb-1 me-2">$0.00</h4>
-                            </div>
-                            <small class="mb-0">Entregas pendientes</small>
-                        </div>
-                        <div class="avatar">
-                            <span class="avatar-initial rounded text-heading" style="background-color: rgb(86, 86, 235);">
-                                <span class="material-symbols-outlined">inventory</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3 mb-2">
-            <div class="card" style="border-bottom: 3px solid rgb(231, 234, 33);">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div class="me-1">
-                            <p class="text-heading mb-1">Unidades</p>
-                            <div class="d-flex align-items-center">
-                                <h4 class="mb-1 me-2">0</h4>
-                                <p class="text-success mb-1">(0%)</p>
-                            </div>
-                            <small class="mb-0">Cantidad de devoluciones</small>
-                        </div>
-                        <div class="avatar">
-                            <span class="avatar-initial rounded text-heading" style="background-color: rgb(231, 234, 33);">
-                                <span class="material-symbols-outlined">inventory</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Product List Table -->
+    <!-- Provider List Table -->
     <mat-card class="card mb-2">
         <mat-card-content class="mat-card-content">
             <!-- Loader -->
@@ -206,7 +121,7 @@
             <div class="recharge" *ngIf="!resultsLength">
                 <!-- Botón para recargar los datos -->
                 <p>No hay proveedores</p>
-                <a mat-flat-button color="primary" routerLink="../edit-provider">
+                <a mat-flat-button color="primary" routerLink="../provider-edit">
                     + Agregar Proveedor
                 </a>
             </div>

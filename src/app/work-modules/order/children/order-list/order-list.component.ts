@@ -83,7 +83,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   }
   private getSellers(id_enterprise: number) {
     this._api.postTypeRequest('profile/get-enterprise-users', { id_enterprise }).subscribe((value: any) => {
-      if(value) {
+      if((value.status ===1) && (value.data.length)) {
         this.sellers = value.data;
       }
     });
@@ -103,7 +103,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
           pending_products: 0,
           delivered_products: 0
         };
-        if (products.status === 1) {
+        if ((products.status === 1) && products.data.length) {
           products.data.forEach((element: any) => {
             if (element.status_value === '1') {
               this.card_values.delivered_products = element.count_status;
@@ -121,40 +121,40 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   }
   
 
-//Función que trae los valores desde la DB
-loadData(): void {
-  if (this.employee.id_enterprise) {
-    this.empty_orders = false;
-    this.load = true;
-    forkJoin({
-      count: this._api.postTypeRequest('profile/get-count-orders', 
-        { id_enterprise: this.employee.id_enterprise, dateTime: this.chips_arr.dateTime, sellerF: this.chips_arr.sellerF, state: this.chips_arr.state, seller: this.seller }),
-      orders: this._api.postTypeRequest('profile/get-orders', 
-        { id_enterprise: this.employee.id_enterprise, dateTime: this.chips_arr.dateTime, sellerF: this.chips_arr.sellerF, state: this.chips_arr.state, seller: this.seller })
-    }).subscribe({
-      next: (results: any) => {
-        if(results.count.data[0].total > 0) {
-          results.orders.data.forEach((element: any) => {
-            if(element.status == 1) {
-              element.status = 'Pendiente'
-            } else {
-              element.status = 'Finalizado'
-            }
-          });
-          this.resultsLength = results.count.data.total
-          this.dataSource.data = results.orders.data
-          this.dataSource.paginator = this.paginator;
-        } else {
-          this.empty_orders = true;
+  //Función que trae los valores desde la DB
+  loadData(): void {
+    if (this.employee.id_enterprise) {
+      this.empty_orders = false;
+      this.load = true;
+      forkJoin({
+        count: this._api.postTypeRequest('profile/get-count-orders', 
+          { id_enterprise: this.employee.id_enterprise, dateTime: this.chips_arr.dateTime, sellerF: this.chips_arr.sellerF, state: this.chips_arr.state, seller: this.seller }),
+        orders: this._api.postTypeRequest('profile/get-orders', 
+          { id_enterprise: this.employee.id_enterprise, dateTime: this.chips_arr.dateTime, sellerF: this.chips_arr.sellerF, state: this.chips_arr.state, seller: this.seller })
+      }).subscribe({
+        next: (results: any) => {
+          if(results.count.data[0].total > 0) {
+            results.orders.data.forEach((element: any) => {
+              if(element.status == 1) {
+                element.status = 'Pendiente'
+              } else {
+                element.status = 'Finalizado'
+              }
+            });
+            this.resultsLength = results.count.data.total
+            this.dataSource.data = results.orders.data
+            this.dataSource.paginator = this.paginator;
+          } else {
+            this.empty_orders = true;
+          }
+          this.load = false;
+        },
+        error: () => {
+          this.load = false;
         }
-        this.load = false;
-      },
-      error: () => {
-        this.load = false;
-      }
-    });
+      });
+    }
   }
-}
 
   getEmployeeDisplayName(item: any): string {
     return item.name_employee || item.email.split("@")[0];
@@ -200,7 +200,7 @@ loadData(): void {
     }
 
     this.loadData();
-}
+  }
 
 
   ngAfterViewInit() {

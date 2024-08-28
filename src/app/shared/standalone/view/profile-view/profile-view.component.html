@@ -5,7 +5,7 @@
     <p>Cargando...</p>
 </div>
 <!-- Content -->
-<div class="container-xxl flex-grow-1 container-p-y" *ngIf="!load">
+<div class="container-xxl flex-grow-1 container-p-y" [ngClass]="employee?'dialog-profile-width':''" *ngIf="!load">
     <!-- Caja si no existe empleado -->
     <div *ngIf="!employee && this.permissions.includes(edit_employee_control)" class="p-3">
         <form [formGroup]="dataForm" (ngSubmit)="createEmployee()">
@@ -227,55 +227,53 @@
                     </div>
                 </div>
                 <!-- Caja de configuraciones empleado -->
-                <div class="row g-6 text-nowrap" *ngIf="tabs[1].state == 'active'">
+                <div class="" *ngIf="tabs[1].state == 'active'">
                     <!-- Cambio de rol -->
-                    <div class="col-md-12">
-                        <mat-card class="card">
-                            <mat-card-content class="pb-2">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <div class="card-icon mb-3">
-                                            <div class="avatar">
-                                                <span class="avatar-initial rounded text-heading primary-badge">
-                                                    <span class="material-symbols-outlined">account_box</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title mb-3">
-                                                <span class="text-muted fs-08 me-1">Rol actual: </span>
-                                                <mat-chip>
-                                                    <span class="cap" style="position: relative; bottom: 0;">{{ employee.name_role }}</span>
-                                                </mat-chip>
-                                            </h5>
+                    <mat-card class="card">
+                        <mat-card-content class="pb-2">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="card-icon mb-3">
+                                        <div class="avatar">
+                                            <span class="avatar-initial rounded text-heading primary-badge">
+                                                <span class="material-symbols-outlined">account_box</span>
+                                            </span>
                                         </div>
                                     </div>
-                                    <!-- Editar rol -->
-                                    <form [formGroup]="dataForm" (ngSubmit)="changeRole()" *ngIf="this.permissions.includes(edit_employee_control)">
-                                        <h5 class="mb-2 mt-2">Cambiar Rol</h5>
-                                        <div class="d-flex">
-                                            <mat-form-field appearance="outline">
-                                                <mat-label>Elegir un rol</mat-label>
-                                                <mat-select formControlName="role">
-                                                        <ng-container *ngFor="let item of roles">
-                                                            <mat-option [value]="item.id" [disabled]="employee.role == item.id"><mat-icon>{{ item.icon_role }}</mat-icon><p class="mb-0 cap">{{ item.name_role }}</p></mat-option>
-                                                        </ng-container>
-                                                </mat-select>
-                                                <mat-error *ngIf="this.dataForm.controls['role']!.errors" class="fs-08">{{getErrorRole()}}</mat-error>
-                                            </mat-form-field>
-                                            <button mat-fab
-                                                    class="ms-2" 
-                                                    color="primary"
-                                                    [disabled]="(user.state == '0') || this.dataForm.invalid"
-                                                    type="submit">
-                                                <mat-icon style="position: relative; bottom: 0">save</mat-icon>
-                                            </button>
-                                        </div>
-                                    </form>
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title mb-3">
+                                            <span class="text-muted fs-08 me-1">Rol actual: </span>
+                                            <mat-chip>
+                                                <span class="cap" style="position: relative; bottom: 0;">{{ employee.name_role }}</span>
+                                            </mat-chip>
+                                        </h5>
+                                    </div>
                                 </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
+                                <!-- Editar rol -->
+                                <form [formGroup]="dataForm" (ngSubmit)="changeRole()" *ngIf="this.permissions.includes(edit_employee_control)">
+                                    <h5 class="mb-2 mt-2">Cambiar Rol</h5>
+                                    <div class="d-flex">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Elegir un rol</mat-label>
+                                            <mat-select formControlName="role">
+                                                    <ng-container *ngFor="let item of roles">
+                                                        <mat-option [value]="item.id" [disabled]="employee.role == item.id"><mat-icon>{{ item.icon_role }}</mat-icon><p class="mb-0 cap">{{ item.name_role }}</p></mat-option>
+                                                    </ng-container>
+                                            </mat-select>
+                                            <mat-error *ngIf="this.dataForm.controls['role']!.errors" class="fs-08">{{getErrorRole()}}</mat-error>
+                                        </mat-form-field>
+                                        <button mat-fab
+                                                class="ms-2" 
+                                                color="primary"
+                                                [disabled]="(user.state == '0') || this.dataForm.invalid"
+                                                type="submit">
+                                            <mat-icon style="position: relative; bottom: 0">save</mat-icon>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
                 </div>
         </div>
     </div>

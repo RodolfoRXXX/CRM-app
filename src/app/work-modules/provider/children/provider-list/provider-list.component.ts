@@ -24,7 +24,6 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<any>();
   load = true;
   recharge = false;
-  card_values: any = { new_providers: null, debt: null, pending: null, returns: null };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -79,21 +78,6 @@ export class ProviderListComponent implements OnInit, AfterViewInit {
       if (providersResponse) {
         this.dataSource.data = providersResponse.data;
       }
-    });
-  }
-
-  getDataCard(id_enterprise: number) {
-    const fecha = new Date();
-    fecha.setDate(fecha.getDate() - 60);
-    const year = fecha.getFullYear();
-    const month = fecha.getMonth() + 1;
-    const day = fecha.getDate();
-    const formattedDate = `${year}-${(month < 10 ? '0' : '') + month}-${(day < 10 ? '0' : '') + day}`;
-    this._api.postTypeRequest('profile/get-provider-data', { id_enterprise: id_enterprise, date_limit: formattedDate }).subscribe((value: any) => {
-      this.card_values.new_providers = value.data[0]?.data || 0;
-      this.card_values.debt = value.data[1]?.data || 0;
-      this.card_values.pending = value.data[2]?.data || 0;
-      this.card_values.returns = value.data[3]?.data || 0;
     });
   }
 

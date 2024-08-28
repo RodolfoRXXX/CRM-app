@@ -32,19 +32,7 @@ const routes: Routes = [
           path: 'settings', 
           loadChildren: () => import('./children/settings/settings.module').then(m => m.SettingsModule),
           resolve: { employee: InitResolver } 
-        },/*
-        { 
-          path: 'dashboard', 
-          loadChildren: () => import('../../work-modules/dashboard/dashboard.module').then(m => m.DashboardModule) 
-        },
-        { 
-          path: 'ticket', 
-          loadChildren: () => import('../../work-modules/ticket/ticket.module').then(m => m.TicketModule) 
-        },
-        { 
-          path: 'employee', 
-          loadChildren: () => import('../../work-modules/employee/employee.module').then(m => m.EmployeeModule) 
-        }*/
+        }
       ]
   }
 ];
