@@ -7,14 +7,19 @@
   <mat-card-content>
     <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
       
+      <!-- Caja que muestra si el producto no tiene precio -->
+      <div *ngIf="product.purchase_price == 0">
+        <p class="fs-09">Para definir el precio debe elegir un proveedor y establecer un precio de compra.</p>
+      </div>
+
       <!-- Caja precio venta -->
-      <div class="d-flex justify-content-between align-items-center b-all p-2 mb-4" style="border-radius: 4px;">
+      <div *ngIf="product.purchase_price > 0" class="d-flex justify-content-between align-items-center b-all p-2 mb-4" style="border-radius: 4px;">
         <p class="d-block mb-0 text-muted">Precio de venta: </p>
         <h3 class="mb-0 fw-700 pe-2">$<span>{{ this.dataForm.get('sale_price')?.value || 0 | number:'1.2-2' }}</span></h3>
       </div>
       
       <!-- Caja de modificación del precio en base a precio de compra -->
-      <div class="box-reprice" *ngIf="this.permissions.includes(sens_info_admin)">
+      <div class="box-reprice" *ngIf="this.permissions.includes(sens_info_admin) && product.purchase_price > 0">
 
         <!-- Caja precio de compra -->
         <div class="d-flex flex-column b-all p-2 me-3" style="border-radius: 4px;">
@@ -31,7 +36,8 @@
             <input matInput 
                     type="number"
                     [value]="(this.dataForm.get('sale_price')?.value)/(this.dataForm.get('purchase_price')?.value) | number:'1.2-4'"
-                    (change)="setFactor($event)">
+                    (change)="setFactor($event)"
+                    [disabled]="product.purchase_price == 0">
           </mat-form-field>
         </div>
 

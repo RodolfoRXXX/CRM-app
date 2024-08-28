@@ -60,7 +60,9 @@ export class ProductProviderDataComponent implements OnInit {
         .subscribe({
           next: (response: any) => {
             this.providers = response.data;
-            this.setSelectedProvider(this.product.provider)
+            if(this.providers) {
+              this.setSelectedProvider(this.product.provider)
+            }
             resolve();
           },
           error: (err) => {

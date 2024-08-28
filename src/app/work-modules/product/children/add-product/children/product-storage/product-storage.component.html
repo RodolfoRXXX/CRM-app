@@ -45,10 +45,10 @@
   </mat-card-content>
   <!-- Caja que se muestra si no hay depósitos creados -->
   <mat-card-content *ngIf="!storages">
-    <div class="d-flex text-center align-items-center p-4">
+    <div class="d-flex flex-column justify-content-center align-items-center p-4">
       <p>No hay depósitos creados</p>
       <a mat-flat-button color="primary" routerLink="../../storage/storage-edit">
-          + Agregar depósito
+          + Agregar Depósito
       </a>
     </div>
   </mat-card-content>

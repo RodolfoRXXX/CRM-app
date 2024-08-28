@@ -6,6 +6,10 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+      <!-- Caja que muestra si el producto no está activo -->
+      <div *ngIf="product.state == 'inactivo'">
+        <p class="fs-09">No se puede modificar el stock de un producto Inactivo</p>
+      </div>
       <!-- Stock del producto -->
       <div *ngIf="product.state == 'activo'">
         <mat-form-field appearance="outline" class="w-100 mb-0">
@@ -17,12 +21,8 @@
           <mat-error *ngIf="dataForm.get('stock_real')?.hasError('required')" class="fs-09">{{ getErrorStock() }}</mat-error>
         </mat-form-field>
       </div>
-      <!-- Caja que muestra si el producto no está activa -->
-      <div *ngIf="product.state == 'inactivo'">
-        <p class="fs-09">No se puede modificar el stock de un producto Inactivo</p>
-      </div>
-      <!-- Caja de información del proveedor seleccionado -->
-      <div class="mb-4 d-flex justify-content-around">
+      <!-- Caja de vista de stock -->
+      <div class="mb-4 d-flex justify-content-around" *ngIf="product.state == 'activo'">
 
         <!-- Caja stock físico -->
         <div class="d-flex flex-column b-all p-2" style="border-radius: 4px;">

@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -15,6 +15,7 @@ import { environment } from 'src/enviroments/enviroment';
 export class ProductImageComponent {
 
   @Input() product!: Product;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   isDragOver = false;
   imageSrc: string | ArrayBuffer | null = null;
@@ -155,6 +156,7 @@ export class ProductImageComponent {
     }, 2000);
   }
   capture_img(event: any) {
+    console.log(event)
     this.load_image = true;
     this.imageSrc = '';
     this.error_image = '';
@@ -166,6 +168,8 @@ export class ProductImageComponent {
   resetAll() {
     this.setDataForm(this.product)
     this.error_image = '';
+    this.load_image = false;
+    this.fileInput.nativeElement.value = '';
   }
 
   //Navegar a la misma ruta para recargar el componente

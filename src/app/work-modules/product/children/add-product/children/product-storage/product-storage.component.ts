@@ -57,7 +57,9 @@ export class ProductStorageComponent {
         .subscribe({
           next: (response: any) => {
             this.storages = response.data;
-            this.setSelectedStorage(this.product.storage_location)
+            if(this.storages) {
+              this.setSelectedStorage(this.product.storage_location)
+            }
             resolve();
           },
           error: (err) => {
