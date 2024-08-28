@@ -41,7 +41,6 @@ export class CategoriesCardComponent implements OnInit {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
       id_enterprise = item.id_enterprise;
-      this.getInfo(id_enterprise);
     });
     return id_enterprise;
   }

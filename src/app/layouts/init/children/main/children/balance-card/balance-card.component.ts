@@ -57,7 +57,6 @@ export class BalanceCardComponent implements OnInit {
       } else {
         this.seller = null;
       }
-      this.getInfo(id_enterprise);
     });
     return id_enterprise;
   }
