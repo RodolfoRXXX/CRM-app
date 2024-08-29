@@ -2,10 +2,10 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { ConectorsService } from '../services/conectors.service';
-import { permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
-const edit_provider_control = permissions.EDIT_PROVIDER_CONTROL;
-const edit_product_control = permissions.EDIT_PRODUCT_CONTROL;
+const edit_provider_control = environment.EDIT_PROVIDER_CONTROL;
+const edit_product_control = environment.EDIT_PRODUCT_CONTROL;
 
   //Guard para evitar acceso a sector: "editar detalles de la empresa" en main
   export const is_eddla_main: CanActivateFn =

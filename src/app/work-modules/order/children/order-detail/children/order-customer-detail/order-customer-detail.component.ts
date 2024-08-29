@@ -6,7 +6,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 import { Customer } from 'src/app/shared/interfaces/customer.interface';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditCustomerComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-customer/dialog-order-edit-customer.component';
-import { environment, permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-customer-detail',
@@ -23,7 +23,7 @@ export class OrderCustomerDetailComponent {
   newCustomer!: Customer;
   uriImg = environment.SERVER;
   employee!: Employee;
-  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
+  edit_enterprise_control = environment.EDIT_ENTERPRISE_CONTROL;
 
   constructor(
     private _api: ApiService,

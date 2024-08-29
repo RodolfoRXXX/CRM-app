@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogStorageDetailComponent } from 'src/app/shared/standalone/dialog/dialog-storage-detail/dialog-storage-detail.component';
-import { permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-storage-list',
@@ -26,7 +26,7 @@ export class StorageListComponent {
   empty_storage: boolean = false;
   load = true;
   recharge = false;
-  admin : string = permissions.EDIT_PRODUCT_CONTROL;
+  admin : string = environment.EDIT_PRODUCT_CONTROL;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

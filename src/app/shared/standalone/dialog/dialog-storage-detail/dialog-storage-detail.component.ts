@@ -8,7 +8,7 @@ import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { CommonModule } from '@angular/common';
 import { Storage } from 'src/app/shared/interfaces/storage.interface';
-import { permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   standalone: true,
@@ -26,7 +26,7 @@ export class DialogStorageDetailComponent implements OnInit {
   load = true;
   permissions: string[] = [];
   info_values = { total_art: 0, total_inv: 0 };
-  add_product_admin = permissions.EDIT_PRODUCT_CONTROL;
+  add_product_admin = environment.EDIT_PRODUCT_CONTROL;
 
   private employeeSubscription: Subscription | undefined;
 

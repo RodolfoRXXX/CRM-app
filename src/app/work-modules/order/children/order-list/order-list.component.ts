@@ -11,7 +11,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
-import { environment, permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-list',
@@ -38,7 +38,7 @@ export class OrderListComponent implements OnInit, AfterViewInit {
   permissions: string[] = [];
   card_values: any = { open_orders: null, close_orders: null, pending_products: null, delivered_products: null };
   uriImg = environment.SERVER;
-  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
+  edit_enterprise_control = environment.EDIT_ENTERPRISE_CONTROL;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

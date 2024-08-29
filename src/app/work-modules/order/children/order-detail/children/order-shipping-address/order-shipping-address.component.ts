@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditShipmentComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-shipment/dialog-order-edit-shipment.component';
-import { permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-shipping-address',
@@ -19,7 +19,7 @@ export class OrderShippingAddressComponent {
 
   dataShipment!: any;
   employee!: Employee;
-  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
+  edit_enterprise_control = environment.EDIT_ENTERPRISE_CONTROL;
 
   constructor(
     private _dialog: MatDialog,

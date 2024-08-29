@@ -8,7 +8,7 @@ import { GetJsonDataService } from 'src/app/services/get-json-data.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditProductComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-product/dialog-order-edit-product.component';
 import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
-import { environment, permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-main',
@@ -28,7 +28,7 @@ export class OrderMainComponent {
   order_status!: any[];
   editRegister = [];
   employee!: Employee;
-  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
+  edit_enterprise_control = environment.EDIT_ENTERPRISE_CONTROL;
 
   constructor(
     public _auth: AuthService,

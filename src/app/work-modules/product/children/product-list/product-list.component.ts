@@ -11,7 +11,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 import { calculateDateLimit, isNewerThan30Days } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
-import { environment, permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-product-list',
@@ -40,7 +40,7 @@ export class ProductListComponent implements OnInit {
   chips_arr: any = {};
   card_values: any = {products_with_stock: null, value_stock: null, products_without_stock: null, immo_stock: null};
   permissions: string[] = [];
-  add_product_admin = permissions.EDIT_PRODUCT_CONTROL;
+  add_product_admin = environment.EDIT_PRODUCT_CONTROL;
 
   uriImg = environment.SERVER;
 

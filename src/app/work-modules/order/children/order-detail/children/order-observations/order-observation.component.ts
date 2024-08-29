@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditObservationComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-observation/dialog-order-edit-observation.component';
-import { permissions } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-observation',
@@ -17,7 +17,7 @@ export class OrderObservationComponent {
   @Input() info!: any;
   @Output() setObservation = new EventEmitter<string>();
   employee!: Employee;
-  edit_enterprise_control = permissions.EDIT_ENTERPRISE_CONTROL;
+  edit_enterprise_control = environment.EDIT_ENTERPRISE_CONTROL;
 
   constructor(
     private _dialog: MatDialog,
