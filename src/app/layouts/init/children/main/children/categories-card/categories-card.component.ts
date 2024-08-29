@@ -60,12 +60,20 @@ export class CategoriesCardComponent implements OnInit {
       )
       .subscribe((data: any) => {
         this.load = false;
+        let i = 0;
         if (data.status == 1 && data.data.length) {
           data.data.forEach((element: any) => {
             element.color_badge = JSON.parse(element.color_badge)
+            if(element.total_stock_real > 0) {
+              i++;
+            }
           });
-          this.initializeChartOptions();
-          this.initializeChartData(data.data);
+          if(i > 0) {
+            this.initializeChartOptions();
+            this.initializeChartData(data.data);
+          } else {
+            this.noData = true;
+          }
         } else {
           this.noData = true;
         }

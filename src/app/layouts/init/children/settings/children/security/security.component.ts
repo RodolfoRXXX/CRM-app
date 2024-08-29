@@ -28,7 +28,9 @@ export class SecurityComponent implements OnInit {
 
   hide_1: boolean = true;
   hide_2: boolean = true;
-  emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+  emailReg = new RegExp(
+    "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
+  );
 
   loading_username: boolean = false;
   loading_set_password: boolean = false;

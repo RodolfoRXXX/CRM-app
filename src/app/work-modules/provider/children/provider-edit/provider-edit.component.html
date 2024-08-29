@@ -51,7 +51,8 @@
               <mat-label>Email</mat-label>
               <input matInput
                       type="email"
-                      formControlName="email">
+                      formControlName="email"
+                      required>
               <mat-error *ngIf="this.dataForm.controls['email']!.errors" class="fs-09">{{getErrorEmail()}}</mat-error>
             </mat-form-field>
           </div>

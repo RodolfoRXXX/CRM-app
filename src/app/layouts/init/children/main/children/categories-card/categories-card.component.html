@@ -6,7 +6,7 @@
         <div class="d-flex flex-column justify-content-between position-relative">
             <h4 class="mb-4 cap">Stock por Categorías($)</h4>
             <p-chart type="doughnut" [data]="basicData" [options]="basicOptions" *ngIf="!noData && !load" />
-            <div class="h-100 d-flex flex-column justify-content-center align-items-center">
+            <div class="h-100 d-flex flex-column justify-content-center align-items-center" *ngIf="noData || load">
                 <p class="d-block" *ngIf="noData">Sin información</p>
                 <p class="d-block" *ngIf="load">Cargando...</p>
             </div>

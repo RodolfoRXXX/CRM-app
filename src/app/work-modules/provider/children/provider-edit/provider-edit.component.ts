@@ -13,7 +13,9 @@ import { Provider } from 'src/app/shared/interfaces/provider.interface';
 })
 export class ProviderEditComponent implements OnInit {
 
-  emailReg = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+  emailReg = new RegExp(
+    "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
+  );
   id_enterprise!: number;
   provider!: Provider;
   dataForm!: FormGroup;
@@ -79,6 +81,7 @@ export class ProviderEditComponent implements OnInit {
           Validators.maxLength(50)
         ]),
         email: new FormControl('', [
+          Validators.required,
           Validators.minLength(5),
           Validators.maxLength(50),
           (control: AbstractControl):ValidationErrors|null => {
@@ -135,6 +138,7 @@ export class ProviderEditComponent implements OnInit {
   }
   getErrorEmail() {
     //email
+    if(this.dataForm.controls['email'].hasError('required')) return 'Tenés que ingresar un valor';
     if(this.dataForm.controls['email'].hasError('minlength')) return 'Este valor debe tener más de 4 caracteres';
     if(this.dataForm.controls['email'].hasError('maxlength')) return 'Este valor debe tener menos de 50 caracteres';
     if(this.dataForm.controls['email'].hasError('error_format')) return 'No es un correo válido';
@@ -195,7 +199,7 @@ export class ProviderEditComponent implements OnInit {
         }
       })      
     } else {
-      //Crea un proveedor nuevo  DEBE VERIFICAR QUE EL PROVEEDOR A AGREGAR NO EXISTA!!!
+      //Crea un proveedor nuevo
       this._api.postTypeRequest('profile/create-provider', this.dataForm.value).subscribe({
         next: (res: any) => {
           this.loading =  false;
