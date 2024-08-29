@@ -5,7 +5,7 @@ import { merge, of as observableOf } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditPermissionsComponent } from 'src/app/shared/standalone/dialog/dialog-edit-permissions/dialog-edit-permissions.component';
 import { DialogCreateRoleComponent } from 'src/app/shared/standalone/dialog/dialog-create-role/dialog-create-role.component';

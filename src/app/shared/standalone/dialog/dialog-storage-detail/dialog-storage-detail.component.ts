@@ -8,7 +8,7 @@ import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { CommonModule } from '@angular/common';
 import { Storage } from 'src/app/shared/interfaces/storage.interface';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 @Component({
   standalone: true,

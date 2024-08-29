@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Menu } from '../interfaces/menu.interface';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 const MENUSETTINGS = [
     { state: 'index', name: 'Tablero', type: '', icon: 'dashboard', children: [] },

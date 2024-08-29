@@ -7,7 +7,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { Router } from '@angular/router';
-import { environment, permissions } from 'src/enviroments/enviroment';
+import { environment, permissions } from 'src/environments/environment';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';

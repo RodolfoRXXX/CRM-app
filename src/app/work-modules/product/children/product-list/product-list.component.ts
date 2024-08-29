@@ -11,7 +11,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 import { calculateDateLimit, isNewerThan30Days } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogProductDetailComponent } from 'src/app/shared/standalone/dialog/dialog-product-detail/dialog-product-detail.component';
-import { environment, permissions } from 'src/enviroments/enviroment';
+import { environment, permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-product-list',

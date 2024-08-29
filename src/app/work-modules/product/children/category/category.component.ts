@@ -5,7 +5,7 @@ import { merge, startWith, map, switchMap, catchError, of as observableOf } from
 import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-category',

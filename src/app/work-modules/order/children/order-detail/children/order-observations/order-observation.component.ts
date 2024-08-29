@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditObservationComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-observation/dialog-order-edit-observation.component';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-observation',

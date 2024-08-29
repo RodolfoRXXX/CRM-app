@@ -11,7 +11,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
-import { environment, permissions } from 'src/enviroments/enviroment';
+import { environment, permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-list',

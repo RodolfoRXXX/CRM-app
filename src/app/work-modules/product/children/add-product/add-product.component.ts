@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Product, empty_product } from 'src/app/shared/interfaces/product.interface';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-product',

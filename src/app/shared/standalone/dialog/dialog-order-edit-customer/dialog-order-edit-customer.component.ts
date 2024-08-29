@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ApiService } from 'src/app/services/api.service';
 import { MaterialModule } from 'src/app/material/material/material.module';
 import { CommonModule } from '@angular/common';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 import { catchError, map, merge, startWith, switchMap, of as observableOf} from 'rxjs';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';

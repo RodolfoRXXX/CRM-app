@@ -6,7 +6,7 @@ import { formatDate, getMonthName, getWeekInfo } from 'src/app/shared/functions/
 import { analyzeData } from 'src/app/shared/functions/operation.function';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DataItem } from 'src/app/shared/interfaces/period.interface';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-balance-card',

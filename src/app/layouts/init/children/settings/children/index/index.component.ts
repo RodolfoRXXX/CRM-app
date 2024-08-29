@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-index',

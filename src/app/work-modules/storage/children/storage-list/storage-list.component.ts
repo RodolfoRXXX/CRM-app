@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogStorageDetailComponent } from 'src/app/shared/standalone/dialog/dialog-storage-detail/dialog-storage-detail.component';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-storage-list',

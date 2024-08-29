@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { ConectorsService } from '../services/conectors.service';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 const edit_provider_control = permissions.EDIT_PROVIDER_CONTROL;
 const edit_product_control = permissions.EDIT_PRODUCT_CONTROL;

@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from 'src/app/shared/interfaces/employee.interface';
 import { DialogOrderEditShipmentComponent } from 'src/app/shared/standalone/dialog/dialog-order-edit-shipment/dialog-order-edit-shipment.component';
-import { permissions } from 'src/enviroments/enviroment';
+import { permissions } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-shipping-address',

@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ImageService } from 'src/app/services/image.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-enterprise-edit-image',

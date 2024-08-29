@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ImageService } from 'src/app/services/image.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Product } from 'src/app/shared/interfaces/product.interface';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-product-image',

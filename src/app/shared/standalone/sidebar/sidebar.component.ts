@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MenuItems } from '../../menu-items/menu-items';
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 import { ConectorsService } from 'src/app/services/conectors.service';
 import { Employee } from '../../interfaces/employee.interface';
 

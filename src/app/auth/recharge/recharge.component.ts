@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recharge',

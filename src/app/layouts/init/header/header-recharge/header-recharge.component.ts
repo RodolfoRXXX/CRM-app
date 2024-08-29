@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConectorsService } from 'src/app/services/conectors.service';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header-recharge',

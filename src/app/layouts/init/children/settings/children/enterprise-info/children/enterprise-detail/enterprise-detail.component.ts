@@ -6,7 +6,7 @@ import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { calculateDateLimit } from 'src/app/shared/functions/date.function';
 import { Enterprise } from 'src/app/shared/interfaces/enterprise.interface';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-enterprise-detail',

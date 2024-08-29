@@ -3,7 +3,7 @@ import { MaterialModule } from 'src/app/material/material/material.module';
 import { CommonModule } from '@angular/common';
 import { ApiService } from 'src/app/services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 import { isNewerThan30Days } from 'src/app/shared/functions/date.function';
 
 
