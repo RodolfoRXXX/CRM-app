@@ -25,10 +25,10 @@
                   <mat-spinner diameter="20"></mat-spinner>
                 </ng-template>
             </button>
-            <button mat-stroked-button color="warn" type="button" (click)="rechargeComponent()">
+            <button mat-stroked-button color="warn" type="button" (click)="resetAll()">
                 Reset
             </button>
-            <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()" [disabled]="dataForm.invalid || loading || !hasChange">
+            <button mat-stroked-button color="primary" type="submit" (click)="onSubmit()" [disabled]="dataForm.invalid || this.dataForm.dirty || loading || !hasChange">
                 <ng-container *ngIf="!loading; else loadingSpinner">
                   Guardar
                 </ng-container>

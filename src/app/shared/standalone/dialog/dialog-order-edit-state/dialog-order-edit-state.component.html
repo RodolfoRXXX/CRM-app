@@ -52,7 +52,7 @@
                             <mat-label>Estado</mat-label>
                             <mat-select [value]="element.status" (selectionChange)="changeState(element, $event)">
                                 <ng-container *ngFor="let item of order_status">
-                                    <mat-option [value]="item.id" [disabled]="(item.id == 5) || ((element.status == 1)?(item.id == 4):false) || ((element.status == 4)?(item.id == 2):false)">
+                                    <mat-option [value]="item.id" [disabled]="(item.id == 5) || ((element.status == 1)?(item.id == 4):false) || ((element.status == 4)?((item.id == 2) || (item.id == 1)):false)">
                                         <span class="badge rounded-pill cap fs-08"
                                             [style.color]="item.color"
                                             [style.background-color]="item.bgColor">

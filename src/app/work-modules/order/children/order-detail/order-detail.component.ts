@@ -263,9 +263,13 @@ export class OrderDetailComponent implements OnInit {
   }
 
   setDataForm(): void {
-    this.dataForm.patchValue({
+    this.dataForm.setValue({
       id: (this.id_order)?this.id_order:0,
       id_enterprise: (this.employee)?this.employee.id_enterprise:0,
+      customer: 0,
+      detail: '',
+      shipment: '',
+      observation: '',
       seller: (this.order)?this.order.seller:((this.employee)?this.employee.id:0)
     })
   }
@@ -280,6 +284,7 @@ export class OrderDetailComponent implements OnInit {
     this._api.postTypeRequest('profile/get-order-detail-by-id', { id_order: id_order }).subscribe( (value:any) => {
       if(value.data) {
         //Se encontró el remito y pasa los datos a los componentes hijos para que lo muestren y editen
+        this.setDataForm()
         this.order = value.data[0]
         this.customer = this.order.customer
         this.detail = this.order.detail
@@ -290,9 +295,9 @@ export class OrderDetailComponent implements OnInit {
         this.preview = value.data[0]
         this.preview.detail = (this.preview.detail != '')?JSON.parse(this.preview.detail):'';
         this.preview.shipment = (this.preview.shipment != '')?JSON.parse(this.preview.shipment):'';
-        this.setDataForm()
       } else {
-        this.rechargeComponent()
+        this._notify.showWarn('Ha ocurrido un problema con este pedido.');
+        this._router.navigate(['init/main/order/order-list']);
       }
     })
   }
@@ -317,15 +322,23 @@ export class OrderDetailComponent implements OnInit {
   rechargeComponent(id_order: number = 0) {
     if(id_order > 0) {
       this._router.navigate(['init/main/order/order-detail'], { queryParams: { id_order: id_order } });
-    } else {
-      window.location.reload();
     }
   }
 
   resetAll() {
     this.editRegister = [];
-    this.dataForm.reset();
-    this.setDataForm();
+    if(this.id_order) {
+      this.getOrder(this.id_order);
+    } else {
+      this.setDataForm();
+        this.customer = 0
+        this.detail = ''
+        this.shipment = ''
+        this.observation = ''
+        this.info.status = 1
+        this.info.seller = 0
+    }
+    this.dataForm.markAsPristine();
   }
 
   onSubmit() {
@@ -341,9 +354,6 @@ export class OrderDetailComponent implements OnInit {
               //Modificó la imagen
               this._notify.showSuccess('Se modificó el remito!');
               this.resetAll();
-              setTimeout(() => {
-                this.rechargeComponent();
-              }, 2000);
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios.')

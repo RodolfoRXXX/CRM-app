@@ -102,8 +102,8 @@ export class DialogOrderEditStateComponent {
         this.setStatusByOne(element.id_product, event.value)
       }
       if((element.status == 2) && (event.value == 4)) {
-        //console.log("resto la cantidad al stock disponible")
-        this.editRegister.push({ id_product: element.id_product, editQty: element.qty, type: '' })
+        //console.log("sumo la cantidad al stock disponible, es decir, que devuelvo al stock disponible")
+        this.editRegister.push({ id_product: element.id_product, editQty: -element.qty, type: '' })
         this.setStatusByOne(element.id_product, event.value)
       }
     }

@@ -89,6 +89,8 @@ export class OrderMainComponent {
       if (data) {
         this.dataSource.data = data;
       }
+    } else {
+      this.dataSource.data = []
     }
     this.load = false;
   }
