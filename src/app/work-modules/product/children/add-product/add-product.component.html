@@ -7,7 +7,12 @@
             <h4 class="mb-1">Edición de producto</h4>
             <p class="mb-0">Creá y editá tus productos aquí</p>
         </div>
-        <div class="d-flex align-content-center flex-wrap gap-4">
+        <div class="d-flex align-content-center align-items-center flex-wrap gap-2">
+            <span class="material-symbols-outlined cursor-pointer warn-color" 
+                    matTooltip="Para activar un producto, debe agregar un precio" matTooltipPosition="above"
+                    *ngIf="!activeState">
+                error
+            </span>
             <button mat-stroked-button 
                     color="primary"
                     [color]="(!activeState)?'primary':'warn'" 
