@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -12,6 +12,7 @@ import { Product } from 'src/app/shared/interfaces/product.interface';
 export class ProductStockComponent {
 
   @Input() product!: Product;
+  @Output() changeDetected = new EventEmitter<boolean>();
 
   dataForm!: FormGroup;
   loading: boolean = false;
@@ -54,11 +55,7 @@ export class ProductStockComponent {
 
   resetAll(): void {
     this.setDataForm(this.product);
-  }
-
-  //Navegar a la misma ruta para recargar el componente
-  rechargeComponent() {
-    window.location.reload();
+    this.dataForm.markAsPristine();
   }
   
   onSubmit() {
@@ -72,7 +69,8 @@ export class ProductStockComponent {
             if(res.data.changedRows == 1){
               //Modificó la imagen
               this._notify.showSuccess('El stock se ha modificado con éxito!');
-              this.rechargeComponent();
+              this.changeDetected.emit(true);
+              this.dataForm.markAsPristine();
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Ingresá información diferente a la actual.')

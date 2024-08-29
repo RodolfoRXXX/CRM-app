@@ -65,9 +65,11 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  //Navegar a la misma ruta para recargar el componente
-  rechargeComponent() {
-    window.location.reload();
+  // Maneja el cambio detectado por los hijos
+  handleChange(event: boolean) {
+    if(event) {
+      this.getProduct(this.id_product)
+    }
   }
 
   changeState(state: string) {
@@ -82,7 +84,7 @@ export class AddProductComponent implements OnInit {
             if(res.data.changedRows == 1){
               //Modificó la imagen
               this._notify.showSuccess(`El producto está ${state}!`);
-              this.rechargeComponent();
+              this.getProduct(this.id_product);
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Volvé a realizar la operación.')

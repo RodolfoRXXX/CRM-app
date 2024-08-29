@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
@@ -18,6 +18,7 @@ export class ProductProviderDataComponent implements OnInit {
 
   @Input() product!: Product;
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
+  @Output() changeDetected = new EventEmitter<boolean>();
 
   selectedProvider!: Provider | undefined;
 
@@ -123,12 +124,8 @@ export class ProductProviderDataComponent implements OnInit {
 
   resetAll(): void {
     this.setDataForm(this.product);
-    this.setSelectedProvider(this.product.provider)
-  }
-
-  //Navegar a la misma ruta para recargar el componente
-  rechargeComponent() {
-      window.location.reload();
+    this.setSelectedProvider(this.product.provider);
+    this.dataForm.markAsPristine();
   }
 
   onSubmit(): void {
@@ -142,7 +139,8 @@ export class ProductProviderDataComponent implements OnInit {
             if(res.data.changedRows == 1){
               //Modificó la imagen
               this._notify.showSuccess('La información se ha modificado con éxito!');
-              this.rechargeComponent();
+              this.changeDetected.emit(true);
+              this.dataForm.markAsPristine();
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Ingresá información diferente a la actual.')

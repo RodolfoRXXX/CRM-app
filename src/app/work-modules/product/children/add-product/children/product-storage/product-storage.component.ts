@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -16,6 +16,7 @@ import { Storage } from 'src/app/shared/interfaces/storage.interface';
 export class ProductStorageComponent {
 
   @Input() product!: Product;
+  @Output() changeDetected = new EventEmitter<boolean>();
 
   selectedStorage!: Storage | undefined;
 
@@ -108,12 +109,8 @@ export class ProductStorageComponent {
 
   resetAll(): void {
     this.setDataForm(this.product);
-    this.setSelectedStorage(this.product.storage_location)
-  }
-
-  //Navegar a la misma ruta para recargar el componente
-  rechargeComponent() {
-      window.location.reload();
+    this.setSelectedStorage(this.product.storage_location);
+    this.dataForm.markAsPristine();
   }
 
   onSubmit(): void {
@@ -127,7 +124,8 @@ export class ProductStorageComponent {
             if(res.data.changedRows == 1){
               //Modificó la imagen
               this._notify.showSuccess('La ubicación se ha modificado con éxito!');
-              this.rechargeComponent();
+              this.changeDetected.emit(true);
+              this.dataForm.markAsPristine();
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Ingresá información diferente a la actual.')

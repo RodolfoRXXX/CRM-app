@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -16,6 +16,7 @@ export class ProductImageComponent {
 
   @Input() product!: Product;
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @Output() changeDetected = new EventEmitter<boolean>();
 
   isDragOver = false;
   imageSrc: string | ArrayBuffer | null = null;
@@ -172,15 +173,6 @@ export class ProductImageComponent {
     this.fileInput.nativeElement.value = '';
   }
 
-  //Navegar a la misma ruta para recargar el componente
-  rechargeComponent(id_product: number = 0) {
-    if(id_product > 0) {
-      this._router.navigate(['init/main/product/add-product'], { queryParams: { id_product: id_product } });
-    } else {
-      window.location.reload();
-    }
-  }
-
   //Submit para guardar la imagen del producto
   onSubmit() {
     if(this.dataForm.controls['id'].value > 0) {
@@ -193,7 +185,7 @@ export class ProductImageComponent {
             if(res.changedRows == 1){
               //Modificó la imagen
               this._notify.showSuccess('La imagen del producto se ha modificado con éxito!');
-              this.rechargeComponent();
+              this.changeDetected.emit(true);
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Ingresá una imagen diferente a la actual.')

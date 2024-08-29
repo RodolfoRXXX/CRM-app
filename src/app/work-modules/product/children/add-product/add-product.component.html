@@ -8,11 +8,18 @@
             <p class="mb-0">Creá y editá tus productos aquí</p>
         </div>
         <div class="d-flex align-content-center flex-wrap gap-4">
-            <button mat-flat-button color="primary" *ngIf="!activeState" (click)="changeState('activo')" [disabled]="loading || !product.id">
-                <span>Activar</span> Producto
-            </button>
-            <button mat-stroked-button color="warn" *ngIf="activeState" (click)="changeState('inactivo')" [disabled]="loading">
-                <span>Desactivar</span> Producto
+            <button mat-stroked-button 
+                    color="primary"
+                    [color]="(!activeState)?'primary':'warn'" 
+                    type="submit"
+                    (click)="(!activeState)?changeState('activo'):changeState('inactivo')" 
+                    [disabled]="(!activeState)?(loading || !product.id || product.sale_price == 0):loading">
+                <ng-container *ngIf="!loading; else loadingSpinner">
+                    <span>{{ (!activeState)?'Activar':'Desactivar' }}</span> Producto
+                </ng-container>
+                <ng-template #loadingSpinner>
+                  <mat-spinner diameter="20"></mat-spinner>
+                </ng-template>
             </button>
         </div>
     </div>
@@ -20,16 +27,16 @@
     <div class="row">
         <!-- Primera columna -->
         <div class="col-12 col-lg-8">
-            <app-product-information [product]="product"></app-product-information>
-            <app-product-image [product]="product" *ngIf="product.id > 0"></app-product-image>
-            <app-product-provider-data [product]="product" *ngIf="(product.id > 0) && this.permissions.includes(sens_info_admin)"></app-product-provider-data>
+            <app-product-information [product]="product" (changeDetected)="handleChange($event)"></app-product-information>
+            <app-product-image [product]="product" *ngIf="product.id > 0" (changeDetected)="handleChange($event)"></app-product-image>
+            <app-product-provider-data [product]="product" *ngIf="(product.id > 0) && this.permissions.includes(sens_info_admin)" (changeDetected)="handleChange($event)"></app-product-provider-data>
         </div>
         <!-- Segunda columna -->
         <div class="col-12 col-lg-4">
-            <app-product-stock [product]="product" *ngIf="product.id > 0"></app-product-stock>
-            <app-product-price [product]="product" [permissions]="permissions" *ngIf="product.id > 0"></app-product-price>
-            <app-product-filters [product]="product" *ngIf="product.id > 0"></app-product-filters>
-            <app-product-storage [product]="product" *ngIf="product.id > 0"></app-product-storage>
+            <app-product-stock [product]="product" *ngIf="product.id > 0" (changeDetected)="handleChange($event)"></app-product-stock>
+            <app-product-price [product]="product" [permissions]="permissions" (changeDetected)="handleChange($event)" *ngIf="product.id > 0"></app-product-price>
+            <app-product-filters [product]="product" *ngIf="product.id > 0" (changeDetected)="handleChange($event)"></app-product-filters>
+            <app-product-storage [product]="product" *ngIf="product.id > 0" (changeDetected)="handleChange($event)"></app-product-storage>
         </div>
     </div>
 </div>

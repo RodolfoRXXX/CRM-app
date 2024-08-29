@@ -166,10 +166,6 @@ export class ProfileInformationComponent {
           if(res.data.affectedRows == 1){
             //Modificó la info
             this._notify.showSuccess('Información actualizada con éxito!');
-            //Modificar el localstorage
-            let data = JSON.parse(this._auth.getDataFromLocalStorage())
-            data.name = res.name
-            this._auth.setUserData(data)
             setTimeout(() => {
               window.location.reload();
             }, 2000);

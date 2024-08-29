@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -12,6 +12,7 @@ import { Product } from 'src/app/shared/interfaces/product.interface';
 export class ProductFiltersComponent {
 
   @Input() product!: Product;
+  @Output() changeDetected = new EventEmitter<boolean>();
 
   dataForm!: FormGroup;
   loading: boolean = false;
@@ -77,12 +78,8 @@ export class ProductFiltersComponent {
   resetAll(): void {
     this.setDataForm(this.product);
     this.chips = [];
-    this.setChips()
-  }
-
-  //Navegar a la misma ruta para recargar el componente
-  rechargeComponent() {
-    window.location.reload();
+    this.setChips();
+    this.dataForm.markAsPristine();
   }
   
   onSubmit() {
@@ -96,9 +93,8 @@ export class ProductFiltersComponent {
             if(res.data.changedRows == 1){
               //Modificó la imagen
               this._notify.showSuccess('Los filtros adicionales se han modificado con éxito!');
-              setTimeout(() => {
-                this.rechargeComponent();
-              }, 2000);
+              this.changeDetected.emit(true);
+              this.dataForm.markAsPristine();
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Ingresá información diferente a la actual.')

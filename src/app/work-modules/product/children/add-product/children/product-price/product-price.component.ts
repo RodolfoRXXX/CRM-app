@@ -1,8 +1,6 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
-import { ConectorsService } from 'src/app/services/conectors.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Product } from 'src/app/shared/interfaces/product.interface';
 import { environment } from 'src/environments/environment';
@@ -16,6 +14,7 @@ export class ProductPriceComponent {
 
   @Input() product!: Product;
   @Input() permissions: string[] = [];
+  @Output() changeDetected = new EventEmitter<boolean>();
 
   dataForm!: FormGroup;
   sens_info_admin = environment.EDIT_PROVIDER_CONTROL;
@@ -23,10 +22,8 @@ export class ProductPriceComponent {
 
   constructor(
     private fb: FormBuilder,
-    private _conector: ConectorsService,
     private _api: ApiService,
-    private _notify: NotificationService,
-    private _router: Router
+    private _notify: NotificationService
   ) {
     this.createDataForm();
   }
@@ -63,11 +60,6 @@ export class ProductPriceComponent {
   resetAll(): void {
     this.setDataForm(this.product);
   }
-
-  //Navegar a la misma ruta para recargar el componente
-  rechargeComponent() {
-    window.location.reload();
-  }
   
   onSubmit() {
     if(this.dataForm.controls['id'].value > 0) {
@@ -80,7 +72,7 @@ export class ProductPriceComponent {
             if(res.data.changedRows == 1){
               //Modificó la imagen
               this._notify.showSuccess('El precio se ha modificado con éxito!');
-              this.rechargeComponent();
+              this.changeDetected.emit(true);
             } else{
               //No hubo modificación
               this._notify.showError('No se detectaron cambios. Ingresá información diferente a la actual.')

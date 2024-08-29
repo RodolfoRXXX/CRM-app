@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,6 +21,7 @@ import { DialogConfirmOperationComponent } from 'src/app/shared/standalone/dialo
 export class ProductInformationComponent implements OnInit {
 
   @Input() product!: Product;
+  @Output() changeDetected = new EventEmitter<boolean>();
 
   id_enterprise!: number;
   sku!: string;
@@ -265,14 +266,13 @@ export class ProductInformationComponent implements OnInit {
     this.sku = '';
     this.exist_sku = '';
     this.setDataForm(this.product)
+    this.dataForm.markAsPristine();
   }
 
   //Navegar a la misma ruta para recargar el componente
   rechargeComponent(id_product: number = 0) {
     if(id_product > 0) {
       this._router.navigate(['init/main/product/add-product'], { queryParams: { id_product: id_product } });
-    } else {
-      this._router.navigate(['init/main/product/product-list']);
     }
   }
 
@@ -299,9 +299,8 @@ export class ProductInformationComponent implements OnInit {
               if(res.data.changedRows == 1){
                 //Modificó datos empresa
                 this._notify.showSuccess('Producto actualizado con éxito!');
-                setTimeout(() => {
-                  this.rechargeComponent();
-                }, 1500);
+                this.changeDetected.emit(true);
+                this.dataForm.markAsPristine();
               } else{
                 //No hubo modificación
                 this._notify.showError('No se detectaron cambios. Ingresá valores diferentes a los actuales.')
