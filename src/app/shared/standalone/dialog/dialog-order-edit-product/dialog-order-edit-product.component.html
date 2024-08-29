@@ -118,6 +118,7 @@
                     <input matInput
                             type="number"
                             [(ngModel)]="qty"
+                            #inputQty
                             (ngModelChange)="setQty($event)"
                             [disabled]="!product || (product.stock_available == 0)"
                             required>

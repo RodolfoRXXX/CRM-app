@@ -363,7 +363,7 @@ export class OrderDetailComponent implements OnInit {
       //Crea
       if(this.dataForm.controls['customer'].value == 0) {
         //Debe agregarse un customer
-        this._notify.showWarn('Agregá un cliente para este un remito');
+        this._notify.showInfo('Agregá un cliente para este un remito');
       } else {
         //todas las condiciones dadas
         this.loading =  true;

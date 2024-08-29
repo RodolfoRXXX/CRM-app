@@ -27,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class DialogOrderEditProductComponent implements OnInit {
 
   @ViewChild('input') input!: ElementRef;
+  @ViewChild('inputQty') inputQty!: ElementRef;
 
   employee!: Employee;
   product!: Product;
@@ -50,7 +51,7 @@ export class DialogOrderEditProductComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(this.data.id_product > 0) {
+    if (this.data.id_product > 0) {
       this.qty = this.data.qty_db;
       this.state = 'edit';
       this.getProduct(this.data.id_product);
@@ -58,13 +59,16 @@ export class DialogOrderEditProductComponent implements OnInit {
       this.state = 'new';
     }
     this.editRegister = this.data.edit;
+  
+    // Llamar a getDataLocal al inicio para cargar los datos necesarios
+    this.getDataLocal();
   }
 
-  private getDataLocal(): number {
+  private getDataLocal(): void {
     this._conector.getEmployee().subscribe((item: Employee) => {
       this.employee = item;
+      this.getFilters(this.employee.id_enterprise);
     });
-    return this.employee.id_enterprise;
   }
 
   getText(event: Event) {
@@ -78,55 +82,48 @@ export class DialogOrderEditProductComponent implements OnInit {
 
   //Filtros
   getFilters(id_enterprise: number): void {
-    this._api.postTypeRequest('profile/get-filters-obj', { id_enterprise: id_enterprise }).subscribe( (value:any) => {
-      if(value.status == 1 && value.data) {
+    this._api.postTypeRequest('profile/get-filters-obj', { id_enterprise: id_enterprise }).subscribe((value: any) => {
+      if (value.status == 1 && value.data) {
         value.data.forEach((element: any) => {
-          element.filter_values = JSON.parse(element.filter_values)
+          element.filter_values = JSON.parse(element.filter_values);
         });
-        this.filters = value.data
+        this.filters = value.data;
       }
-    })
+    });
   }
 
   //Valor nuevo
     //Carga todas las opciones de producto
     getOptions(text: string) {
-      merge()
+      this._api.postTypeRequest('profile/get-products-options', { id_enterprise: this.employee.id_enterprise, text: text })
         .pipe(
-          startWith({}),
-          map(() => this.getDataLocal()),
-          switchMap((id_enterprise) => {
-            this.getFilters(id_enterprise)
-            return this._api.postTypeRequest('profile/get-products-options', { id_enterprise: id_enterprise, text: text })
-                          .pipe(catchError(async () => {observableOf(null)}));
-          }),
-          map((response: any) => {
-            if (response && response.data) {
-              return response.data;
-            } else {
-              return []; // Retornamos un array vacío si no hay datos o response.data no existe
-            }
-          })
+          catchError(async () => observableOf(null))
         )
-        .subscribe((value: any) => {
-            // Asignamos los datos únicos al dataSource (suponiendo que dataSource es un MatTableDataSource o similar)
-            let arr: any[] = [];
-            value.forEach((element: any) => {
-              arr = [];
-              (element.filters.split(',').map(Number)).forEach((id: number) => {
-                this.filters.forEach(filter => {
-                  filter.filter_values.forEach((value: any) => {
-                    if (value.id === id) {
-                        arr.push(value.value);
-                      }
+        .subscribe((response: any) => {
+          if (response && response.data) {
+              let arr: any[] = [];
+              response.data.forEach((element: any) => {
+                if(element.filters.length) {
+                  arr = [];
+                  (element.filters.split(',').map(Number)).forEach((id: number) => {
+                    this.filters.forEach(filter => {
+                      filter.filter_values.forEach((value: any) => {
+                        if (value.id === id) {
+                          arr.push(value.value);
+                        }
+                      });
+                    });
                   });
-                });
+                  element.filter_values = arr;
+                }
               });
-              element.filter_values = arr
-            });
-            this.dataSource.data = value
+            this.dataSource.data = response.data;
             this.optionBox = true;
-          });
+          } else {
+            this.dataSource.data = []; // Retornamos un array vacío si no hay datos o response.data no existe
+            this.optionBox = false;
+          }
+        });
     }
     //Función que toma la fila clickeada del table eligiendo esa opción
     onRowClicked(row: any) {
@@ -135,6 +132,11 @@ export class DialogOrderEditProductComponent implements OnInit {
         this.dataSource.data = [];
         this.optionBox = false;
         this.input.nativeElement.value = '';
+        if(this.product.stock_available > 0) {
+          setTimeout(() => {
+            this.inputQty.nativeElement.focus();
+          }, 100);
+        }
       }
     }
 
